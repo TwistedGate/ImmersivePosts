@@ -1,0 +1,8 @@
+{
+	"forge_marker": 1,
+	"defaults": {},
+	"variants": {
+		"inventory": { "model":"immersiveposts:extendablepost/postbase" },
+		"normal": { "model":"immersiveposts:extendablepost/postbase" }
+	}
+}

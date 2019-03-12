@@ -1,0 +1,11 @@
+[{
+	"name": "Immersive Posts",
+	"modid": "immersiveposts",
+	"description": "Gives the ability to extend the wood, aluminium and steel posts.",
+	"version": "${version}",
+	"mcversion": "${mcversion}",
+	"url": "https://github.com/TwistedGate/ImmersivePosts",
+	"authorList": ["TwistedGate"],
+	"logoFile": "",
+	"screenshots": []
+}]

@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"s s",
+		"sws",
+		"sws"
+	],
+	"key": {
+		"s": { "item": "minecraft:stonebrick", "data": 0 },
+		"w": { "item": "minecraft:cobblestone_wall", "data": 0 }
+	},
+	"result": {
+		"item": "immersiveposts:postbase",
+		"count": 6
+	}
+}

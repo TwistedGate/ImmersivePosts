@@ -1,0 +1,7 @@
+{
+	"parent":"immersiveposts:block/post/wooden/post_top",
+	"textures": {
+		"post": "immersiveposts:blocks/extendedPost",
+		"postcap": "immersiveposts:blocks/wooden_device_post"
+	}
+}

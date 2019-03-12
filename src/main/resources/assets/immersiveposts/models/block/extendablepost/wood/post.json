@@ -1,0 +1,6 @@
+{
+	"parent":"immersiveposts:block/post/wooden/post",
+	"textures": {
+		"post": "immersiveposts:blocks/extendedPost"
+	}
+}

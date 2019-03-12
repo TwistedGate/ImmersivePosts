@@ -1,0 +1,24 @@
+#########################
+#        Blocks         #
+#########################
+
+tile.immersiveposts.postbase.name=Extendable Post
+tile.immersiveposts.woodpost.name=Wooden Post
+tile.immersiveposts.aluminiumpost.name=Aluminium Post
+tile.immersiveposts.steelpost.name=Steel Post
+
+#########################
+#     Creative Tab      #
+#########################
+
+itemGroup.immersiveposts=Immersive Posts
+
+#########################
+#        Manual         #
+#########################
+
+ie.manual.category.immersiveposts.name=Immersive Posts
+ie.manual.entry.postbase.name=Extendable Post
+ie.manual.entry.postbase.subtext=The Sky's the Limit.
+ie.manual.entry.postbase0=Used to make custom-sized posts.<br><br>Place it anywhere and right-click with a <link;treatedwood;§o§nTreated-Wood-Fence§r;3>, <link;metalconstruction;§o§nAluminium-Fence§r;5> or <link;metalconstruction;§o§nSteel-Fence§r;3>.<br><br>Same thing applies to the posts themselfs aswell.
+ie.manual.entry.postbase1=Note that it has to be always the same type, a Wooden Post for example does not accept Aluminium or Steel Fences!<br><br>Using the hammer on the sides of any post-block will attach an arm to it.<br><br>Arms can be anywhere, as long as there is space for it.
