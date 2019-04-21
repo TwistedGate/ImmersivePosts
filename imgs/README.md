@@ -1,5 +1,8 @@
 # Previews for all Posts.
-Don't actualy represent what they look in-game and are just to give an idea of what they look like)
+Don't actualy represent what they look in-game and are just to give an idea of what they look like.
+
+Rendered with Blender.  
+Model is an edited version of the ImmersiveEngineerings' Post
 
 Treated-Wood Post (Default)  
 ![preview_wood_post](/imgs/preview_wood_post.png)
