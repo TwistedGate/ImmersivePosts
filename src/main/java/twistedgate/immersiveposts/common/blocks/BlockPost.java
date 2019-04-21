@@ -1,8 +1,14 @@
 package twistedgate.immersiveposts.common.blocks;
 
+import java.util.Optional;
+import java.util.Random;
+
+import com.google.common.collect.ImmutableMap;
+
 import blusunrize.immersiveengineering.api.IPostBlock;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -14,9 +20,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -24,16 +33,17 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twistedgate.immersiveposts.IPStuff;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import twistedgate.immersiveposts.common.blocks.state.PostState;
+import twistedgate.immersiveposts.enums.EnumPostMaterial;
+import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockUtilities;
-import twistedgate.immersiveposts.utils.enums.EnumPostMaterial;
-import twistedgate.immersiveposts.utils.enums.EnumPostType;
 
 /**
  * All-in-one package. Containing everything into one neat class is the best.
  * @author TwistedGate
  */
-public class BlockPost extends IPBlockBase implements IPostBlock{
+public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityProvider{
 	public static final PropertyBool LPARM_NORTH=PropertyBool.create("parm_north");
 	public static final PropertyBool LPARM_EAST=PropertyBool.create("parm_east");
 	public static final PropertyBool LPARM_SOUTH=PropertyBool.create("parm_south");
@@ -50,11 +60,14 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 		
 		setResistance(3.0F);
 		setHardness(3.0F);
-		switch(this.postMaterial){
-			case WOOD:setHarvestLevel("axe", 0);break;
-			case ALUMINIUM:
-			case STEEL:setHarvestLevel("pickaxe", 1);break;
+		if(this.postMaterial==EnumPostMaterial.WOOD){
+			setHarvestLevel("axe", 0);
+		}else{
+			setHarvestLevel("pickaxe", 1);
 		}
+		
+		if(this.postMaterial==EnumPostMaterial.URANIUM)
+			setLightLevel(8);
 		
 		setDefaultState(this.blockState.getBaseState()
 				.withProperty(DIRECTION, EnumFacing.NORTH)
@@ -67,8 +80,23 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 				);
 	}
 	
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta){
+		//if(this.postMaterial==EnumPostMaterial.URANIUM)
+			//return new TileEntityGlowy();
+		return null;
+	}
+	
 	public final EnumPostMaterial getPostMaterial(){
 		return this.postMaterial;
+	}
+	
+	@Override
+	public BlockRenderLayer getRenderLayer(){
+//		if(this.postMaterial==EnumPostMaterial.URANIUM)
+//			return BlockRenderLayer.TRANSLUCENT;
+		
+		return BlockRenderLayer.SOLID;
 	}
 	
 	@Override
@@ -76,7 +104,12 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 		return new BlockStateContainer(this, new IProperty<?>[]{
 			DIRECTION, FLIP, TYPE,
 			LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST,
-		});
+		}){
+			@Override
+			protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties){
+				return new PostState(block, properties);
+			}
+		};
 	}
 	
 	@Override
@@ -159,6 +192,18 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 	}
 	
 	@Override
+	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand){
+		if(this.postMaterial==EnumPostMaterial.URANIUM){
+			if(stateIn.getValue(TYPE)!=EnumPostType.ARM && rand.nextDouble()<0.125){
+				double x=pos.getX()+0.375+0.25*rand.nextDouble();
+				double y=pos.getY()+1.0-rand.nextDouble();
+				double z=pos.getZ()+0.375+0.25*rand.nextDouble();
+				worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x,y,z, -1.0, 1.0, 0.25);
+			}
+		}
+	}
+	/*
+	@Override
 	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side){
 		return false;
 	}
@@ -176,7 +221,7 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 	@Override
 	public boolean isFullCube(IBlockState state){
 		return false;
-	}
+	}//*/
 	
 	@Override
 	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player){
@@ -195,10 +240,8 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 	
 	@Override
 	public boolean canConnectTransformer(IBlockAccess world, BlockPos pos){
-		IBlockState state=world.getBlockState(pos);
-		return state.getValue(TYPE)==EnumPostType.POST;
+		return world.getBlockState(pos).getValue(TYPE)==EnumPostType.POST;
 	}
-	
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
@@ -206,7 +249,7 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 			ItemStack held=playerIn.getHeldItemMainhand();
 			if(EnumPostMaterial.isFenceItem(held)){
 				if(!held.isItemEqual(this.postMaterial.getFenceItem())){
-					playerIn.sendMessage(new TextComponentString("Expected: "+this.postMaterial.getFenceItem().getDisplayName()+"."));
+					playerIn.sendStatusMessage(new TextComponentString("Expected: "+this.postMaterial.getFenceItem().getDisplayName()+"."), true);
 					return true;
 				}
 				
@@ -229,17 +272,8 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 					}
 					
 					if(worldIn.isAirBlock(nPos)){
-						IBlockState fb=null;
-						if(held.isItemEqual(EnumPostMaterial.WOOD.getFenceItem()))
-							fb=IPStuff.woodPost.getDefaultState().withProperty(BlockPost.TYPE, EnumPostType.POST_TOP);
-						
-						else if(held.isItemEqual(EnumPostMaterial.ALUMINIUM.getFenceItem()))
-							fb=IPStuff.aluPost.getDefaultState().withProperty(BlockPost.TYPE, EnumPostType.POST_TOP);
-						
-						else if(held.isItemEqual(EnumPostMaterial.STEEL.getFenceItem()))
-							fb=IPStuff.steelPost.getDefaultState().withProperty(BlockPost.TYPE, EnumPostType.POST_TOP);
-						
-						if(worldIn.setBlockState(nPos, fb)){
+						IBlockState fb=EnumPostMaterial.getPostStateFrom(held);
+						if(fb!=null && worldIn.setBlockState(nPos, fb)){
 							if(!playerIn.capabilities.isCreativeMode){
 								held.shrink(1);
 							}
@@ -260,7 +294,8 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 								if(worldIn.isAirBlock(nPos)){
 									defaultState=defaultState.withProperty(DIRECTION, facing);
 									worldIn.setBlockState(nPos, defaultState, 3);
-									this.neighborChanged(defaultState, worldIn, nPos, null, null);
+									defaultState.neighborChanged(worldIn, nPos, null, null);
+									//this.neighborChanged(defaultState, worldIn, nPos, null, null);
 								}else if(BlockUtilities.getBlockFrom(worldIn, nPos)==this){
 									if(worldIn.getBlockState(nPos).getValue(TYPE)==EnumPostType.ARM){
 										worldIn.setBlockToAir(nPos);
@@ -282,6 +317,12 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 		return Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isFenceItem(playerIn.getHeldItemMainhand());
 	}
 	
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos){
+		world.getBlockState(pos).neighborChanged(world, pos, block, fromPos);
+	}
+	
+	/*
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos){
 		EnumPostType thisType=state.getValue(TYPE);
@@ -325,9 +366,9 @@ public class BlockPost extends IPBlockBase implements IPostBlock{
 				return;
 			}
 		}
-	}
+	}//*/
 	
-	static boolean canConnect(IBlockAccess worldIn, BlockPos posIn, EnumFacing facingIn){
+	public static boolean canConnect(IBlockAccess worldIn, BlockPos posIn, EnumFacing facingIn){
 		BlockPos nPos=posIn.offset(facingIn);
 		
 		IBlockState otherState=worldIn.getBlockState(nPos);

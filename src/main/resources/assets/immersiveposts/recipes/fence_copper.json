@@ -1,0 +1,15 @@
+{
+	"type":"forge:ore_shaped",
+	"pattern":[
+		"ISI",
+		"ISI"
+	],
+	"key":{
+		"I":{ "item":"#ingotCopper" },
+		"S":{ "item":"#stickCopper" }
+	},
+	"result":{
+		"item":"immersiveposts:fence_copper",
+		"count":3
+	}
+}

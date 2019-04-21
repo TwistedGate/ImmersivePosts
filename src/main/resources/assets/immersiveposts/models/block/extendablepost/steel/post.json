@@ -1,6 +1,0 @@
-{
-	"parent":"immersiveposts:block/post/metal/post",
-	"textures": {
-		"post": "immersiveposts:blocks/metal_decoration2_steel_post"
-	}
-}

@@ -1,0 +1,14 @@
+{
+	"type":"forge:ore_shaped",
+	"pattern":[
+		"I",
+		"I"
+	],
+	"key":{
+		"I":{ "item":"#ingotNickel" }
+	},
+	"result":{
+		"item":"immersiveposts:stick_Nickel",
+		"count":4
+	}
+}

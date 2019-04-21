@@ -1,7 +1,7 @@
 [{
 	"name": "Immersive Posts",
 	"modid": "immersiveposts",
-	"description": "Gives the ability to extend the wood, aluminium and steel posts.",
+	"description": "Simply adds a way to have extendable posts. With a few post types to choose from.",
 	"version": "${version}",
 	"mcversion": "${mcversion}",
 	"url": "https://github.com/TwistedGate/ImmersivePosts",

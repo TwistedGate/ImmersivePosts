@@ -2,6 +2,8 @@ package twistedgate.immersiveposts.common.blocks;
 
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -16,12 +18,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twistedgate.immersiveposts.IPStuff;
+import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.enums.EnumPostMaterial;
+import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockUtilities;
-import twistedgate.immersiveposts.utils.enums.EnumPostMaterial;
-import twistedgate.immersiveposts.utils.enums.EnumPostType;
 
-public class BlockPostBase extends IPBlockBase{
+public class BlockPostBase extends IPOBlockBase{
 	private static final AxisAlignedBB BASE_SIZE=new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 	
 	public BlockPostBase(){
@@ -29,7 +31,7 @@ public class BlockPostBase extends IPBlockBase{
 		setResistance(3.0F);
 		setHardness(2.0F);
 		
-		IPStuff.ITEMS.add(new ItemPost(this));
+		IPOStuff.ITEMS.add(new ItemPost(this));
 	}
 	
 	@Override
@@ -73,16 +75,9 @@ public class BlockPostBase extends IPBlockBase{
 					Block b=aboveState.getBlock();
 					
 					if(b instanceof BlockPost){
-						if(b==IPStuff.woodPost && !held.isItemEqual(EnumPostMaterial.WOOD.getFenceItem())){
-							playerIn.sendMessage(new TextComponentString("Expected: "+EnumPostMaterial.WOOD.getFenceItem().getDisplayName()+"."));
-							return true;
-							
-						}else if(b==IPStuff.aluPost && !held.isItemEqual(EnumPostMaterial.ALUMINIUM.getFenceItem())){
-							playerIn.sendMessage(new TextComponentString("Expected: "+EnumPostMaterial.ALUMINIUM.getFenceItem().getDisplayName()+"."));
-							return true;
-							
-						}else if(b==IPStuff.steelPost && !held.isItemEqual(EnumPostMaterial.STEEL.getFenceItem())){
-							playerIn.sendMessage(new TextComponentString("Expected: "+EnumPostMaterial.STEEL.getFenceItem().getDisplayName()+"."));
+						ItemStack tmp=((BlockPost)b).postMaterial.getFenceItem();
+						if(!held.isItemEqual(tmp)){
+							playerIn.sendStatusMessage(new TextComponentString("Expected: "+tmp.getDisplayName()+"."), true);
 							return true;
 						}
 					}
@@ -99,17 +94,8 @@ public class BlockPostBase extends IPBlockBase{
 					}
 					
 					if(worldIn.isAirBlock(nPos)){
-						IBlockState fb=null;
-						if(held.isItemEqual(EnumPostMaterial.WOOD.getFenceItem()))
-							fb=IPStuff.woodPost.getDefaultState().withProperty(BlockPost.TYPE, EnumPostType.POST_TOP);
-						
-						else if(held.isItemEqual(EnumPostMaterial.ALUMINIUM.getFenceItem()))
-							fb=IPStuff.aluPost.getDefaultState().withProperty(BlockPost.TYPE, EnumPostType.POST_TOP);
-						
-						else if(held.isItemEqual(EnumPostMaterial.STEEL.getFenceItem()))
-							fb=IPStuff.steelPost.getDefaultState().withProperty(BlockPost.TYPE, EnumPostType.POST_TOP);
-						
-						if(worldIn.setBlockState(nPos, fb)){
+						IBlockState fb=EnumPostMaterial.getPostStateFrom(held);
+						if(fb!=null && worldIn.setBlockState(nPos, fb)){
 							if(!playerIn.capabilities.isCreativeMode){
 								held.shrink(1);
 							}
@@ -135,9 +121,12 @@ public class BlockPostBase extends IPBlockBase{
 		
 		@Override
 		public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
-			tooltip.add("\u00A76Accepted Fences:");
-			for(EnumPostMaterial t:EnumPostMaterial.values()){
-				tooltip.add("- \u00A7a"+t.getFenceItem().getDisplayName());
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)){
+				for(EnumPostMaterial t:EnumPostMaterial.values()){
+					tooltip.add("- \u00A7a"+t.getFenceItem().getDisplayName());
+				}
+			}else{
+				tooltip.add("[Hold Shift] \u00A76List of accepted fences.");
 			}
 		}
 	}

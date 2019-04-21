@@ -1,6 +1,0 @@
-{
-	"parent":"immersiveposts:block/post/wooden/arm",
-	"textures": {
-		"arm": "immersiveposts:blocks/wooden_device_post"
-	}
-}

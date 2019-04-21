@@ -1,0 +1,15 @@
+{
+	"type":"forge:ore_shaped",
+	"pattern":[
+		"ISI",
+		"ISI"
+	],
+	"key":{
+		"I":{ "item":"#ingotLead" },
+		"S":{ "item":"#stickLead" }
+	},
+	"result":{
+		"item":"immersiveposts:fence_lead",
+		"count":3
+	}
+}

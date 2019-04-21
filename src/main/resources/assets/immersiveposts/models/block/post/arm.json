@@ -1,0 +1,45 @@
+{
+	"__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+	"textures": {
+		"particle": "#arm"
+	},
+	"elements": [
+		{
+			"name": "arm_cap",
+			"from": [ 5, 14, 5 ], 
+			"to": [ 11, 16, 11 ], 
+			"faces": {
+				"north": { "texture": "#arm", "uv": [ 5, 13, 4, 16 ], "rotation": 90 },
+				"east": { "texture": "#arm", "uv": [ 5, 13, 4, 16 ], "rotation": 90 },
+				"south": { "texture": "#arm", "uv": [ 5, 13, 4, 16 ], "rotation": 90 },
+				"west": { "texture": "#arm", "uv": [ 5, 13, 4, 16 ], "rotation": 90 },
+				"up": { "texture": "#arm", "uv": [ 5, 13, 8, 16 ] },
+				"down": { "texture": "#arm", "uv": [ 5, 13, 8, 16 ] }
+			}
+		},
+		{
+			"name": "arm",
+			"from": [ 6, 12, 6 ], 
+			"to": [ 10, 14, 22 ], 
+			"faces": {
+				"north": { "texture": "#arm", "uv": [ 4, 0, 3, 2 ], "rotation": 90 },
+				"east": { "texture": "#arm", "uv": [ 1, 8, 0, 16 ], "rotation": 90 },
+				"west": { "texture": "#arm", "uv": [ 1, 0, 0, 8 ], "rotation": 90 },
+				"up": { "texture": "#arm", "uv": [ 1, 0, 3, 8 ] },
+				"down": { "texture": "#arm", "uv": [ 1, 8, 3, 16 ] }
+			}
+		},
+		{
+			"name": "arm_support",
+			"from": [ 7, 11, 5 ], 
+			"to": [ 9, 14, 22 ], 
+			"rotation": { "origin": [ 8.0, 8.0, 9.0 ], "axis": "x", "angle": 22.5 },
+			"faces": {
+				"east": { "texture": "#arm", "uv": [ 7, 4, 5.5, 13 ], "rotation": 90 },
+				"west": { "texture": "#arm", "uv": [ 4.5, 4, 3, 13 ], "rotation": 90 },
+				"up": { "texture": "#arm", "uv": [ 4.5, 4, 5.5, 13 ] },
+				"down": { "texture": "#arm", "uv": [ 7, 4, 8, 13 ] }
+			}
+		}
+	]
+}

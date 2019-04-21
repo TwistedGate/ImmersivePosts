@@ -1,0 +1,15 @@
+{
+	"type":"forge:ore_shaped",
+	"pattern":[
+		"ISI",
+		"ISI"
+	],
+	"key":{
+		"I":{ "item":"#ingotUranium" },
+		"S":{ "item":"#stickUranium" }
+	},
+	"result":{
+		"item":"immersiveposts:fence_uranium",
+		"count":3
+	}
+}

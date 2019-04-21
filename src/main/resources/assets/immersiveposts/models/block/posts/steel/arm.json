@@ -1,0 +1,6 @@
+{
+	"parent":"immersiveposts:block/post/arm",
+	"textures": {
+		"arm": "immersiveposts:blocks/posts/post_steel"
+	}
+}

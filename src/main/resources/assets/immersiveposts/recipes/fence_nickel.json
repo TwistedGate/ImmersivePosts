@@ -1,0 +1,15 @@
+{
+	"type":"forge:ore_shaped",
+	"pattern":[
+		"ISI",
+		"ISI"
+	],
+	"key":{
+		"I":{ "item":"#ingotNickel" },
+		"S":{ "item":"#stickNickel" }
+	},
+	"result":{
+		"item":"immersiveposts:fence_nickel",
+		"count":3
+	}
+}

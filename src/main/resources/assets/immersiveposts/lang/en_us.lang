@@ -4,8 +4,41 @@
 
 tile.immersiveposts.postbase.name=Extendable Post
 tile.immersiveposts.woodpost.name=Wooden Post
+tile.immersiveposts.ironpost.name=Iron Post
+tile.immersiveposts.goldpost.name=Gold Post
+tile.immersiveposts.copperpost.name=Copper Post
+tile.immersiveposts.leadpost.name=Lead Post
+tile.immersiveposts.silverpost.name=Silver Post
+tile.immersiveposts.nickelpost.name=Nickel Post
+tile.immersiveposts.constantanpost.name=Constantan Post
+tile.immersiveposts.electrumpost.name=Electrum Post
+tile.immersiveposts.uraniumpost.name=Uranium Post
+tile.immersiveposts.netherpost.name=Nether Brick Post
 tile.immersiveposts.aluminiumpost.name=Aluminium Post
 tile.immersiveposts.steelpost.name=Steel Post
+
+tile.immersiveposts.fence_iron.name=Iron Fence
+tile.immersiveposts.fence_gold.name=Gold Fence
+tile.immersiveposts.fence_copper.name=Copper Fence
+tile.immersiveposts.fence_lead.name=Lead Fence
+tile.immersiveposts.fence_silver.name=Silver Fence
+tile.immersiveposts.fence_nickel.name=Nickel Fence
+tile.immersiveposts.fence_constantan.name=Constantan Fence
+tile.immersiveposts.fence_electrum.name=Electrum Fence
+tile.immersiveposts.fence_uranium.name=Uranium Fence
+
+#########################
+#         Items         #
+#########################
+
+item.immersiveposts.stick_gold.name=Gold Rod
+item.immersiveposts.stick_copper.name=Copper Rod
+item.immersiveposts.stick_lead.name=Lead Rod
+item.immersiveposts.stick_silver.name=Silver Rod
+item.immersiveposts.stick_nickel.name=Nickel Rod
+item.immersiveposts.stick_constantan.name=Constantan Rod
+item.immersiveposts.stick_electrum.name=Electrum Rod
+item.immersiveposts.stick_uranium.name=Uranium Rod
 
 #########################
 #     Creative Tab      #
@@ -14,11 +47,30 @@ tile.immersiveposts.steelpost.name=Steel Post
 itemGroup.immersiveposts=Immersive Posts
 
 #########################
-#        Manual         #
+#       IE-Manual       #
 #########################
 
 ie.manual.category.immersiveposts.name=Immersive Posts
+
 ie.manual.entry.postbase.name=Extendable Post
 ie.manual.entry.postbase.subtext=The Sky's the Limit.
-ie.manual.entry.postbase0=Used to make custom-sized posts.<br><br>Place it anywhere and right-click with a <link;treatedwood;§o§nTreated-Wood-Fence§r;3>, <link;metalconstruction;§o§nAluminium-Fence§r;5> or <link;metalconstruction;§o§nSteel-Fence§r;3>.<br><br>Same thing applies to the posts themselfs aswell.
-ie.manual.entry.postbase1=Note that it has to be always the same type, a Wooden Post for example does not accept Aluminium or Steel Fences!<br><br>Using the hammer on the sides of any post-block will attach an arm to it.<br><br>Arms can be anywhere, as long as there is space for it.
+ie.manual.entry.postbase0=Used to make custom-sized posts.<br><br>Place it anywhere and right-click<br>with any of the fences listed <link;fences;§o§nhere§r;0>.<br>You can do the exact same on the posts aswell.<br>The base is merely to start it.
+ie.manual.entry.postbase1=Note that it always has to be the same type, a Wooden Post for example only accepts Treated-Wood Fences nothing else!<br><br>Using the hammer on the sides of any post-block will attach an arm to it.<br><br>Arms can be anywhere, as long as there is air.<br><br>And now have fun and go wild with these things!
+
+# Fence Entries
+ie.manual.entry.fences.name=Accepted Fences
+ie.manual.entry.fences.subtext=Hm, what to pick..
+ie.manual.entry.fences_index=The Index
+ie.manual.entry.fences_wood=Threated-Wood.<br><br><br><br><br><br>The old-school.
+ie.manual.entry.fences_netherbrick=Nether Bricks<br><br><br><br><br><br><br><br><br><br><br>The hot-headed.
+ie.manual.entry.fences_iron=Iron<br><br><br><br><br><br>The rusty-boi.
+ie.manual.entry.fences_gold=Gold<br><br><br><br><br><br>The gangsta-bling.
+ie.manual.entry.fences_copper=Copper<br><br><br><br><br><br>The common.
+ie.manual.entry.fences_lead=Lead<br><br><br><br><br><br>The heavy.
+ie.manual.entry.fences_silver=Silver<br><br><br><br><br><br>The shiny.
+ie.manual.entry.fences_nickel=Nickel<br><br><br><br><br><br>The nickelback member.
+ie.manual.entry.fences_constantan=Constantan<br><br><br><br><br><br>The weirdo.
+ie.manual.entry.fences_electrum=Electrum<br><br><br><br><br><br>The shocker.
+ie.manual.entry.fences_uranium=Uranium<br><br><br><br><br><br>The long half-life.
+ie.manual.entry.fences_aluminium=Aluminium? No.<br>Aluminum? Nah.<br>Alumum. Perfect.<br><br><br><br>The split-opinion.
+ie.manual.entry.fences_steel=Steel<br><br><br><br><br><br>The harder rusty-boi.

@@ -1,0 +1,83 @@
+{
+	"__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+	"textures": {
+		"particle": "#post"
+	},
+	"elements": [
+		{
+			"name": "arm",
+			"from": [ 6, 6, 2 ], 
+			"to": [ 10, 8, 6 ], 
+			"faces": {
+				"east": { "texture": "#post", "uv": [ 1, 0, 0, 2 ], "rotation": 270 },
+				"west": { "texture": "#post", "uv": [ 1, 14, 0, 16 ], "rotation": 270 },
+				"up": { "texture": "#post", "uv": [ 3, 14, 1, 16 ] },
+				"down": { "texture": "#post", "uv": [ 3, 0, 1, 2 ] }
+			}
+		},
+		{
+			"name": "plate",
+			"from": [ 5, 4, 0 ], 
+			"to": [ 11, 12, 2 ], 
+			"faces": {
+				"north": { "texture": "#post", "uv": [ 5, 13, 8, 16 ] },
+				"east": { "texture": "#post", "uv": [ 8, 13, 4, 14 ], "rotation": 90 },
+				"south": { "texture": "#post", "uv": [ 8, 13, 5, 16 ], "rotation": 90 },
+				"west": { "texture": "#post", "uv": [ 8, 15, 4, 16 ], "rotation": 90 },
+				"up": { "texture": "#post", "uv": [ 5, 13, 4, 16 ], "rotation": 270 },
+				"down": { "texture": "#post", "uv": [ 5, 13, 4, 16 ], "rotation": 90 }
+			}
+		},
+		{
+			"name": "strut",
+			"from": [ 7, 9, 1.5 ], 
+			"to": [ 9, 12, 7.5 ], 
+			"rotation": { "origin": [ 8.0, 9.5, 4.0 ], "axis": "x", "angle": -22.5 },
+			"faces": {
+				"east": { "texture": "#post", "uv": [ 4.5, 4, 3, 8 ], "rotation": 270 },
+				"west": { "texture": "#post", "uv": [ 5.5, 7.5, 7, 4 ], "rotation": 90 },
+				"up": { "texture": "#post", "uv": [ 7, 7.5, 8, 4 ], "rotation": 180 },
+				"down": { "texture": "#post", "uv": [ 5.5, 4, 4.5, 7.5 ] }
+			}
+		},
+		{
+			"name": "arm_halo",
+			"from": [ 5.75, 5.75, 2.25 ], 
+			"to": [ 10.25, 8.25, 5.75 ], 
+			"shade": false,
+			"faces": {
+				"east": { "texture": "#post", "uv": [ 13, 0, 16, 3 ], "rotation": 270 },
+				"west": { "texture": "#post", "uv": [ 13, 0, 16, 3 ], "rotation": 270 },
+				"up": { "texture": "#post", "uv": [ 13, 0, 16, 3 ] },
+				"down": { "texture": "#post", "uv": [ 13, 0, 16, 3 ] }
+			}
+		},
+		{
+			"name": "plate_halo",
+			"from": [ 4.75, 3.75, -0.25 ], 
+			"to": [ 11.25, 12.25, 2.25 ], 
+			"shade": false,
+			"faces": {
+				"north": { "texture": "#post", "uv": [ 13, 0, 16, 3 ] },
+				"east": { "texture": "#post", "uv": [ 13, 0, 16, 3 ], "rotation": 90 },
+				"south": { "texture": "#post", "uv": [ 16, 0, 13, 3 ], "rotation": 90 },
+				"west": { "texture": "#post", "uv": [ 13, 0, 16, 3 ], "rotation": 90 },
+				"up": { "texture": "#post", "uv": [ 13, 0, 16, 3 ], "rotation": 270 },
+				"down": { "texture": "#post", "uv": [ 13, 0, 16, 3 ], "rotation": 90 }
+			}
+		},
+		{
+			"name": "strut_halo",
+			"from": [ 6.75, 8.75, 1.5 ], 
+			"to": [ 9.25, 12.25, 7.5 ], 
+			"shade": false,
+			"rotation": { "origin": [ 8.0, 9.5, 4.0 ], "axis": "x", "angle": -22.5 },
+			"faces": {
+				"east": { "texture": "#post", "uv": [ 13, 0, 16, 3 ], "rotation": 270 },
+				"west": { "texture": "#post", "uv": [ 13, 0, 16, 3 ], "rotation": 90 },
+				"up": { "texture": "#post", "uv": [ 13, 0, 16, 3 ], "rotation": 180 },
+				"down": { "texture": "#post", "uv": [ 13, 0, 16, 3 ] }
+			}
+		}
+	]
+}

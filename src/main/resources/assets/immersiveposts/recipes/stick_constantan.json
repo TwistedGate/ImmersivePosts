@@ -1,0 +1,14 @@
+{
+	"type":"forge:ore_shaped",
+	"pattern":[
+		"I",
+		"I"
+	],
+	"key":{
+		"I":{ "item":"#ingotConstantan" }
+	},
+	"result":{
+		"item":"immersiveposts:stick_constantan",
+		"count":4
+	}
+}

@@ -1,0 +1,15 @@
+{
+	"type":"forge:ore_shaped",
+	"pattern":[
+		"ISI",
+		"ISI"
+	],
+	"key":{
+		"I":{ "item":"#ingotElectrum" },
+		"S":{ "item":"#stickElectrum" }
+	},
+	"result":{
+		"item":"immersiveposts:fence_electrum",
+		"count":3
+	}
+}
