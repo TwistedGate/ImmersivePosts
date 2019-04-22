@@ -203,26 +203,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 			}
 		}
 	}
-	/*
-	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side){
-		return false;
-	}
-	
-	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos){
-		return false;
-	}
-	
-	@Override
-	public boolean isOpaqueCube(IBlockState state){
-		return false;
-	}
-	
-	@Override
-	public boolean isFullCube(IBlockState state){
-		return false;
-	}//*/
 	
 	@Override
 	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player){
@@ -322,52 +302,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos){
 		world.getBlockState(pos).neighborChanged(world, pos, block, fromPos);
 	}
-	
-	/*
-	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos){
-		EnumPostType thisType=state.getValue(TYPE);
-		
-		if(thisType!=EnumPostType.ARM){
-			BlockPos d=pos.offset(EnumFacing.DOWN);
-			if(BlockUtilities.getBlockFrom(worldIn, d)==Blocks.AIR){
-				dropBlockAsItem(worldIn, pos, state, 1);
-				worldIn.setBlockToAir(pos);
-				return;
-			}
-		}
-		
-		IBlockState aboveState=worldIn.getBlockState(pos.offset(EnumFacing.UP));
-		Block aboveBlock=aboveState.getBlock();
-		switch(thisType){
-			case POST:{
-				if(!(aboveBlock instanceof BlockPost))
-					worldIn.setBlockState(pos, state.withProperty(TYPE, EnumPostType.POST_TOP));
-				return;
-			}
-			case POST_TOP:{
-				if((aboveBlock instanceof BlockPost) && aboveState.getValue(TYPE)!=EnumPostType.ARM)
-					worldIn.setBlockState(pos, state.withProperty(TYPE, EnumPostType.POST));
-				return;
-			}
-			case ARM:{
-				EnumFacing f=state.getValue(DIRECTION).getOpposite();
-				if(BlockUtilities.getBlockFromDirection(worldIn, pos, f)!=this){
-					worldIn.setBlockToAir(pos);
-					return;
-				}
-				
-				if(canConnect(worldIn, pos, EnumFacing.UP)){
-					worldIn.setBlockState(pos, state.withProperty(FLIP, false), 3);
-				}
-				
-				boolean bool=canConnect(worldIn, pos, EnumFacing.DOWN);
-				worldIn.setBlockState(pos, state.withProperty(FLIP, bool), 3);
-				
-				return;
-			}
-		}
-	}//*/
 	
 	public static boolean canConnect(IBlockAccess worldIn, BlockPos posIn, EnumFacing facingIn){
 		BlockPos nPos=posIn.offset(facingIn);
