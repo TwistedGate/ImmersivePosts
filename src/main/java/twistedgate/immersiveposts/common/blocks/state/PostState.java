@@ -3,8 +3,15 @@ package twistedgate.immersiveposts.common.blocks.state;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableTable;
 
+import blusunrize.immersiveengineering.common.blocks.metal.BlockMetalDecoration1;
+import blusunrize.immersiveengineering.common.blocks.metal.BlockTypes_MetalDecoration1;
+import blusunrize.immersiveengineering.common.blocks.wooden.BlockTypes_WoodenDecoration;
+import blusunrize.immersiveengineering.common.blocks.wooden.BlockWoodenDecoration;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockWall;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -24,6 +31,27 @@ public class PostState extends BlockStateContainer.StateImplementation{
 		super(blockIn, propertiesIn, unlistedProperties);
 	}
 
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockPos pos, EnumFacing face){
+		IBlockState state=worldIn.getBlockState(pos.offset(face));
+		Block block=state.getBlock();
+		if(block instanceof BlockFence || block instanceof BlockWall) return BlockFaceShape.UNDEFINED;
+		
+		boolean f=false;
+		if(block instanceof BlockWoodenDecoration)
+			if(block.getMetaFromState(state)==BlockTypes_WoodenDecoration.FENCE.getMeta())
+				f=true;
+		
+		if(block instanceof BlockMetalDecoration1){
+			int tmp=block.getMetaFromState(state);
+			if(tmp==BlockTypes_MetalDecoration1.ALUMINUM_FENCE.getMeta() || tmp==BlockTypes_MetalDecoration1.STEEL_FENCE.getMeta())
+				f=true;
+		}
+		
+		
+		return f?BlockFaceShape.UNDEFINED:BlockFaceShape.SOLID;
+	}
+	
 	@Override
 	public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side){
 		return false;

@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,6 +33,11 @@ public class BlockPostBase extends IPOBlockBase{
 		setHardness(2.0F);
 		
 		IPOStuff.ITEMS.add(new ItemPost(this));
+	}
+	
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face){
+		return (face==EnumFacing.UP)?BlockFaceShape.SOLID:BlockFaceShape.UNDEFINED;
 	}
 	
 	@Override
@@ -63,7 +69,6 @@ public class BlockPostBase extends IPOBlockBase{
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
 		return BASE_SIZE;
 	}
-	
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){

@@ -14,6 +14,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -374,7 +375,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		IBlockState otherState=worldIn.getBlockState(nPos);
 		Block otherBlock=otherState.getBlock();
 		
-		if(otherBlock==Blocks.AIR || otherBlock instanceof BlockPost) return false; // Nope out when air or self
+		if(otherBlock==Blocks.AIR) return false; // Go straight out if air, no questions asked.
+		if(otherBlock instanceof BlockPost || otherState.getBlockFaceShape(worldIn, nPos, facingIn)==BlockFaceShape.MIDDLE_POLE) return false;
 		
 		AxisAlignedBB box=otherState.getBoundingBox(worldIn, nPos);
 		boolean b;
