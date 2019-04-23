@@ -100,7 +100,8 @@ public class PostState extends BlockStateContainer.StateImplementation{
 			}
 			case ARM:{
 				EnumFacing f=this.getValue(BlockPost.DIRECTION).getOpposite();
-				if((world.getBlockState(pos.offset(f))!=null) && !(world.getBlockState(pos.offset(f)).getBlock() instanceof BlockPost)){
+				IBlockState state=world.getBlockState(pos.offset(f));
+				if(state!=null && !(state.getBlock() instanceof BlockPost)){
 					world.setBlockToAir(pos);
 					return;
 				}
