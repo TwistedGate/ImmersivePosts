@@ -298,11 +298,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		return Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isFenceItem(playerIn.getHeldItemMainhand());
 	}
 	
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos){
-		world.getBlockState(pos).neighborChanged(world, pos, block, fromPos);
-	}
-	
 	public static boolean canConnect(IBlockAccess worldIn, BlockPos posIn, EnumFacing facingIn){
 		BlockPos nPos=posIn.offset(facingIn);
 		
