@@ -100,7 +100,7 @@ public class BlockPostBase extends IPOBlockBase{
 					
 					if(worldIn.isAirBlock(nPos)){
 						IBlockState fb=EnumPostMaterial.getPostStateFrom(held);
-						if(fb!=null && worldIn.setBlockState(nPos, fb)){
+						if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb)){
 							if(!playerIn.capabilities.isCreativeMode){
 								held.shrink(1);
 							}

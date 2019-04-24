@@ -1,13 +1,21 @@
 package twistedgate.immersiveposts.common.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import com.google.common.collect.ImmutableMap;
 
 import blusunrize.immersiveengineering.api.IPostBlock;
+import blusunrize.immersiveengineering.common.blocks.metal.BlockMetalDecoration1;
+import blusunrize.immersiveengineering.common.blocks.metal.BlockTypes_MetalDecoration1;
+import blusunrize.immersiveengineering.common.blocks.wooden.BlockTypes_WoodenDecoration;
+import blusunrize.immersiveengineering.common.blocks.wooden.BlockWoodenDecoration;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockWall;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -17,6 +25,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -31,6 +40,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -44,6 +54,8 @@ import twistedgate.immersiveposts.utils.BlockUtilities;
  * @author TwistedGate
  */
 public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityProvider{
+	public static final AxisAlignedBB POST_SHAPE=new AxisAlignedBB(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
+	
 	public static final PropertyBool LPARM_NORTH=PropertyBool.create("parm_north");
 	public static final PropertyBool LPARM_EAST=PropertyBool.create("parm_east");
 	public static final PropertyBool LPARM_SOUTH=PropertyBool.create("parm_south");
@@ -60,14 +72,12 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		
 		setResistance(3.0F);
 		setHardness(3.0F);
+		if(this.postMaterial==EnumPostMaterial.URANIUM) setLightLevel(8);
 		if(this.postMaterial==EnumPostMaterial.WOOD){
 			setHarvestLevel("axe", 0);
 		}else{
 			setHarvestLevel("pickaxe", 1);
 		}
-		
-		if(this.postMaterial==EnumPostMaterial.URANIUM)
-			setLightLevel(8);
 		
 		setDefaultState(this.blockState.getBaseState()
 				.withProperty(DIRECTION, EnumFacing.NORTH)
@@ -163,7 +173,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		if(this.postMaterial==EnumPostMaterial.URANIUM){
 			if(stateIn.getValue(TYPE)!=EnumPostType.ARM && rand.nextDouble()<0.125){
 				double x=pos.getX()+0.375+0.25*rand.nextDouble();
-				double y=pos.getY()+1.0-rand.nextDouble();
+				double y=pos.getY()+rand.nextDouble();
 				double z=pos.getZ()+0.375+0.25*rand.nextDouble();
 				worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x,y,z, -1.0, 1.0, 0.25);
 			}
@@ -188,6 +198,60 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 	@Override
 	public boolean canConnectTransformer(IBlockAccess world, BlockPos pos){
 		return world.getBlockState(pos).getValue(TYPE)==EnumPostType.POST;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState){
+		List<AxisAlignedBB> list=getSelectionBounds(state, worldIn, pos);
+		if(!list.isEmpty())
+			for(AxisAlignedBB aabb:list)
+				if(entityBox.intersects(aabb.offset(pos)))
+					collidingBoxes.add(aabb);
+		
+		super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
+	}
+	
+	@Override
+	public RayTraceResult collisionRayTrace(IBlockState state, World worldIn, BlockPos pos, Vec3d start, Vec3d end){
+		List<AxisAlignedBB> bounds=getSelectionBounds(state, worldIn, pos);
+		if(!bounds.isEmpty()){
+			RayTraceResult min=null;
+			double minDist=Double.POSITIVE_INFINITY;
+			for(AxisAlignedBB aabb:bounds){
+				if(aabb==null) continue;
+				
+				RayTraceResult res=this.rayTrace(pos, start, end, aabb);
+				if(res!=null){
+					double dist=res.hitVec.squareDistanceTo(start);
+					if(dist<minDist){
+						min=res;
+						minDist=dist;
+					}
+				}
+			}
+			
+			return min;
+		}
+		
+		return this.rayTrace(pos, start, end, state.getBoundingBox(worldIn, pos));
+	}
+	
+	private List<AxisAlignedBB> getSelectionBounds(IBlockState state, World world, BlockPos pos){
+		state=state.getActualState(world, pos);
+		
+		List<AxisAlignedBB> bounds=new ArrayList<>();
+		
+		if(state.getValue(LPARM_NORTH)) bounds.add(new AxisAlignedBB(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125));
+		if(state.getValue(LPARM_SOUTH)) bounds.add(new AxisAlignedBB(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0));
+		if(state.getValue(LPARM_EAST)) bounds.add(new AxisAlignedBB(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875));
+		if(state.getValue(LPARM_WEST)) bounds.add(new AxisAlignedBB(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875));
+		
+		if(state.getValue(TYPE)!=EnumPostType.ARM){
+			bounds.add(POST_SHAPE);
+		}
+		
+		return bounds;
 	}
 	
 	@Override
@@ -220,7 +284,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 					
 					if(worldIn.isAirBlock(nPos)){
 						IBlockState fb=EnumPostMaterial.getPostStateFrom(held);
-						if(fb!=null && worldIn.setBlockState(nPos, fb)){
+						if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb)){
 							if(!playerIn.capabilities.isCreativeMode){
 								held.shrink(1);
 							}
@@ -242,7 +306,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 									defaultState=defaultState.withProperty(DIRECTION, facing);
 									worldIn.setBlockState(nPos, defaultState, 3);
 									defaultState.neighborChanged(worldIn, nPos, null, null);
-									//this.neighborChanged(defaultState, worldIn, nPos, null, null);
 								}else if(BlockUtilities.getBlockFrom(worldIn, nPos)==this){
 									if(worldIn.getBlockState(nPos).getValue(TYPE)==EnumPostType.ARM){
 										worldIn.setBlockToAir(nPos);
@@ -263,6 +326,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		
 		return Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isFenceItem(playerIn.getHeldItemMainhand());
 	}
+	
 	
 	public static boolean canConnect(IBlockAccess worldIn, BlockPos posIn, EnumFacing facingIn){
 		BlockPos nPos=posIn.offset(facingIn);
@@ -293,7 +357,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		}
 	}
 	
-	static final AxisAlignedBB POST_SHAPE=new AxisAlignedBB(0.3125F, 0.0F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
 	
 	public static class PostState extends BlockStateContainer.StateImplementation{
 		public PostState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties){
