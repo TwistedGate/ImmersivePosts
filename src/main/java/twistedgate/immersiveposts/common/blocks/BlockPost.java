@@ -35,7 +35,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
-import twistedgate.immersiveposts.common.blocks.state.PostState;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockUtilities;
@@ -157,39 +156,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 			case 9: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(FLIP, true).withProperty(DIRECTION, EnumFacing.WEST);
 			default: return state;
 		}
-	}
-	
-	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos){
-		if(state.getValue(TYPE)!=EnumPostType.POST){
-			return state
-					.withProperty(LPARM_NORTH, false)
-					.withProperty(LPARM_EAST, false)
-					.withProperty(LPARM_SOUTH, false)
-					.withProperty(LPARM_WEST, false);
-			/*
-			 * canConnect is rather time consuming, so this is an attempt
-			 * to speed this up if the type is not a POST.
-			 * 
-			 * Also it would not make sense for the Arms to check these too.
-			 */
-		}
-		
-		boolean b0=canConnect(worldIn, pos, EnumFacing.NORTH);
-		boolean b1=canConnect(worldIn, pos, EnumFacing.EAST);
-		boolean b2=canConnect(worldIn, pos, EnumFacing.SOUTH);
-		boolean b3=canConnect(worldIn, pos, EnumFacing.WEST);
-		
-		return state
-				.withProperty(LPARM_NORTH, b0)
-				.withProperty(LPARM_EAST, b1)
-				.withProperty(LPARM_SOUTH, b2)
-				.withProperty(LPARM_WEST, b3);
-	}
-	
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
-		return stateBounds(source, pos, state);
 	}
 	
 	@Override
@@ -329,23 +295,146 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 	
 	static final AxisAlignedBB POST_SHAPE=new AxisAlignedBB(0.3125F, 0.0F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
 	
-	static AxisAlignedBB stateBounds(IBlockAccess world, BlockPos pos, IBlockState state){
-		switch(state.getValue(TYPE)){
-			case ARM:{
-				EnumFacing facing=state.getValue(DIRECTION);
-				boolean flipped=state.getValue(FLIP);
-				
-				float minY=flipped?0.0F:0.34375F;
-				float maxY=flipped?0.65625F:1.0F;
-				
-				float minX=(facing==EnumFacing.EAST) ?-0.25F:0.3125F;
-				float maxX=(facing==EnumFacing.WEST) ? 1.25F:0.6875F;
-				float minZ=(facing==EnumFacing.SOUTH)?-0.25F:0.3125F;
-				float maxZ=(facing==EnumFacing.NORTH)? 1.25F:0.6875F;
-				
-				return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+	public static class PostState extends BlockStateContainer.StateImplementation{
+		public PostState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties){
+			super(block, properties);
+		}
+		
+		@Override
+		public IBlockState getActualState(IBlockAccess blockAccess, BlockPos pos){
+			if(this.getValue(TYPE)==EnumPostType.ARM){
+				return this
+						.withProperty(LPARM_NORTH, false)
+						.withProperty(LPARM_EAST, false)
+						.withProperty(LPARM_SOUTH, false)
+						.withProperty(LPARM_WEST, false);
+				/*
+				 * canConnect is rather time consuming, so this is an attempt to speed this up.
+				 */
 			}
-			default: return POST_SHAPE;
+			
+			boolean b0=canConnect(blockAccess, pos, EnumFacing.NORTH);
+			boolean b1=canConnect(blockAccess, pos, EnumFacing.EAST);
+			boolean b2=canConnect(blockAccess, pos, EnumFacing.SOUTH);
+			boolean b3=canConnect(blockAccess, pos, EnumFacing.WEST);
+			
+			return this
+					.withProperty(LPARM_NORTH, b0)
+					.withProperty(LPARM_EAST, b1)
+					.withProperty(LPARM_SOUTH, b2)
+					.withProperty(LPARM_WEST, b3);
+		}
+		
+		@Override
+		public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockPos pos, EnumFacing face){
+			IBlockState state=worldIn.getBlockState(pos.offset(face));
+			Block block=state.getBlock();
+			if(block instanceof BlockFence || block instanceof BlockWall) return BlockFaceShape.UNDEFINED;
+			
+			boolean f=false;
+			if(block instanceof BlockWoodenDecoration)
+				if(block.getMetaFromState(state)==BlockTypes_WoodenDecoration.FENCE.getMeta())
+					f=true;
+			
+			if(block instanceof BlockMetalDecoration1){
+				int tmp=block.getMetaFromState(state);
+				if(tmp==BlockTypes_MetalDecoration1.ALUMINUM_FENCE.getMeta() || tmp==BlockTypes_MetalDecoration1.STEEL_FENCE.getMeta())
+					f=true;
+			}
+			
+			
+			return f?BlockFaceShape.UNDEFINED:BlockFaceShape.SOLID;
+		}
+		
+		@Override
+		public AxisAlignedBB getBoundingBox(IBlockAccess blockAccess, BlockPos pos){
+			return stateBounds(this);
+		}
+		
+		@Override
+		public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side){
+			return false;
+		}
+		
+		@Override
+		public boolean isNormalCube(){
+			return false;
+		}
+		
+		@Override
+		public boolean isOpaqueCube(){
+			return false;
+		}
+		
+		@Override
+		public boolean isFullCube(){
+			return false;
+		}
+		
+		@Override
+		public void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos){
+			EnumPostType thisType=this.getValue(BlockPost.TYPE);
+			
+			if(thisType!=EnumPostType.ARM){
+				BlockPos d=pos.offset(EnumFacing.DOWN);
+				if(BlockUtilities.getBlockFrom(world, d)==Blocks.AIR){
+					block.dropBlockAsItem(world, pos, this, 0);
+					world.setBlockToAir(pos);
+					return;
+				}
+			}
+			
+			IBlockState aboveState=world.getBlockState(pos.offset(EnumFacing.UP));
+			Block aboveBlock=aboveState.getBlock();
+			switch(thisType){
+				case POST:{
+					if(!(aboveBlock instanceof BlockPost))
+						world.setBlockState(pos, this.withProperty(BlockPost.TYPE, EnumPostType.POST_TOP));
+					return;
+				}
+				case POST_TOP:{
+					if((aboveBlock instanceof BlockPost) && aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM)
+						world.setBlockState(pos, this.withProperty(BlockPost.TYPE, EnumPostType.POST));
+					return;
+				}
+				case ARM:{
+					EnumFacing f=this.getValue(BlockPost.DIRECTION).getOpposite();
+					IBlockState state=world.getBlockState(pos.offset(f));
+					if(state!=null && !(state.getBlock() instanceof BlockPost)){
+						world.setBlockToAir(pos);
+						return;
+					}
+					
+					if(BlockPost.canConnect(world, pos, EnumFacing.UP)){
+						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, false), 3);
+					}
+					
+					boolean bool=BlockPost.canConnect(world, pos, EnumFacing.DOWN);
+					world.setBlockState(pos, this.withProperty(BlockPost.FLIP, bool), 3);
+					
+					return;
+				}
+			}
+		}
+		
+		static AxisAlignedBB stateBounds(IBlockState state){
+			switch(state.getValue(TYPE)){
+				case ARM:{
+					EnumFacing facing=state.getValue(DIRECTION);
+					boolean flipped=state.getValue(FLIP);
+					
+					double minY=flipped?0.0:0.34375;
+					double maxY=flipped?0.65625:1.0;
+					
+					double minX=(facing==EnumFacing.EAST) ?0.0:0.3125;
+					double maxX=(facing==EnumFacing.WEST) ?1.0:0.6875;
+					double minZ=(facing==EnumFacing.SOUTH)?0.0:0.3125;
+					double maxZ=(facing==EnumFacing.NORTH)?1.0:0.6875;
+					
+					return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+				}
+				default: return POST_SHAPE;
+			}
 		}
 	}
 }
