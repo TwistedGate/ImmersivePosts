@@ -70,7 +70,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		super(blockMaterial, postMaterial.getName());
 		this.postMaterial=postMaterial;
 		
-		setResistance(3.0F);
+		setResistance(5.0F);
 		setHardness(3.0F);
 		if(this.postMaterial==EnumPostMaterial.URANIUM) setLightLevel(8);
 		if(this.postMaterial==EnumPostMaterial.WOOD){
