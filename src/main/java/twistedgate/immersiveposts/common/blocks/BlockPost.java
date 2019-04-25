@@ -151,21 +151,18 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 	@Override
 	public IBlockState getStateFromMeta(int meta){
 		IBlockState state=getDefaultState();
-		switch(meta){
-			case 0: return state;
-			case 1: return state.withProperty(TYPE, EnumPostType.POST_TOP);
-			
-			case 2: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(DIRECTION, EnumFacing.NORTH);
-			case 3: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(DIRECTION, EnumFacing.EAST);
-			case 4: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(DIRECTION, EnumFacing.SOUTH);
-			case 5: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(DIRECTION, EnumFacing.WEST);
-			
-			case 6: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(FLIP, true).withProperty(DIRECTION, EnumFacing.NORTH);
-			case 7: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(FLIP, true).withProperty(DIRECTION, EnumFacing.EAST);
-			case 8: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(FLIP, true).withProperty(DIRECTION, EnumFacing.SOUTH);
-			case 9: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(FLIP, true).withProperty(DIRECTION, EnumFacing.WEST);
-			default: return state;
+		if(meta>0){
+			if(meta>1) state=state.withProperty(TYPE, EnumPostType.ARM);
+			else state=state.withProperty(TYPE, EnumPostType.POST_TOP);
 		}
+		if(meta>1 && meta<10) state=state.withProperty(FLIP, true);
+		
+		if(meta==2 || meta==6) state=state.withProperty(DIRECTION, EnumFacing.NORTH);
+		if(meta==3 || meta==7) state=state.withProperty(DIRECTION, EnumFacing.EAST);
+		if(meta==4 || meta==8) state=state.withProperty(DIRECTION, EnumFacing.SOUTH);
+		if(meta==5 || meta==9) state=state.withProperty(DIRECTION, EnumFacing.WEST);
+		
+		return state;
 	}
 	
 	@Override
@@ -237,6 +234,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		return this.rayTrace(pos, start, end, state.getBoundingBox(worldIn, pos));
 	}
 	
+	/** This just includes the mini-arms with the selection bounds */
 	private List<AxisAlignedBB> getSelectionBounds(IBlockState state, World world, BlockPos pos){
 		state=state.getActualState(world, pos);
 		
@@ -247,7 +245,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		if(state.getValue(LPARM_EAST)) bounds.add(new AxisAlignedBB(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875));
 		if(state.getValue(LPARM_WEST)) bounds.add(new AxisAlignedBB(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875));
 		
-		if(state.getValue(TYPE)!=EnumPostType.ARM){
+		if(state.getValue(TYPE)!=EnumPostType.ARM){ // If i didnt do this the top most post wouldnt get it's default selection box, for some reason.
 			bounds.add(POST_SHAPE);
 		}
 		
