@@ -8,10 +8,10 @@ import twistedgate.immersiveposts.ImmersivePosts;
 
 public class IPOItemBase extends Item{
 	public IPOItemBase(String name){
-		setFull3D();
 		setCreativeTab(ImmersivePosts.ipCreativeTab);
 		setRegistryName(new ResourceLocation(IPOMod.ID, name));
 		setTranslationKey(IPOMod.ID+"."+name);
+		setFull3D();
 		
 		IPOStuff.ITEMS.add(this);
 	}

@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -49,30 +50,41 @@ public class ImmersivePosts{
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
 		log=event.getModLog();
-		
-		proxy.preInit(event);
+		proxy.preInitStart(event);
 		
 		//GameRegistry.registerTileEntity(TileEntityGlowy.class, new ResourceLocation(""));
+		
+		proxy.preInitEnd(event);
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event){
-		proxy.init(event);
+		proxy.initStart(event);
+		// Who knows.. maybe something goes inbetween here at some point?
+		proxy.initEnd(event);
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
-		proxy.postInit(event);
+		proxy.postInitStart(event);
 		
 		ComparableItemStack compMoldRod = ApiUtils.createComparableItemStack(new ItemStack(IEContent.itemMold, 1, 2), false);
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
 			switch(mat){
-				case WOOD:case NETHERBRICK:case IRON:case ALUMINIUM:case STEEL:continue;
+				case WOOD:case NETHERBRICK:case IRON:case ALUMINIUM:case STEEL:break;
 				default:{
 					String name=StringUtils.upperCaseFirst(mat.toString());
 					MetalPressRecipe.addRecipe(Utils.copyStackWithAmount(IEApi.getPreferredOreStack("stick"+name), 2), "ingot"+name, compMoldRod, 2400);
 				}
 			}
 		}
+		
+		proxy.postInitEnd(event);
+	}
+	
+	@EventHandler
+	public void violation(FMLFingerprintViolationEvent event){
+		System.err.println("THIS IS NOT AN OFFICIAL BUILD OF "+IPOMod.NAME.toUpperCase()+"! Fingerprints: ["+event.getFingerprints()+"]");
+		// Guess thats what this would be used for? lol
 	}
 }

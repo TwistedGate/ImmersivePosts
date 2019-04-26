@@ -8,7 +8,6 @@ import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.ManualPages;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.obj.OBJLoader;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import twistedgate.immersiveposts.IPOMod;
@@ -19,16 +18,12 @@ import twistedgate.immersiveposts.utils.StringUtils;
 
 public class ClientProxy extends CommonProxy{
 	@Override
-	public void preInit(FMLPreInitializationEvent event){
+	public void preInitStart(FMLPreInitializationEvent event){
 		OBJLoader.INSTANCE.addDomain(IPOMod.ID);
 	}
 	
 	@Override
-	public void init(FMLInitializationEvent event){
-	}
-	
-	@Override
-	public void postInit(FMLPostInitializationEvent event){
+	public void postInitEnd(FMLPostInitializationEvent event){
 		setupManualPage();
 	}
 	
@@ -44,7 +39,6 @@ public class ClientProxy extends CommonProxy{
 		names.add(new String[]{"Page 1", "Index Page."});
 		int i=2;
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			
 			String s=mat.toString();
 			Object[] items=new Object[]{
 				"stick"+(mat==EnumPostMaterial.WOOD?"TreatedWood":(mat==EnumPostMaterial.ALUMINIUM?"Aluminum":StringUtils.upperCaseFirst(s))),

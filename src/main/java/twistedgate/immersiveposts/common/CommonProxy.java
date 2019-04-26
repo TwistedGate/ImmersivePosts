@@ -5,7 +5,12 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class CommonProxy{
-	public void preInit(FMLPreInitializationEvent event){}
-	public void init(FMLInitializationEvent event){}
-	public void postInit(FMLPostInitializationEvent event){}
+	public void preInitStart(FMLPreInitializationEvent event){}
+	public void preInitEnd(FMLPreInitializationEvent event){}
+	
+	public void initStart(FMLInitializationEvent event){}
+	public void initEnd(FMLInitializationEvent event){}
+	
+	public void postInitStart(FMLPostInitializationEvent event){}
+	public void postInitEnd(FMLPostInitializationEvent event){}
 }
