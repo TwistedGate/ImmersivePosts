@@ -154,13 +154,14 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		if(meta>0){
 			if(meta>1) state=state.withProperty(TYPE, EnumPostType.ARM);
 			else state=state.withProperty(TYPE, EnumPostType.POST_TOP);
+			
+			if(meta>=6 && meta<=9) state=state.withProperty(FLIP, true);
+			
+			if(meta==2 || meta==6) state=state.withProperty(DIRECTION, EnumFacing.NORTH);
+			if(meta==3 || meta==7) state=state.withProperty(DIRECTION, EnumFacing.EAST);
+			if(meta==4 || meta==8) state=state.withProperty(DIRECTION, EnumFacing.SOUTH);
+			if(meta==5 || meta==9) state=state.withProperty(DIRECTION, EnumFacing.WEST);
 		}
-		if(meta>1 && meta<10) state=state.withProperty(FLIP, true);
-		
-		if(meta==2 || meta==6) state=state.withProperty(DIRECTION, EnumFacing.NORTH);
-		if(meta==3 || meta==7) state=state.withProperty(DIRECTION, EnumFacing.EAST);
-		if(meta==4 || meta==8) state=state.withProperty(DIRECTION, EnumFacing.SOUTH);
-		if(meta==5 || meta==9) state=state.withProperty(DIRECTION, EnumFacing.WEST);
 		
 		return state;
 	}
@@ -194,7 +195,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 	
 	@Override
 	public boolean canConnectTransformer(IBlockAccess world, BlockPos pos){
-		return world.getBlockState(pos).getValue(TYPE)==EnumPostType.POST;
+		return world.getBlockState(pos).getValue(TYPE)!=EnumPostType.ARM;
 	}
 	
 	@SuppressWarnings("deprecation")
