@@ -26,6 +26,6 @@ public class IPOBlockBase extends Block{
 	
 	@Override
 	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis){
-		return false; // So far nothing needs it, at it'll only be a nuisance
+		return false; // So far nothing needs it, and it'll only be a nuisance
 	}
 }
