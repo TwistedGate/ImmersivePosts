@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
@@ -19,7 +22,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import twistedgate.immersiveposts.common.blocks.BlockMetalFence;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;
-import twistedgate.immersiveposts.common.items.IPOItemBase;
+import twistedgate.immersiveposts.common.items.MetalRods;
+import twistedgate.immersiveposts.common.items.MultiMetaItem;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.utils.StringUtils;
 
@@ -55,14 +59,7 @@ public class IPOStuff{
 	public static final BlockPost aluPost;
 	public static final BlockPost steelPost;
 	
-	public static final IPOItemBase stickGold;
-	public static final IPOItemBase stickCopper;
-	public static final IPOItemBase stickLead;
-	public static final IPOItemBase stickSilver;
-	public static final IPOItemBase stickNickel;
-	public static final IPOItemBase stickConstantan;
-	public static final IPOItemBase stickElectrum;
-	public static final IPOItemBase stickUranium;
+	public static final MultiMetaItem multiItemTest;
 	
 	static{
 		postBase=(BlockPostBase)new BlockPostBase();
@@ -103,14 +100,8 @@ public class IPOStuff{
 		// =========================================================================
 		// Items
 		
-		stickGold		=new IPOItemBase("stick_gold");
-		stickCopper		=new IPOItemBase("stick_copper");
-		stickLead		=new IPOItemBase("stick_lead");
-		stickSilver		=new IPOItemBase("stick_silver");
-		stickNickel		=new IPOItemBase("stick_nickel");
-		stickConstantan	=new IPOItemBase("stick_constantan");
-		stickElectrum	=new IPOItemBase("stick_electrum");
-		stickUranium	=new IPOItemBase("stick_uranium");
+		multiItemTest=new MetalRods();
+		
 	}
 	
 	private static BlockPost createMetalPost(EnumPostMaterial postMat){
@@ -134,22 +125,6 @@ public class IPOStuff{
 		registerStickOres();
 	}
 	
-	private static void registerStickOres(){
-		String prefix="stick";
-		String rep="stick_";
-		for(Item item:ITEMS){
-			if(item instanceof IPOItemBase){
-				String name=((IPOItemBase)item).getRegistryName().getPath();
-				if(name.contains(rep)){
-					String oreName=prefix+StringUtils.upperCaseFirst(name.substring(rep.length()));
-					
-					OreDictionary.registerOre(oreName, item);
-					continue;
-				}
-			}
-		}
-	}
-	
 	private static void registerFenceOres(){
 		String prefix="fence";
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
@@ -157,6 +132,23 @@ public class IPOStuff{
 				case WOOD:case NETHERBRICK:case IRON:case ALUMINIUM:case STEEL:continue;
 				default:
 					OreDictionary.registerOre(prefix+StringUtils.upperCaseFirst(mat.toString()), mat.getFenceBlock());
+			}
+		}
+	}
+	
+	private static void registerStickOres(){
+		String prefix="stick";
+		String rep="stick_";
+		for(Item item:ITEMS){
+			if(item instanceof MetalRods){
+				MultiMetaItem mItem=(MultiMetaItem)item;
+				for(int i=0;i<mItem.getSubItemCount();i++){
+					if(mItem.getName(i).contains(rep)){
+						String oreName=prefix+StringUtils.upperCaseFirst(mItem.getName(i).substring(rep.length()));
+						
+						OreDictionary.registerOre(oreName, new ItemStack(mItem, 1, i));
+					}
+				}
 			}
 		}
 	}
@@ -175,8 +167,18 @@ public class IPOStuff{
 		for(Item item:ITEMS){
 			if(item instanceof ItemBlock) continue;
 			
-			ModelResourceLocation loc=new ModelResourceLocation(item.getRegistryName(), "inventory");
-			ModelLoader.setCustomModelResourceLocation(item, 0, loc);
+			if(item instanceof MultiMetaItem){
+				MultiMetaItem mItem=(MultiMetaItem)item;
+				for(int i=0;i<mItem.getSubItemCount();i++){
+					ResourceLocation loc=new ResourceLocation(IPOMod.ID, mItem.regName+"/"+mItem.getName(i));
+					ModelBakery.registerItemVariants(mItem, loc);
+					ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(loc, "inventory"));
+				}
+				
+			}else{
+				ModelResourceLocation loc=new ModelResourceLocation(item.getRegistryName(), "inventory");
+				ModelLoader.setCustomModelResourceLocation(item, 0, loc);
+			}
 		}
 	}
 }

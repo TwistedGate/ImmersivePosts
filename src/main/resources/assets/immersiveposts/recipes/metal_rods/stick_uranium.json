@@ -8,7 +8,8 @@
 		"I":{ "item":"#ingotUranium" }
 	},
 	"result":{
-		"item":"immersiveposts:stick_uranium",
-		"count":4
+		"item":"immersiveposts:metal_rods",
+		"count":4,
+		"data":7
 	}
 }

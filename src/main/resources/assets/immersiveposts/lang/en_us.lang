@@ -40,6 +40,16 @@ item.immersiveposts.stick_constantan.name=Constantan Rod
 item.immersiveposts.stick_electrum.name=Electrum Rod
 item.immersiveposts.stick_uranium.name=Uranium Rod
 
+item.immersiveposts.metal_rods.stick_gold.name=Gold Rod
+item.immersiveposts.metal_rods.stick_copper.name=Copper Rod
+item.immersiveposts.metal_rods.stick_lead.name=Lead Rod
+item.immersiveposts.metal_rods.stick_silver.name=Silver Rod
+item.immersiveposts.metal_rods.stick_nickel.name=Nickel Rod
+item.immersiveposts.metal_rods.stick_constantan.name=Constantan Rod
+item.immersiveposts.metal_rods.stick_electrum.name=Electrum Rod
+item.immersiveposts.metal_rods.stick_uranium.name=Uranium Rod
+
+
 #########################
 #     Creative Tab      #
 #########################
