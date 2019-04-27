@@ -6,6 +6,7 @@
 	"mcversion": "${mcversion}",
 	"url": "https://github.com/TwistedGate/ImmersivePosts",
 	"authorList": ["TwistedGate"],
+	"credits":"BluSunrize for making ImmersiveEngineering.",
 	"logoFile": "",
 	"screenshots": []
 }]
