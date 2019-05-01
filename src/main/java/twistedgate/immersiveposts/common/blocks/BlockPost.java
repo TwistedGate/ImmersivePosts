@@ -304,7 +304,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 								if(worldIn.isAirBlock(nPos)){
 									defaultState=defaultState.withProperty(DIRECTION, facing);
 									worldIn.setBlockState(nPos, defaultState, 3);
-									defaultState.neighborChanged(worldIn, nPos, null, null);
 								}else if(BlockUtilities.getBlockFrom(worldIn, nPos)==this){
 									if(worldIn.getBlockState(nPos).getValue(TYPE)==EnumPostType.ARM){
 										worldIn.setBlockToAir(nPos);
@@ -438,9 +437,9 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 			EnumPostType thisType=this.getValue(BlockPost.TYPE);
 			
 			if(thisType!=EnumPostType.ARM){
-				BlockPos d=pos.offset(EnumFacing.DOWN);
-				if(BlockUtilities.getBlockFrom(world, d)==Blocks.AIR){
-					block.dropBlockAsItem(world, pos, this, 0);
+				BlockPos belowPos=pos.offset(EnumFacing.DOWN);
+				if(BlockUtilities.getBlockFrom(world, belowPos)==Blocks.AIR){
+					BlockUtilities.getBlockFrom(world, pos).dropBlockAsItem(world, pos, this, 0);
 					world.setBlockToAir(pos);
 					return;
 				}
