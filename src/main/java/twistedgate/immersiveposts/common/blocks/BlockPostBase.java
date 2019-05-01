@@ -32,7 +32,7 @@ public class BlockPostBase extends IPOBlockBase{
 		setResistance(3.0F);
 		setHardness(2.0F);
 		
-		IPOStuff.ITEMS.add(new ItemPost(this));
+		IPOStuff.ITEMS.add(new ItemPostBase(this));
 	}
 	
 	@Override
@@ -118,8 +118,8 @@ public class BlockPostBase extends IPOBlockBase{
 	}
 	
 	
-	public static class ItemPost extends ItemBlock{
-		public ItemPost(Block block){
+	public static class ItemPostBase extends ItemBlock{
+		public ItemPostBase(Block block){
 			super(block);
 			setRegistryName(block.getRegistryName());
 		}
