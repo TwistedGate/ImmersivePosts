@@ -61,7 +61,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 	public static final PropertyBool LPARM_SOUTH=PropertyBool.create("parm_south");
 	public static final PropertyBool LPARM_WEST=PropertyBool.create("parm_west");
 	
-	public static final PropertyDirection DIRECTION=PropertyDirection.create("facing");
+	public static final PropertyDirection FACING=PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool FLIP=PropertyBool.create("flip");
 	public static final PropertyEnum<EnumPostType> TYPE=PropertyEnum.create("type", EnumPostType.class);
 	
@@ -80,7 +80,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		}
 		
 		setDefaultState(this.blockState.getBaseState()
-				.withProperty(DIRECTION, EnumFacing.NORTH)
+				.withProperty(FACING, EnumFacing.NORTH)
 				.withProperty(FLIP, false)
 				.withProperty(TYPE, EnumPostType.POST)
 				.withProperty(LPARM_NORTH, false)
@@ -112,7 +112,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 	@Override
 	protected BlockStateContainer createBlockState(){
 		return new BlockStateContainer(this, new IProperty<?>[]{
-			DIRECTION, FLIP, TYPE,
+			FACING, FLIP, TYPE,
 			LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST,
 		}){
 			@Override
@@ -135,7 +135,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 			case POST_TOP: return 1;
 			case ARM:{
 				int rot;
-				switch(state.getValue(DIRECTION)){
+				switch(state.getValue(FACING)){
 					case EAST:rot=1;break;
 					case SOUTH:rot=2;break;
 					case WEST:rot=3;break;
@@ -157,10 +157,10 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 			
 			if(meta>=6 && meta<=9) state=state.withProperty(FLIP, true);
 			
-			if(meta==2 || meta==6) state=state.withProperty(DIRECTION, EnumFacing.NORTH);
-			if(meta==3 || meta==7) state=state.withProperty(DIRECTION, EnumFacing.EAST);
-			if(meta==4 || meta==8) state=state.withProperty(DIRECTION, EnumFacing.SOUTH);
-			if(meta==5 || meta==9) state=state.withProperty(DIRECTION, EnumFacing.WEST);
+			if(meta==2 || meta==6) state=state.withProperty(FACING, EnumFacing.NORTH);
+			if(meta==3 || meta==7) state=state.withProperty(FACING, EnumFacing.EAST);
+			if(meta==4 || meta==8) state=state.withProperty(FACING, EnumFacing.SOUTH);
+			if(meta==5 || meta==9) state=state.withProperty(FACING, EnumFacing.WEST);
 		}
 		
 		return state;
@@ -302,8 +302,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 							case NORTH:case EAST:case SOUTH:case WEST:{
 								BlockPos nPos=pos.offset(facing);
 								if(worldIn.isAirBlock(nPos)){
-									defaultState=defaultState.withProperty(DIRECTION, facing);
-									worldIn.setBlockState(nPos, defaultState, 3);
+									defaultState=defaultState.withProperty(FACING, facing);
+									worldIn.setBlockState(nPos, defaultState);
 								}else if(BlockUtilities.getBlockFrom(worldIn, nPos)==this){
 									if(worldIn.getBlockState(nPos).getValue(TYPE)==EnumPostType.ARM){
 										worldIn.setBlockToAir(nPos);
@@ -459,7 +459,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 					return;
 				}
 				case ARM:{
-					EnumFacing f=this.getValue(BlockPost.DIRECTION).getOpposite();
+					EnumFacing f=this.getValue(BlockPost.FACING).getOpposite();
 					IBlockState state=world.getBlockState(pos.offset(f));
 					if(state!=null && !(state.getBlock() instanceof BlockPost)){
 						world.setBlockToAir(pos);
@@ -481,7 +481,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 		static AxisAlignedBB stateBounds(IBlockState state){
 			switch(state.getValue(TYPE)){
 				case ARM:{
-					EnumFacing facing=state.getValue(DIRECTION);
+					EnumFacing facing=state.getValue(FACING);
 					boolean flipped=state.getValue(FLIP);
 					
 					double minY=flipped?0.0:0.34375;

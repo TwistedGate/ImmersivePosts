@@ -20,15 +20,11 @@
 		}
 	],
 	"variants": {
-		"facing=up,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm" },
-		"facing=down,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm" },
 		"facing=north,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm" },
 		"facing=east,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm", "y":90 },
 		"facing=south,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm", "y":180 },
 		"facing=west,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm", "y":270 },
 		
-		"facing=up,flip=true,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm", "x":180 },
-		"facing=down,flip=true,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm", "x":180 },
 		"facing=north,flip=true,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm", "x":180, "y":180 },
 		"facing=east,flip=true,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm", "x":180 , "y":270 },
 		"facing=south,flip=true,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:posts/alu/arm", "x":180 , "y":0 },
