@@ -1,6 +1,0 @@
-{
-	"parent":"immersiveposts:block/post/post_top",
-	"textures": {
-		"post": "immersiveposts:blocks/posts/post_wood"
-	}
-}
