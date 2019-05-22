@@ -295,6 +295,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 								if(worldIn.isAirBlock(nPos)){
 									defaultState=defaultState.withProperty(FACING, facing);
 									worldIn.setBlockState(nPos, defaultState);
+									defaultState.neighborChanged(worldIn, nPos, this, null);
 								}else if(BlockUtilities.getBlockFrom(worldIn, nPos)==this){
 									if(worldIn.getBlockState(nPos).getValue(TYPE)==EnumPostType.ARM){
 										worldIn.setBlockToAir(nPos);
@@ -340,8 +341,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		}
 		
 		switch(facingIn){
-			case DOWN:	return box.maxY==1.0;
-			case UP:	return box.minY==0.0;
+			case UP:	return box.maxY<1.0 && box.minY==0.0;
+			case DOWN:	return box.maxY==1.0 && box.minY>0.0;
 			default:	return false;
 		}
 	}
@@ -457,10 +458,14 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						return;
 					}
 					
-					boolean bool=BlockPost.canConnect(world, pos, EnumFacing.DOWN);
-					world.setBlockState(pos, this.withProperty(BlockPost.FLIP, bool), 3);
-					
-					return;
+					if(aboveBlock!=Blocks.AIR || (aboveBlock instanceof BlockPost && aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM)){
+						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, false), 3);
+					}else{
+						boolean b0=BlockPost.canConnect(world, pos, EnumFacing.UP);
+						boolean b1=BlockPost.canConnect(world, pos, EnumFacing.DOWN);
+						
+						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, (!b0 && b1)), 3);
+					}
 				}
 			}
 		}
