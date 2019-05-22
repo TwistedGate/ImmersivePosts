@@ -52,8 +52,6 @@ public class ImmersivePosts{
 		log=event.getModLog();
 		proxy.preInitStart(event);
 		
-		//GameRegistry.registerTileEntity(TileEntityGlowy.class, new ResourceLocation(""));
-		
 		proxy.preInitEnd(event);
 	}
 	

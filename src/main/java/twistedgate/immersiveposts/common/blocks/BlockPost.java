@@ -16,7 +16,6 @@ import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -30,7 +29,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
@@ -45,6 +43,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockUtilities;
@@ -53,7 +53,7 @@ import twistedgate.immersiveposts.utils.BlockUtilities;
  * All-in-one package. Containing everything into one neat class is the best.
  * @author TwistedGate
  */
-public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityProvider{
+public class BlockPost extends IPOBlockBase implements IPostBlock{
 	public static final AxisAlignedBB POST_SHAPE=new AxisAlignedBB(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
 	
 	public static final PropertyBool LPARM_NORTH=PropertyBool.create("parm_north");
@@ -62,8 +62,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 	public static final PropertyBool LPARM_WEST=PropertyBool.create("parm_west");
 	
 	public static final PropertyDirection FACING=PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	public static final PropertyBool FLIP=PropertyBool.create("flip");
 	public static final PropertyEnum<EnumPostType> TYPE=PropertyEnum.create("type", EnumPostType.class);
+	public static final PropertyBool FLIP=PropertyBool.create("flip");
 	
 	protected EnumPostMaterial postMaterial;
 	public BlockPost(Material blockMaterial, EnumPostMaterial postMaterial){
@@ -90,22 +90,12 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 				);
 	}
 	
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta){
-		//if(this.postMaterial==EnumPostMaterial.URANIUM)
-			//return new TileEntityGlowy();
-		return null;
-	}
-	
 	public final EnumPostMaterial getPostMaterial(){
 		return this.postMaterial;
 	}
 	
 	@Override
 	public BlockRenderLayer getRenderLayer(){
-//		if(this.postMaterial==EnumPostMaterial.URANIUM)
-//			return BlockRenderLayer.TRANSLUCENT;
-		
 		return BlockRenderLayer.SOLID;
 	}
 	
@@ -167,9 +157,10 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 	}
 	
 	@Override
+    @SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand){
 		if(this.postMaterial==EnumPostMaterial.URANIUM){
-			if(stateIn.getValue(TYPE)!=EnumPostType.ARM && rand.nextDouble()<0.125){
+			if(stateIn.getValue(TYPE)!=EnumPostType.ARM && rand.nextFloat()<0.125F){
 				double x=pos.getX()+0.375+0.25*rand.nextDouble();
 				double y=pos.getY()+rand.nextDouble();
 				double z=pos.getZ()+0.375+0.25*rand.nextDouble();
@@ -464,10 +455,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock,ITileEntityPro
 					if(state!=null && !(state.getBlock() instanceof BlockPost)){
 						world.setBlockToAir(pos);
 						return;
-					}
-					
-					if(BlockPost.canConnect(world, pos, EnumFacing.UP)){
-						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, false), 3);
 					}
 					
 					boolean bool=BlockPost.canConnect(world, pos, EnumFacing.DOWN);
