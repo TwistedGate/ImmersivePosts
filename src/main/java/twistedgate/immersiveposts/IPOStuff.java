@@ -5,19 +5,11 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import twistedgate.immersiveposts.common.blocks.BlockMetalFence;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
@@ -149,35 +141,6 @@ public class IPOStuff{
 						OreDictionary.registerOre(oreName, new ItemStack(mItem, 1, i));
 					}
 				}
-			}
-		}
-	}
-	
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public static void regModels(ModelRegistryEvent event){
-		for(Block block:BLOCKS){
-			if(!(block instanceof BlockPost)){ // Prevent posts from getting an item
-				Item item=Item.getItemFromBlock(block);
-				ModelResourceLocation loc=new ModelResourceLocation(block.getRegistryName(), "inventory");
-				ModelLoader.setCustomModelResourceLocation(item, 0, loc);
-			}
-		}
-		
-		for(Item item:ITEMS){
-			if(item instanceof ItemBlock) continue;
-			
-			if(item instanceof MultiMetaItem){
-				MultiMetaItem mItem=(MultiMetaItem)item;
-				for(int i=0;i<mItem.getSubItemCount();i++){
-					ResourceLocation loc=new ResourceLocation(IPOMod.ID, mItem.regName+"/"+mItem.getName(i));
-					ModelBakery.registerItemVariants(mItem, loc);
-					ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(loc, "inventory"));
-				}
-				
-			}else{
-				ModelResourceLocation loc=new ModelResourceLocation(item.getRegistryName(), "inventory");
-				ModelLoader.setCustomModelResourceLocation(item, 0, loc);
 			}
 		}
 	}
