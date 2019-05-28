@@ -64,7 +64,9 @@ public class ClientProxy extends CommonProxy{
 				
 			}else{
 				ModelResourceLocation loc=new ModelResourceLocation(item.getRegistryName(), "inventory");
-				ModelLoader.setCustomModelResourceLocation(item, 0, loc);
+				
+				for(int i=0;i<15;i++)
+					ModelLoader.setCustomModelResourceLocation(item, i, loc);
 			}
 		}
 	}
@@ -72,38 +74,68 @@ public class ClientProxy extends CommonProxy{
 	public void setupManualPage(){
 		ManualInstance man=ManualHelper.getManual();
 		
-		ManualHelper.addEntry("postbase", IPOMod.ID,
-				new ManualPages.Crafting(man, "postbase0", new ItemStack(IPOStuff.postBase)),
-				new ManualPages.Text(man, "postbase1"));
+		ManualHelper.addEntry(IPOMod.ID+".postbase", IPOMod.ID,
+				new ManualPages.Crafting(man, IPOMod.ID+".postbase0", new ItemStack(IPOStuff.postBase)),
+				new ManualPages.Text(man, IPOMod.ID+".postbase1"));
 		
+		setupAcceptedBlocksCategory(man);
+	}
+	
+	private void setupAcceptedBlocksCategory(ManualInstance man){
+		// every 13 entries a new index page
 		ArrayList<IManualPage> fencePages=new ArrayList<>();
-		ArrayList<String[]> names=new ArrayList<>();
-		names.add(new String[]{"Page 1", "Index Page."});
-		int i=2;
+		
+		{ // I feel dirty doing it manualy..
+			String[][] index0=new String[][]{
+				{"Page  1","Index Page 1"},
+				{"Page  2","Index Page 2"},
+				{"Page  3","Treated Wood"},
+				{"Page  4","Netherbrick"},
+				{"Page  5","Iron"},
+				{"Page  6","Gold"},
+				{"Page  7","Copper"},
+				{"Page  8","Lead"},
+				{"Page  9","Silver"},
+				{"Page 10","Nickel"},
+				{"Page 11","Constantan"},
+				{"Page 12","Electrum"},
+				{"Page 13","Uranium"},
+			};
+			fencePages.add(new ManualPages.Table(man, IPOMod.ID+".posts_index0", index0, true));
+			
+			String[][] index1=new String[][]{
+				{"Page 14","Aluminium"},
+				{"Page 15","Steel"},
+				{"Page 16","Concrete"},
+				{"Page 17","Concrete (Leaded)"},
+			};
+			fencePages.add(new ManualPages.Table(man, IPOMod.ID+".posts_index1", index1, true));
+		}
+		
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
 			String s=mat.toString();
-			Object[] items=new Object[]{
-				"stick"+(mat==EnumPostMaterial.WOOD?"TreatedWood":(mat==EnumPostMaterial.ALUMINIUM?"Aluminum":StringUtils.upperCaseFirst(s))),
-				mat.getFenceItem()
-			};
 			
-			ManualPages.Crafting page=new ManualPages.Crafting(man, "fences_"+(s.toLowerCase()), items);
-			
-			if(fencePages.add(page)){
-				names.add(new String[]{"Page "+(i++), StringUtils.upperCaseFirst(s)});
+			Object[] items;
+			if(mat.isFence()){
+				String top="stick";
+				switch(mat){
+					case WOOD:		top+="TreatedWood";break;
+					case ALUMINIUM:	top+="Aluminum";break;
+					default:		top+=StringUtils.upperCaseFirst(s);break;
+				}
+				items=new Object[]{top, mat.getItemStack()};
+				
+			}else{
+				items=new Object[]{mat.getItemStack()};
 			}
 			
+			ManualPages.Crafting page=new ManualPages.Crafting(man, IPOMod.ID+".posts_"+(s.toLowerCase()), items);
+			fencePages.add(page);
 		}
-		
-		String[][] table=new String[names.size()][2];
-		for(i=0;i<names.size();i++){
-			table[i]=names.get(i);
-		}
-		fencePages.add(0, new ManualPages.Table(man, "fences_index", table, false));
 		
 		IManualPage[] array=fencePages.toArray(new IManualPage[fencePages.size()]);
 		fencePages.clear();
 		
-		ManualHelper.addEntry("fences", IPOMod.ID, array);
+		ManualHelper.addEntry(IPOMod.ID+".posts", IPOMod.ID, array);
 	}
 }

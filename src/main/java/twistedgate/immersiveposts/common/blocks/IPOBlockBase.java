@@ -15,7 +15,7 @@ public class IPOBlockBase extends Block{
 		super(material);
 		setRegistryName(new ResourceLocation(IPOMod.ID, name));
 		setTranslationKey(IPOMod.ID+"."+name);
-		setCreativeTab(ImmersivePosts.ipCreativeTab);
+		setCreativeTab(ImmersivePosts.creativeTab);
 		
 		IPOStuff.BLOCKS.add(this);
 	}

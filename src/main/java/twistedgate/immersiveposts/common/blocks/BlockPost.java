@@ -45,6 +45,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockUtilities;
@@ -70,14 +71,13 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		super(blockMaterial, postMaterial.getName());
 		this.postMaterial=postMaterial;
 		
-		setResistance(5.0F);
 		setHardness(3.0F);
-		if(this.postMaterial==EnumPostMaterial.URANIUM) setLightLevel(8);
-		if(this.postMaterial==EnumPostMaterial.WOOD){
-			setHarvestLevel("axe", 0);
-		}else{
-			setHarvestLevel("pickaxe", 1);
-		}
+		setResistance(5.0F);
+		if(this.postMaterial==EnumPostMaterial.URANIUM)
+			setLightLevel(8);
+		
+		if(this.postMaterial==EnumPostMaterial.WOOD) setHarvestLevel("axe", 0);
+		else setHarvestLevel("pickaxe", 1);
 		
 		setDefaultState(this.blockState.getBaseState()
 				.withProperty(FACING, EnumFacing.NORTH)
@@ -115,7 +115,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
 		if(state.getValue(TYPE)!=EnumPostType.ARM)
-			drops.add(this.postMaterial.getFenceItem());
+			drops.add(this.postMaterial.getItemStack());
 	}
 	
 	@Override
@@ -181,7 +181,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player){
-		return this.postMaterial.getFenceItem();
+		return this.postMaterial.getItemStack();
 	}
 	
 	@Override
@@ -249,8 +249,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
 			if(EnumPostMaterial.isFenceItem(held)){
-				if(!held.isItemEqual(this.postMaterial.getFenceItem())){
-					playerIn.sendStatusMessage(new TextComponentString("Expected: "+this.postMaterial.getFenceItem().getDisplayName()+"."), true);
+				if(!held.isItemEqual(this.postMaterial.getItemStack())){
+					playerIn.sendStatusMessage(new TextComponentString("Expected: "+this.postMaterial.getItemStack().getDisplayName()+"."), true);
 					return true;
 				}
 				
@@ -286,6 +286,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					}
 				}
 			}else if(Utils.isHammer(held)){
+				
 				switch(state.getValue(TYPE)){
 					case POST:case POST_TOP:{
 						IBlockState defaultState=getDefaultState().withProperty(TYPE, EnumPostType.ARM);
@@ -325,6 +326,19 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		Block otherBlock=otherState.getBlock();
 		
 		if(otherBlock==Blocks.AIR) return false; // Go straight out if air, no questions asked.
+		
+		if(facingIn==EnumFacing.DOWN || facingIn==EnumFacing.UP){
+			AxisAlignedBB box=otherState.getBoundingBox(worldIn, nPos);
+			switch(facingIn){
+				case UP:	return box.minY==0.0;
+				case DOWN:{
+					boolean bool=otherBlock instanceof BlockPost;
+					return !bool && box.maxY==1.0;
+				}
+				default:	return false;
+			}
+		}
+		
 		if(otherBlock instanceof BlockPost || otherState.getBlockFaceShape(worldIn, nPos, facingIn)==BlockFaceShape.MIDDLE_POLE) return false;
 		
 		AxisAlignedBB box=otherState.getBoundingBox(worldIn, nPos);
@@ -340,11 +354,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			return true;
 		}
 		
-		switch(facingIn){
-			case UP:	return box.maxY<1.0 && box.minY==0.0;
-			case DOWN:	return box.maxY==1.0 && box.minY>0.0;
-			default:	return false;
-		}
+		return false;
 	}
 	
 	
@@ -458,13 +468,11 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						return;
 					}
 					
-					if(aboveBlock!=Blocks.AIR || (aboveBlock instanceof BlockPost && aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM)){
+					if(aboveBlock!=Blocks.AIR && (aboveBlock instanceof BlockPost && aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM)){
 						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, false), 3);
 					}else{
-						boolean b0=BlockPost.canConnect(world, pos, EnumFacing.UP);
-						boolean b1=BlockPost.canConnect(world, pos, EnumFacing.DOWN);
-						
-						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, (!b0 && b1)), 3);
+						boolean bool=BlockPost.canConnect(world, pos, EnumFacing.DOWN);
+						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, bool), 3);
 					}
 				}
 			}

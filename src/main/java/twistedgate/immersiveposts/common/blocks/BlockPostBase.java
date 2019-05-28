@@ -80,7 +80,7 @@ public class BlockPostBase extends IPOBlockBase{
 					Block b=aboveState.getBlock();
 					
 					if(b instanceof BlockPost){
-						ItemStack tmp=((BlockPost)b).postMaterial.getFenceItem();
+						ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
 						if(!held.isItemEqual(tmp)){
 							playerIn.sendStatusMessage(new TextComponentString("Expected: "+tmp.getDisplayName()+"."), true);
 							return true;
@@ -128,10 +128,10 @@ public class BlockPostBase extends IPOBlockBase{
 		public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)){
 				for(EnumPostMaterial t:EnumPostMaterial.values()){
-					tooltip.add("- \u00A7a"+t.getFenceItem().getDisplayName());
+					tooltip.add("- \u00A7a"+t.getItemStack().getDisplayName());
 				}
 			}else{
-				tooltip.add("[Hold Shift] \u00A76List of accepted fences.");
+				tooltip.add("[Hold Shift] \u00A76Accepted blocks.");
 			}
 		}
 	}

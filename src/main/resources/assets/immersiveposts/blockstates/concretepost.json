@@ -2,7 +2,7 @@
 	"forge_marker":1,
 	"defaults":{
 		"textures":{
-			"#immersiveposts:blocks/posts/post_wood":"immersiveposts:blocks/posts/post_nether"
+			"#immersiveposts:blocks/posts/post_wood":"immersiveposts:blocks/posts/post_concrete"
 		}
 	},
 	"variants": {

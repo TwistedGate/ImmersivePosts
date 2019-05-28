@@ -20,7 +20,7 @@ public class BlockMetalFence extends BlockFence{
 		setTranslationKey(IPOMod.ID+"."+name);
 		setHardness(5.0F);
 		setResistance(10.0F);
-		setCreativeTab(ImmersivePosts.ipCreativeTab);
+		setCreativeTab(ImmersivePosts.creativeTab);
 		
 		IPOStuff.BLOCKS.add(this);
 		IPOStuff.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));

@@ -15,7 +15,7 @@ public class MultiMetaItem extends Item{
 	public MultiMetaItem(String regName){
 		this.regName=regName;
 		
-		setCreativeTab(ImmersivePosts.ipCreativeTab);
+		setCreativeTab(ImmersivePosts.creativeTab);
 		setRegistryName(new ResourceLocation(IPOMod.ID, regName));
 		setTranslationKey(IPOMod.ID+"."+regName);
 		setFull3D();
@@ -25,11 +25,15 @@ public class MultiMetaItem extends Item{
 	}
 	
 	protected void setNames(String...names){
+		if(names!=null && names.length>16)
+			throw new IllegalArgumentException("Too many names.");
+		
 		this.names=names;
 	}
 	
 	public String getName(int index){
-		if(index<0 || index>=this.names.length) return "<error>";
+		if(index<0 || index>=this.names.length)
+			return "<error>";
 		
 		return this.names[index];
 	}
@@ -41,13 +45,15 @@ public class MultiMetaItem extends Item{
 	
 	@Override
 	public String getTranslationKey(ItemStack stack){
-		return this.getTranslationKey()+"."+names[stack.getMetadata()];
+		return this.getTranslationKey()+"."+this.names[stack.getMetadata()];
 	}
 	
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items){
-		for(int i=0;i<names.length;i++)
-			items.add(new ItemStack(this,1,i));
+		if(tab!=null && tab.equals(ImmersivePosts.creativeTab)){
+			for(int i=0;i<this.names.length;i++)
+				items.add(new ItemStack(this,1,i));
+		}
 	}
 	
 	@Override

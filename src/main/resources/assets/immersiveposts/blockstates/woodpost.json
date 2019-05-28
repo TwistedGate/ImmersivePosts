@@ -31,7 +31,7 @@
 		},
 		"flip":{
 			"true":{
-				"__comment":"For this one i had to be specific. See at below."
+				"__comment":"For this one i had to be specific. See below."
 			},
 			"false":{}
 		},
