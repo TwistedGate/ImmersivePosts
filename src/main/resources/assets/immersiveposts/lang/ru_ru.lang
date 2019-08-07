@@ -1,0 +1,76 @@
+#########################
+#        Blocks         #
+#########################
+
+tile.immersiveposts.postbase.name=Расширяемый постамент
+tile.immersiveposts.woodpost.name=Деревянный постамент
+tile.immersiveposts.ironpost.name=Железный постамент
+tile.immersiveposts.goldpost.name=Золотой постамент
+tile.immersiveposts.copperpost.name=Медный постамент
+tile.immersiveposts.leadpost.name=Свинцовый постамент
+tile.immersiveposts.silverpost.name=Серебряный постамент
+tile.immersiveposts.nickelpost.name=Никелевый постамент
+tile.immersiveposts.constantanpost.name=Константановый постамент
+tile.immersiveposts.electrumpost.name=Электрумовый постамент
+tile.immersiveposts.uraniumpost.name=Урановый постамент
+tile.immersiveposts.netherpost.name=Незеритовый постамент
+tile.immersiveposts.aluminiumpost.name=Алюминиевый постамент
+tile.immersiveposts.steelpost.name=Стальной постамент
+
+tile.immersiveposts.fence_iron.name=Железный забор
+tile.immersiveposts.fence_gold.name=Золотой забор
+tile.immersiveposts.fence_copper.name=Медный забор
+tile.immersiveposts.fence_lead.name=Свинцовый забор
+tile.immersiveposts.fence_silver.name=Серебряный забор
+tile.immersiveposts.fence_nickel.name=Никелевый забор
+tile.immersiveposts.fence_constantan.name=Константановый забор
+tile.immersiveposts.fence_electrum.name=Электрумовый забор
+tile.immersiveposts.fence_uranium.name=Урановый забор
+
+#########################
+#         Items         #
+#########################
+
+item.immersiveposts.stick_gold.name=Золотая палка
+item.immersiveposts.stick_copper.name=Медная палка
+item.immersiveposts.stick_lead.name=Свинцовая палка
+item.immersiveposts.stick_silver.name=Серебряная палка
+item.immersiveposts.stick_nickel.name=Никелевая палка
+item.immersiveposts.stick_constantan.name=Константановая палка
+item.immersiveposts.stick_electrum.name=Электрумовая палка
+item.immersiveposts.stick_uranium.name=Урановая палка
+
+#########################
+#     Creative Tab      #
+#########################
+
+itemGroup.immersiveposts=Immersive Posts
+
+#########################
+#       IE-Manual       #
+#########################
+
+ie.manual.category.immersiveposts.name=Постаменты
+
+ie.manual.entry.postbase.name=Расширяемый постамент
+ie.manual.entry.postbase.subtext=Небо это предел
+ie.manual.entry.postbase0=Используется для установки столбов переменной высоты.<br><br>Устанавливается на землю. Щелчок ПКМ по нему с одним из перечисленных заборов в руке установит забор в постамент.
+ie.manual.entry.postbase1=Постамент принимает столбы только одинакового типа. К примеру Деревянный постамент принимает только Забор из обработанной древесины.<br><br>Используя молоток на стороне столба установит на него плечо. Плечи можно установить только если под них есть место. <br><br>А теперь иди и натвори дел с этими штуками!
+
+# Fence Entries
+ie.manual.entry.fences.name=Принимаемые заборы
+ie.manual.entry.fences.subtext=Хм, что бы выбрать...
+ie.manual.entry.fences_index=Перечень
+ie.manual.entry.fences_wood=Из обработанной древесины<br><br><br><br><br><br>Старая школа
+ie.manual.entry.fences_netherbrick=Из незерита<br><br><br><br><br><br><br><br><br><br><br>Горячая голова
+ie.manual.entry.fences_iron=Железный<br><br><br><br><br><br>Ржавчуга
+ie.manual.entry.fences_gold=Золотой<br><br><br><br><br><br>Гэнгста-блекс
+ie.manual.entry.fences_copper=Медный<br><br><br><br><br><br>Простак
+ie.manual.entry.fences_lead=Свинцовый<br><br><br><br><br><br>Тежеловес
+ie.manual.entry.fences_silver=Серебряный<br><br><br><br><br><br>Блестящий
+ie.manual.entry.fences_nickel=Никелевый<br><br><br><br><br><br>Участник группы
+ie.manual.entry.fences_constantan=Константановый<br><br><br><br><br><br>Чудак
+ie.manual.entry.fences_electrum=Электрумовый<br><br><br><br><br><br>Шокер
+ie.manual.entry.fences_uranium=Урановый<br>Слегка светится.<br>Света столько же, сколько от Редстоунового факела.<br><br>Длительный распад
+ie.manual.entry.fences_aluminium=Алюминиевый? Нет.<br>Алюмиевый? Не.<br>Алюмумый. Идеально.<br><br><br><br>Расколотое мнение
+ie.manual.entry.fences_steel=Стальной<br><br><br><br><br><br>Ржавчуга-силач
