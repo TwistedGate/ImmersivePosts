@@ -3,19 +3,21 @@
 #########################
 
 tile.immersiveposts.postbase.name=Расширяемый постамент
-tile.immersiveposts.woodpost.name=Деревянный постамент
-tile.immersiveposts.ironpost.name=Железный постамент
-tile.immersiveposts.goldpost.name=Золотой постамент
-tile.immersiveposts.copperpost.name=Медный постамент
-tile.immersiveposts.leadpost.name=Свинцовый постамент
-tile.immersiveposts.silverpost.name=Серебряный постамент
-tile.immersiveposts.nickelpost.name=Никелевый постамент
-tile.immersiveposts.constantanpost.name=Константановый постамент
-tile.immersiveposts.electrumpost.name=Электрумовый постамент
-tile.immersiveposts.uraniumpost.name=Урановый постамент
-tile.immersiveposts.netherpost.name=Незеритовый постамент
-tile.immersiveposts.aluminiumpost.name=Алюминиевый постамент
-tile.immersiveposts.steelpost.name=Стальной постамент
+tile.immersiveposts.woodpost.name=Деревянный столб
+tile.immersiveposts.ironpost.name=Железный столб
+tile.immersiveposts.goldpost.name=Золотой столб
+tile.immersiveposts.copperpost.name=Медный столб
+tile.immersiveposts.leadpost.name=Свинцовый столб
+tile.immersiveposts.silverpost.name=Серебряный столб
+tile.immersiveposts.nickelpost.name=Никелевый столб
+tile.immersiveposts.constantanpost.name=Константановый столб
+tile.immersiveposts.electrumpost.name=Электрумовый столб
+tile.immersiveposts.uraniumpost.name=Урановый столб
+tile.immersiveposts.netherpost.name=Незеритовый столб
+tile.immersiveposts.aluminiumpost.name=Алюминиевый столб
+tile.immersiveposts.steelpost.name=Стальной столб
+tile.immersiveposts.concretepost.name=Бетонный столб
+tile.immersiveposts.leadedconcretepost.name=Свинцовобетонный столб
 
 tile.immersiveposts.fence_iron.name=Железный забор
 tile.immersiveposts.fence_gold.name=Золотой забор
@@ -40,6 +42,15 @@ item.immersiveposts.stick_constantan.name=Константановая палк�
 item.immersiveposts.stick_electrum.name=Электрумовая палка
 item.immersiveposts.stick_uranium.name=Урановая палка
 
+item.immersiveposts.metal_rods.stick_gold.name=Золотая палка
+item.immersiveposts.metal_rods.stick_copper.name=Медная палка
+item.immersiveposts.metal_rods.stick_lead.name=Свинцовая палка
+item.immersiveposts.metal_rods.stick_silver.name=Серебряная палка
+item.immersiveposts.metal_rods.stick_nickel.name=Никелевая палка
+item.immersiveposts.metal_rods.stick_constantan.name=Константановая палка
+item.immersiveposts.metal_rods.stick_electrum.name=Электрумовая палка
+item.immersiveposts.metal_rods.stick_uranium.name=Урановая палка
+
 #########################
 #     Creative Tab      #
 #########################
@@ -47,30 +58,60 @@ item.immersiveposts.stick_uranium.name=Урановая палка
 itemGroup.immersiveposts=Immersive Posts
 
 #########################
+#  Postbase Tooltip(s)  #
+#########################
+
+tooltip.postbase=[SHIFT] §6Принимаемые заборы
+
+#########################
 #       IE-Manual       #
 #########################
 
 ie.manual.category.immersiveposts.name=Постаменты
 
-ie.manual.entry.postbase.name=Расширяемый постамент
-ie.manual.entry.postbase.subtext=Небо это предел
-ie.manual.entry.postbase0=Используется для установки столбов переменной высоты.<br><br>Устанавливается на землю. Щелчок ПКМ по нему с одним из перечисленных заборов в руке установит забор в постамент.
-ie.manual.entry.postbase1=Постамент принимает столбы только одинакового типа. К примеру Деревянный постамент принимает только Забор из обработанной древесины.<br><br>Используя молоток на стороне столба установит на него плечо. Плечи можно установить только если под них есть место. <br><br>А теперь иди и натвори дел с этими штуками!
+# PostBase Entries
+ie.manual.entry.immersiveposts.postbase.name=Расширяемый постамент
+ie.manual.entry.immersiveposts.postbase.subtext=Предел здесь - только небо.
+ie.manual.entry.immersiveposts.postbase0=Используется для установки столбов переменной высоты.<br><br>Устанавливается на землю. Щелчок ПКМ по нему с одним из перечисленных <link;immersiveposts.posts;§o§nздесь§r;0> заборов в руке установит забор в постамент.<br>Со столбами тоже самое. База нужна только для начала.
+ie.manual.entry.immersiveposts.postbase1=Обрати внимание: столбы должны быть одинакового типа. К примеру Деревянный столб принимает только Забор из обработанной древесины.<br><br>Используя молоток на стороне столба установит на него плечо. Плечи можно установить только если под них есть место. <br><br>А теперь иди и натвори дел с этими штуками!
 
-# Fence Entries
-ie.manual.entry.fences.name=Принимаемые заборы
-ie.manual.entry.fences.subtext=Хм, что бы выбрать...
-ie.manual.entry.fences_index=Перечень
-ie.manual.entry.fences_wood=Из обработанной древесины<br><br><br><br><br><br>Старая школа
-ie.manual.entry.fences_netherbrick=Из незерита<br><br><br><br><br><br><br><br><br><br><br>Горячая голова
-ie.manual.entry.fences_iron=Железный<br><br><br><br><br><br>Ржавчуга
-ie.manual.entry.fences_gold=Золотой<br><br><br><br><br><br>Гэнгста-блекс
-ie.manual.entry.fences_copper=Медный<br><br><br><br><br><br>Простак
-ie.manual.entry.fences_lead=Свинцовый<br><br><br><br><br><br>Тежеловес
-ie.manual.entry.fences_silver=Серебряный<br><br><br><br><br><br>Блестящий
-ie.manual.entry.fences_nickel=Никелевый<br><br><br><br><br><br>Участник группы
-ie.manual.entry.fences_constantan=Константановый<br><br><br><br><br><br>Чудак
-ie.manual.entry.fences_electrum=Электрумовый<br><br><br><br><br><br>Шокер
-ie.manual.entry.fences_uranium=Урановый<br>Слегка светится.<br>Света столько же, сколько от Редстоунового факела.<br><br>Длительный распад
-ie.manual.entry.fences_aluminium=Алюминиевый? Нет.<br>Алюмиевый? Не.<br>Алюмумый. Идеально.<br><br><br><br>Расколотое мнение
-ie.manual.entry.fences_steel=Стальной<br><br><br><br><br><br>Ржавчуга-силач
+# Usable Block Entries
+ie.manual.entry.immersiveposts.posts.name=Принимаемые заборы
+ie.manual.entry.immersiveposts.posts.subtext=Хм, что бы выбрать...
+ie.manual.entry.immersiveposts.posts_index0=Перечень 1
+ie.manual.entry.immersiveposts.posts_index1=Перечень 2
+ie.manual.entry.immersiveposts.posts_wood=Из обработанной древесины<br><br><br><br><br><br>Старая школа
+ie.manual.entry.immersiveposts.posts_netherbrick=Из незерита<br><br><br><br><br><br><br><br><br><br><br>Горячая голова
+ie.manual.entry.immersiveposts.posts_iron=Железный<br><br><br><br><br><br>Ржавчуга
+ie.manual.entry.immersiveposts.posts_gold=Золотой<br><br><br><br><br><br>Гэнгста-блекс
+ie.manual.entry.immersiveposts.posts_copper=Медный<br><br><br><br><br><br>Простак
+ie.manual.entry.immersiveposts.posts_lead=Свинцовый<br><br><br><br><br><br>Тежеловес
+ie.manual.entry.immersiveposts.posts_silver=Серебряный<br><br><br><br><br><br>Блестящий
+ie.manual.entry.immersiveposts.posts_nickel=Никелевый<br><br><br><br><br><br>Участник группы
+ie.manual.entry.immersiveposts.posts_constantan=Константановый<br><br><br><br><br><br>Чудак
+ie.manual.entry.immersiveposts.posts_electrum=Электрумовый<br><br><br><br><br><br>Шокер
+ie.manual.entry.immersiveposts.posts_uranium=Урановый<br>Слегка светится.<br>Света столько же, сколько от Редстоунового факела.<br><br>Длительный распад
+ie.manual.entry.immersiveposts.posts_aluminium=Алюминиевый? Нет.<br>Алюмиевый? Не.<br>Алюмумый. Идеально.<br><br><br><br>Расколотое мнение
+ie.manual.entry.immersiveposts.posts_steel=Стальной<br><br><br><br><br><br>Ржавчуга-силач
+ie.manual.entry.immersiveposts.posts_concrete=Бетонный<br><br><br><br><br><br><br><br><br><br><br><br><br>Рассыпчатый
+ie.manual.entry.immersiveposts.posts_concrete_leaded=Свинцовобетонный<br><br><br><br><br><br><br><br><br><br><br><br><br>Этот не рассыпается
+
+# Index Pages Stuff
+index.page_0_entry.1=Страница 1
+index.page_0_entry.2=Страница 2
+index.page_0_entry.3=Из обработанной древесины
+index.page_0_entry.4=Из незерита
+index.page_0_entry.5=Железный
+index.page_0_entry.6=Золотой
+index.page_0_entry.7=Медный
+index.page_0_entry.8=Свинцовый
+index.page_0_entry.9=Серебряный
+index.page_0_entry.10=Никелевый
+index.page_0_entry.11=Константановый
+index.page_0_entry.12=Электрумовый
+index.page_0_entry.13=Урановый
+
+index.page_1_entry.1=Алюминиевый
+index.page_1_entry.2=Стальной
+index.page_1_entry.3=Бетонный
+index.page_1_entry.4=Свинцовобетонный
