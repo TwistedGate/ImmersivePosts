@@ -89,7 +89,7 @@ public class ImmersivePosts{
 		public static final IPOCreativeTab instance=new IPOCreativeTab();
 		
 		private ItemStack iconstack=null;
-		public IPOCreativeTab(){
+		private IPOCreativeTab(){
 			super(IPOMod.ID);
 		}
 		

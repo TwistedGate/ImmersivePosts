@@ -83,7 +83,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 	public static IBlockState getPostStateFrom(ItemStack stack){
 		IBlockState state=null;
 		switch(getFrom(stack)){
-			case ALUMINIUM:		 state=IPOStuff.aluPost.getDefaultState();break;
+			case ALUMINIUM:		 state=IPOStuff.aluminiumPost.getDefaultState();break;
 			case CONSTANTAN:	 state=IPOStuff.constantanPost.getDefaultState();break;
 			case COPPER:		 state=IPOStuff.copperPost.getDefaultState();break;
 			case ELECTRUM:		 state=IPOStuff.electrumPost.getDefaultState();break;
