@@ -85,30 +85,21 @@ public class ClientProxy extends CommonProxy{
 		// every 13 entries a new index page
 		ArrayList<IManualPage> fencePages=new ArrayList<>();
 		
-		{ // I feel dirty doing it manualy..
-			String[][] index0=new String[][]{
-				{"Page  1","Index Page 1"},
-				{"Page  2","Index Page 2"},
-				{"Page  3","Treated Wood"},
-				{"Page  4","Netherbrick"},
-				{"Page  5","Iron"},
-				{"Page  6","Gold"},
-				{"Page  7","Copper"},
-				{"Page  8","Lead"},
-				{"Page  9","Silver"},
-				{"Page 10","Nickel"},
-				{"Page 11","Constantan"},
-				{"Page 12","Electrum"},
-				{"Page 13","Uranium"},
-			};
-			fencePages.add(new ManualPages.Table(man, IPOMod.ID+".posts_index0", index0, true));
+		{
+			String[][] index0=new String[13][2];
+			String[][] index1=new String[4][2];
 			
-			String[][] index1=new String[][]{
-				{"Page 14","Aluminium"},
-				{"Page 15","Steel"},
-				{"Page 16","Concrete"},
-				{"Page 17","Concrete (Leaded)"},
-			};
+			int page=1;
+			for(int i=0;i<index0.length;i++){
+				index0[i][0]=Integer.toString(page++);
+				index0[i][1]="index.page_0_entry."+Integer.toString(i+1);
+			}
+			for(int i=0;i<index1.length;i++){
+				index1[i][0]=Integer.toString(page++);
+				index1[i][1]="index.page_1_entry."+Integer.toString(i+1);
+			}
+			
+			fencePages.add(new ManualPages.Table(man, IPOMod.ID+".posts_index0", index0, true));
 			fencePages.add(new ManualPages.Table(man, IPOMod.ID+".posts_index1", index1, true));
 		}
 		

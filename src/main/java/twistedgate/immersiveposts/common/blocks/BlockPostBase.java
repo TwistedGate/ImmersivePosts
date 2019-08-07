@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -131,7 +132,7 @@ public class BlockPostBase extends IPOBlockBase{
 					tooltip.add("- \u00A7a"+t.getItemStack().getDisplayName());
 				}
 			}else{
-				tooltip.add("[Hold Shift] \u00A76Accepted blocks.");
+				tooltip.add(I18n.format("tooltip.postbase"));
 			}
 		}
 	}

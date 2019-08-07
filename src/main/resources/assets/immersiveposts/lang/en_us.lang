@@ -58,17 +58,24 @@ item.immersiveposts.metal_rods.stick_uranium.name=Uranium Rod
 itemGroup.immersiveposts=Immersive Posts
 
 #########################
+#  Postbase Tooltip(s)  #
+#########################
+
+tooltip.postbase=[Hold Shift] §6Accepted blocks.
+
+#########################
 #       IE-Manual       #
 #########################
 
 ie.manual.category.immersiveposts.name=Immersive Posts
 
+# PostBase Entries
 ie.manual.entry.immersiveposts.postbase.name=Extendable Post
 ie.manual.entry.immersiveposts.postbase.subtext=The Sky's the Limit.
-ie.manual.entry.immersiveposts.postbase0=Used to make custom-sized posts.<br><br>Place it anywhere and right-click<br>with any of the fences listed <link;immersiveposts.posts;§o§nhere§r;0>.<br>You can do the exact same on the posts aswell.<br>The base is merely to start it.
+ie.manual.entry.immersiveposts.postbase0=Used to make custom-sized posts.<br><br>Place it anywhere and right-click<br>with any of the fences listed <link;immersiveposts.posts;Â§oÂ§nhereÂ§r;0>.<br>You can do the exact same on the posts aswell.<br>The base is merely to start it.
 ie.manual.entry.immersiveposts.postbase1=Note that it always has to be the same type, a Wooden Post for example only accepts Treated-Wood Fences nothing else!<br><br>Using the hammer on the sides of any post-block will attach an arm to it.<br><br>Arms can be anywhere, as long as there is air.<br><br>And now have fun and go wild with these things!
 
-# Fence Entries
+# Usable Block Entries
 ie.manual.entry.immersiveposts.posts.name=Accepted Blocks
 ie.manual.entry.immersiveposts.posts.subtext=Hm, what to pick..
 ie.manual.entry.immersiveposts.posts_index0=Index 1
@@ -88,3 +95,23 @@ ie.manual.entry.immersiveposts.posts_aluminium=Aluminium? No.<br>Aluminum? Nah.<
 ie.manual.entry.immersiveposts.posts_steel=Steel<br><br><br><br><br><br>The stronger rusty-boi.
 ie.manual.entry.immersiveposts.posts_concrete=Concrete<br><br><br><br><br><br><br><br><br><br><br><br><br>The crumbly.
 ie.manual.entry.immersiveposts.posts_concrete_leaded=Leaded Concrete<br><br><br><br><br><br><br><br><br><br><br><br><br>The reinforced crumbly.
+
+# Index Pages Stuff
+index.page_0_entry.1=Index Page 1
+index.page_0_entry.2=Index Page 2
+index.page_0_entry.3=Treated Wood
+index.page_0_entry.4=Netherbrick
+index.page_0_entry.5=Iron
+index.page_0_entry.6=Gold
+index.page_0_entry.7=Copper
+index.page_0_entry.8=Lead
+index.page_0_entry.9=Silver
+index.page_0_entry.10=Nickel
+index.page_0_entry.11=Constantan
+index.page_0_entry.12=Electrum
+index.page_0_entry.13=Uranium
+
+index.page_1_entry.1=Aluminium
+index.page_1_entry.2=Steel
+index.page_1_entry.3=Concrete
+index.page_1_entry.4=Concrete (Leaded)
