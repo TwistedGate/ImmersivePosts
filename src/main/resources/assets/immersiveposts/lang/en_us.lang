@@ -72,7 +72,7 @@ ie.manual.category.immersiveposts.name=Immersive Posts
 # PostBase Entries
 ie.manual.entry.immersiveposts.postbase.name=Extendable Post
 ie.manual.entry.immersiveposts.postbase.subtext=The Sky's the Limit.
-ie.manual.entry.immersiveposts.postbase0=Used to make custom-sized posts.<br><br>Place it anywhere and right-click<br>with any of the fences listed <link;immersiveposts.posts;Â§oÂ§nhereÂ§r;0>.<br>You can do the exact same on the posts aswell.<br>The base is merely to start it.
+ie.manual.entry.immersiveposts.postbase0=Used to make custom-sized posts.<br><br>Place it anywhere and right-click<br>with any of the fences listed <link;immersiveposts.posts;§o§nhere§r;0>.<br>You can do the exact same on the posts aswell.<br>The base is merely to start it.
 ie.manual.entry.immersiveposts.postbase1=Note that it always has to be the same type, a Wooden Post for example only accepts Treated-Wood Fences nothing else!<br><br>Using the hammer on the sides of any post-block will attach an arm to it.<br><br>Arms can be anywhere, as long as there is air.<br><br>And now have fun and go wild with these things!
 
 # Usable Block Entries
