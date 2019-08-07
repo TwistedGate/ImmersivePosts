@@ -18,8 +18,8 @@ public class BlockMetalFence extends BlockFence{
 		this.rawName=name;
 		setRegistryName(new ResourceLocation(IPOMod.ID, name));
 		setTranslationKey(IPOMod.ID+"."+name);
-		setHardness(5.0F);
-		setResistance(10.0F);
+		setHardness(3.0F);
+		setResistance(15.0F);
 		setCreativeTab(ImmersivePosts.creativeTab);
 		
 		IPOStuff.BLOCKS.add(this);

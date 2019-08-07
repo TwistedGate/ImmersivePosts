@@ -30,8 +30,8 @@ public class BlockPostBase extends IPOBlockBase{
 	
 	public BlockPostBase(){
 		super(Material.ROCK, "postbase");
-		setResistance(3.0F);
-		setHardness(2.0F);
+		setResistance(5.0F);
+		setHardness(3.0F);
 		
 		IPOStuff.ITEMS.add(new ItemPostBase(this));
 	}

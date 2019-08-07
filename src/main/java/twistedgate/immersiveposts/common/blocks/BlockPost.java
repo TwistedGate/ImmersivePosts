@@ -45,7 +45,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockUtilities;
@@ -71,8 +70,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		super(blockMaterial, postMaterial.getName());
 		this.postMaterial=postMaterial;
 		
-		setHardness(3.0F);
 		setResistance(5.0F);
+		setHardness(3.0F);
 		if(this.postMaterial==EnumPostMaterial.URANIUM)
 			setLightLevel(8);
 		
