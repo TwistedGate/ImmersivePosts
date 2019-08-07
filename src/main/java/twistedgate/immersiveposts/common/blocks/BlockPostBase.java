@@ -18,6 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twistedgate.immersiveposts.IPOStuff;
@@ -83,7 +84,7 @@ public class BlockPostBase extends IPOBlockBase{
 					if(b instanceof BlockPost){
 						ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
 						if(!held.isItemEqual(tmp)){
-							playerIn.sendStatusMessage(new TextComponentString("Expected: "+tmp.getDisplayName()+"."), true);
+							playerIn.sendStatusMessage(new TextComponentTranslation("immersiveposts.expectedlocal", new TextComponentString(tmp.getDisplayName())), true);
 							return true;
 						}
 					}

@@ -115,3 +115,10 @@ index.page_1_entry.1=Aluminium
 index.page_1_entry.2=Steel
 index.page_1_entry.3=Concrete
 index.page_1_entry.4=Concrete (Leaded)
+
+#########################
+#     Miscellaneous     #
+#########################
+
+immersiveposts.expectedlocal=Expected: %s
+

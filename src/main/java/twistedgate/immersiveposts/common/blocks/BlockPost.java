@@ -40,6 +40,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -249,7 +250,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			ItemStack held=playerIn.getHeldItemMainhand();
 			if(EnumPostMaterial.isFenceItem(held)){
 				if(!held.isItemEqual(this.postMaterial.getItemStack())){
-					playerIn.sendStatusMessage(new TextComponentString("Expected: "+this.postMaterial.getItemStack().getDisplayName()+"."), true);
+					playerIn.sendStatusMessage(new TextComponentTranslation("immersiveposts.expectedlocal", new TextComponentString(this.postMaterial.getItemStack().getDisplayName())), true);
 					return true;
 				}
 				
