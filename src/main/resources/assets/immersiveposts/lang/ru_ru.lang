@@ -115,3 +115,9 @@ index.page_1_entry.1=Алюминиевый
 index.page_1_entry.2=Стальной
 index.page_1_entry.3=Бетонный
 index.page_1_entry.4=Свинцовобетонный
+
+#########################
+#     Miscellaneous     #
+#########################
+
+immersiveposts.expectedlocal=Принимает только %s
