@@ -42,14 +42,14 @@ item.immersiveposts.stick_constantan.name=Константановая палк�
 item.immersiveposts.stick_electrum.name=Электрумовая палка
 item.immersiveposts.stick_uranium.name=Урановая палка
 
-item.immersiveposts.metal_rods.stick_gold.name=Золотая палка
-item.immersiveposts.metal_rods.stick_copper.name=Медная палка
-item.immersiveposts.metal_rods.stick_lead.name=Свинцовая палка
-item.immersiveposts.metal_rods.stick_silver.name=Серебряная палка
-item.immersiveposts.metal_rods.stick_nickel.name=Никелевая палка
-item.immersiveposts.metal_rods.stick_constantan.name=Константановая палка
-item.immersiveposts.metal_rods.stick_electrum.name=Электрумовая палка
-item.immersiveposts.metal_rods.stick_uranium.name=Урановая палка
+item.immersiveposts.metal_rods.stick_gold.name=Золотой прут
+item.immersiveposts.metal_rods.stick_copper.name=Медный прут
+item.immersiveposts.metal_rods.stick_lead.name=Свинцовый прут
+item.immersiveposts.metal_rods.stick_silver.name=Серебряный прут
+item.immersiveposts.metal_rods.stick_nickel.name=Никелевый прут
+item.immersiveposts.metal_rods.stick_constantan.name=Константановый прут
+item.immersiveposts.metal_rods.stick_electrum.name=Электрумовый прут
+item.immersiveposts.metal_rods.stick_uranium.name=Урановый прут
 
 #########################
 #     Creative Tab      #
