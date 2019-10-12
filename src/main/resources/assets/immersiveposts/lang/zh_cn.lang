@@ -1,0 +1,124 @@
+#########################
+#        Blocks         #
+#########################
+
+tile.immersiveposts.postbase.name=可延长杆
+tile.immersiveposts.woodpost.name=木杆
+tile.immersiveposts.ironpost.name=铁杆
+tile.immersiveposts.goldpost.name=金杆
+tile.immersiveposts.copperpost.name=铜杆
+tile.immersiveposts.leadpost.name=铅杆
+tile.immersiveposts.silverpost.name=银杆
+tile.immersiveposts.nickelpost.name=镍杆
+tile.immersiveposts.constantanpost.name=康铜杆
+tile.immersiveposts.electrumpost.name=琥珀金杆
+tile.immersiveposts.uraniumpost.name=铀杆
+tile.immersiveposts.netherpost.name=地狱砖杆
+tile.immersiveposts.aluminiumpost.name=铝杆
+tile.immersiveposts.steelpost.name=钢杆
+tile.immersiveposts.concretepost.name=混凝土杆
+tile.immersiveposts.leadedconcretepost.name=镀铅混凝土杆
+
+tile.immersiveposts.fence_iron.name=铁栅栏
+tile.immersiveposts.fence_gold.name=金栅栏
+tile.immersiveposts.fence_copper.name=铜栅栏
+tile.immersiveposts.fence_lead.name=铅栅栏
+tile.immersiveposts.fence_silver.name=银栅栏
+tile.immersiveposts.fence_nickel.name=镍栅栏
+tile.immersiveposts.fence_constantan.name=康铜栅栏
+tile.immersiveposts.fence_electrum.name=琥珀金栅栏
+tile.immersiveposts.fence_uranium.name=铀栅栏
+
+#########################
+#         Items         #
+#########################
+
+item.immersiveposts.stick_gold.name=金棒
+item.immersiveposts.stick_copper.name=铜棒
+item.immersiveposts.stick_lead.name=铅棒
+item.immersiveposts.stick_silver.name=银棒
+item.immersiveposts.stick_nickel.name=镍棒
+item.immersiveposts.stick_constantan.name=康铜棒
+item.immersiveposts.stick_electrum.name=琥珀金棒
+item.immersiveposts.stick_uranium.name=铀棒
+
+item.immersiveposts.metal_rods.stick_gold.name=金棒
+item.immersiveposts.metal_rods.stick_copper.name=铜棒
+item.immersiveposts.metal_rods.stick_lead.name=铅棒
+item.immersiveposts.metal_rods.stick_silver.name=银棒
+item.immersiveposts.metal_rods.stick_nickel.name=镍棒
+item.immersiveposts.metal_rods.stick_constantan.name=康铜棒
+item.immersiveposts.metal_rods.stick_electrum.name=琥珀金棒
+item.immersiveposts.metal_rods.stick_uranium.name=铀棒
+
+#########################
+#     Creative Tab      #
+#########################
+
+itemGroup.immersiveposts=沉浸长杆
+
+#########################
+#  Postbase Tooltip(s)  #
+#########################
+
+tooltip.postbase=[按Shift]§6查看接受方块。
+
+#########################
+#       IE-Manual       #
+#########################
+
+ie.manual.category.immersiveposts.name=沉浸长杆
+
+# PostBase Entries
+ie.manual.entry.immersiveposts.postbase.name=可延长杆
+ie.manual.entry.immersiveposts.postbase.subtext=到天空的尽头
+ie.manual.entry.immersiveposts.postbase0=用于制作自定义长度的电线杆。<br><br>将其放在任何地方然后用<link;immersiveposts.posts;§o§n此处§r;0>列出的栅栏或方块右击。<br>你也可以在杆上用前述方块做相同的事。<br>这个基座仅仅是开始。
+ie.manual.entry.immersiveposts.postbase1=需注意的是栅栏必须是同一种，例如木杆上只能放防腐木而不能放其他！<br><br>在杆方块的侧面使用工程师锤可以使其贴上一个横臂。<br><br>只要有空间，横臂可以在任何位置。<br><br>现在，玩的高兴！
+
+# Usable Block Entries
+ie.manual.entry.immersiveposts.posts.name=可用方块
+ie.manual.entry.immersiveposts.posts.subtext=嗯……选哪个呢
+ie.manual.entry.immersiveposts.posts_index0=Index 1
+ie.manual.entry.immersiveposts.posts_index1=Index 2
+ie.manual.entry.immersiveposts.posts_wood=防腐木<br><br><br><br><br><br>老派选择。
+ie.manual.entry.immersiveposts.posts_netherbrick=地狱砖<br><br><br><br><br><br><br><br><br><br><br>头脑发热。
+ie.manual.entry.immersiveposts.posts_iron=铁<br><br><br><br><br><br>生锈男孩。
+ie.manual.entry.immersiveposts.posts_gold=金<br><br><br><br><br><br>黑帮珠宝。
+ie.manual.entry.immersiveposts.posts_copper=铜<br><br><br><br><br><br>通常选择。
+ie.manual.entry.immersiveposts.posts_lead=铅<br><br><br><br><br><br>沉重。
+ie.manual.entry.immersiveposts.posts_silver=银<br><br><br><br><br><br>闪亮。
+ie.manual.entry.immersiveposts.posts_nickel=镍<br><br><br><br><br><br>半带。
+ie.manual.entry.immersiveposts.posts_constantan=康铜<br><br><br><br><br><br>怪人。
+ie.manual.entry.immersiveposts.posts_electrum=琥珀金<br><br><br><br><br><br>令人震惊。
+ie.manual.entry.immersiveposts.posts_uranium=铀<br>也发出一点光。<br>尽管似乎只有红石火把的亮度。<br><br>长半衰期。
+ie.manual.entry.immersiveposts.posts_aluminium=Aluminium？不。<br>Aluminum（铝）？算了。<br>Alumum。完美。<br><br><br><br>分裂意见。
+ie.manual.entry.immersiveposts.posts_steel=钢<br><br><br><br><br><br>更强的生锈男孩。
+ie.manual.entry.immersiveposts.posts_concrete=混凝土<br><br><br><br><br><br><br><br><br><br><br><br><br>易碎的。
+ie.manual.entry.immersiveposts.posts_concrete_leaded=镀铅混凝土<br><br><br><br><br><br><br><br><br><br><br><br><br>强化易碎的。
+
+# Index Pages Stuff
+index.page_0_entry.1=Index Page 1
+index.page_0_entry.2=Index Page 2
+index.page_0_entry.3=防腐木
+index.page_0_entry.4=地狱砖
+index.page_0_entry.5=铁
+index.page_0_entry.6=金
+index.page_0_entry.7=铜
+index.page_0_entry.8=铅
+index.page_0_entry.9=银
+index.page_0_entry.10=镍
+index.page_0_entry.11=康铜
+index.page_0_entry.12=琥珀金
+index.page_0_entry.13=铀
+
+index.page_1_entry.1=铀
+index.page_1_entry.2=钢
+index.page_1_entry.3=混凝土
+index.page_1_entry.4=混凝土（镀铅）
+
+#########################
+#     Miscellaneous     #
+#########################
+
+immersiveposts.expectedlocal=期望方块：%s
+
