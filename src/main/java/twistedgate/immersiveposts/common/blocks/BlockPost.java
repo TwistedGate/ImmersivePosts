@@ -206,8 +206,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	@Override
 	public RayTraceResult collisionRayTrace(IBlockState state, World worldIn, BlockPos pos, Vec3d start, Vec3d end){
 		List<AxisAlignedBB> bounds=getSelectionBounds(state, worldIn, pos);
-		if(!bounds.isEmpty()){
-			RayTraceResult min=null;
+		if(bounds!=null && !bounds.isEmpty()){
+			RayTraceResult ret=null;
 			double minDist=Double.POSITIVE_INFINITY;
 			for(AxisAlignedBB aabb:bounds){
 				if(aabb==null) continue;
@@ -216,30 +216,32 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				if(res!=null){
 					double dist=res.hitVec.squareDistanceTo(start);
 					if(dist<minDist){
-						min=res;
+						ret=res;
 						minDist=dist;
 					}
 				}
 			}
 			
-			return min;
+			return ret;
 		}
 		
 		return this.rayTrace(pos, start, end, state.getBoundingBox(worldIn, pos));
 	}
 	
-	/** This just includes the mini-arms with the selection bounds */
+	/** This just includes the mini-arms to the selection bounds */
 	private List<AxisAlignedBB> getSelectionBounds(IBlockState state, World world, BlockPos pos){
 		state=state.getActualState(world, pos);
 		
-		List<AxisAlignedBB> bounds=new ArrayList<>();
+		List<AxisAlignedBB> bounds=null;
 		
-		if(state.getValue(LPARM_NORTH)) bounds.add(new AxisAlignedBB(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125));
-		if(state.getValue(LPARM_SOUTH)) bounds.add(new AxisAlignedBB(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0));
-		if(state.getValue(LPARM_EAST)) bounds.add(new AxisAlignedBB(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875));
-		if(state.getValue(LPARM_WEST)) bounds.add(new AxisAlignedBB(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875));
-		
-		if(state.getValue(TYPE)!=EnumPostType.ARM){ // If i didnt do this the top most post wouldnt get it's default selection box, for some reason.
+		if(state.getValue(TYPE)!=EnumPostType.ARM){
+			bounds=new ArrayList<>(5); //Let's start with a cap of 5
+			
+			if(state.getValue(LPARM_NORTH)) bounds.add(new AxisAlignedBB(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125));
+			if(state.getValue(LPARM_SOUTH)) bounds.add(new AxisAlignedBB(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0));
+			if(state.getValue(LPARM_EAST)) bounds.add(new AxisAlignedBB(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875));
+			if(state.getValue(LPARM_WEST)) bounds.add(new AxisAlignedBB(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875));
+			
 			bounds.add(POST_SHAPE);
 		}
 		
