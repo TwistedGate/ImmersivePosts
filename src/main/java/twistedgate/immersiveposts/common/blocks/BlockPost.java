@@ -193,10 +193,12 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState){
 		List<AxisAlignedBB> list=getSelectionBounds(state, worldIn, pos);
-		if(!list.isEmpty())
-			for(AxisAlignedBB aabb:list)
-				if(entityBox.intersects(aabb.offset(pos)))
+		if(list!=null && !list.isEmpty())
+			for(AxisAlignedBB aabb:list){
+				aabb=aabb.offset(pos);
+				if(aabb!=null && entityBox.intersects(aabb))
 					collidingBoxes.add(aabb);
+			}
 		
 		super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 	}
