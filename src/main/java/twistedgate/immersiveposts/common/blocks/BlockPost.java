@@ -48,7 +48,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
-import twistedgate.immersiveposts.utils.BlockUtilities;
+import twistedgate.immersiveposts.utils.BlockHelper;
 
 /**
  * All-in-one package. Containing everything into one neat class is the best.
@@ -234,7 +234,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		List<AxisAlignedBB> bounds=null;
 		
-		if(state.getValue(TYPE)!=EnumPostType.ARM){
+		if(state.getValue(TYPE).id()<2){
 			bounds=new ArrayList<>(5); //Let's start with a cap of 5
 			
 			if(state.getValue(LPARM_NORTH)) bounds.add(new AxisAlignedBB(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125));
@@ -261,14 +261,14 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				for(int y=0;y<(worldIn.getActualHeight()-pos.getY());y++){
 					BlockPos nPos=pos.add(0,y,0);
 					
-					if((BlockUtilities.getBlockFrom(worldIn, nPos) instanceof BlockPost)){
+					if((BlockHelper.getBlockFrom(worldIn, nPos) instanceof BlockPost)){
 						IBlockState s=worldIn.getBlockState(nPos);
 						if(s.getValue(BlockPost.TYPE)==EnumPostType.ARM && s.getValue(BlockPost.FLIP)){
 							return true;
 						}
 						
 						BlockPos up=nPos.offset(EnumFacing.UP);
-						if((BlockUtilities.getBlockFrom(worldIn, up) instanceof BlockPost)){
+						if((BlockHelper.getBlockFrom(worldIn, up) instanceof BlockPost)){
 							s=worldIn.getBlockState(up);
 							if(s.getValue(BlockPost.TYPE)==EnumPostType.ARM){
 								return true;
@@ -444,8 +444,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			
 			if(thisType!=EnumPostType.ARM){
 				BlockPos belowPos=pos.offset(EnumFacing.DOWN);
-				if(BlockUtilities.getBlockFrom(world, belowPos)==Blocks.AIR){
-					BlockUtilities.getBlockFrom(world, pos).dropBlockAsItem(world, pos, this, 0);
+				if(BlockHelper.getBlockFrom(world, belowPos)==Blocks.AIR){
+					BlockHelper.getBlockFrom(world, pos).dropBlockAsItem(world, pos, this, 0);
 					world.setBlockToAir(pos);
 					return;
 				}

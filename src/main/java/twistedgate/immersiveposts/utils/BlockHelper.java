@@ -11,9 +11,11 @@ import net.minecraft.world.World;
  * Just a few little convenience methods
  * @author TwistedGate
  */
-public class BlockUtilities{
+public class BlockHelper{
 	public static Block getBlockFrom(IBlockAccess world, BlockPos pos){
-		return getBlockFromDirection(world, pos, null);
+		if(world==null) return null;
+		
+		return world.getBlockState(pos).getBlock();
 	}
 	
 	public static Block getBlockFromDirection(IBlockAccess world, BlockPos pos, EnumFacing dir){

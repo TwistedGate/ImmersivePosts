@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
-import twistedgate.immersiveposts.utils.BlockUtilities;
+import twistedgate.immersiveposts.utils.BlockHelper;
 
 public class BlockPostBase extends IPOBlockBase{
 	private static final AxisAlignedBB BASE_SIZE=new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
@@ -93,7 +93,7 @@ public class BlockPostBase extends IPOBlockBase{
 				for(int y=1;y<(worldIn.getActualHeight()-pos.getY());y++){
 					BlockPos nPos=pos.add(0,y,0);
 					
-					if((BlockUtilities.getBlockFrom(worldIn, nPos) instanceof BlockPost)){
+					if((BlockHelper.getBlockFrom(worldIn, nPos) instanceof BlockPost)){
 						IBlockState s=worldIn.getBlockState(nPos);
 						if(s.getValue(BlockPost.TYPE)==EnumPostType.ARM){
 							return true;
