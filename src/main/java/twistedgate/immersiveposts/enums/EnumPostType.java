@@ -1,20 +1,25 @@
 package twistedgate.immersiveposts.enums;
 
+import java.util.Locale;
+
 import net.minecraft.util.IStringSerializable;
 
 public enum EnumPostType implements IStringSerializable{
-	POST("post"),
-	POST_TOP("post_top"),
-	ARM("arm")
+	POST,
+	POST_TOP,
+	ARM,
+	ARM_DOUBLE,
+	EMPTY
 	;
 	
-	final String name;
-	private EnumPostType(String name){
-		this.name=name;
+	private EnumPostType(){}
+	
+	public int id(){
+		return ordinal();
 	}
 	
 	@Override
 	public String getName(){
-		return this.name;
+		return this.toString().toLowerCase(Locale.ENGLISH);
 	}
 }
