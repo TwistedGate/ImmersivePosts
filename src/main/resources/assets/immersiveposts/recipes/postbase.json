@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"s": { "item": "minecraft:stonebrick", "data": 0 },
-		"w": { "item": "minecraft:cobblestone_wall", "data": 0 }
+		"w": { "item": "minecraft:cobblestone", "data": 0 }
 	},
 	"result": {
 		"item": "immersiveposts:postbase",
