@@ -3,6 +3,7 @@ package twistedgate.immersiveposts.client;
 import java.util.ArrayList;
 
 import blusunrize.immersiveengineering.api.ManualHelper;
+import blusunrize.immersiveengineering.common.IEContent;
 import blusunrize.lib.manual.IManualPage;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.ManualPages;
@@ -74,11 +75,23 @@ public class ClientProxy extends CommonProxy{
 	public void setupManualPage(){
 		ManualInstance man=ManualHelper.getManual();
 		
-		ManualHelper.addEntry(IPOMod.ID+".postbase", IPOMod.ID,
-				new ManualPages.Crafting(man, IPOMod.ID+".postbase0", new ItemStack(IPOStuff.postBase)),
-				new ManualPages.Text(man, IPOMod.ID+".postbase1"));
+		man.addEntry(IPOMod.ID+".postbase", IPOMod.ID, new ManualPages.Crafting(man, IPOMod.ID+".postbase0", new ItemStack(IPOStuff.postBase)));
 		
+		setupUsagePage(man);
 		setupAcceptedBlocksCategory(man);
+	}
+	
+	private void setupUsagePage(ManualInstance man){
+		IManualPage[] pages=new IManualPage[]{
+				new ManualPages.ItemDisplay(man, IPOMod.ID+".usage.p0", new ItemStack(IEContent.itemTool, 1, 0)),
+				new ManualPages.Image(man, IPOMod.ID+".usage.p1", "immersiveposts:textures/manual/usage/what.png;0;0;64;64"),
+				new ManualPages.Image(man, IPOMod.ID+".usage.p2", "immersiveposts:textures/manual/usage/what.png;0;64;64;75"),
+				new ManualPages.Image(man, IPOMod.ID+".usage.p3", "immersiveposts:textures/manual/usage/what.png;64;0;64;64"),
+				new ManualPages.Image(man, IPOMod.ID+".usage.p4", "immersiveposts:textures/manual/usage/what.png;128;0;81;64"),
+				new ManualPages.Image(man, IPOMod.ID+".usage.p5", "immersiveposts:textures/manual/usage/what.png;128;64;112;64"),
+		};
+		
+		man.addEntry(IPOMod.ID+".usage", IPOMod.ID, pages);
 	}
 	
 	private void setupAcceptedBlocksCategory(ManualInstance man){
