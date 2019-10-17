@@ -4,6 +4,9 @@ import java.util.Locale;
 
 import net.minecraft.util.IStringSerializable;
 
+/**
+ * @author TwistedGate
+ */
 public enum EnumPostType implements IStringSerializable{
 	POST,
 	POST_TOP,

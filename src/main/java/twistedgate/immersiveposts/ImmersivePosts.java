@@ -23,6 +23,9 @@ import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.utils.StringUtils;
 
+/**
+ * @author TwistedGate
+ */
 @Mod(
 	modid=IPOMod.ID,
 	name=IPOMod.NAME,

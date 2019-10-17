@@ -56,6 +56,11 @@ import twistedgate.immersiveposts.utils.BlockHelper;
  */
 public class BlockPost extends IPOBlockBase implements IPostBlock{
 	public static final AxisAlignedBB POST_SHAPE=new AxisAlignedBB(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
+	public static final AxisAlignedBB LPARM_NORTH_BOUNDS=new AxisAlignedBB(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125);
+	public static final AxisAlignedBB LPARM_SOUTH_BOUNDS=new AxisAlignedBB(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0);
+	public static final AxisAlignedBB LPARM_EAST_BOUNDS=new AxisAlignedBB(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875);
+	public static final AxisAlignedBB LPARM_WEST_BOUNDS=new AxisAlignedBB(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875);
+	
 	
 	public static final PropertyBool LPARM_NORTH=PropertyBool.create("parm_north");
 	public static final PropertyBool LPARM_EAST=PropertyBool.create("parm_east");
@@ -256,10 +261,10 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		if(state.getValue(TYPE).id()<2){
 			bounds=new ArrayList<>(5); //Let's start with a cap of 5
 			
-			if(state.getValue(LPARM_NORTH)) bounds.add(new AxisAlignedBB(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125));
-			if(state.getValue(LPARM_SOUTH)) bounds.add(new AxisAlignedBB(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0));
-			if(state.getValue(LPARM_EAST)) bounds.add(new AxisAlignedBB(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875));
-			if(state.getValue(LPARM_WEST)) bounds.add(new AxisAlignedBB(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875));
+			if(state.getValue(LPARM_NORTH)) bounds.add(LPARM_NORTH_BOUNDS);
+			if(state.getValue(LPARM_SOUTH)) bounds.add(LPARM_SOUTH_BOUNDS);
+			if(state.getValue(LPARM_EAST)) bounds.add(LPARM_EAST_BOUNDS);
+			if(state.getValue(LPARM_WEST)) bounds.add(LPARM_WEST_BOUNDS);
 			
 			bounds.add(POST_SHAPE);
 		}
@@ -548,6 +553,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			}
 		}
 		
+		private static final AxisAlignedBB X_BOUNDS=new AxisAlignedBB(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
+		private static final AxisAlignedBB Z_BOUNDS=new AxisAlignedBB(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
 		static AxisAlignedBB stateBounds(IBlockState state){
 			switch(state.getValue(TYPE)){
 				case ARM:case ARM_DOUBLE:{
@@ -569,9 +576,9 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					Axis axis=facing.getAxis();
 					
 					if(axis==Axis.X){
-						return new AxisAlignedBB(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
+						return X_BOUNDS;
 					}
-					return new AxisAlignedBB(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
+					return Z_BOUNDS;
 				}
 				default: return POST_SHAPE;
 			}

@@ -2,6 +2,9 @@ package twistedgate.immersiveposts.utils;
 
 import java.util.Locale;
 
+/**
+ * @author TwistedGate
+ */
 public class StringUtils{
 	/** Converts the first character in a string to it's uppercase version. */
 	public static final String upperCaseFirst(String s){

@@ -21,11 +21,16 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockHelper;
 
+/**
+ * @author TwistedGate
+ */
 public class BlockPostBase extends IPOBlockBase{
 	private static final AxisAlignedBB BASE_SIZE=new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 	
@@ -127,6 +132,7 @@ public class BlockPostBase extends IPOBlockBase{
 		}
 		
 		@Override
+		@SideOnly(Side.CLIENT)
 		public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)){
 				for(EnumPostMaterial t:EnumPostMaterial.values()){

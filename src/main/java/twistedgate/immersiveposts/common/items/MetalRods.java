@@ -1,5 +1,8 @@
 package twistedgate.immersiveposts.common.items;
 
+/**
+ * @author TwistedGate
+ */
 public class MetalRods extends MultiMetaItem{
 	public MetalRods(){
 		super("metal_rods");

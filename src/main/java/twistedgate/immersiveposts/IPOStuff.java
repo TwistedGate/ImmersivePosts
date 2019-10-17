@@ -19,6 +19,9 @@ import twistedgate.immersiveposts.common.items.MultiMetaItem;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.utils.StringUtils;
 
+/**
+ * @author TwistedGate
+ */
 @Mod.EventBusSubscriber(modid=IPOMod.ID)
 public class IPOStuff{
 	public static final ArrayList<Block> BLOCKS=new ArrayList<>();

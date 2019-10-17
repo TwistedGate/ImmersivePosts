@@ -6,6 +6,9 @@ import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.ImmersivePosts;
 
+/**
+ * @author TwistedGate
+ */
 public class IPOItemBase extends Item{
 	public IPOItemBase(String name){
 		setCreativeTab(ImmersivePosts.creativeTab);

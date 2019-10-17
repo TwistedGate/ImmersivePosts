@@ -4,6 +4,9 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+/**
+ * @author TwistedGate
+ */
 public class CommonProxy{
 	public void preInitStart(FMLPreInitializationEvent event){}
 	public void preInitEnd(FMLPreInitializationEvent event){}

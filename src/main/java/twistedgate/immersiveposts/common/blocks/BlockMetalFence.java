@@ -8,6 +8,9 @@ import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.ImmersivePosts;
 
+/**
+ * @author TwistedGate
+ */
 public class BlockMetalFence extends BlockFence{
 	public final String rawName;
 	public BlockMetalFence(String name){

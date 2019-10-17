@@ -9,6 +9,9 @@ import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.ImmersivePosts;
 
+/**
+ * @author TwistedGate
+ */
 public class MultiMetaItem extends Item{
 	private String[] names;
 	public final String regName;
