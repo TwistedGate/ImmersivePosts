@@ -2,7 +2,7 @@
 #        Blocks         #
 #########################
 
-tile.immersiveposts.postbase.name=可延长杆
+tile.immersiveposts.postbase.name=可延长杆基座
 tile.immersiveposts.woodpost.name=木杆
 tile.immersiveposts.ironpost.name=铁杆
 tile.immersiveposts.goldpost.name=金杆
@@ -72,8 +72,16 @@ ie.manual.category.immersiveposts.name=沉浸长杆
 # PostBase Entries
 ie.manual.entry.immersiveposts.postbase.name=可延长杆
 ie.manual.entry.immersiveposts.postbase.subtext=到天空的尽头
-ie.manual.entry.immersiveposts.postbase0=用于制作自定义长度的电线杆。<br><br>将其放在任何地方然后用<link;immersiveposts.posts;§o§n此处§r;0>列出的栅栏或方块右击。<br>你也可以在杆上用前述方块做相同的事。<br>这个基座仅仅是开始。
-ie.manual.entry.immersiveposts.postbase1=需注意的是栅栏必须是同一种，例如木杆上只能放防腐木而不能放其他！<br><br>在杆方块的侧面使用工程师锤可以使其贴上一个横臂。<br><br>只要有空间，横臂可以在任何位置。<br><br>现在，玩的高兴！
+ie.manual.entry.immersiveposts.postbase0=用于自定义长度的电线杆杆头。<br><br>（用法参见<link;immersiveposts.usage;§o§n使用§r;0>。）
+
+# Usage Entries
+ie.manual.entry.immersiveposts.usage.name=如何使用
+ie.manual.entry.immersiveposts.usage.p0=你将需要工程师锤和选定一种材料。<br><br>参见<link;immersiveposts.posts;§o§n这里§r;0>查看可用材料的详细列表。<br><br>或者直接将鼠标移到基座上并按住shift。（效果和<link;immersiveposts.postbase;§o§n这里§r;0>一样！）
+ie.manual.entry.immersiveposts.usage.p1=然后手持所选材料右键基座，它应该会变成上图所示的样子。<br><br>注意：杆的材料必须一直是同一种！例如防腐木杆只能接受§o防腐木栅栏§r而不会接受其他！
+ie.manual.entry.immersiveposts.usage.p2=现在开始你也可以对着杆右击，使你更容易看见杆已经有多高了。<br><br><br>这不是很简洁吗？
+ie.manual.entry.immersiveposts.usage.p3=想得到一格长横臂，你只需要用工程师锤右击想要长出横臂的高度和面。<br>要移除横臂，只需要对同一面再右键一次。（或者直接用斧头破坏横臂）<br>§n注意：如果有方块挡住，横臂不会出现。§r
+ie.manual.entry.immersiveposts.usage.p4=右键横臂本身会将其变为两格长横臂，反过来也可以这样做。<br><br>像一格横臂一样，没有足够的空间横臂是不会变的。
+ie.manual.entry.immersiveposts.usage.p5=一格长横臂会在检测到下方有方块时上下翻转，§o哪怕§r上方仍然有方块。<br><br>由于§o稳定性§r问题，两格长横臂§l不能§r上下翻转。
 
 # Usable Block Entries
 ie.manual.entry.immersiveposts.posts.name=可用方块
