@@ -23,10 +23,6 @@ public class IPOBlockBase extends Block{
 		IPOStuff.BLOCKS.add(this);
 	}
 	
-	public boolean hasItem(){
-		return false;
-	}
-	
 	@Override
 	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis){
 		return false; // So far nothing needs it, and it'll only be a nuisance

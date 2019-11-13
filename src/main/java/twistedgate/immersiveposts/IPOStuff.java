@@ -87,7 +87,7 @@ public class IPOStuff{
 		electrumPost		=createMetalPost(EnumPostMaterial.ELECTRUM);
 		uraniumPost			=createMetalPost(EnumPostMaterial.URANIUM);
 		netherPost			=createMetalPost(EnumPostMaterial.NETHERBRICK);
-		aluminiumPost				=createMetalPost(EnumPostMaterial.ALUMINIUM);
+		aluminiumPost		=createMetalPost(EnumPostMaterial.ALUMINIUM);
 		steelPost			=createMetalPost(EnumPostMaterial.STEEL);
 		concretePost		=new BlockPost(Material.ROCK, EnumPostMaterial.CONCRETE);
 		leadedConcretePost	=new BlockPost(Material.ROCK, EnumPostMaterial.CONCRETE_LEADED);

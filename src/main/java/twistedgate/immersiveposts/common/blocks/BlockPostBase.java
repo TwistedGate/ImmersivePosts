@@ -48,11 +48,6 @@ public class BlockPostBase extends IPOBlockBase{
 	}
 	
 	@Override
-	public boolean hasItem(){
-		return true;
-	}
-	
-	@Override
 	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side){
 		return false;
 	}

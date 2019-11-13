@@ -170,11 +170,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				case 2: state=state.withProperty(FACING, EnumFacing.SOUTH); break;
 				case 3: state=state.withProperty(FACING, EnumFacing.WEST); break;
 			}
-			
-//			if(meta==2 || meta==6) state=state.withProperty(FACING, EnumFacing.NORTH);
-//			if(meta==3 || meta==7) state=state.withProperty(FACING, EnumFacing.EAST);
-//			if(meta==4 || meta==8) state=state.withProperty(FACING, EnumFacing.SOUTH);
-//			if(meta==5 || meta==9) state=state.withProperty(FACING, EnumFacing.WEST);
 		}
 		
 		return state;
