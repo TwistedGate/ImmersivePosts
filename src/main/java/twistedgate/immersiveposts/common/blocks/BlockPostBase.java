@@ -23,6 +23,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
@@ -77,6 +78,10 @@ public class BlockPostBase extends IPOBlockBase{
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
 			if(EnumPostMaterial.isFenceItem(held)){
+				if(!IPOConfig.isEnabled(EnumPostMaterial.getFrom(held))){
+					return true;
+				}
+				
 				if(!worldIn.isAirBlock(pos.offset(EnumFacing.UP))){
 					IBlockState aboveState=worldIn.getBlockState(pos.offset(EnumFacing.UP));
 					Block b=aboveState.getBlock();
@@ -131,7 +136,8 @@ public class BlockPostBase extends IPOBlockBase{
 		public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)){
 				for(EnumPostMaterial t:EnumPostMaterial.values()){
-					tooltip.add("- \u00A7a"+t.getItemStack().getDisplayName());
+					if(IPOConfig.isEnabled(t))
+						tooltip.add("- \u00A7a"+t.getItemStack().getDisplayName());
 				}
 			}else{
 				tooltip.add(I18n.format("tooltip.postbase"));

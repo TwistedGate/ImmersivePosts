@@ -16,7 +16,13 @@ import twistedgate.immersiveposts.common.blocks.BlockPost;
  * @author TwistedGate
  */
 public enum EnumPostMaterial implements IStringSerializable{
+	
+	// Default
 	WOOD("woodpost", IEContent.blockWoodenDecoration, BlockTypes_WoodenDecoration.FENCE.getMeta(), true, true),
+	ALUMINIUM("aluminiumpost", IEContent.blockMetalDecoration1, BlockTypes_MetalDecoration1.ALUMINUM_FENCE.getMeta(), true, true),
+	STEEL("steelpost", IEContent.blockMetalDecoration1, BlockTypes_MetalDecoration1.STEEL_FENCE.getMeta(), true, true),
+	
+	// Custom
 	NETHERBRICK("netherpost", Blocks.NETHER_BRICK_FENCE, true, false),
 	IRON("ironpost", IPOStuff.ironFence, true, true),
 	GOLD("goldpost", IPOStuff.goldFence, true, true),
@@ -27,11 +33,12 @@ public enum EnumPostMaterial implements IStringSerializable{
 	CONSTANTAN("constantanpost", IPOStuff.constantanFence, true, true),
 	ELECTRUM("electrumpost", IPOStuff.electrumFence, true, true),
 	URANIUM("uraniumpost", IPOStuff.uraniumFence, true, true),
-	ALUMINIUM("aluminiumpost", IEContent.blockMetalDecoration1, BlockTypes_MetalDecoration1.ALUMINUM_FENCE.getMeta(), true, true),
-	STEEL("steelpost", IEContent.blockMetalDecoration1, BlockTypes_MetalDecoration1.STEEL_FENCE.getMeta(), true, true),
 	CONCRETE("concretepost", IEContent.blockStoneDecorationSlabs, BlockTypes_StoneDecoration.CONCRETE.getMeta(), false, false),
 	CONCRETE_LEADED("leadedconcretepost", IEContent.blockStoneDecorationSlabs, BlockTypes_StoneDecoration.CONCRETE_LEADED.getMeta(), false, false)
-	; // This is getting bigger and bigger..
+	;
+	
+	private static EnumPostMaterial[] defaults;
+	private static EnumPostMaterial[] customs;
 	
 	private final String name;
 	private final Block block;
@@ -117,5 +124,36 @@ public enum EnumPostMaterial implements IStringSerializable{
 			if(stack.isItemEqual(mat.getItemStack())) return true;
 		
 		return false;
+	}
+	
+	public static boolean isDefault(EnumPostMaterial postMat){
+		for(EnumPostMaterial m:defaults)
+			if(m==postMat) return true;
+		return false;
+	}
+	
+	public static boolean isCustom(EnumPostMaterial postMat){
+		for(EnumPostMaterial m:customs)
+			if(m==postMat) return true;
+		return false;
+	}
+	
+	public static EnumPostMaterial[] defaults(){
+		if(defaults==null)
+			defaults=new EnumPostMaterial[]{WOOD,ALUMINIUM,STEEL};
+		return defaults;
+	}
+	
+	public static EnumPostMaterial[] customs(){
+		if(customs==null){
+			EnumPostMaterial[] tmp=new EnumPostMaterial[values().length-3];
+			for(int i=0,j=0;i<values().length;i++){
+				if(!isDefault(values()[i])){
+					tmp[j++]=values()[i];
+				}
+			}
+			customs=tmp;
+		}
+		return customs;
 	}
 }

@@ -2,12 +2,6 @@ package twistedgate.immersiveposts;
 
 import org.apache.logging.log4j.Logger;
 
-import blusunrize.immersiveengineering.api.ApiUtils;
-import blusunrize.immersiveengineering.api.ComparableItemStack;
-import blusunrize.immersiveengineering.api.IEApi;
-import blusunrize.immersiveengineering.api.crafting.MetalPressRecipe;
-import blusunrize.immersiveengineering.common.IEContent;
-import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
@@ -20,8 +14,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twistedgate.immersiveposts.common.CommonProxy;
-import twistedgate.immersiveposts.enums.EnumPostMaterial;
-import twistedgate.immersiveposts.utils.StringUtils;
 
 /**
  * @author TwistedGate
@@ -47,6 +39,7 @@ public class ImmersivePosts{
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
 		log=event.getModLog();
+		
 		proxy.preInitStart(event);
 		
 		IPOStuff.initBlocks();
@@ -66,17 +59,6 @@ public class ImmersivePosts{
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		proxy.postInitStart(event);
-		
-		ComparableItemStack compMoldRod = ApiUtils.createComparableItemStack(new ItemStack(IEContent.itemMold, 1, 2), false);
-		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			switch(mat){
-				case WOOD:case NETHERBRICK:case IRON:case ALUMINIUM:case STEEL:case CONCRETE:case CONCRETE_LEADED:break;
-				default:{
-					String name=StringUtils.upperCaseFirst(mat.toString());
-					MetalPressRecipe.addRecipe(Utils.copyStackWithAmount(IEApi.getPreferredOreStack("stick"+name), 2), "ingot"+name, compMoldRod, 2400);
-				}
-			}
-		}
 		
 		proxy.postInitEnd(event);
 	}
@@ -100,7 +82,7 @@ public class ImmersivePosts{
 		@SideOnly(Side.CLIENT)
 		public ItemStack createIcon(){
 			if(this.iconstack==null)
-				iconstack=new ItemStack(IPOStuff.postBase);
+				this.iconstack=new ItemStack(IPOStuff.postBase);
 			return this.iconstack;
 		}
 		

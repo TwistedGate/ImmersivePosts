@@ -46,6 +46,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockHelper;
@@ -274,6 +275,10 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			if(EnumPostMaterial.isFenceItem(held)){
 				if(!held.isItemEqual(this.postMaterial.getItemStack())){
 					playerIn.sendStatusMessage(new TextComponentTranslation("immersiveposts.expectedlocal", new TextComponentString(this.postMaterial.getItemStack().getDisplayName())), true);
+					return true;
+				}
+				
+				if(!IPOConfig.isEnabled(EnumPostMaterial.getFrom(held))){
 					return true;
 				}
 				
