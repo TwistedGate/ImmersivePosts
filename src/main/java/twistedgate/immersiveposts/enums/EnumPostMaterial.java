@@ -37,9 +37,6 @@ public enum EnumPostMaterial implements IStringSerializable{
 	CONCRETE_LEADED("leadedconcretepost", IEContent.blockStoneDecorationSlabs, BlockTypes_StoneDecoration.CONCRETE_LEADED.getMeta(), false, false)
 	;
 	
-	private static EnumPostMaterial[] defaults;
-	private static EnumPostMaterial[] customs;
-	
 	private final String name;
 	private final Block block;
 	private final int meta;
@@ -124,36 +121,5 @@ public enum EnumPostMaterial implements IStringSerializable{
 			if(stack.isItemEqual(mat.getItemStack())) return true;
 		
 		return false;
-	}
-	
-	public static boolean isDefault(EnumPostMaterial postMat){
-		for(EnumPostMaterial m:defaults)
-			if(m==postMat) return true;
-		return false;
-	}
-	
-	public static boolean isCustom(EnumPostMaterial postMat){
-		for(EnumPostMaterial m:customs)
-			if(m==postMat) return true;
-		return false;
-	}
-	
-	public static EnumPostMaterial[] defaults(){
-		if(defaults==null)
-			defaults=new EnumPostMaterial[]{WOOD,ALUMINIUM,STEEL};
-		return defaults;
-	}
-	
-	public static EnumPostMaterial[] customs(){
-		if(customs==null){
-			EnumPostMaterial[] tmp=new EnumPostMaterial[values().length-3];
-			for(int i=0,j=0;i<values().length;i++){
-				if(!isDefault(values()[i])){
-					tmp[j++]=values()[i];
-				}
-			}
-			customs=tmp;
-		}
-		return customs;
 	}
 }
