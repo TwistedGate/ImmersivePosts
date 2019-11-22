@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,27 +39,14 @@ public class ImmersivePosts{
 	public void preInit(FMLPreInitializationEvent event){
 		log=event.getModLog();
 		
-		proxy.preInitStart(event);
+		proxy.preInit(event);
 		
 		IPOStuff.initBlocks();
-		
-		proxy.preInitEnd(event);
-	}
-	
-	@EventHandler
-	public void init(FMLInitializationEvent event){
-		proxy.initStart(event);
-		
-		//MultiblockHandler.registerMultiblock(MultiblockHere);
-		
-		proxy.initEnd(event);
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
-		proxy.postInitStart(event);
-		
-		proxy.postInitEnd(event);
+		proxy.postInit(event);
 	}
 	
 	@EventHandler
@@ -88,8 +74,8 @@ public class ImmersivePosts{
 		
 		@Override
 		public boolean equals(Object obj){
-			if(obj instanceof IPOCreativeTab)
-				return true;
+			if(obj instanceof IPOCreativeTab) return true;
+			if(obj==this) return true;
 			
 			return super.equals(obj);
 		}

@@ -36,12 +36,12 @@ import twistedgate.immersiveposts.utils.StringUtils;
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy extends CommonProxy{
 	@Override
-	public void preInitStart(FMLPreInitializationEvent event){
+	public void preInit(FMLPreInitializationEvent event){
 		OBJLoader.INSTANCE.addDomain(IPOMod.ID);
 	}
 	
 	@Override
-	public void postInitEnd(FMLPostInitializationEvent event){
+	public void postInit(FMLPostInitializationEvent event){
 		setupManualPage();
 	}
 	
