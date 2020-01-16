@@ -7,7 +7,7 @@ package twistedgate.immersiveposts;
 public class IPOMod{
 	public static final String ID			= "immersiveposts";
 	public static final String NAME			= "Immersive Posts";
-	public static final String DEPENDS		= "required-after:forge@[14.23.5.2768,);required-after:immersiveengineering@[0.12,)";
+	public static final String DEPENDS		= "required-after:forge@[14.23.5.2820,);required-after:immersiveengineering@[0.12,)";
 	public static final String PROXY_CLIENT	= "twistedgate.immersiveposts.client.ClientProxy";
 	public static final String PROXY_SERVER	= "twistedgate.immersiveposts.common.CommonProxy";
 	public static final String CERT_PRINT	= "0ba8738eadcf158e7fe1452255a73a022fb15feb";
