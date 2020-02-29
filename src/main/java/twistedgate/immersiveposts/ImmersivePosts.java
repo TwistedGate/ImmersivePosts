@@ -20,6 +20,7 @@ import twistedgate.immersiveposts.common.CommonProxy;
 @Mod(
 	modid=IPOMod.ID,
 	name=IPOMod.NAME,
+	version=IPOMod.VERSION,
 	dependencies=IPOMod.DEPENDS,
 	certificateFingerprint=IPOMod.CERT_PRINT,
 	updateJSON=IPOMod.UPDATE_URL
