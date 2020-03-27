@@ -1,9 +1,6 @@
 package twistedgate.immersiveposts.common.items;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
@@ -16,13 +13,14 @@ public class MultiMetaItem extends Item{
 	private String[] names;
 	public final String regName;
 	public MultiMetaItem(String regName){
+		super(new Item.Properties().group(ImmersivePosts.creativeTab));
 		this.regName=regName;
 		
-		setCreativeTab(ImmersivePosts.creativeTab);
+		//setCreativeTab(ImmersivePosts.creativeTab);
 		setRegistryName(new ResourceLocation(IPOMod.ID, regName));
-		setTranslationKey(IPOMod.ID+"."+regName);
-		setFull3D();
-		setHasSubtypes(true);
+		//setTranslationKey(IPOMod.ID+"."+regName);
+		//setFull3D();
+		//setHasSubtypes(true);
 		
 		IPOStuff.ITEMS.add(this);
 	}
@@ -46,6 +44,8 @@ public class MultiMetaItem extends Item{
 	}
 	
 	
+	
+	/*
 	@Override
 	public String getTranslationKey(ItemStack stack){
 		return this.getTranslationKey()+"."+this.names[stack.getMetadata()];
@@ -62,5 +62,5 @@ public class MultiMetaItem extends Item{
 	@Override
 	public int getMetadata(int damage){
 		return damage;
-	}
+	}*/
 }

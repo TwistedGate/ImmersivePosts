@@ -1,72 +1,62 @@
 package twistedgate.immersiveposts;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLFingerprintViolationEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import twistedgate.immersiveposts.client.ClientProxy;
 import twistedgate.immersiveposts.common.CommonProxy;
 
 /**
  * @author TwistedGate
  */
-@Mod(
-	modid=IPOMod.ID,
-	name=IPOMod.NAME,
-	version=IPOMod.VERSION,
-	dependencies=IPOMod.DEPENDS,
-	certificateFingerprint=IPOMod.CERT_PRINT,
-	updateJSON=IPOMod.UPDATE_URL
-)
+@Mod(IPOMod.ID)
 public class ImmersivePosts{
-	@Mod.Instance(IPOMod.ID)
-	public static ImmersivePosts instance;
 	
-	@SidedProxy(modId=IPOMod.ID, serverSide=IPOMod.PROXY_SERVER, clientSide=IPOMod.PROXY_CLIENT)
-	public static CommonProxy proxy;
-	
-	public static final CreativeTabs creativeTab=IPOCreativeTab.instance;
-	
+	public static final ItemGroup creativeTab=new IPOItemGroup();
+	public static CommonProxy proxy=DistExecutor.runForDist(()->()->new ClientProxy(), ()->()->new CommonProxy());
 	public static Logger log;
 	
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event){
-		log=event.getModLog();
+	public ImmersivePosts(){
+		log=LogManager.getLogger(IPOMod.ID);
 		
-		proxy.preInit(event);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::violation);
+		
+		ModLoadingContext.get().registerConfig(Type.COMMON, IPOConfig.VALUES);
 		
 		IPOStuff.initBlocks();
+		
+		proxy.construct();
 	}
 	
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event){
-		proxy.postInit(event);
+	public void setup(FMLCommonSetupEvent event){
+		proxy.preInit();
+		
+		proxy.postInit();
 	}
 	
-	@EventHandler
 	public void violation(FMLFingerprintViolationEvent event){
 		System.err.println("THIS IS NOT AN OFFICIAL BUILD OF "+IPOMod.NAME.toUpperCase()+"! Fingerprints: ["+event.getFingerprints()+"]");
 		// Guess thats what this would be used for? lol
 	}
 	
 	
-	public static class IPOCreativeTab extends CreativeTabs{
-		public static final IPOCreativeTab instance=new IPOCreativeTab();
-		
+	public static class IPOItemGroup extends ItemGroup{
 		private ItemStack iconstack=null;
-		private IPOCreativeTab(){
+		private IPOItemGroup(){
 			super(IPOMod.ID);
 		}
 		
 		@Override
-		@SideOnly(Side.CLIENT)
 		public ItemStack createIcon(){
 			if(this.iconstack==null)
 				this.iconstack=new ItemStack(IPOStuff.postBase);
@@ -75,8 +65,7 @@ public class ImmersivePosts{
 		
 		@Override
 		public boolean equals(Object obj){
-			if(obj instanceof IPOCreativeTab) return true;
-			if(obj==this) return true;
+			if(obj==this || obj instanceof IPOItemGroup) return true;
 			
 			return super.equals(obj);
 		}

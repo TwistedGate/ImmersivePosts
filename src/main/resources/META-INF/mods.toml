@@ -1,0 +1,35 @@
+modLoader="javafml" #mandatory
+loaderVersion="[28,)" #mandatory (28 is current forge version)
+issueTrackerURL="https://github.com/TwistedGate/ImmersivePosts/issues" #optional
+
+[[mods]]
+displayName="Immersive Posts"
+modId="immersiveposts"
+version="${version}"
+logoFile="ipo-logo.png"
+displayURL="https://minecraft.curseforge.com/projects/immersiveposts"
+updateJSONURL="https://raw.githubusercontent.com/TwistedGate/ImmersivePosts/master/change.json"
+credits="\n§nInspired by ImmersiveIntegration's extendable posts.§r\n\n§l§2--- Translations ---§r\nRussian: Shellyoung\nChinese: scikirbypoke\n"
+authors="TwistedGate"
+description="Simply adds a way to have extendable posts. With a few post types to choose from."
+
+[[dependencies.immersiveengineering]]
+  modId="immersiveengineering"
+  mandatory=true
+  versionRange="[0.14,)"
+  ordering="BEFORE"
+  side="BOTH"
+
+[[dependencies.immersiveposts]]
+    modId="forge"
+    mandatory=true
+    versionRange="[28,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.immersiveposts]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.14.4]"
+    ordering="NONE"
+    side="BOTH"

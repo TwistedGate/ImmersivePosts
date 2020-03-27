@@ -1,30 +1,38 @@
 package twistedgate.immersiveposts.common.blocks;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
+import com.sun.jna.platform.KeyboardUtils;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
 import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockHelper;
@@ -34,47 +42,23 @@ import twistedgate.immersiveposts.utils.BlockHelper;
  */
 public class BlockPostBase extends IPOBlockBase{
 	private static final AxisAlignedBB BASE_SIZE=new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
+	private static final Material BaseMaterial = new Material.Builder(MaterialColor.STONE).doesNotBlockMovement().notSolid().build();
 	
 	public BlockPostBase(){
-		super(Material.ROCK, "postbase");
-		setResistance(5.0F);
-		setHardness(3.0F);
+		super("postbase", Properties.create(BaseMaterial)
+				.harvestTool(ToolType.PICKAXE)
+				.hardnessAndResistance(5.0F, 3.0F));
 		
-		IPOStuff.ITEMS.add(new ItemPostBase(this));
+		IPOStuff.ITEMS.add(new ItemPostBase(this, new Item.Properties().group(ImmersivePosts.creativeTab)));
 	}
 	
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face){
-		return (face==EnumFacing.UP)?BlockFaceShape.SOLID:BlockFaceShape.UNDEFINED;
+	public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos){
+		return VoxelShapes.create(BASE_SIZE);
 	}
 	
 	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side){
-		return false;
-	}
-	
-	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos){
-		return false;
-	}
-	
-	@Override
-	public boolean isOpaqueCube(IBlockState state){
-		return false;
-	}
-	
-	@Override
-	public boolean isFullCube(IBlockState state){
-		return false;
-	}
-	
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
-		return BASE_SIZE;
-	}
-	
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
 			if(EnumPostMaterial.isFenceItem(held)){
@@ -82,14 +66,14 @@ public class BlockPostBase extends IPOBlockBase{
 					return true;
 				}
 				
-				if(!worldIn.isAirBlock(pos.offset(EnumFacing.UP))){
-					IBlockState aboveState=worldIn.getBlockState(pos.offset(EnumFacing.UP));
+				if(!worldIn.isAirBlock(pos.offset(Direction.UP))){
+					BlockState aboveState=worldIn.getBlockState(pos.offset(Direction.UP));
 					Block b=aboveState.getBlock();
 					
 					if(b instanceof BlockPost){
 						ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
 						if(!held.isItemEqual(tmp)){
-							playerIn.sendStatusMessage(new TextComponentTranslation("immersiveposts.expectedlocal", new TextComponentString(tmp.getDisplayName())), true);
+							playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", new StringTextComponent(tmp.getDisplayName().getString())), true);
 							return true;
 						}
 					}
@@ -99,16 +83,16 @@ public class BlockPostBase extends IPOBlockBase{
 					BlockPos nPos=pos.add(0,y,0);
 					
 					if((BlockHelper.getBlockFrom(worldIn, nPos) instanceof BlockPost)){
-						IBlockState s=worldIn.getBlockState(nPos);
-						if(s.getValue(BlockPost.TYPE)==EnumPostType.ARM){
+						BlockState s=worldIn.getBlockState(nPos);
+						if(s.get(BlockPost.TYPE)==EnumPostType.ARM){
 							return true;
 						}
 					}
 					
 					if(worldIn.isAirBlock(nPos)){
-						IBlockState fb=EnumPostMaterial.getPostStateFrom(held);
+						BlockState fb=EnumPostMaterial.getPostStateFrom(held);
 						if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb)){
-							if(!playerIn.capabilities.isCreativeMode){
+							if(!playerIn.isCreative()){
 								held.shrink(1);
 							}
 						}
@@ -125,22 +109,22 @@ public class BlockPostBase extends IPOBlockBase{
 	}
 	
 	
-	public static class ItemPostBase extends ItemBlock{
-		public ItemPostBase(Block block){
-			super(block);
+	public static class ItemPostBase extends BlockItem{
+		public ItemPostBase(Block block, Properties properties){
+			super(block, properties);
 			setRegistryName(block.getRegistryName());
 		}
 		
 		@Override
-		@SideOnly(Side.CLIENT)
-		public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn){
-			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)){
+		@OnlyIn(Dist.CLIENT)
+		public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn){
+			if(KeyboardUtils.isPressed(KeyEvent.VK_SHIFT)){
 				for(EnumPostMaterial t:EnumPostMaterial.values()){
 					if(IPOConfig.isEnabled(t))
-						tooltip.add("- \u00A7a"+t.getItemStack().getDisplayName());
+						tooltip.add(new StringTextComponent("- \u00A7a"+t.getItemStack().getDisplayName()));
 				}
 			}else{
-				tooltip.add(I18n.format("tooltip.postbase"));
+				tooltip.add(new StringTextComponent(I18n.format("tooltip.postbase")));
 			}
 		}
 	}

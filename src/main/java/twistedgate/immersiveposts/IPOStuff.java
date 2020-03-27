@@ -1,55 +1,41 @@
 package twistedgate.immersiveposts;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
-import blusunrize.immersiveengineering.api.ApiUtils;
-import blusunrize.immersiveengineering.api.ComparableItemStack;
-import blusunrize.immersiveengineering.api.IEApi;
-import blusunrize.immersiveengineering.api.crafting.MetalPressRecipe;
-import blusunrize.immersiveengineering.common.IEContent;
-import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFence;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.FenceBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import twistedgate.immersiveposts.common.blocks.BlockMetalFence;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;
 import twistedgate.immersiveposts.common.items.MetalRods;
 import twistedgate.immersiveposts.common.items.MultiMetaItem;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
-import twistedgate.immersiveposts.utils.StringUtils;
 
 /**
  * @author TwistedGate
  */
-@Mod.EventBusSubscriber(modid=IPOMod.ID)
+@Mod.EventBusSubscriber(modid=IPOMod.ID, bus=Bus.MOD)
 public class IPOStuff{
 	public static final ArrayList<Block> BLOCKS=new ArrayList<>();
 	public static final ArrayList<Item> ITEMS=new ArrayList<>();
 	
 	public static BlockPostBase postBase;
 	
-	public static BlockFence ironFence;
-	public static BlockFence goldFence;
-	public static BlockFence copperFence;
-	public static BlockFence leadFence;
-	public static BlockFence silverFence;
-	public static BlockFence nickelFence;
-	public static BlockFence constantanFence;
-	public static BlockFence electrumFence;
-	public static BlockFence uraniumFence;
+	public static FenceBlock ironFence;
+	public static FenceBlock goldFence;
+	public static FenceBlock copperFence;
+	public static FenceBlock leadFence;
+	public static FenceBlock silverFence;
+	public static FenceBlock nickelFence;
+	public static FenceBlock constantanFence;
+	public static FenceBlock electrumFence;
+	public static FenceBlock uraniumFence;
 	
 	public static BlockPost woodPost;
 	public static BlockPost ironPost;
@@ -88,21 +74,21 @@ public class IPOStuff{
 		// =========================================================================
 		// Posts
 		
-		woodPost			=new BlockPost(Material.WOOD, EnumPostMaterial.WOOD);
-		ironPost			=createMetalPost(EnumPostMaterial.IRON);
-		goldPost			=createMetalPost(EnumPostMaterial.GOLD);
-		copperPost			=createMetalPost(EnumPostMaterial.COPPER);
-		leadPost			=createMetalPost(EnumPostMaterial.LEAD);
-		silverPost			=createMetalPost(EnumPostMaterial.SILVER);
-		nickelPost			=createMetalPost(EnumPostMaterial.NICKEL);
-		constantanPost		=createMetalPost(EnumPostMaterial.CONSTANTAN);
-		electrumPost		=createMetalPost(EnumPostMaterial.ELECTRUM);
-		uraniumPost			=createMetalPost(EnumPostMaterial.URANIUM);
-		netherPost			=createRockyPost(EnumPostMaterial.NETHERBRICK);
-		aluminiumPost		=createMetalPost(EnumPostMaterial.ALUMINIUM);
-		steelPost			=createMetalPost(EnumPostMaterial.STEEL);
-		concretePost		=createRockyPost(EnumPostMaterial.CONCRETE);
-		leadedConcretePost	=createRockyPost(EnumPostMaterial.CONCRETE_LEADED);
+		woodPost			=new BlockPost(EnumPostMaterial.WOOD);
+		ironPost			=new BlockPost(EnumPostMaterial.IRON);
+		goldPost			=new BlockPost(EnumPostMaterial.GOLD);
+		copperPost			=new BlockPost(EnumPostMaterial.COPPER);
+		leadPost			=new BlockPost(EnumPostMaterial.LEAD);
+		silverPost			=new BlockPost(EnumPostMaterial.SILVER);
+		nickelPost			=new BlockPost(EnumPostMaterial.NICKEL);
+		constantanPost		=new BlockPost(EnumPostMaterial.CONSTANTAN);
+		electrumPost		=new BlockPost(EnumPostMaterial.ELECTRUM);
+		uraniumPost			=new BlockPost(EnumPostMaterial.URANIUM);
+		netherPost			=new BlockPost(EnumPostMaterial.NETHERBRICK);
+		aluminiumPost		=new BlockPost(EnumPostMaterial.ALUMINIUM);
+		steelPost			=new BlockPost(EnumPostMaterial.STEEL);
+		concretePost		=new BlockPost(EnumPostMaterial.CONCRETE);
+		leadedConcretePost	=new BlockPost(EnumPostMaterial.CONCRETE_LEADED);
 		
 		// =========================================================================
 		// Items
@@ -111,15 +97,7 @@ public class IPOStuff{
 		
 	}
 	
-	private static BlockPost createMetalPost(EnumPostMaterial postMat){
-		return new BlockPost(Material.IRON, postMat);
-	}
-	
-	private static BlockPost createRockyPost(EnumPostMaterial postMat){
-		return new BlockPost(Material.ROCK, postMat);
-	}
-	
-	private static BlockFence createFence(String name){
+	private static FenceBlock createFence(String name){
 		return new BlockMetalFence(name);
 	}
 	
@@ -149,10 +127,33 @@ public class IPOStuff{
 	}
 	
 	@SubscribeEvent
+	public static void registerItems(RegistryEvent.Register<Item> event){
+		for(Item item:ITEMS){
+			if(item instanceof BlockItem){
+				boolean skip=false;
+				for(EnumPostMaterial m:EnumPostMaterial.values()){
+					if(((BlockItem)item).getBlock()==m.getBlock() && !IPOConfig.isEnabled(m)){
+						ImmersivePosts.log.info("Item-Registration of {}-Fence skipped.", m);
+						skip=true;break;
+					}
+				}
+				
+				if(skip) continue;
+			}
+			
+			event.getRegistry().register(item);
+		}
+		
+		//registerFenceOres();
+		//registerStickOres();
+	}
+	
+	/*
+	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event){
 		ImmersivePosts.log.info("Registering Recipes.");
 		
-		ComparableItemStack compMoldRod = ApiUtils.createComparableItemStack(new ItemStack(IEContent.itemMold, 1, 2), false);
+		ComparableItemStack compMoldRod = ApiUtils.createComparableItemStack(new ItemStack(IEItems.Molds.moldRod), false);
 		for(EnumPostMaterial m:EnumPostMaterial.values()){
 			switch(m){
 				case WOOD:case NETHERBRICK:case ALUMINIUM:
@@ -199,28 +200,6 @@ public class IPOStuff{
 		event.getRegistry().register(new ShapedOreRecipe(group, output, params).setRegistryName(regName));
 	}
 	
-	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event){
-		for(Item item:ITEMS){
-			if(item instanceof ItemBlock){
-				boolean skip=false;
-				for(EnumPostMaterial m:EnumPostMaterial.values()){
-					if(((ItemBlock)item).getBlock()==m.getBlock() && !IPOConfig.isEnabled(m)){
-						ImmersivePosts.log.info("Item-Registration of {}-Fence skipped.", m);
-						skip=true;break;
-					}
-				}
-				
-				if(skip) continue;
-			}
-			
-			event.getRegistry().register(item);
-		}
-		
-		registerFenceOres();
-		registerStickOres();
-	}
-	
 	private static void registerFenceOres(){
 		String prefix="fence";
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
@@ -257,5 +236,5 @@ public class IPOStuff{
 				break;
 			}
 		}
-	}
+	}*/
 }

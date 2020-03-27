@@ -11,10 +11,11 @@ import twistedgate.immersiveposts.ImmersivePosts;
  */
 public class IPOItemBase extends Item{
 	public IPOItemBase(String name){
-		setCreativeTab(ImmersivePosts.creativeTab);
+		super(new Item.Properties().group(ImmersivePosts.creativeTab));
+		//setCreativeTab(ImmersivePosts.creativeTab);
 		setRegistryName(new ResourceLocation(IPOMod.ID, name));
-		setTranslationKey(IPOMod.ID+"."+name);
-		setFull3D();
+		//setTranslationKey(IPOMod.ID+"."+name);
+		//setFull3D();
 		
 		IPOStuff.ITEMS.add(this);
 	}

@@ -1,14 +1,15 @@
 package twistedgate.immersiveposts.enums;
 
-import blusunrize.immersiveengineering.common.IEContent;
-import blusunrize.immersiveengineering.common.blocks.metal.BlockTypes_MetalDecoration1;
-import blusunrize.immersiveengineering.common.blocks.stone.BlockTypes_StoneDecoration;
-import blusunrize.immersiveengineering.common.blocks.wooden.BlockTypes_WoodenDecoration;
+import blusunrize.immersiveengineering.common.blocks.IEBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraftforge.common.ToolType;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 
@@ -18,9 +19,9 @@ import twistedgate.immersiveposts.common.blocks.BlockPost;
 public enum EnumPostMaterial implements IStringSerializable{
 	
 	// Default
-	WOOD("woodpost", IEContent.blockWoodenDecoration, BlockTypes_WoodenDecoration.FENCE.getMeta(), true, true),
-	ALUMINIUM("aluminiumpost", IEContent.blockMetalDecoration1, BlockTypes_MetalDecoration1.ALUMINUM_FENCE.getMeta(), true, true),
-	STEEL("steelpost", IEContent.blockMetalDecoration1, BlockTypes_MetalDecoration1.STEEL_FENCE.getMeta(), true, true),
+	WOOD("woodpost", IEBlocks.WoodenDecoration.treatedFence, true, true),
+	ALUMINIUM("aluminiumpost", IEBlocks.MetalDecoration.aluFence, true, true),
+	STEEL("steelpost", IEBlocks.MetalDecoration.steelFence, true, true),
 	
 	// Custom
 	NETHERBRICK("netherpost", Blocks.NETHER_BRICK_FENCE, true, false),
@@ -33,8 +34,8 @@ public enum EnumPostMaterial implements IStringSerializable{
 	CONSTANTAN("constantanpost", IPOStuff.constantanFence, true, true),
 	ELECTRUM("electrumpost", IPOStuff.electrumFence, true, true),
 	URANIUM("uraniumpost", IPOStuff.uraniumFence, true, true),
-	CONCRETE("concretepost", IEContent.blockStoneDecorationSlabs, BlockTypes_StoneDecoration.CONCRETE.getMeta(), false, false),
-	CONCRETE_LEADED("leadedconcretepost", IEContent.blockStoneDecorationSlabs, BlockTypes_StoneDecoration.CONCRETE_LEADED.getMeta(), false, false)
+	CONCRETE("concretepost", IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concrete), false, false),
+	CONCRETE_LEADED("leadedconcretepost", IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concreteLeaded), false, false)
 	;
 	
 	private final String name;
@@ -55,7 +56,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 	
 	/** Source-block itemstack */
 	public ItemStack getItemStack(){
-		return new ItemStack(this.block, 1, this.meta);
+		return new ItemStack(this.block.asItem(), 1);
 	}
 	
 	/** Source-block*/
@@ -84,8 +85,46 @@ public enum EnumPostMaterial implements IStringSerializable{
 	}
 	
 	
-	public static IBlockState getPostStateFrom(ItemStack stack){
-		IBlockState state=null;
+	private static final Material WOOD_LIKE = new Material.Builder(MaterialColor.WOOD)
+			.doesNotBlockMovement()
+			.notSolid()
+			.build();
+	
+	private static final Material STONE_LIKE = new Material.Builder(MaterialColor.STONE)
+			.doesNotBlockMovement()
+			.notSolid()
+			.build();
+	
+	private static final Material METAL_LIKE=new Material.Builder(MaterialColor.IRON)
+			.doesNotBlockMovement()
+			.notSolid()
+			.build();
+	
+	public Block.Properties getProperties(){
+		return blockPropertiesFrom(this);
+	}
+	
+	public static Block.Properties blockPropertiesFrom(EnumPostMaterial postMaterial){
+		Block.Properties prop=null;
+		switch(postMaterial){
+			case WOOD: // For the *one* post that wants to be different..
+				prop=Block.Properties.create(WOOD_LIKE).harvestTool(ToolType.AXE).harvestLevel(0).sound(SoundType.WOOD); break;
+			case NETHERBRICK: case CONCRETE: case CONCRETE_LEADED:
+				prop=Block.Properties.create(STONE_LIKE).harvestTool(ToolType.PICKAXE).harvestLevel(1).sound(SoundType.STONE); break;
+			default:
+				prop=Block.Properties.create(METAL_LIKE).harvestTool(ToolType.PICKAXE).harvestLevel(1).sound(SoundType.METAL);
+		}
+		
+		if(postMaterial==EnumPostMaterial.URANIUM)
+			prop.lightValue(8);
+		
+		prop.hardnessAndResistance(3.0F, 5.0F);
+		
+		return prop;
+	}
+	
+	public static BlockState getPostStateFrom(ItemStack stack){
+		BlockState state=null;
 		switch(getFrom(stack)){
 			case ALUMINIUM:		 state=IPOStuff.aluminiumPost.getDefaultState();break;
 			case CONSTANTAN:	 state=IPOStuff.constantanPost.getDefaultState();break;
@@ -104,7 +143,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 			case CONCRETE_LEADED:state=IPOStuff.leadedConcretePost.getDefaultState();break;
 		}
 		
-		return state!=null?state.withProperty(BlockPost.TYPE, EnumPostType.POST_TOP):null;
+		return state!=null?state.with(BlockPost.TYPE, EnumPostType.POST_TOP):null;
 	}
 	
 	public static EnumPostMaterial getFrom(ItemStack stack){

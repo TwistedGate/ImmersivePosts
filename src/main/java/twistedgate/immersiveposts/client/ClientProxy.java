@@ -1,48 +1,42 @@
 package twistedgate.immersiveposts.client;
 
-import java.util.ArrayList;
-
-import blusunrize.immersiveengineering.api.ManualHelper;
-import blusunrize.immersiveengineering.common.IEContent;
-import blusunrize.lib.manual.IManualPage;
-import blusunrize.lib.manual.ManualInstance;
-import blusunrize.lib.manual.ManualPages;
+import blusunrize.immersiveengineering.client.models.obj.IEOBJLoader;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.common.items.MultiMetaItem;
-import twistedgate.immersiveposts.enums.EnumPostMaterial;
-import twistedgate.immersiveposts.utils.StringUtils;
 
 /**
  * @author TwistedGate
  */
-@Mod.EventBusSubscriber(Side.CLIENT)
+@Mod.EventBusSubscriber(value=Dist.CLIENT, modid=IPOMod.ID, bus=Bus.MOD)
 public class ClientProxy extends CommonProxy{
+	
 	@Override
-	public void preInit(FMLPreInitializationEvent event){
-		OBJLoader.INSTANCE.addDomain(IPOMod.ID);
+	public void construct(){
 	}
 	
 	@Override
-	public void postInit(FMLPostInitializationEvent event){
-		setupManualPage();
+	public void preInit(){
+		IEOBJLoader.instance.addDomain(IPOMod.ID);
+		//OBJLoader.INSTANCE.addDomain(IPOMod.ID);
+	}
+	
+	@Override
+	public void postInit(){
+		// TODO Remake manual entries.
+		//setupManualPage();
 	}
 	
 	@SubscribeEvent
@@ -51,30 +45,31 @@ public class ClientProxy extends CommonProxy{
 			if(!(block instanceof BlockPost)){ // Prevent posts from getting an item
 				Item item=Item.getItemFromBlock(block);
 				ModelResourceLocation loc=new ModelResourceLocation(block.getRegistryName(), "inventory");
-				ModelLoader.setCustomModelResourceLocation(item, 0, loc);
+				//ModelLoader.setCustomModelResourceLocation(item, 0, loc);
 			}
 		}
 		
 		for(Item item:IPOStuff.ITEMS){
-			if(item instanceof ItemBlock) continue;
+			if(item instanceof BlockItem) continue;
 			
 			if(item instanceof MultiMetaItem){
 				MultiMetaItem mItem=(MultiMetaItem)item;
 				for(int i=0;i<mItem.getSubItemCount();i++){
 					ResourceLocation loc=new ResourceLocation(IPOMod.ID, mItem.regName+"/"+mItem.getName(i));
-					ModelBakery.registerItemVariants(mItem, loc);
-					ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(loc, "inventory"));
+					//ModelBakery.registerItemVariants(mItem, loc);
+					//ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(loc, "inventory"));
 				}
 				
 			}else{
 				ModelResourceLocation loc=new ModelResourceLocation(item.getRegistryName(), "inventory");
 				
-				for(int i=0;i<15;i++)
-					ModelLoader.setCustomModelResourceLocation(item, i, loc);
+				//for(int i=0;i<15;i++)
+					//ModelLoader.setCustomModelResourceLocation(item, i, loc);
 			}
 		}
 	}
 	
+	/*
 	public void setupManualPage(){
 		ManualInstance man=ManualHelper.getManual();
 		
@@ -145,4 +140,5 @@ public class ClientProxy extends CommonProxy{
 		
 		ManualHelper.addEntry(IPOMod.ID+".posts", IPOMod.ID, array);
 	}
+	*/
 }
