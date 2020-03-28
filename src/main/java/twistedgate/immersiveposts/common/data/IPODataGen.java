@@ -16,6 +16,10 @@ public class IPODataGen{
 			DataGenerator generator=event.getGenerator();
 			
 			generator.addProvider(new IPORecipes(generator));
+			IPOModelLoader loadedModels=new IPOModelLoader(generator, event.getExistingFileHelper());
+			IPOBlockStates blockStates=new IPOBlockStates(generator, event.getExistingFileHelper(), loadedModels);
+			generator.addProvider(blockStates);
+			generator.addProvider(loadedModels);
 		}
 	}
 }

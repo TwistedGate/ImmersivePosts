@@ -108,30 +108,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				);
 	}
 	
-	@Deprecated
-	public BlockPost(Material blockMaterial, EnumPostMaterial postMaterial){
-		super(postMaterial.getName(), postMaterial.getProperties());
-		this.postMaterial=postMaterial;
-		/*
-		setResistance(5.0F);
-		setHardness(3.0F);
-		if(this.postMaterial==EnumPostMaterial.URANIUM)
-			setLightLevel(8);
-		
-		if(this.postMaterial==EnumPostMaterial.WOOD) setHarvestLevel("axe", 0);
-		else setHarvestLevel("pickaxe", 1);
-		*/
-		setDefaultState(getDefaultState()
-				.with(FACING, Direction.NORTH)
-				.with(FLIP, false)
-				.with(TYPE, EnumPostType.POST)
-				.with(LPARM_NORTH, false)
-				.with(LPARM_EAST, false)
-				.with(LPARM_SOUTH, false)
-				.with(LPARM_WEST, false)
-				);
-	}
-	
 	public final EnumPostMaterial getPostMaterial(){
 		return this.postMaterial;
 	}
@@ -141,6 +117,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		return BlockRenderLayer.SOLID;
 	}
 	
+	// FIXME I have no idea how one does this now, so.. without this im pretty much stuck with the rest.
 	/*
 	protected BlockStateContainer createBlockState(){
 		return new BlockStateContainer(this, new IProperty<?>[]{
