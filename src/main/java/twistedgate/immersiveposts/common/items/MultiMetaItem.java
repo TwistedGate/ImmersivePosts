@@ -16,11 +16,7 @@ public class MultiMetaItem extends Item{
 		super(new Item.Properties().group(ImmersivePosts.creativeTab));
 		this.regName=regName;
 		
-		//setCreativeTab(ImmersivePosts.creativeTab);
 		setRegistryName(new ResourceLocation(IPOMod.ID, regName));
-		//setTranslationKey(IPOMod.ID+"."+regName);
-		//setFull3D();
-		//setHasSubtypes(true);
 		
 		IPOStuff.ITEMS.add(this);
 	}

@@ -4,12 +4,15 @@ import blusunrize.immersiveengineering.common.blocks.IEBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 
@@ -19,39 +22,32 @@ import twistedgate.immersiveposts.common.blocks.BlockPost;
 public enum EnumPostMaterial implements IStringSerializable{
 	
 	// Default
-	WOOD("woodpost", IEBlocks.WoodenDecoration.treatedFence, true, true),
-	ALUMINIUM("aluminiumpost", IEBlocks.MetalDecoration.aluFence, true, true),
-	STEEL("steelpost", IEBlocks.MetalDecoration.steelFence, true, true),
+	WOOD("woodpost", IEBlocks.WoodenDecoration.treatedFence),
+	ALUMINIUM("aluminiumpost", IEBlocks.MetalDecoration.aluFence),
+	STEEL("steelpost", IEBlocks.MetalDecoration.steelFence),
 	
 	// Custom
-	NETHERBRICK("netherpost", Blocks.NETHER_BRICK_FENCE, true, false),
-	IRON("ironpost", IPOStuff.ironFence, true, true),
-	GOLD("goldpost", IPOStuff.goldFence, true, true),
-	COPPER("copperpost", IPOStuff.copperFence, true, true),
-	LEAD("leadpost", IPOStuff.leadFence, true, true),
-	SILVER("silverpost", IPOStuff.silverFence, true, true),
-	NICKEL("nickelpost", IPOStuff.nickelFence, true, true),
-	CONSTANTAN("constantanpost", IPOStuff.constantanFence, true, true),
-	ELECTRUM("electrumpost", IPOStuff.electrumFence, true, true),
-	URANIUM("uraniumpost", IPOStuff.uraniumFence, true, true),
-	CONCRETE("concretepost", IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concrete), false, false),
-	CONCRETE_LEADED("leadedconcretepost", IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concreteLeaded), false, false)
+	NETHERBRICK("netherpost", Blocks.NETHER_BRICK_FENCE),
+	IRON("ironpost", IPOStuff.ironFence),
+	GOLD("goldpost", IPOStuff.goldFence),
+	COPPER("copperpost", IPOStuff.copperFence),
+	LEAD("leadpost", IPOStuff.leadFence),
+	SILVER("silverpost", IPOStuff.silverFence),
+	NICKEL("nickelpost", IPOStuff.nickelFence),
+	CONSTANTAN("constantanpost", IPOStuff.constantanFence),
+	ELECTRUM("electrumpost", IPOStuff.electrumFence),
+	URANIUM("uraniumpost", IPOStuff.uraniumFence),
+	CONCRETE("concretepost", IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concrete)),
+	CONCRETE_LEADED("leadedconcretepost", IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concreteLeaded))
 	;
 	
 	private final String name;
 	private final Block block;
-	private final int meta;
 	private final boolean isFence;
-	private final boolean needsMetalPress;
-	private EnumPostMaterial(String name, Block block, boolean isFence, boolean needsMetalPress){
-		this(name, block, 0, isFence, needsMetalPress);
-	}
-	private EnumPostMaterial(String name, Block block, int metadata, boolean isFence, boolean needsMetalPress){
+	private EnumPostMaterial(String name, Block block){
 		this.name=name;
 		this.block=block;
-		this.meta=metadata;
-		this.isFence=isFence;
-		this.needsMetalPress=needsMetalPress;
+		this.isFence=(block instanceof FenceBlock);
 	}
 	
 	/** Source-block itemstack */
@@ -59,24 +55,18 @@ public enum EnumPostMaterial implements IStringSerializable{
 		return new ItemStack(this.block.asItem(), 1);
 	}
 	
+	public ResourceLocation getTexture(){
+		return new ResourceLocation(IPOMod.ID, "posts/post_"+this.toString().toLowerCase()+".png");
+	}
+	
 	/** Source-block*/
 	public Block getBlock(){
 		return this.block;
 	}
 	
-	/** Source-block metadata */
-	public int getBlockMeta(){
-		return this.meta;
-	}
-	
 	/** Is the source-block a fence or a different type of block. Used for manual. */
 	public boolean isFence(){
 		return this.isFence;
-	}
-	
-	/** Used to decided if it has a rod that can be made in the Metal Press */
-	public boolean needsMetalPress(){
-		return this.needsMetalPress;
 	}
 	
 	@Override
@@ -124,26 +114,26 @@ public enum EnumPostMaterial implements IStringSerializable{
 	}
 	
 	public static BlockState getPostStateFrom(ItemStack stack){
-		BlockState state=null;
+		Block block=null;
 		switch(getFrom(stack)){
-			case ALUMINIUM:		 state=IPOStuff.aluminiumPost.getDefaultState();break;
-			case CONSTANTAN:	 state=IPOStuff.constantanPost.getDefaultState();break;
-			case COPPER:		 state=IPOStuff.copperPost.getDefaultState();break;
-			case ELECTRUM:		 state=IPOStuff.electrumPost.getDefaultState();break;
-			case GOLD:			 state=IPOStuff.goldPost.getDefaultState();break;
-			case IRON:			 state=IPOStuff.ironPost.getDefaultState();break;
-			case LEAD:			 state=IPOStuff.leadPost.getDefaultState();break;
-			case NETHERBRICK:	 state=IPOStuff.netherPost.getDefaultState();break;
-			case NICKEL:		 state=IPOStuff.nickelPost.getDefaultState();break;
-			case SILVER:		 state=IPOStuff.silverPost.getDefaultState();break;
-			case STEEL:			 state=IPOStuff.steelPost.getDefaultState();break;
-			case URANIUM:		 state=IPOStuff.uraniumPost.getDefaultState();break;
-			case WOOD:			 state=IPOStuff.woodPost.getDefaultState();break;
-			case CONCRETE:		 state=IPOStuff.concretePost.getDefaultState();break;
-			case CONCRETE_LEADED:state=IPOStuff.leadedConcretePost.getDefaultState();break;
+			case ALUMINIUM:		 block=IPOStuff.aluminiumPost;break;
+			case CONSTANTAN:	 block=IPOStuff.constantanPost;break;
+			case COPPER:		 block=IPOStuff.copperPost;break;
+			case ELECTRUM:		 block=IPOStuff.electrumPost;break;
+			case GOLD:			 block=IPOStuff.goldPost;break;
+			case IRON:			 block=IPOStuff.ironPost;break;
+			case LEAD:			 block=IPOStuff.leadPost;break;
+			case NETHERBRICK:	 block=IPOStuff.netherPost;break;
+			case NICKEL:		 block=IPOStuff.nickelPost;break;
+			case SILVER:		 block=IPOStuff.silverPost;break;
+			case STEEL:			 block=IPOStuff.steelPost;break;
+			case URANIUM:		 block=IPOStuff.uraniumPost;break;
+			case WOOD:			 block=IPOStuff.woodPost;break;
+			case CONCRETE:		 block=IPOStuff.concretePost;break;
+			case CONCRETE_LEADED:block=IPOStuff.leadedConcretePost;break;
 		}
 		
-		return state!=null?state.with(BlockPost.TYPE, EnumPostType.POST_TOP):null;
+		return block!=null?block.getDefaultState().with(BlockPost.TYPE, EnumPostType.POST_TOP):null;
 	}
 	
 	public static EnumPostMaterial getFrom(ItemStack stack){

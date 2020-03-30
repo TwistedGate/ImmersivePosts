@@ -10,9 +10,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import twistedgate.immersiveposts.IPOMod;
 
-public class IPOModelLoader extends LoadedModelProvider{
+public class IPOLoadedModels extends LoadedModelProvider{
 	final Map<ResourceLocation, LoadedModelBuilder> models=new HashMap<>();
-	public IPOModelLoader(DataGenerator gen, ExistingFileHelper exHelper){
+	public IPOLoadedModels(DataGenerator gen, ExistingFileHelper exHelper){
 		super(gen, IPOMod.ID, "block", exHelper);
 	}
 	

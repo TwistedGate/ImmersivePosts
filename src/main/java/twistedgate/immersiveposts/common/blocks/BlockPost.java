@@ -11,7 +11,6 @@ import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -19,6 +18,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
@@ -92,10 +92,14 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	public static final BooleanProperty FLIP=BooleanProperty.create("flip");
 	
 	protected EnumPostMaterial postMaterial;
-	
+	protected StateContainer<Block, BlockState> altStateContainer;
 	public BlockPost(EnumPostMaterial postMaterial){
 		super(postMaterial.getName(), postMaterial.getProperties());
 		this.postMaterial=postMaterial;
+		
+		StateContainer.Builder<Block, BlockState> builder=new StateContainer.Builder<>(this);
+		fillStateContainer(builder);
+		this.altStateContainer=builder.create(PostState::new);
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(FACING, Direction.NORTH)
@@ -117,7 +121,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		return BlockRenderLayer.SOLID;
 	}
 	
-	// FIXME I have no idea how one does this now, so.. without this im pretty much stuck with the rest.
 	/*
 	protected BlockStateContainer createBlockState(){
 		return new BlockStateContainer(this, new IProperty<?>[]{
@@ -130,6 +133,19 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			}
 		};
 	}*/
+	
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder){
+		builder.add(
+				FACING, FLIP, TYPE,
+				LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
+				);
+	}
+	
+	@Override
+	public StateContainer<Block, BlockState> getStateContainer(){
+		return this.altStateContainer;
+	}
 	
 	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder){

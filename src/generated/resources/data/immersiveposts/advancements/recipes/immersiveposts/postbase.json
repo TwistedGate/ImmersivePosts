@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "immersiveposts:postbase"
+    ]
+  },
+  "criteria": {
+    "has_cobblestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:cobblestone"
+          }
+        ]
+      }
+    },
+    "has_stone_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "minecraft:stone_bricks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "immersiveposts:postbase"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cobblestone",
+      "has_stone_bricks",
+      "has_the_recipe"
+    ]
+  ]
+}

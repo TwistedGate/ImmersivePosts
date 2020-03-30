@@ -1,14 +1,14 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import java.awt.event.KeyEvent;
 import java.util.List;
 
-import com.sun.jna.platform.KeyboardUtils;
+import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -118,7 +118,7 @@ public class BlockPostBase extends IPOBlockBase{
 		@Override
 		@OnlyIn(Dist.CLIENT)
 		public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn){
-			if(KeyboardUtils.isPressed(KeyEvent.VK_SHIFT)){
+			if(isPressing(GLFW.GLFW_KEY_LEFT_SHIFT) || isPressing(GLFW.GLFW_KEY_RIGHT_SHIFT)){
 				for(EnumPostMaterial t:EnumPostMaterial.values()){
 					if(IPOConfig.isEnabled(t))
 						tooltip.add(new StringTextComponent("- \u00A7a"+t.getItemStack().getDisplayName()));
@@ -126,6 +126,12 @@ public class BlockPostBase extends IPOBlockBase{
 			}else{
 				tooltip.add(new StringTextComponent(I18n.format("tooltip.postbase")));
 			}
+		}
+		
+		@OnlyIn(Dist.CLIENT)
+		private boolean isPressing(int key){
+			long window=Minecraft.getInstance().mainWindow.getHandle();
+			return GLFW.glfwGetKey(window, key)==GLFW.GLFW_PRESS;
 		}
 	}
 }
