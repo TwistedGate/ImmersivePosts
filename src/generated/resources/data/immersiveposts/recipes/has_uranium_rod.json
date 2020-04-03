@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "i",
+    "i"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/uranium"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:stick_uranium",
+    "count": 4
+  }
+}

@@ -20,6 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
@@ -53,8 +54,18 @@ public class BlockPostBase extends IPOBlockBase{
 	}
 	
 	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos){
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
 		return VoxelShapes.create(BASE_SIZE);
+	}
+	
+	@Override
+	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side){
+		return true;
+	}
+	
+	@Override
+	public boolean isSolid(BlockState state){
+		return false;
 	}
 	
 	@Override
@@ -121,7 +132,7 @@ public class BlockPostBase extends IPOBlockBase{
 			if(isPressing(GLFW.GLFW_KEY_LEFT_SHIFT) || isPressing(GLFW.GLFW_KEY_RIGHT_SHIFT)){
 				for(EnumPostMaterial t:EnumPostMaterial.values()){
 					if(IPOConfig.isEnabled(t))
-						tooltip.add(new StringTextComponent("- \u00A7a"+t.getItemStack().getDisplayName()));
+						tooltip.add(new StringTextComponent("- \u00A7a"+t.getItemStack().getDisplayName().getFormattedText()));
 				}
 			}else{
 				tooltip.add(new StringTextComponent(I18n.format("tooltip.postbase")));

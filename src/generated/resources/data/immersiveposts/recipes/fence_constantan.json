@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "isi",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/constantan"
+    },
+    "s": {
+      "tag": "forge:rod/constantan"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:fence_constantan",
+    "count": 3
+  }
+}

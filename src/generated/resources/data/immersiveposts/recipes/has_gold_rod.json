@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "i",
+    "i"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/gold"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:stick_gold",
+    "count": 4
+  }
+}

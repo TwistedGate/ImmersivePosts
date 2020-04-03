@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "immersiveposts:fence_gold"
+    ]
+  },
+  "criteria": {
+    "has_gold_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:rod/gold"
+          }
+        ]
+      }
+    },
+    "has_gold_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingot/gold"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "immersiveposts:fence_gold"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_gold_rod",
+      "has_gold_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -3,6 +3,7 @@ package twistedgate.immersiveposts.common.blocks;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -14,6 +15,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
@@ -23,18 +25,23 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext.Builder;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 //import net.minecraft.block.Block;
 //import net.minecraft.block.BlockFence;
 //import net.minecraft.block.BlockWall;
@@ -76,12 +83,16 @@ import twistedgate.immersiveposts.utils.BlockHelper;
  * @author TwistedGate
  */
 public class BlockPost extends IPOBlockBase implements IPostBlock{
+	private static final RedstoneParticleData URAN_PARTICLE=new RedstoneParticleData(0.0F, 1.0F, 0.0F, 1.0F);
+	
 	public static final AxisAlignedBB POST_SHAPE=new AxisAlignedBB(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
+	
 	public static final AxisAlignedBB LPARM_NORTH_BOUNDS=new AxisAlignedBB(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125);
 	public static final AxisAlignedBB LPARM_SOUTH_BOUNDS=new AxisAlignedBB(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0);
 	public static final AxisAlignedBB LPARM_EAST_BOUNDS=new AxisAlignedBB(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875);
 	public static final AxisAlignedBB LPARM_WEST_BOUNDS=new AxisAlignedBB(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875);
 	
+	// LPARM = (Little) Post Arm
 	public static final BooleanProperty LPARM_NORTH=BooleanProperty.create("parm_north");
 	public static final BooleanProperty LPARM_EAST=BooleanProperty.create("parm_east");
 	public static final BooleanProperty LPARM_SOUTH=BooleanProperty.create("parm_south");
@@ -96,10 +107,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	public BlockPost(EnumPostMaterial postMaterial){
 		super(postMaterial.getName(), postMaterial.getProperties());
 		this.postMaterial=postMaterial;
-		
-		StateContainer.Builder<Block, BlockState> builder=new StateContainer.Builder<>(this);
-		fillStateContainer(builder);
-		this.altStateContainer=builder.create(PostState::new);
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(FACING, Direction.NORTH)
@@ -121,29 +128,17 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		return BlockRenderLayer.SOLID;
 	}
 	
-	/*
-	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty<?>[]{
-			FACING, FLIP, TYPE,
-			LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST,
-		}){
-			@Override
-			protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties){
-				return new PostState(block, properties);
-			}
-		};
-	}*/
-	
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder){
-		builder.add(
-				FACING, FLIP, TYPE,
-				LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
-				);
-	}
-	
 	@Override
 	public StateContainer<Block, BlockState> getStateContainer(){
+		if(this.altStateContainer==null){
+			StateContainer.Builder<Block, BlockState> builder=new StateContainer.Builder<>(this);
+			builder.add(
+					FACING, FLIP, TYPE,
+					LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
+					);
+			this.altStateContainer=builder.create(PostState::new);
+		}
+		
 		return this.altStateContainer;
 	}
 	
@@ -155,6 +150,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		return Collections.emptyList();
 	}
 	
+	@Deprecated
 	public int getMetaFromState(BlockState state){
 		switch(state.get(TYPE)){
 			case POST: return 0;
@@ -183,6 +179,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		}
 	}
 	
+	@Deprecated
 	public BlockState getStateFromMeta(int meta){
 		BlockState state=getDefaultState();
 		if(meta==15) return state.with(TYPE, EnumPostType.EMPTY);
@@ -205,20 +202,18 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		return state;
 	}
 	
-	// TODO Find the new way of doing random display tick stuff
-	/*
-	public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand){
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand){
 		if(this.postMaterial==EnumPostMaterial.URANIUM){
 			if(stateIn.get(TYPE)!=EnumPostType.ARM && rand.nextFloat()<0.125F){
 				double x=pos.getX()+0.375+0.25*rand.nextDouble();
 				double y=pos.getY()+rand.nextDouble();
 				double z=pos.getZ()+0.375+0.25*rand.nextDouble();
-				worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x,y,z, -1.0, 1.0, 0.25);
-				worldIn.addParticle(null, true, x, y, z, -1.0, 1.0, 0.25);
+				worldIn.addParticle(URAN_PARTICLE, x,y,z, 0.0, 0.0, 0.0);
 			}
 		}
-	}*/
-	
+	}
 	
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player){
@@ -488,8 +483,13 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		*/
 		
 		@Override
-		public VoxelShape getShape(IBlockReader worldIn, BlockPos pos){
-			return VoxelShapes.create(stateBounds(this));
+		public boolean isSolid(){
+			return false;
+		}
+		
+		@Override
+		public boolean isOpaqueCube(IBlockReader worldIn, BlockPos pos){
+			return false;
 		}
 		
 		@Override
@@ -502,22 +502,39 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			return true;
 		}
 		
-		@Override
-		public void onNeighborChange(IWorldReader world, BlockPos pos, BlockPos neighbor){
-			//super.onNeighborChange(world, pos, neighbor);
-			
-			// TODO Maybe it's better to not cast IWorldReader to World
-			neighborChanged((World)world, pos, world.getBlockState(neighbor).getBlock(), neighbor);
+		@Override // NO, just no..
+		public BlockState rotate(IWorld world, BlockPos pos, Rotation direction){
+			return this;
 		}
 		
-		public void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos){
+		@Override // Again, just no..
+		public BlockState rotate(Rotation rot){
+			return this;
+		}
+		
+		@Override
+		@OnlyIn(Dist.CLIENT)
+		public boolean isSideInvisible(BlockState state, Direction face){
+			return false;
+		}
+		
+		@Override
+		public VoxelShape getShape(IBlockReader worldIn, BlockPos pos, ISelectionContext context){
+			return VoxelShapes.create(stateBounds(this));
+		}
+		
+		@Override
+		public void neighborChanged(World world, BlockPos posA, Block block, BlockPos fromPos, boolean isMoving){
+			neighborChanged(world, posA, block, fromPos);
+		}
+		
+		private void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos){
 			EnumPostType thisType=this.getBlockState().get(BlockPost.TYPE);
 			
 			if(thisType.id()<2){
 				BlockPos belowPos=pos.offset(Direction.DOWN);
 				if(BlockHelper.getBlockFrom(world, belowPos)==Blocks.AIR){
-					// FIXME This has to drop the item, so find a way!
-					//BlockHelper.getBlockFrom(world, pos).dropBlockAsItem(world, pos, this, 0);
+					Block.spawnDrops(this, world, pos);
 					world.setBlockState(pos, Blocks.AIR.getDefaultState());
 					return;
 				}
@@ -583,16 +600,16 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		static AxisAlignedBB stateBounds(BlockState state){
 			switch(state.get(TYPE)){
 				case ARM:case ARM_DOUBLE:{
-					Direction facing=state.get(FACING);
+					Direction dir=state.get(FACING);
 					boolean flipped=state.get(FLIP);
 					
 					double minY=flipped?0.0:0.34375;
 					double maxY=flipped?0.65625:1.0;
 					
-					double minX=(facing==Direction.EAST) ?0.0:0.3125;
-					double maxX=(facing==Direction.WEST) ?1.0:0.6875;
-					double minZ=(facing==Direction.SOUTH)?0.0:0.3125;
-					double maxZ=(facing==Direction.NORTH)?1.0:0.6875;
+					double minX=(dir==Direction.EAST) ?0.0:0.3125;
+					double maxX=(dir==Direction.WEST) ?1.0:0.6875;
+					double minZ=(dir==Direction.SOUTH)?0.0:0.3125;
+					double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
 					
 					return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
 				}

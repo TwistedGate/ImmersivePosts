@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "i",
+    "i"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/constantan"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:stick_constantan",
+    "count": 4
+  }
+}

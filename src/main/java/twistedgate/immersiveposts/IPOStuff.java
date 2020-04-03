@@ -13,8 +13,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import twistedgate.immersiveposts.common.blocks.BlockMetalFence;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;
-import twistedgate.immersiveposts.common.items.MetalRods;
-import twistedgate.immersiveposts.common.items.MultiMetaItem;
+import twistedgate.immersiveposts.common.items.IPOItemBase;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 /**
@@ -22,83 +21,92 @@ import twistedgate.immersiveposts.enums.EnumPostMaterial;
  */
 @Mod.EventBusSubscriber(modid=IPOMod.ID, bus=Bus.MOD)
 public class IPOStuff{
-	public static final ArrayList<Block> BLOCKS=new ArrayList<>();
-	public static final ArrayList<Item> ITEMS=new ArrayList<>();
+	public static final ArrayList<Block> BLOCKS=new ArrayList<>(0);
+	public static final ArrayList<Item> ITEMS=new ArrayList<>(0);
 	
-	public static BlockPostBase postBase;
+	public static BlockPostBase post_Base;
 	
-	public static FenceBlock ironFence;
-	public static FenceBlock goldFence;
-	public static FenceBlock copperFence;
-	public static FenceBlock leadFence;
-	public static FenceBlock silverFence;
-	public static FenceBlock nickelFence;
-	public static FenceBlock constantanFence;
-	public static FenceBlock electrumFence;
-	public static FenceBlock uraniumFence;
+	public static FenceBlock fence_Iron;
+	public static FenceBlock fence_Gold;
+	public static FenceBlock fence_Copper;
+	public static FenceBlock fence_Lead;
+	public static FenceBlock fence_Silver;
+	public static FenceBlock fence_Nickel;
+	public static FenceBlock fence_Constantan;
+	public static FenceBlock fence_Electrum;
+	public static FenceBlock fence_Uranium;
 	
-	public static BlockPost woodPost;
-	public static BlockPost ironPost;
-	public static BlockPost goldPost;
-	public static BlockPost copperPost;
-	public static BlockPost leadPost;
-	public static BlockPost silverPost;
-	public static BlockPost nickelPost;
-	public static BlockPost constantanPost;
-	public static BlockPost electrumPost;
-	public static BlockPost uraniumPost;
-	public static BlockPost netherPost;
-	public static BlockPost aluminiumPost;
-	public static BlockPost steelPost;
-	public static BlockPost concretePost;
-	public static BlockPost leadedConcretePost;
+	public static BlockPost post_Wood;
+	public static BlockPost post_Iron;
+	public static BlockPost post_Gold;
+	public static BlockPost post_Copper;
+	public static BlockPost post_Lead;
+	public static BlockPost post_Silver;
+	public static BlockPost post_Nickel;
+	public static BlockPost post_Constantan;
+	public static BlockPost post_Electrum;
+	public static BlockPost post_Uranium;
+	public static BlockPost post_Nether;
+	public static BlockPost post_Aluminium;
+	public static BlockPost post_Steel;
+	public static BlockPost post_Concrete;
+	public static BlockPost post_ConcreteLeaded;
 	
-	public static MultiMetaItem metalRods;
+	public static Item rod_Gold;
+	public static Item rod_Copper;
+	public static Item rod_Lead;
+	public static Item rod_Silver;
+	public static Item rod_Nickel;
+	public static Item rod_Constantan;
+	public static Item rod_Electrum;
+	public static Item rod_Uranium;
 	
-	public static final void initBlocks(){
-		postBase=new BlockPostBase();
+	public static final void populate(){
+		post_Base=new BlockPostBase();
 		
 		// =========================================================================
 		// Fences
 		
-		ironFence		=createFence("fence_iron");
-		goldFence		=createFence("fence_gold");
-		copperFence		=createFence("fence_copper");
-		leadFence		=createFence("fence_lead");
-		silverFence		=createFence("fence_silver");
-		nickelFence		=createFence("fence_nickel");
-		constantanFence	=createFence("fence_constantan");
-		electrumFence	=createFence("fence_electrum");
-		uraniumFence	=createFence("fence_uranium");
+		fence_Iron		=new BlockMetalFence("fence_iron");
+		fence_Gold		=new BlockMetalFence("fence_gold");
+		fence_Copper	=new BlockMetalFence("fence_copper");
+		fence_Lead		=new BlockMetalFence("fence_lead");
+		fence_Silver	=new BlockMetalFence("fence_silver");
+		fence_Nickel	=new BlockMetalFence("fence_nickel");
+		fence_Constantan=new BlockMetalFence("fence_constantan");
+		fence_Electrum	=new BlockMetalFence("fence_electrum");
+		fence_Uranium	=new BlockMetalFence("fence_uranium");
 		
 		// =========================================================================
 		// Posts
 		
-		woodPost			=new BlockPost(EnumPostMaterial.WOOD);
-		ironPost			=new BlockPost(EnumPostMaterial.IRON);
-		goldPost			=new BlockPost(EnumPostMaterial.GOLD);
-		copperPost			=new BlockPost(EnumPostMaterial.COPPER);
-		leadPost			=new BlockPost(EnumPostMaterial.LEAD);
-		silverPost			=new BlockPost(EnumPostMaterial.SILVER);
-		nickelPost			=new BlockPost(EnumPostMaterial.NICKEL);
-		constantanPost		=new BlockPost(EnumPostMaterial.CONSTANTAN);
-		electrumPost		=new BlockPost(EnumPostMaterial.ELECTRUM);
-		uraniumPost			=new BlockPost(EnumPostMaterial.URANIUM);
-		netherPost			=new BlockPost(EnumPostMaterial.NETHERBRICK);
-		aluminiumPost		=new BlockPost(EnumPostMaterial.ALUMINIUM);
-		steelPost			=new BlockPost(EnumPostMaterial.STEEL);
-		concretePost		=new BlockPost(EnumPostMaterial.CONCRETE);
-		leadedConcretePost	=new BlockPost(EnumPostMaterial.CONCRETE_LEADED);
+		post_Wood			=new BlockPost(EnumPostMaterial.WOOD);
+		post_Iron			=new BlockPost(EnumPostMaterial.IRON);
+		post_Gold			=new BlockPost(EnumPostMaterial.GOLD);
+		post_Copper			=new BlockPost(EnumPostMaterial.COPPER);
+		post_Lead			=new BlockPost(EnumPostMaterial.LEAD);
+		post_Silver			=new BlockPost(EnumPostMaterial.SILVER);
+		post_Nickel			=new BlockPost(EnumPostMaterial.NICKEL);
+		post_Constantan		=new BlockPost(EnumPostMaterial.CONSTANTAN);
+		post_Electrum		=new BlockPost(EnumPostMaterial.ELECTRUM);
+		post_Uranium		=new BlockPost(EnumPostMaterial.URANIUM);
+		post_Nether			=new BlockPost(EnumPostMaterial.NETHERBRICK);
+		post_Aluminium		=new BlockPost(EnumPostMaterial.ALUMINIUM);
+		post_Steel			=new BlockPost(EnumPostMaterial.STEEL);
+		post_Concrete		=new BlockPost(EnumPostMaterial.CONCRETE);
+		post_ConcreteLeaded	=new BlockPost(EnumPostMaterial.CONCRETE_LEADED);
 		
 		// =========================================================================
 		// Items
 		
-		metalRods=new MetalRods();
-		
-	}
-	
-	private static FenceBlock createFence(String name){
-		return new BlockMetalFence(name);
+		rod_Gold		=new IPOItemBase("stick_gold");
+		rod_Copper		=new IPOItemBase("stick_copper");
+		rod_Lead		=new IPOItemBase("stick_lead");
+		rod_Silver		=new IPOItemBase("stick_silver");
+		rod_Nickel		=new IPOItemBase("stick_nickel");
+		rod_Constantan	=new IPOItemBase("stick_constantan");
+		rod_Electrum	=new IPOItemBase("stick_electrum");
+		rod_Uranium		=new IPOItemBase("stick_uranium");
 	}
 	
 	@SubscribeEvent
@@ -122,7 +130,12 @@ public class IPOStuff{
 				if(skip) continue;
 			}
 			
-			event.getRegistry().register(block);
+			try{
+				event.getRegistry().register(block);
+			}catch(Throwable e) {
+				ImmersivePosts.log.error("Failed to register a block. ("+block+")");
+				throw e;
+			}
 		}
 	}
 	
@@ -141,7 +154,12 @@ public class IPOStuff{
 				if(skip) continue;
 			}
 			
-			event.getRegistry().register(item);
+			try{
+				event.getRegistry().register(item);
+			}catch(Throwable e) {
+				ImmersivePosts.log.error("Failed to register an item. ("+item+", "+item.getRegistryName()+")");
+				throw e;
+			}
 		}
 		
 		//registerFenceOres();

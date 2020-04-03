@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "i",
+    "i"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/nickel"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:stick_nickel",
+    "count": 4
+  }
+}

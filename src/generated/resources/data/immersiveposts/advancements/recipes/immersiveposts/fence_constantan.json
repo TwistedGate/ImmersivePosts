@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "immersiveposts:fence_constantan"
+    ]
+  },
+  "criteria": {
+    "has_constantan_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:rod/constantan"
+          }
+        ]
+      }
+    },
+    "has_constantan_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingot/constantan"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "immersiveposts:fence_constantan"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_constantan_rod",
+      "has_constantan_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

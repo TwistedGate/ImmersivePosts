@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "i",
+    "i"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/silver"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:stick_silver",
+    "count": 4
+  }
+}

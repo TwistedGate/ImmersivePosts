@@ -23,6 +23,11 @@ public enum EnumPostType implements IStringSerializable{
 	
 	@Override
 	public String getName(){
-		return this.toString().toLowerCase(Locale.ENGLISH);
+		return toString();
+	}
+	
+	@Override
+	public String toString(){
+		return name().toLowerCase(Locale.ENGLISH);
 	}
 }

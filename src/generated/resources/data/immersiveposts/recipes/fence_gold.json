@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "isi",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/gold"
+    },
+    "s": {
+      "tag": "forge:rod/gold"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:fence_gold",
+    "count": 3
+  }
+}

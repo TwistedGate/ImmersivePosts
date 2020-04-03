@@ -33,7 +33,7 @@ public class ImmersivePosts{
 		
 		ModLoadingContext.get().registerConfig(Type.COMMON, IPOConfig.VALUES);
 		
-		IPOStuff.initBlocks();
+		IPOStuff.populate();
 		
 		proxy.construct();
 	}
@@ -45,7 +45,8 @@ public class ImmersivePosts{
 	}
 	
 	public void violation(FMLFingerprintViolationEvent event){
-		System.err.println("THIS IS NOT AN OFFICIAL BUILD OF "+IPOMod.NAME.toUpperCase()+"! Fingerprints: ["+event.getFingerprints()+"]");
+		System.err.println("\r\nTHIS IS NOT AN OFFICIAL BUILD OF "+IPOMod.NAME.toUpperCase()+"! Fingerprints: ["+event.getFingerprints()+"]");
+		System.err.println("If you didnt download this mod from the official curse page: Stop Drop and Roll this jar right out of your mods folder!\r\n");
 		// Guess thats what this would be used for? lol
 	}
 	
@@ -59,7 +60,7 @@ public class ImmersivePosts{
 		@Override
 		public ItemStack createIcon(){
 			if(this.iconstack==null)
-				this.iconstack=new ItemStack(IPOStuff.postBase);
+				this.iconstack=new ItemStack(IPOStuff.post_Base);
 			return this.iconstack;
 		}
 		

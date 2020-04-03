@@ -88,7 +88,8 @@ minecraft {
             property 'forge.logging.console.level', 'info' // Yes, "debug" recommended, but lagging the shit out of my system.
             property 'fml.earlyprogresswindow', 'false'
 
-            args '--mod', 'immersiveposts', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'immersiveposts', '--all', '--output', file('src/generated/resources/'), '--validate',
+                    '--existing', sourceSets.main.resources.srcDirs[0]
 
             mods {
                 immersiveposts {
@@ -103,13 +104,15 @@ repositories {
 	maven {
 		url = "https://maven.blamejared.com/"
 	}
+	maven {
+		name = "CurseForge"
+		url = "https://minecraft.curseforge.com/api/maven/"
+	}
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.14.4-28.2.3'
-	runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.11")
-    runtimeOnly fg.deobf("nbtedit:NBTEdit:0.8.2")
-    compile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:0.14-+")
+    compile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:0.14-95-7e669037")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

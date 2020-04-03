@@ -17,7 +17,7 @@ description="Simply adds a way to have extendable posts. With a few post types t
   modId="immersiveengineering"
   mandatory=true
   versionRange="[0.14,)"
-  ordering="BEFORE"
+  ordering="BEFOR"
   side="BOTH"
 
 [[dependencies.immersiveposts]]

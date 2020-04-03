@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "i",
+    "i"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/electrum"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:stick_electrum",
+    "count": 4
+  }
+}

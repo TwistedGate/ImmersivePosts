@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "i",
+    "i"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/lead"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:stick_lead",
+    "count": 4
+  }
+}

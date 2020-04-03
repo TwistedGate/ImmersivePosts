@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "isi",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/copper"
+    },
+    "s": {
+      "tag": "forge:rod/copper"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:fence_copper",
+    "count": 3
+  }
+}

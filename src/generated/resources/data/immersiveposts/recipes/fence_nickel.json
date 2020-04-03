@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "isi",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/nickel"
+    },
+    "s": {
+      "tag": "forge:rod/nickel"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:fence_nickel",
+    "count": 3
+  }
+}

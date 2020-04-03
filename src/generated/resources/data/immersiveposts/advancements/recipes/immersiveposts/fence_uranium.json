@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "immersiveposts:fence_uranium"
+    ]
+  },
+  "criteria": {
+    "has_uranium_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:rod/uranium"
+          }
+        ]
+      }
+    },
+    "has_uranium_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingot/uranium"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "immersiveposts:fence_uranium"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_uranium_rod",
+      "has_uranium_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

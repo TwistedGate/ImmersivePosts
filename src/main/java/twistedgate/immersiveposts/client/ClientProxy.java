@@ -1,21 +1,12 @@
 package twistedgate.immersiveposts.client;
 
-import blusunrize.immersiveengineering.client.models.obj.IEOBJLoader;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.common.CommonProxy;
-import twistedgate.immersiveposts.common.blocks.BlockPost;
-import twistedgate.immersiveposts.common.items.MultiMetaItem;
 
 /**
  * @author TwistedGate
@@ -29,7 +20,7 @@ public class ClientProxy extends CommonProxy{
 	
 	@Override
 	public void preInit(){
-		IEOBJLoader.instance.addDomain(IPOMod.ID);
+		//IEOBJLoader.instance.addDomain(IPOMod.ID);
 		//OBJLoader.INSTANCE.addDomain(IPOMod.ID);
 	}
 	
@@ -41,32 +32,32 @@ public class ClientProxy extends CommonProxy{
 	
 	@SubscribeEvent
 	public static void regModels(ModelRegistryEvent event){
-		for(Block block:IPOStuff.BLOCKS){
-			if(!(block instanceof BlockPost)){ // Prevent posts from getting an item
-				Item item=Item.getItemFromBlock(block);
-				ModelResourceLocation loc=new ModelResourceLocation(block.getRegistryName(), "inventory");
-				//ModelLoader.setCustomModelResourceLocation(item, 0, loc);
-			}
-		}
-		
-		for(Item item:IPOStuff.ITEMS){
-			if(item instanceof BlockItem) continue;
-			
-			if(item instanceof MultiMetaItem){
-				MultiMetaItem mItem=(MultiMetaItem)item;
-				for(int i=0;i<mItem.getSubItemCount();i++){
-					ResourceLocation loc=new ResourceLocation(IPOMod.ID, mItem.regName+"/"+mItem.getName(i));
-					//ModelBakery.registerItemVariants(mItem, loc);
-					//ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(loc, "inventory"));
-				}
-				
-			}else{
-				ModelResourceLocation loc=new ModelResourceLocation(item.getRegistryName(), "inventory");
-				
-				//for(int i=0;i<15;i++)
-					//ModelLoader.setCustomModelResourceLocation(item, i, loc);
-			}
-		}
+//		for(Block block:IPOStuff.BLOCKS){
+//			if(!(block instanceof BlockPost)){ // Prevent posts from getting an item
+//				Item item=block.asItem();
+//				ModelResourceLocation loc=new ModelResourceLocation(block.getRegistryName(), "inventory");
+//				ModelLoader.setCustomModelResourceLocation(item, 0, loc);
+//			}
+//		}
+//		
+//		for(Item item:IPOStuff.ITEMS){
+//			if(item instanceof BlockItem) continue;
+//			
+//			if(item instanceof MultiMetaItem){
+//				MultiMetaItem mItem=(MultiMetaItem)item;
+//				for(int i=0;i<mItem.getSubItemCount();i++){
+//					ResourceLocation loc=new ResourceLocation(IPOMod.ID, mItem.regName+"/"+mItem.getName(i));
+//					ModelBakery.registerItemVariants(mItem, loc);
+//					ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(loc, "inventory"));
+//				}
+//				
+//			}else{
+//				ModelResourceLocation loc=new ModelResourceLocation(item.getRegistryName(), "inventory");
+//				
+//				for(int i=0;i<15;i++)
+//					ModelLoader.setCustomModelResourceLocation(item, i, loc);
+//			}
+//		}
 	}
 	
 	/*

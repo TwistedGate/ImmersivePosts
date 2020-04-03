@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "isi",
+    "isi"
+  ],
+  "key": {
+    "i": {
+      "tag": "forge:ingot/uranium"
+    },
+    "s": {
+      "tag": "forge:rod/uranium"
+    }
+  },
+  "result": {
+    "item": "immersiveposts:fence_uranium",
+    "count": 3
+  }
+}
