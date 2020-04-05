@@ -11,7 +11,7 @@ import twistedgate.immersiveposts.ImmersivePosts;
  */
 public class IPOItemBase extends Item{
 	public IPOItemBase(String name){
-		super(new Item.Properties().group(ImmersivePosts.creativeTab));
+		super(new Item.Properties().group(ImmersivePosts.ITEMGROUP));
 		//setCreativeTab(ImmersivePosts.creativeTab);
 		setRegistryName(new ResourceLocation(IPOMod.ID, name));
 		//setTranslationKey(IPOMod.ID+"."+name);

@@ -43,7 +43,7 @@ public class ClientProxy extends CommonProxy{
 	public static void regModels(ModelRegistryEvent event){
 		for(Block block:IPOStuff.BLOCKS){
 			if(!(block instanceof BlockPost)){ // Prevent posts from getting an item
-				Item item=Item.getItemFromBlock(block);
+				Item item=block.asItem();
 				ModelResourceLocation loc=new ModelResourceLocation(block.getRegistryName(), "inventory");
 				//ModelLoader.setCustomModelResourceLocation(item, 0, loc);
 			}

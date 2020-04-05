@@ -49,7 +49,7 @@ public class BlockPostBase extends IPOBlockBase{
 				.harvestTool(ToolType.PICKAXE)
 				.hardnessAndResistance(5.0F, 3.0F));
 		
-		IPOStuff.ITEMS.add(new ItemPostBase(this, new Item.Properties().group(ImmersivePosts.creativeTab)));
+		IPOStuff.ITEMS.add(new ItemPostBase(this, new Item.Properties().group(ImmersivePosts.ITEMGROUP)));
 	}
 	
 	@Override

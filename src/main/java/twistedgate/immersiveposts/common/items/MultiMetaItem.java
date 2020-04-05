@@ -13,7 +13,7 @@ public class MultiMetaItem extends Item{
 	private String[] names;
 	public final String regName;
 	public MultiMetaItem(String regName){
-		super(new Item.Properties().group(ImmersivePosts.creativeTab));
+		super(new Item.Properties().group(ImmersivePosts.ITEMGROUP));
 		this.regName=regName;
 		
 		//setCreativeTab(ImmersivePosts.creativeTab);
