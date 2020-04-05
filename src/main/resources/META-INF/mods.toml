@@ -23,7 +23,7 @@ description="Simply adds a way to have extendable posts. With a few post types t
 [[dependencies.immersiveposts]]
     modId="forge"
     mandatory=true
-    versionRange="[28,)"
+    versionRange="[28.2.3,)"
     ordering="NONE"
     side="BOTH"
 
