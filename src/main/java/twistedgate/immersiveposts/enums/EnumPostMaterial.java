@@ -60,7 +60,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 	
 	/** Source-block itemstack */
 	public ItemStack getItemStack(){
-		return new ItemStack(this.block, 1);
+		return new ItemStack(getBlock(), 1);
 	}
 	
 	/** The texture for this material type */

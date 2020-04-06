@@ -1,0 +1,62 @@
+{
+	"usage1":{
+		"type": "image",
+		"images":[
+			{
+				"location": "immersiveposts:textures/manual/usage/what.png",
+				"uMin": 0,
+				"vMin": 0,
+				"uSize": 64,
+				"vSize": 64
+			}
+		]
+	},
+	"usage2":{
+		"type": "image",
+		"images":[
+			{
+				"location": "immersiveposts:textures/manual/usage/what.png",
+				"uMin": 0,
+				"vMin": 64,
+				"uSize": 64,
+				"vSize": 75
+			}
+		]
+	},
+	"usage3":{
+		"type": "image",
+		"images":[
+			{
+				"location": "immersiveposts:textures/manual/usage/what.png",
+				"uMin": 64,
+				"vMin": 0,
+				"uSize": 64,
+				"vSize": 64
+			}
+		]
+	},
+	"usage4":{
+		"type": "image",
+		"images":[
+			{
+				"location": "immersiveposts:textures/manual/usage/what.png",
+				"uMin": 128,
+				"vMin": 0,
+				"uSize": 81,
+				"vSize": 64
+			}
+		]
+	},
+	"usage5":{
+		"type": "image",
+		"images":[
+			{
+				"location": "immersiveposts:textures/manual/usage/what.png",
+				"uMin": 128,
+				"vMin": 64,
+				"uSize": 112,
+				"vSize": 64
+			}
+		]
+	}
+}

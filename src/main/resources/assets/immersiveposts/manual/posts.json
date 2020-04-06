@@ -1,0 +1,98 @@
+{
+	"treated":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveengineering:treated_fence"},
+			{"recipe": "immersiveengineering:stick_treated"}
+		]
+	},
+	"nether":{
+		"type": "crafting",
+		"recipe": "minecraft:nether_brick_fence"
+	},
+	"iron":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveposts:fence_iron"},
+			{"recipe": "immersiveengineering:stick_iron"}
+		]
+	},
+	"gold":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveposts:fence_gold"},
+			{"recipe": "immersiveposts:stick_gold"}
+		]
+	},
+	"copper":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveposts:fence_copper"},
+			{"recipe": "immersiveposts:stick_copper"}
+		]
+	},
+	"lead":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveposts:fence_lead"},
+			{"recipe": "immersiveposts:stick_lead"}
+		]
+	},
+	"silver":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveposts:fence_silver"},
+			{"recipe": "immersiveposts:stick_silver"}
+		]
+	},
+	"nickel":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveposts:fence_nickel"},
+			{"recipe": "immersiveposts:stick_nickel"}
+		]
+	},
+	"constantan":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveposts:fence_constantan"},
+			{"recipe": "immersiveposts:stick_constantan"}
+		]
+	},
+	"electrum":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveposts:fence_electrum"},
+			{"recipe": "immersiveposts:stick_electrum"}
+		]
+	},
+	"uranium":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveposts:fence_uranium"},
+			{"recipe": "immersiveposts:stick_uranium"}
+		]
+	},
+	"aluminium":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveengineering:alu_fence"},
+			{"recipe": "immersiveengineering:stick_aluminum"}
+		]
+	},
+	"steel":{
+		"type": "crafting",
+		"recipes":[
+			{"recipe": "immersiveengineering:steel_fence"},
+			{"recipe": "immersiveengineering:stick_steel"}
+		]
+	},
+	"concrete":{
+		"type": "crafting",
+		"recipe": "immersiveengineering:slab_concrete"
+	},
+	"leadedconcrete":{
+		"type": "crafting",
+		"recipe": "immersiveengineering:slab_concrete_leaded"
+	}
+}

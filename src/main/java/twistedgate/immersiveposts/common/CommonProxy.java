@@ -5,6 +5,6 @@ package twistedgate.immersiveposts.common;
  */
 public class CommonProxy{
 	public void construct(){}
-	public void preInit(){}
-	public void postInit(){}
+	public void setup(){}
+	public void completed(){}
 }

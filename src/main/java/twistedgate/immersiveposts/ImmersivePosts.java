@@ -9,6 +9,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLFingerprintViolationEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import twistedgate.immersiveposts.client.ClientProxy;
 import twistedgate.immersiveposts.common.CommonProxy;
@@ -28,6 +29,7 @@ public class ImmersivePosts{
 		
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::violation);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
 		
 		IPOStuff.populate();
 		
@@ -35,9 +37,11 @@ public class ImmersivePosts{
 	}
 	
 	public void setup(FMLCommonSetupEvent event){
-		proxy.preInit();
-		
-		proxy.postInit();
+		proxy.setup();
+	}
+	
+	public void loadComplete(FMLLoadCompleteEvent event){
+		proxy.completed();
 	}
 	
 	public void violation(FMLFingerprintViolationEvent event){

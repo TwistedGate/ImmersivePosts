@@ -56,9 +56,15 @@
 	
     "tooltip.postbase": "[Hold Shift] §6Accepted blocks.",
 	
+    "_comment": "################## Miscellaneous ##################",
+
+    "immersiveposts.expectedlocal": "Expected: %s",
+	
     "_comment": "################## IE-Manual ##################",
 	
-    "ie.manual.category.immersiveposts": "Immersive Posts",
+    "manual.immersiveposts.main": "Immersive Posts",
+	
+    "_comment": "#### Everything below this is going to be removed soon! ####",
 	
     "_comment": "PostBase Entries",
     "ie.manual.entry.immersiveposts.postbase": "Extendable Post",
@@ -113,9 +119,5 @@
     "index.page_1_entry.1": "Aluminium",
     "index.page_1_entry.2": "Steel",
     "index.page_1_entry.3": "Concrete",
-    "index.page_1_entry.4": "Concrete (Leaded)",
-	
-    "_comment": "################## Miscellaneous ##################",
-
-    "immersiveposts.expectedlocal": "Expected: %s"
+    "index.page_1_entry.4": "Concrete (Leaded)"
 }

@@ -2,10 +2,8 @@ package twistedgate.immersiveposts.common.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
-import net.minecraft.item.Item;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.IPOTags;
 
 /**
  * @author TwistedGate
@@ -17,7 +15,7 @@ public class IPOItemTags extends ItemTagsProvider{
 	
 	@Override
 	protected void registerTags(){
-		getBuilder(new ItemTags.Wrapper(new ResourceLocation("forge","rods/all_metal")))
+		getBuilder(IPOTags.Rods.ALL)
 			.add(IPOStuff.rod_Gold)
 			.add(IPOStuff.rod_Copper)
 			.add(IPOStuff.rod_Lead)
@@ -25,21 +23,30 @@ public class IPOItemTags extends ItemTagsProvider{
 			.add(IPOStuff.rod_Nickel)
 			.add(IPOStuff.rod_Constantan)
 			.add(IPOStuff.rod_Electrum)
-			.add(IPOStuff.rod_Uranium)
-			;
+			.add(IPOStuff.rod_Uranium);
 		
-		addRod(IPOStuff.rod_Gold, "gold");
-		addRod(IPOStuff.rod_Copper, "copper");
-		addRod(IPOStuff.rod_Lead, "lead");
-		addRod(IPOStuff.rod_Silver, "silver");
-		addRod(IPOStuff.rod_Nickel, "nickel");
-		addRod(IPOStuff.rod_Constantan, "constantan");
-		addRod(IPOStuff.rod_Electrum, "electrum");
-		addRod(IPOStuff.rod_Uranium, "uranium");
-	}
-	
-	private void addRod(Item item, String tagName){
-		getBuilder(new ItemTags.Wrapper(new ResourceLocation("forge","rods/"+tagName)))
-		.add(item);
+		getBuilder(IPOTags.Rods.GOLD)
+			.add(IPOStuff.rod_Gold);
+		
+		getBuilder(IPOTags.Rods.COPPER)
+			.add(IPOStuff.rod_Copper);
+		
+		getBuilder(IPOTags.Rods.LEAD)
+			.add(IPOStuff.rod_Lead);
+		
+		getBuilder(IPOTags.Rods.SILVER)
+			.add(IPOStuff.rod_Silver);
+		
+		getBuilder(IPOTags.Rods.NICKEL)
+			.add(IPOStuff.rod_Nickel);
+		
+		getBuilder(IPOTags.Rods.CONSTANTAN)
+			.add(IPOStuff.rod_Constantan);
+		
+		getBuilder(IPOTags.Rods.ELECTRUM)
+			.add(IPOStuff.rod_Electrum);
+		
+		getBuilder(IPOTags.Rods.URANIUM)
+			.add(IPOStuff.rod_Uranium);
 	}
 }

@@ -1,0 +1,6 @@
+{
+	"postbase":{
+		"type": "crafting",
+		"recipe": "immersiveposts:postbase"
+	}
+}
