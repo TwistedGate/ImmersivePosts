@@ -91,8 +91,18 @@ public class BlockPostBase extends IPOBlockBase{
 					
 					if((BlockHelper.getBlockFrom(worldIn, nPos) instanceof BlockPost)){
 						BlockState s=worldIn.getBlockState(nPos);
-						if(s.get(BlockPost.TYPE)==EnumPostType.ARM){
+						EnumPostType type=s.get(BlockPost.TYPE);
+						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIP)){
 							return true;
+						}
+						
+						BlockPos up=nPos.offset(Direction.UP);
+						if(BlockHelper.getBlockFrom(worldIn, up) instanceof BlockPost){
+							s=worldIn.getBlockState(up);
+							type=s.get(BlockPost.TYPE);
+							if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
+								return true;
+							}
 						}
 					}
 					
@@ -134,6 +144,7 @@ public class BlockPostBase extends IPOBlockBase{
 			}
 		}
 		
+		/** Find the key that is being pressed while minecraft is in focus */
 		@OnlyIn(Dist.CLIENT)
 		private boolean isPressing(int key){
 			long window=Minecraft.getInstance().mainWindow.getHandle();

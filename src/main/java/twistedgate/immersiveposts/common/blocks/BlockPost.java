@@ -12,6 +12,7 @@ import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FourWayBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -154,16 +155,18 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				for(int y=0;y<(worldIn.getActualHeight()-pos.getY());y++){
 					BlockPos nPos=pos.add(0,y,0);
 					
-					if((BlockHelper.getBlockFrom(worldIn, nPos) instanceof BlockPost)){
+					if(BlockHelper.getBlockFrom(worldIn, nPos) instanceof BlockPost){
 						BlockState s=worldIn.getBlockState(nPos);
-						if(s.get(BlockPost.TYPE)==EnumPostType.ARM && s.get(BlockPost.FLIP)){
+						EnumPostType type=s.get(BlockPost.TYPE);
+						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIP)){
 							return true;
 						}
 						
 						BlockPos up=nPos.offset(Direction.UP);
-						if((BlockHelper.getBlockFrom(worldIn, up) instanceof BlockPost)){
+						if(BlockHelper.getBlockFrom(worldIn, up) instanceof BlockPost){
 							s=worldIn.getBlockState(up);
-							if(s.get(BlockPost.TYPE)==EnumPostType.ARM){
+							type=s.get(BlockPost.TYPE);
+							if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
 								return true;
 							}
 						}
@@ -193,7 +196,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 								if(worldIn.isAirBlock(nPos)){
 									defaultState=defaultState.with(FACING, facing);
 									worldIn.setBlockState(nPos, defaultState);
-									//defaultState.neighborChanged(worldIn, nPos, this, null);
+									defaultState.neighborChanged(worldIn, nPos, this, null, false);
 								}else if(BlockHelper.getBlockFrom(worldIn, nPos)==this){
 									switch(worldIn.getBlockState(nPos).get(TYPE)){
 										case ARM:{
@@ -215,8 +218,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					case ARM:{
 						Direction bfacing=state.get(FACING);
 						if(worldIn.isAirBlock(pos.offset(bfacing))){
-							worldIn.setBlockState(pos.offset(bfacing), state.with(TYPE, EnumPostType.ARM_DOUBLE));
-							worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.EMPTY));
+							worldIn.setBlockState(pos.offset(bfacing), state.with(TYPE, EnumPostType.ARM_DOUBLE).with(FLIP, false));
+							worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.EMPTY).with(FLIP, false));
 						}
 						return true;
 					}
@@ -246,49 +249,56 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		BlockState otherState=worldIn.getBlockState(nPos);
 		Block otherBlock=otherState.getBlock();
 		
-		if(otherBlock==Blocks.AIR) return false; // Go straight out if air, no questions asked.
+		// Go straight out if air, no questions asked.
+		if(otherBlock==Blocks.AIR)
+			return false;
+		
+		// Secondary, more indepth check
+		if(otherBlock.isAir(otherState, worldIn, nPos) || otherBlock instanceof FourWayBlock || otherBlock instanceof BlockPost)
+			return false;
 		
 		if(facingIn==Direction.DOWN || facingIn==Direction.UP){
-			AxisAlignedBB box=otherState.getCollisionShape(worldIn, nPos).getBoundingBox();
-			switch(facingIn){
-				case UP:	return box.minY==0.0;
-				case DOWN:{
-					boolean bool=otherBlock instanceof BlockPost;
-					return !bool && box.maxY==1.0;
+			VoxelShape shape=otherState.getShape(worldIn, nPos);
+			if(!shape.isEmpty()) {
+				AxisAlignedBB box=shape.getBoundingBox();
+				switch(facingIn){
+					case UP:	return box.minY==0.0;
+					case DOWN:{
+						boolean bool=otherBlock instanceof BlockPost;
+						return !bool && box.maxY==1.0;
+					}
+					default: break;
 				}
-				default:	return false;
+				return false;
 			}
 		}
 		
-		if(otherBlock instanceof BlockPost) return false;
-		
-		// TODO Re-add the anti-fence connection.
-		//if(otherState.getBlockFaceShape(worldIn, nPos, facingIn)==BlockFaceShape.MIDDLE_POLE) return false;
-		
-		AxisAlignedBB box=otherState.getCollisionShape(worldIn, nPos).getBoundingBox();
-		boolean b;
-		switch(facingIn){
-			case NORTH:	b=(box.maxZ==1.0);break;
-			case SOUTH:	b=(box.minZ==0.0);break;
-			case WEST:	b=(box.maxX==1.0);break;
-			case EAST:	b=(box.minX==0.0);break;
-			default:	b=false;
-		}
-		if(b && ((facingIn.getAxis()==Axis.Z && box.minX>0.0 && box.maxX<1.0) || (facingIn.getAxis()==Axis.X && box.minZ>0.0 && box.maxZ<1.0))){
-			return true;
+		VoxelShape shape=otherState.getShape(worldIn, nPos);
+		if(!shape.isEmpty()){
+			AxisAlignedBB box=shape.getBoundingBox();
+			boolean b;
+			switch(facingIn){
+				case NORTH:	b=(box.maxZ==1.0);break;
+				case SOUTH:	b=(box.minZ==0.0);break;
+				case WEST:	b=(box.maxX==1.0);break;
+				case EAST:	b=(box.minX==0.0);break;
+				default:	b=false;
+			}
+			if(b && ((facingIn.getAxis()==Axis.Z && box.minX>0.0 && box.maxX<1.0) || (facingIn.getAxis()==Axis.X && box.minZ>0.0 && box.maxZ<1.0))){
+				return true;
+			}
 		}
 		
 		return false;
 	}
 	
 	public static class PostState extends BlockState{
-		
 		public PostState(Block blockIn, ImmutableMap<IProperty<?>, Comparable<?>> properties){
 			super(blockIn, properties);
 		}
-
+		
 		@Override
-		public BlockState getExtendedState(IBlockReader world, BlockPos pos){
+		public BlockState updatePostPlacement(Direction face, BlockState queried, IWorld world, BlockPos pos, BlockPos offsetPos){
 			if(this.getBlockState().get(TYPE).id()>1){
 				return this.getBlockState()
 						.with(LPARM_NORTH, false)
@@ -338,6 +348,11 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			return true;
 		}
 		
+		@Override
+		public boolean propagatesSkylightDown(IBlockReader worldIn, BlockPos pos){
+			return true;
+		}
+		
 		@Override // NO, just no..
 		public BlockState rotate(IWorld world, BlockPos pos, Rotation direction){
 			return this;
@@ -348,6 +363,11 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			return this;
 		}
 		
+		@Override // ...
+		public Direction[] getValidRotations(IBlockReader world, BlockPos pos){
+			return null;
+		}
+		
 		@Override
 		@OnlyIn(Dist.CLIENT)
 		public boolean isSideInvisible(BlockState state, Direction face){
@@ -356,6 +376,11 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		@Override
 		public VoxelShape getShape(IBlockReader worldIn, BlockPos pos, ISelectionContext context){
+			return VoxelShapes.create(stateBounds(this));
+		}
+		
+		@Override
+		public VoxelShape getCollisionShape(IBlockReader worldIn, BlockPos pos, ISelectionContext context){
 			return VoxelShapes.create(stateBounds(this));
 		}
 		
@@ -385,7 +410,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					return;
 				}
 				case POST_TOP:{
-					if((aboveBlock instanceof BlockPost) && aboveState.get(BlockPost.TYPE)!=EnumPostType.ARM)
+					if((aboveBlock instanceof BlockPost) && aboveState.get(BlockPost.TYPE)==EnumPostType.POST_TOP)
 						world.setBlockState(pos, this.getBlockState().with(BlockPost.TYPE, EnumPostType.POST));
 					return;
 				}
