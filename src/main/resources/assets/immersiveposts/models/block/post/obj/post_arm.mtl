@@ -2,5 +2,6 @@
 # Material Count: 1
 
 newmtl post
-Ka 1.000000 1.000000 1.000000
-map_Ka immersiveposts:block/posts/post_wood
+Kd 1.000000 1.000000 1.000000
+map_Kd #texture
+#immersiveposts:block/posts/post_wood
