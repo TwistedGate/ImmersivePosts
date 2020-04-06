@@ -58,7 +58,7 @@ public class BlockPostBase extends IPOBlockBase{
 	
 	@Override
 	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side){
-		return true;
+		return false;
 	}
 	
 	@Override

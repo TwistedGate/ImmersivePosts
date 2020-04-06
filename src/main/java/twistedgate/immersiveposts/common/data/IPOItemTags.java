@@ -7,6 +7,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.IPOStuff;
 
+/**
+ * @author TwistedGate
+ */
 public class IPOItemTags extends ItemTagsProvider{
 	public IPOItemTags(DataGenerator generatorIn){
 		super(generatorIn);

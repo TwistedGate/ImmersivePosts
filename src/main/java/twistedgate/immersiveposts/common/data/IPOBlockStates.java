@@ -17,6 +17,9 @@ import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
+/**
+ * @author TwistedGate
+ */
 public class IPOBlockStates extends BlockStateProvider{
 	final IPOLoadedModels loadedModels;
 	public IPOBlockStates(DataGenerator gen, ExistingFileHelper exFileHelper, IPOLoadedModels loadedModels){
@@ -41,15 +44,15 @@ public class IPOBlockStates extends BlockStateProvider{
 			if(block instanceof BlockPost)
 				alternateGenerator((BlockPost)block);//generateStatesFor((BlockPost)block);
 		
-		fence(IPOStuff.fence_Iron, "fences/iron", new ResourceLocation("block/iron_block"));
-		fence(IPOStuff.fence_Gold, "fences/gold", new ResourceLocation("block/gold_block"));
-		fence(IPOStuff.fence_Copper, "fences/copper", new ResourceLocation("immersiveengineering","block/metal/storage_copper"));
-		fence(IPOStuff.fence_Lead, "fences/lead", new ResourceLocation("immersiveengineering","block/metal/storage_lead"));
-		fence(IPOStuff.fence_Silver, "fences/silver", new ResourceLocation("immersiveengineering","block/metal/storage_silver"));
-		fence(IPOStuff.fence_Nickel, "fences/nickel", new ResourceLocation("immersiveengineering","block/metal/storage_nickel"));
-		fence(IPOStuff.fence_Constantan, "fences/constantan", new ResourceLocation("immersiveengineering","block/metal/storage_constantan"));
-		fence(IPOStuff.fence_Electrum, "fences/electrum", new ResourceLocation("immersiveengineering","block/metal/storage_electrum"));
-		fence(IPOStuff.fence_Uranium, "fences/uranium", new ResourceLocation("immersiveengineering","block/metal/storage_uranium_side"));
+		fence(IPOStuff.fence_Iron,		"fences/iron",		mcLoc("block/iron_block"));
+		fence(IPOStuff.fence_Gold,		"fences/gold",		mcLoc("block/gold_block"));
+		fence(IPOStuff.fence_Copper,	"fences/copper",	ieLoc("block/metal/storage_copper"));
+		fence(IPOStuff.fence_Lead,		"fences/lead",		ieLoc("block/metal/storage_lead"));
+		fence(IPOStuff.fence_Silver,	"fences/silver",	ieLoc("block/metal/storage_silver"));
+		fence(IPOStuff.fence_Nickel,	"fences/nickel",	ieLoc("block/metal/storage_nickel"));
+		fence(IPOStuff.fence_Constantan,"fences/constantan",ieLoc("block/metal/storage_constantan"));
+		fence(IPOStuff.fence_Electrum,	"fences/electrum",	ieLoc("block/metal/storage_electrum"));
+		fence(IPOStuff.fence_Uranium,	"fences/uranium",	ieLoc("block/metal/storage_uranium_side"));
 		
 		loadedModels.backupModels();
 	}
@@ -148,11 +151,11 @@ public class IPOBlockStates extends BlockStateProvider{
 	// This is a hybrid of using IE's Builder and Forge's Loader stuff
 	protected static final ResourceLocation FORGE_LOADER=new ResourceLocation("forge","obj");
 	private LoadedModelBuilder getPostModel(BlockPost block, String name){
-		ResourceLocation texture=new ResourceLocation(IPOMod.ID, "block/posts/post_"+block.getPostMaterial().name().toLowerCase());
+		ResourceLocation texture=modLoc("block/posts/post_"+block.getPostMaterial().name().toLowerCase());
 		
 		LoadedModelBuilder b=this.loadedModels.withExistingParent(postModelPath(block, name), mcLoc("block"))
 			.loader(FORGE_LOADER)
-			.additional("model", new ResourceLocation(IPOMod.ID, "models/block/post/obj/"+name+".obj"))
+			.additional("model", modLoc("models/block/post/obj/"+name+".obj"))
 			.texture("texture", texture)
 			.texture("particle", texture)
 			;
@@ -162,5 +165,9 @@ public class IPOBlockStates extends BlockStateProvider{
 	
 	private String postModelPath(BlockPost block, String name){
 		return block.getRegistryName().getPath()+"/"+name;
+	}
+	
+	private ResourceLocation ieLoc(String str){
+		return new ResourceLocation("immersiveengineering", str);
 	}
 }

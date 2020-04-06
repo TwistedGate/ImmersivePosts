@@ -6,6 +6,9 @@ import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
+/**
+ * @author TwistedGate
+ */
 public class IPOItemModels extends LoadedModelProvider{
 	IPOBlockStates blockStates;
 	public IPOItemModels(DataGenerator gen, ExistingFileHelper exHelper, IPOBlockStates blockStates){

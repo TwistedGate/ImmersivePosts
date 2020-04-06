@@ -16,6 +16,9 @@ import net.minecraftforge.common.Tags;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
 
+/**
+ * @author TwistedGate
+ */
 public class IPORecipes extends RecipeProvider{
 	private Consumer<IFinishedRecipe> consumer;
 	public IPORecipes(DataGenerator generatorIn){
@@ -64,7 +67,7 @@ public class IPORecipes extends RecipeProvider{
 				.patternLine("i")
 				.key('i', ingotTag)
 				.addCriterion("has_"+ingotMat+"_ingot", hasItem(ingotTag))
-				.build(this.consumer, new ResourceLocation(IPOMod.ID, "has_"+ingotMat+"_rod"));
+				.build(this.consumer, new ResourceLocation(IPOMod.ID, "has_"+stickMat+"_rod"));
 		
 		ShapedRecipeBuilder.shapedRecipe(fence, 3)
 			.patternLine("isi")

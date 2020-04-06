@@ -61,7 +61,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	public static final VoxelShape LPARM_EAST_BOUNDS=VoxelShapes.create(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875);
 	public static final VoxelShape LPARM_WEST_BOUNDS=VoxelShapes.create(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875);
 	
-	// LPARM = (Little) Post Arm
+	// LPARM = (Little-)Post Arm
 	public static final BooleanProperty LPARM_NORTH=BooleanProperty.create("parm_north");
 	public static final BooleanProperty LPARM_EAST=BooleanProperty.create("parm_east");
 	public static final BooleanProperty LPARM_SOUTH=BooleanProperty.create("parm_south");
@@ -392,7 +392,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		private void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos){
 			EnumPostType thisType=this.getBlockState().get(BlockPost.TYPE);
 			
-			if(thisType.id()<2){
+			if(thisType.id()<=1){ // If POST (0) or POST_TOP (1)
 				BlockPos belowPos=pos.offset(Direction.DOWN);
 				if(BlockHelper.getBlockFrom(world, belowPos)==Blocks.AIR){
 					Block.spawnDrops(this, world, pos);
@@ -456,6 +456,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			}
 		}
 		
+		// TODO Probably should make a sort of cache for this
 		private static final VoxelShape X_BOUNDS=VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
 		private static final VoxelShape Z_BOUNDS=VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
 		static VoxelShape stateBounds(BlockState state){
