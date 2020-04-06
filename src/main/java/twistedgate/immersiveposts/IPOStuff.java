@@ -112,24 +112,6 @@ public class IPOStuff{
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event){
 		for(Block block:BLOCKS){
-			if(block instanceof BlockPost){
-				if(!IPOConfig.isEnabled(((BlockPost)block).getPostMaterial())){
-					ImmersivePosts.log.info("Block-Registration of {}-Post skipped.", ((BlockPost)block).getPostMaterial());
-					continue;
-				}
-			}
-			if(block instanceof BlockMetalFence){
-				boolean skip=false;
-				for(EnumPostMaterial m:EnumPostMaterial.values()){
-					if(block==m.getBlock() && !IPOConfig.isEnabled(m)){
-						ImmersivePosts.log.info("Block-Registration of {}-Fence skipped.", m);
-						skip=true;break;
-					}
-				}
-				
-				if(skip) continue;
-			}
-			
 			try{
 				event.getRegistry().register(block);
 			}catch(Throwable e) {
@@ -142,18 +124,6 @@ public class IPOStuff{
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event){
 		for(Item item:ITEMS){
-			if(item instanceof BlockItem){
-				boolean skip=false;
-				for(EnumPostMaterial m:EnumPostMaterial.values()){
-					if(((BlockItem)item).getBlock()==m.getBlock() && !IPOConfig.isEnabled(m)){
-						ImmersivePosts.log.info("Item-Registration of {}-Fence skipped.", m);
-						skip=true;break;
-					}
-				}
-				
-				if(skip) continue;
-			}
-			
 			try{
 				event.getRegistry().register(item);
 			}catch(Throwable e) {
