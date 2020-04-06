@@ -1,7 +1,5 @@
 package twistedgate.immersiveposts.common.data;
 
-import java.util.ArrayList;
-
 import blusunrize.immersiveengineering.common.data.models.LoadedModelBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
@@ -13,7 +11,7 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder.PartialBlockstate;
+import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
@@ -41,107 +39,128 @@ public class IPOBlockStates extends BlockStateProvider{
 		
 		for(Block block:IPOStuff.BLOCKS)
 			if(block instanceof BlockPost)
-				generateStatesFor((BlockPost)block);
+				alternateGenerator((BlockPost)block);//generateStatesFor((BlockPost)block);
 		
 		fence(IPOStuff.fence_Iron, "fences/iron", new ResourceLocation("block/iron_block"));
 		fence(IPOStuff.fence_Gold, "fences/gold", new ResourceLocation("block/gold_block"));
-//		fence(IPOStuff.fence_Copper, "fences/copper", new ResourceLocation("immersiveengineering","block/metal/storage_copper"));
-//		fence(IPOStuff.fence_Lead, "fences/lead", new ResourceLocation("immersiveengineering","block/metal/storage_lead"));
-//		fence(IPOStuff.fence_Silver, "fences/silver", new ResourceLocation("immersiveengineering","block/metal/storage_silver"));
-//		fence(IPOStuff.fence_Nickel, "fences/nickel", new ResourceLocation("immersiveengineering","block/metal/storage_nickel"));
-//		fence(IPOStuff.fence_Constantan, "fences/constantan", new ResourceLocation("immersiveengineering","block/metal/storage_constantan"));
-//		fence(IPOStuff.fence_Electrum, "fences/electrum", new ResourceLocation("immersiveengineering","block/metal/storage_electrum"));
-//		fence(IPOStuff.fence_Uranium, "fences/uranium", new ResourceLocation("immersiveengineering","block/metal/storage_uranium_side"));
+		fence(IPOStuff.fence_Copper, "fences/copper", new ResourceLocation("immersiveengineering","block/metal/storage_copper"));
+		fence(IPOStuff.fence_Lead, "fences/lead", new ResourceLocation("immersiveengineering","block/metal/storage_lead"));
+		fence(IPOStuff.fence_Silver, "fences/silver", new ResourceLocation("immersiveengineering","block/metal/storage_silver"));
+		fence(IPOStuff.fence_Nickel, "fences/nickel", new ResourceLocation("immersiveengineering","block/metal/storage_nickel"));
+		fence(IPOStuff.fence_Constantan, "fences/constantan", new ResourceLocation("immersiveengineering","block/metal/storage_constantan"));
+		fence(IPOStuff.fence_Electrum, "fences/electrum", new ResourceLocation("immersiveengineering","block/metal/storage_electrum"));
+		fence(IPOStuff.fence_Uranium, "fences/uranium", new ResourceLocation("immersiveengineering","block/metal/storage_uranium_side"));
 		
 		loadedModels.backupModels();
 	}
 	
 	private void fence(FenceBlock block, String name, ResourceLocation texture){
-		fenceBlock(block, name, texture);
-		
-		// While it's at it also make the inventory model ready
-		String[] s=name.split("/");
-		getBuilder(IPOMod.ID+":block/fences/inventory/"+s[1]+"_fence_inventory")
-			.parent(getExistingFile(new ResourceLocation("block/fence_inventory")))
-			.texture("texture", texture);
+		try{
+			fenceBlock(block, name, texture);
+			
+			// While it's at it also make the inventory model ready
+			String[] s=name.split("/");
+			getBuilder(IPOMod.ID+":block/fences/inventory/"+s[1]+"_fence_inventory")
+				.parent(getExistingFile(new ResourceLocation("block/fence_inventory")))
+				.texture("texture", texture);
+		}catch(Throwable e){
+			IPODataGen.log.warn("Oops.. {}", e.getMessage());
+		}
 	}
 	
-	protected static final ResourceLocation FORGE_LOADER=new ResourceLocation("forge","obj");
-	// Basicly testing which one works and which doesnt
-	protected static final ResourceLocation IE_LOADER=new ResourceLocation("immersiveengineering", "ie_obj");
+	private void alternateGenerator(BlockPost block){
+		LoadedModelBuilder modelArm			=getPostModel(block, "arm");
+		LoadedModelBuilder modelArmDouble	=getPostModel(block, "arm_double");
+		LoadedModelBuilder modelPost		=getPostModel(block, "post");
+		LoadedModelBuilder modelPostTop		=getPostModel(block, "post_top");
+		LoadedModelBuilder modelPostArm		=getPostModel(block, "post_arm");
+		ExistingModelFile modelEmpty		=getExistingFile(modLoc("block/empty"));
+		
+		MultiPartBlockStateBuilder builder=getMultipartBuilder(block);
+		
+		builder.part()
+			.modelFile(modelPost).addModel()
+			.condition(BlockPost.TYPE, EnumPostType.POST)
+			.end();
+		
+		builder.part()
+			.modelFile(modelPostTop).addModel()
+			.condition(BlockPost.TYPE, EnumPostType.POST_TOP)
+			.end();
+		
+		builder.part().modelFile(modelPostArm).rotationY(0).addModel()
+			.condition(BlockPost.LPARM_NORTH, true);
+		
+		builder.part().modelFile(modelPostArm).rotationY(90).addModel()
+			.condition(BlockPost.LPARM_EAST, true);
+		
+		builder.part().modelFile(modelPostArm).rotationY(180).addModel()
+			.condition(BlockPost.LPARM_SOUTH, true);
+		
+		builder.part().modelFile(modelPostArm).rotationY(-90).addModel()
+			.condition(BlockPost.LPARM_WEST, true);
+		
+		for(int i=0;i<=1;i++){
+			boolean flip=(i==1);
+			
+			for(Direction dir:Direction.Plane.HORIZONTAL){
+				int yArmRot;
+				if(flip){
+					switch(dir){
+						case WEST:	yArmRot=90; break;
+						case SOUTH:	yArmRot=0; break;
+						case EAST:	yArmRot=-90; break;
+						case NORTH:
+						default:	yArmRot=180; break;
+					}
+				}else{
+					switch(dir){
+						case WEST:	yArmRot=-90; break;
+						case SOUTH:	yArmRot=180; break;
+						case EAST:	yArmRot=90; break;
+						case NORTH:
+						default:	yArmRot=0; break;
+					}
+				}
+				
+				builder.part()
+					.modelFile(modelArm).rotationX(flip?180:0).rotationY(yArmRot).addModel()
+					.condition(BlockPost.TYPE, EnumPostType.ARM)
+					.condition(BlockPost.FACING, dir)
+					.condition(BlockPost.FLIP, flip)
+					.end();
+				
+				if(i==0)
+					builder.part()
+						.modelFile(modelArmDouble).rotationY(yArmRot).addModel()
+						.condition(BlockPost.TYPE, EnumPostType.ARM_DOUBLE)
+						.condition(BlockPost.FACING, dir)
+						.end();
+			}
+		}
+		
+		builder.part()
+			.modelFile(modelEmpty).addModel()
+			.condition(BlockPost.TYPE, EnumPostType.EMPTY)
+			.end();
+	}
 	
+	// This is a hybrid of using IE's Builder and Forge's Loader stuff
+	protected static final ResourceLocation FORGE_LOADER=new ResourceLocation("forge","obj");
 	private LoadedModelBuilder getPostModel(BlockPost block, String name){
 		ResourceLocation texture=new ResourceLocation(IPOMod.ID, "block/posts/post_"+block.getPostMaterial().name().toLowerCase());
 		
-		LoadedModelBuilder b=this.loadedModels.withExistingParent(block.getRegistryName().getPath(), mcLoc("block"))
+		LoadedModelBuilder b=this.loadedModels.withExistingParent(postModelPath(block, name), mcLoc("block"))
 			.loader(FORGE_LOADER)
-			.additional("model", new ResourceLocation(IPOMod.ID, "models/block/post/obj/"+name))
+			.additional("model", new ResourceLocation(IPOMod.ID, "models/block/post/obj/"+name+".obj"))
 			.texture("texture", texture)
 			.texture("particle", texture)
 			;
 		
-//		ExistingModelFile model=getExistingFile(new ResourceLocation(IPOMod.ID, "block/post/obj/"+name));
-//		model.assertExistence();
 		return b;
 	}
 	
-	/** Creates every state possible for a post. (Totaling 640 States) */
-	private void generateStatesFor(BlockPost block){
-		LoadedModelBuilder modelArm			=getPostModel(block, "arm.obj");
-		LoadedModelBuilder modelArmDouble	=getPostModel(block, "arm_double.obj");
-		LoadedModelBuilder modelPost		=getPostModel(block, "post.obj");
-		LoadedModelBuilder modelPostTop		=getPostModel(block, "post_top.obj");
-		LoadedModelBuilder modelPostArm		=getPostModel(block, "post_arm.obj");
-		ConfiguredModel modelEmpty			=new ConfiguredModel(getExistingFile(modLoc("block/empty")));
-		
-		for(EnumPostType type:EnumPostType.values()){
-			for(int j=0;j<=1;j++){
-				for(int i=0;i<16;i++){
-					boolean n=(i&0x01)>0;
-					boolean s=(i&0x02)>0;
-					boolean e=(i&0x04)>0;
-					boolean w=(i&0x08)>0;
-					
-					for(Direction dir:Direction.Plane.HORIZONTAL){
-						PartialBlockstate state=getVariantBuilder(block).partialState()
-								.with(BlockPost.FACING, dir)
-								.with(BlockPost.TYPE, type)
-								.with(BlockPost.FLIP, j==1)
-								.with(BlockPost.LPARM_NORTH, n)
-								.with(BlockPost.LPARM_EAST,  e)
-								.with(BlockPost.LPARM_SOUTH, s)
-								.with(BlockPost.LPARM_WEST,  w);
-						
-						// I know this is such a dirty way of doing it, but how else should i do this.
-						ArrayList<ConfiguredModel> tmp=new ArrayList<>(0);
-						int yArmRot;
-						switch(dir){ // Read from default to top.
-							case WEST:	yArmRot=90; break;
-							case SOUTH:	yArmRot=180; break;
-							case EAST:	yArmRot=-90; break;
-							default:	yArmRot=0; break; // North
-						}
-						
-						switch(type){
-							case POST:		tmp.add(new ConfiguredModel(modelPost)); break;
-							case POST_TOP:	tmp.add(new ConfiguredModel(modelPostTop)); break;
-							case ARM:		tmp.add(new ConfiguredModel(modelArm, 0, yArmRot, false)); break;
-							case ARM_DOUBLE:tmp.add(new ConfiguredModel(modelArmDouble, 0, yArmRot, false)); break;
-							case EMPTY:		tmp.add(modelEmpty); break;
-							default:
-								break;
-							
-						}
-						
-						if(n) tmp.add(new ConfiguredModel(modelPostArm, 0, 0, false));
-						if(e) tmp.add(new ConfiguredModel(modelPostArm, 0, -90, false));
-						if(s) tmp.add(new ConfiguredModel(modelPostArm, 0, 180, false));
-						if(w) tmp.add(new ConfiguredModel(modelPostArm, 0, 90, false));
-						
-						state.addModels(tmp.toArray(new ConfiguredModel[tmp.size()]));
-					}
-				}
-			}
-		}
+	private String postModelPath(BlockPost block, String name){
+		return block.getRegistryName().getPath()+"/"+name;
 	}
 }
