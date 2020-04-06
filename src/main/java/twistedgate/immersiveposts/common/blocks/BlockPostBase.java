@@ -17,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -41,7 +40,7 @@ import twistedgate.immersiveposts.utils.BlockHelper;
  * @author TwistedGate
  */
 public class BlockPostBase extends IPOBlockBase{
-	private static final AxisAlignedBB BASE_SIZE=new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
+	private static final VoxelShape BASE_SIZE=VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 	private static final Material BaseMaterial = new Material.Builder(MaterialColor.STONE).doesNotBlockMovement().notSolid().build();
 	
 	public BlockPostBase(){
@@ -54,7 +53,7 @@ public class BlockPostBase extends IPOBlockBase{
 	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-		return VoxelShapes.create(BASE_SIZE);
+		return BASE_SIZE;
 	}
 	
 	@Override

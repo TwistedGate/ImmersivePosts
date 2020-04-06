@@ -54,12 +54,12 @@ import twistedgate.immersiveposts.utils.BlockHelper;
 public class BlockPost extends IPOBlockBase implements IPostBlock{
 	private static final RedstoneParticleData URAN_PARTICLE=new RedstoneParticleData(0.0F, 1.0F, 0.0F, 1.0F);
 	
-	public static final AxisAlignedBB POST_SHAPE=new AxisAlignedBB(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
+	public static final VoxelShape POST_SHAPE=VoxelShapes.create(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
 	
-	public static final AxisAlignedBB LPARM_NORTH_BOUNDS=new AxisAlignedBB(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125);
-	public static final AxisAlignedBB LPARM_SOUTH_BOUNDS=new AxisAlignedBB(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0);
-	public static final AxisAlignedBB LPARM_EAST_BOUNDS=new AxisAlignedBB(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875);
-	public static final AxisAlignedBB LPARM_WEST_BOUNDS=new AxisAlignedBB(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875);
+	public static final VoxelShape LPARM_NORTH_BOUNDS=VoxelShapes.create(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125);
+	public static final VoxelShape LPARM_SOUTH_BOUNDS=VoxelShapes.create(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0);
+	public static final VoxelShape LPARM_EAST_BOUNDS=VoxelShapes.create(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875);
+	public static final VoxelShape LPARM_WEST_BOUNDS=VoxelShapes.create(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875);
 	
 	// LPARM = (Little) Post Arm
 	public static final BooleanProperty LPARM_NORTH=BooleanProperty.create("parm_north");
@@ -376,12 +376,12 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		@Override
 		public VoxelShape getShape(IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-			return VoxelShapes.create(stateBounds(this));
+			return stateBounds(this);
 		}
 		
 		@Override
 		public VoxelShape getCollisionShape(IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-			return VoxelShapes.create(stateBounds(this));
+			return stateBounds(this);
 		}
 		
 		@Override
@@ -456,9 +456,9 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			}
 		}
 		
-		private static final AxisAlignedBB X_BOUNDS=new AxisAlignedBB(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
-		private static final AxisAlignedBB Z_BOUNDS=new AxisAlignedBB(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
-		static AxisAlignedBB stateBounds(BlockState state){
+		private static final VoxelShape X_BOUNDS=VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
+		private static final VoxelShape Z_BOUNDS=VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
+		static VoxelShape stateBounds(BlockState state){
 			switch(state.get(TYPE)){
 				case ARM:case ARM_DOUBLE:{
 					Direction dir=state.get(FACING);
@@ -472,7 +472,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					double minZ=(dir==Direction.SOUTH)?0.0:0.3125;
 					double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
 					
-					return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+					return VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
 				}
 				case EMPTY:{
 					Direction facing=state.get(FACING);
