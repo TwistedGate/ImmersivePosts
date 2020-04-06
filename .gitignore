@@ -25,3 +25,30 @@ hs_err_pid*
 # gradle
 build
 .gradle
+
+# Forge Gradle datagen output
+src/generated
+
+# IDEs/editors
+.classpath
+.gimp
+.idea
+.metadata
+.project
+.settings
+.vscode
+eclipse
+out
+run
+
+# OS specific temporary files
+.DS_Store
+desktop.ini
+*~
+*.iml
+*.ipr
+*.iws
+*.jks
+*.launch
+*.log
+*.tmp
