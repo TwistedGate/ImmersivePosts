@@ -1,8 +1,6 @@
 package twistedgate.immersiveposts.client;
 
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import twistedgate.immersiveposts.IPOMod;
@@ -13,51 +11,10 @@ import twistedgate.immersiveposts.common.CommonProxy;
  */
 @Mod.EventBusSubscriber(value=Dist.CLIENT, modid=IPOMod.ID, bus=Bus.MOD)
 public class ClientProxy extends CommonProxy{
-	
-	@Override
-	public void construct(){
-	}
-	
-	@Override
-	public void preInit(){
-		//IEOBJLoader.instance.addDomain(IPOMod.ID);
-		//OBJLoader.INSTANCE.addDomain(IPOMod.ID);
-	}
-	
 	@Override
 	public void postInit(){
 		// TODO Remake manual entries.
 		//setupManualPage();
-	}
-	
-	@SubscribeEvent
-	public static void regModels(ModelRegistryEvent event){
-//		for(Block block:IPOStuff.BLOCKS){
-//			if(!(block instanceof BlockPost)){ // Prevent posts from getting an item
-//				Item item=block.asItem();
-//				ModelResourceLocation loc=new ModelResourceLocation(block.getRegistryName(), "inventory");
-//				ModelLoader.setCustomModelResourceLocation(item, 0, loc);
-//			}
-//		}
-//		
-//		for(Item item:IPOStuff.ITEMS){
-//			if(item instanceof BlockItem) continue;
-//			
-//			if(item instanceof MultiMetaItem){
-//				MultiMetaItem mItem=(MultiMetaItem)item;
-//				for(int i=0;i<mItem.getSubItemCount();i++){
-//					ResourceLocation loc=new ResourceLocation(IPOMod.ID, mItem.regName+"/"+mItem.getName(i));
-//					ModelBakery.registerItemVariants(mItem, loc);
-//					ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(loc, "inventory"));
-//				}
-//				
-//			}else{
-//				ModelResourceLocation loc=new ModelResourceLocation(item.getRegistryName(), "inventory");
-//				
-//				for(int i=0;i<15;i++)
-//					ModelLoader.setCustomModelResourceLocation(item, i, loc);
-//			}
-//		}
 	}
 	
 	/*
