@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -131,98 +130,5 @@ public class IPOStuff{
 				throw e;
 			}
 		}
-		
-		//registerFenceOres();
-		//registerStickOres();
 	}
-	
-	/*
-	@SubscribeEvent
-	public static void registerRecipes(RegistryEvent.Register<IRecipe> event){
-		ImmersivePosts.log.info("Registering Recipes.");
-		
-		ComparableItemStack compMoldRod = ApiUtils.createComparableItemStack(new ItemStack(IEItems.Molds.moldRod), false);
-		for(EnumPostMaterial m:EnumPostMaterial.values()){
-			switch(m){
-				case WOOD:case NETHERBRICK:case ALUMINIUM:
-				case STEEL:case CONCRETE:case CONCRETE_LEADED:
-					continue;
-				default:
-					if(IPOConfig.isEnabled(m)){
-						String ogName=m.toString().toLowerCase(Locale.ENGLISH);
-						String oreName=StringUtils.upperCaseFirst(ogName);
-						
-						int meta=-1;
-						for(int i=0;i<IPOStuff.metalRods.getSubItemCount();i++){
-							if(IPOStuff.metalRods.getName(i).equals("stick_"+ogName)){
-								meta=i;
-								break;
-							}
-						}
-						
-						voidRegDynOreRecipe(event, "fence_"+ogName, new ItemStack(m.getBlock()), new Object[]{
-								"ISI",
-								"ISI",
-								'S', "stick"+oreName,
-								'I', "ingot"+oreName,
-						});
-						
-						if(meta!=-1 && m!=EnumPostMaterial.IRON)
-							voidRegDynOreRecipe(event, "metal_rods/stick_"+(ogName), new ItemStack(IPOStuff.metalRods, 4, meta), new Object[]{
-									"I",
-									"I",
-									'I', "ingot"+oreName,
-							});
-						
-						if(m!=EnumPostMaterial.IRON)
-							MetalPressRecipe.addRecipe(Utils.copyStackWithAmount(IEApi.getPreferredOreStack("stick"+oreName), 2), "ingot"+oreName, compMoldRod, 2400);
-					}
-			}
-		}
-	}
-	
-	private static void voidRegDynOreRecipe(Register<IRecipe> event, String name, ItemStack output, Object... params){
-		ResourceLocation group=new ResourceLocation(IPOMod.ID, "recipes");
-		ResourceLocation regName=new ResourceLocation(IPOMod.ID, "recipes/"+name);
-		
-		event.getRegistry().register(new ShapedOreRecipe(group, output, params).setRegistryName(regName));
-	}
-	
-	private static void registerFenceOres(){
-		String prefix="fence";
-		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			switch(mat){
-				case WOOD:case NETHERBRICK:case ALUMINIUM:case STEEL:continue;
-				default:{
-					if(IPOConfig.isEnabled(mat)){
-						OreDictionary.registerOre(prefix+StringUtils.upperCaseFirst(mat.toString()), mat.getBlock());
-					}else{
-						ImmersivePosts.log.info("Ore-Registration of {}-Fence skipped.", mat.toString());
-					}
-				}
-			}
-		}
-	}
-	
-	private static void registerStickOres(){
-		String prefix="stick";
-		String rep="stick_";
-		for(Item item:ITEMS){
-			if(item instanceof MetalRods){
-				MultiMetaItem mItem=(MultiMetaItem)item;
-				for(int i=0;i<mItem.getSubItemCount();i++){
-					String name=mItem.getName(i).substring(rep.length());
-					
-					if(mItem.getName(i).contains(rep) && IPOConfig.isEnabled(EnumPostMaterial.valueOf(name.toUpperCase(Locale.ENGLISH)))){
-						String oreName=prefix+StringUtils.upperCaseFirst(name);
-						
-						OreDictionary.registerOre(oreName, new ItemStack(mItem, 1, i));
-					}else{
-						ImmersivePosts.log.info("Ore-Registration of {}-Rod skipped.", name);
-					}
-				}
-				break;
-			}
-		}
-	}*/
 }

@@ -42,37 +42,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-//import net.minecraft.block.Block;
-//import net.minecraft.block.BlockFence;
-//import net.minecraft.block.BlockWall;
-//import net.minecraft.block.material.Material;
-//import net.minecraft.block.properties.IProperty;
-//import net.minecraft.block.properties.PropertyBool;
-//import net.minecraft.block.properties.PropertyDirection;
-//import net.minecraft.block.properties.PropertyEnum;
-//import net.minecraft.block.state.BlockFaceShape;
-//import net.minecraft.block.state.BlockStateContainer;
-//import net.minecraft.block.state.IBlockState;
-//import net.minecraft.entity.Entity;
-//import net.minecraft.entity.EntityLivingBase;
-//import net.minecraft.entity.player.EntityPlayer;
-//import net.minecraft.init.Blocks;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.util.BlockRenderLayer;
-//import net.minecraft.util.EnumFacing;
-//import net.minecraft.util.EnumFacing.Axis;
-//import net.minecraft.util.EnumHand;
-//import net.minecraft.util.EnumParticleTypes;
-//import net.minecraft.util.NonNullList;
-//import net.minecraft.util.math.AxisAlignedBB;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.util.math.RayTraceResult;
-//import net.minecraft.util.math.Vec3d;
-//import net.minecraft.util.text.TextComponentString;
-//import net.minecraft.util.text.TextComponentTranslation;
-//import net.minecraft.world.IBlockAccess;
-//import net.minecraft.world.World;
-//import net.minecraftforge.common.property.IUnlistedProperty;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 import twistedgate.immersiveposts.utils.BlockHelper;
@@ -149,58 +118,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		return Collections.emptyList();
 	}
 	
-	@Deprecated
-	public int getMetaFromState(BlockState state){
-		switch(state.get(TYPE)){
-			case POST: return 0;
-			case POST_TOP: return 1;
-			case ARM:{
-				int rot;
-				switch(state.get(FACING)){
-					case EAST: rot=1;break;
-					case SOUTH:rot=2;break;
-					case WEST: rot=3;break;
-					default:   rot=0; // North, Up and Down
-				}
-				
-				return (state.get(FLIP)?6:2)+rot;
-			}
-			case ARM_DOUBLE:{
-				switch(state.get(FACING)){
-					case EAST: return 11;
-					case SOUTH:return 12;
-					case WEST: return 13;
-					default:   return 10; // North, Up and Down
-				}
-			}
-			case EMPTY: return 15;
-			default: return 0;
-		}
-	}
-	
-	@Deprecated
-	public BlockState getStateFromMeta(int meta){
-		BlockState state=getDefaultState();
-		if(meta==15) return state.with(TYPE, EnumPostType.EMPTY);
-		
-		if(meta>0){
-			if(meta>9) state=state.with(TYPE, EnumPostType.ARM_DOUBLE);
-			else if(meta>1) state=state.with(TYPE, EnumPostType.ARM);
-			else state=state.with(TYPE, EnumPostType.POST_TOP);
-			
-			if(meta>=6 && meta<=9) state=state.with(FLIP, true);
-			
-			switch((meta-2)%4){
-				case 0: state=state.with(FACING, Direction.NORTH); break;
-				case 1: state=state.with(FACING, Direction.EAST); break;
-				case 2: state=state.with(FACING, Direction.SOUTH); break;
-				case 3: state=state.with(FACING, Direction.WEST); break;
-			}
-		}
-		
-		return state;
-	}
-	
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand){
@@ -223,65 +140,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	public boolean canConnectTransformer(IBlockReader world, BlockPos pos){
 		return world.getBlockState(pos).get(TYPE).id()<2;
 	}
-	
-	/*
-	// TODO Collision Handling Part 1
-	public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState){
-		List<AxisAlignedBB> list=getSelectionBounds(state, worldIn, pos);
-		if(list!=null && !list.isEmpty())
-			for(AxisAlignedBB aabb:list){
-				aabb=aabb.offset(pos);
-				if(aabb!=null && entityBox.intersects(aabb))
-					collidingBoxes.add(aabb);
-			}
-		
-		//super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
-	}
-	
-	// TODO Collision Handling Part 2
-	public RayTraceResult collisionRayTrace(BlockState state, World worldIn, BlockPos pos, Vec3d start, Vec3d end){
-		List<AxisAlignedBB> bounds=getSelectionBounds(state, worldIn, pos);
-		if(bounds!=null && !bounds.isEmpty()){
-			RayTraceResult ret=null;
-			double minDist=Double.POSITIVE_INFINITY;
-			for(AxisAlignedBB aabb:bounds){
-				if(aabb==null) continue;
-				
-				RayTraceResult res=this.rayTrace(pos, start, end, aabb);
-				if(res!=null){
-					double dist=res.hitVec.squareDistanceTo(start);
-					if(dist<minDist){
-						ret=res;
-						minDist=dist;
-					}
-				}
-			}
-			
-			return ret;
-		}
-		
-		return this.rayTrace(pos, start, end, state.getBoundingBox(worldIn, pos));
-	}*/
-	
-	/* This just includes the mini-arms to the selection bounds /
-	private List<AxisAlignedBB> getSelectionBounds(BlockState state, World world, BlockPos pos){
-		state=state.getExtendedState(world, pos);
-		
-		List<AxisAlignedBB> bounds=null;
-		
-		if(state.get(TYPE).id()<2){
-			bounds=new ArrayList<>(5); //Let's start with a cap of 5
-			
-			if(state.get(LPARM_NORTH)) bounds.add(LPARM_NORTH_BOUNDS);
-			if(state.get(LPARM_SOUTH)) bounds.add(LPARM_SOUTH_BOUNDS);
-			if(state.get(LPARM_EAST)) bounds.add(LPARM_EAST_BOUNDS);
-			if(state.get(LPARM_WEST)) bounds.add(LPARM_WEST_BOUNDS);
-			
-			bounds.add(POST_SHAPE);
-		}
-		
-		return bounds;
-	}*/
 	
 	@Override
 	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
@@ -454,32 +312,15 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					.with(LPARM_WEST, b3);
 		}
 		
-		/*
-		@Override
-		public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockPos pos, Direction face){
-			BlockState state=worldIn.getBlockState(pos.offset(face));
-			Block block=state.getBlock();
-			if(block instanceof BlockFence || block instanceof BlockWall) return BlockFaceShape.UNDEFINED;
-			
-			boolean f=false;
-			if(block instanceof BlockWoodenDecoration)
-				if(block.getMetaFromState(state)==BlockTypes_WoodenDecoration.FENCE.getMeta())
-					f=true;
-			
-			if(block instanceof BlockMetalDecoration1){
-				int tmp=block.getMetaFromState(state);
-				if(tmp==BlockTypes_MetalDecoration1.ALUMINUM_FENCE.getMeta() || tmp==BlockTypes_MetalDecoration1.STEEL_FENCE.getMeta())
-					f=true;
-			}
-			
-			
-			return f?BlockFaceShape.UNDEFINED:BlockFaceShape.SOLID;
-		}
-		*/
-		
 		@Override
 		public boolean isSolid(){
 			return false;
+		}
+		
+		@Override
+		public boolean func_224755_d(IBlockReader world, BlockPos pos, Direction dir){
+			boolean b=!(world.getBlockState(pos.offset(dir)).getBlock() instanceof FourWayBlock);
+			return b;
 		}
 		
 		@Override
