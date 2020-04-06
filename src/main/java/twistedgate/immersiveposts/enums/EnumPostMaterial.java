@@ -51,15 +51,11 @@ public enum EnumPostMaterial implements IStringSerializable{
 		this.name=name;
 		this.block=block;
 		this.isFence=(block instanceof FenceBlock);
-		
-		System.out.printf("Post-Material %s [%s] created.\r\n", name, block+""+(this.isFence?", isFence":""));
 	}
 	
 	private EnumPostMaterial(String name, Supplier<Block> supplier) {
 		this.name=name;
 		this.supplier=supplier;
-		
-		System.out.printf("Post-Material %s with Supplier created.\r\n", name);
 	}
 	
 	/** Source-block itemstack */
@@ -67,6 +63,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 		return new ItemStack(this.block, 1);
 	}
 	
+	/** The texture for this material type */
 	public ResourceLocation getTexture(){
 		return new ResourceLocation(IPOMod.ID, "block/posts/post_"+this.toString().toLowerCase());
 	}
@@ -121,10 +118,9 @@ public enum EnumPostMaterial implements IStringSerializable{
 				prop=Block.Properties.create(METAL_LIKE).harvestTool(ToolType.PICKAXE).harvestLevel(1).sound(SoundType.METAL);
 		}
 		
-		if(postMaterial==EnumPostMaterial.URANIUM)
-			prop.lightValue(8);
-		
+		prop.lightValue(postMaterial==EnumPostMaterial.URANIUM?8:0);
 		prop.hardnessAndResistance(3.0F, 5.0F);
+		prop.noDrops();
 		
 		return prop;
 	}
