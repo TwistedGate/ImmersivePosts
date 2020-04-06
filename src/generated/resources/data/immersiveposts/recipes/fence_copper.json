@@ -6,10 +6,10 @@
   ],
   "key": {
     "i": {
-      "tag": "forge:ingot/copper"
+      "tag": "forge:ingots/copper"
     },
     "s": {
-      "tag": "forge:rod/copper"
+      "tag": "forge:rods/copper"
     }
   },
   "result": {

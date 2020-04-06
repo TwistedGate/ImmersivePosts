@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:rod/lead"
+            "tag": "forge:rods/lead"
           }
         ]
       }
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingot/lead"
+            "tag": "forge:ingots/lead"
           }
         ]
       }

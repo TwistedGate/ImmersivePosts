@@ -6,10 +6,10 @@
   ],
   "key": {
     "i": {
-      "tag": "forge:ingot/constantan"
+      "tag": "forge:ingots/constantan"
     },
     "s": {
-      "tag": "forge:rod/constantan"
+      "tag": "forge:rods/constantan"
     }
   },
   "result": {

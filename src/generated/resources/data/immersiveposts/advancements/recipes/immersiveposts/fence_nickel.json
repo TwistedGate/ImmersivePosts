@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:rod/nickel"
+            "tag": "forge:rods/nickel"
           }
         ]
       }
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingot/nickel"
+            "tag": "forge:ingots/nickel"
           }
         ]
       }

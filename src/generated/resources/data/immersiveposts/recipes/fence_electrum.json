@@ -6,10 +6,10 @@
   ],
   "key": {
     "i": {
-      "tag": "forge:ingot/electrum"
+      "tag": "forge:ingots/electrum"
     },
     "s": {
-      "tag": "forge:rod/electrum"
+      "tag": "forge:rods/electrum"
     }
   },
   "result": {

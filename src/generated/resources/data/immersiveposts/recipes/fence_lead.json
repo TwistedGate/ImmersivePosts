@@ -6,10 +6,10 @@
   ],
   "key": {
     "i": {
-      "tag": "forge:ingot/lead"
+      "tag": "forge:ingots/lead"
     },
     "s": {
-      "tag": "forge:rod/lead"
+      "tag": "forge:rods/lead"
     }
   },
   "result": {

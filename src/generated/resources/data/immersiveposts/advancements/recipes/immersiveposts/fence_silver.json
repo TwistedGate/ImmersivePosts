@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:rod/silver"
+            "tag": "forge:rods/silver"
           }
         ]
       }
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingot/silver"
+            "tag": "forge:ingots/silver"
           }
         ]
       }

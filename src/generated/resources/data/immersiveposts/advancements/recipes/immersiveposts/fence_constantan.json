@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:rod/constantan"
+            "tag": "forge:rods/constantan"
           }
         ]
       }
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingot/constantan"
+            "tag": "forge:ingots/constantan"
           }
         ]
       }

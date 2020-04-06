@@ -6,10 +6,10 @@
   ],
   "key": {
     "i": {
-      "tag": "forge:ingot/nickel"
+      "tag": "forge:ingots/nickel"
     },
     "s": {
-      "tag": "forge:rod/nickel"
+      "tag": "forge:rods/nickel"
     }
   },
   "result": {
