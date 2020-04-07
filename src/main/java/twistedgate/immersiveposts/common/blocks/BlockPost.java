@@ -2,7 +2,9 @@ package twistedgate.immersiveposts.common.blocks;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.google.common.collect.ImmutableMap;
@@ -328,12 +330,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		}
 		
 		@Override
-		public boolean func_224755_d(IBlockReader world, BlockPos pos, Direction dir){
-			boolean b=!(world.getBlockState(pos.offset(dir)).getBlock() instanceof FourWayBlock);
-			return b;
-		}
-		
-		@Override
 		public boolean isOpaqueCube(IBlockReader worldIn, BlockPos pos){
 			return false;
 		}
@@ -372,6 +368,12 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		@OnlyIn(Dist.CLIENT)
 		public boolean isSideInvisible(BlockState state, Direction face){
 			return false;
+		}
+		
+		@Override
+		public boolean func_224755_d(IBlockReader world, BlockPos pos, Direction dir){
+			boolean b=!(world.getBlockState(pos.offset(dir)).getBlock() instanceof FourWayBlock);
+			return b;
 		}
 		
 		@Override
@@ -456,24 +458,48 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			}
 		}
 		
-		// TODO Probably should make a sort of cache for this
 		private static final VoxelShape X_BOUNDS=VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
 		private static final VoxelShape Z_BOUNDS=VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
+		private static final Map<Byte, VoxelShape> shapeCache=new HashMap<>();
 		static VoxelShape stateBounds(BlockState state){
 			switch(state.get(TYPE)){
 				case ARM:case ARM_DOUBLE:{
 					Direction dir=state.get(FACING);
 					boolean flipped=state.get(FLIP);
 					
-					double minY=flipped?0.0:0.34375;
-					double maxY=flipped?0.65625:1.0;
+					byte id=(byte)(flipped?0x10:0x00); // Bit5=Flip, Bit4=West, Bit3=South, Bit2=East, Bit1=North
+					switch(dir){
+						case NORTH:	id|=0x01;
+						case EAST:	id|=0x02;
+						case SOUTH:	id|=0x04;
+						case WEST:	id|=0x08;
+						default:	id|=0x01; // Basicly default to North
+					}
+					if(!shapeCache.containsKey(id)){
+						double minY=flipped?0.0:0.34375;
+						double maxY=flipped?0.65625:1.0;
+						
+						double minX=(dir==Direction.EAST) ?0.0:0.3125;
+						double maxX=(dir==Direction.WEST) ?1.0:0.6875;
+						double minZ=(dir==Direction.SOUTH)?0.0:0.3125;
+						double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
+						
+						VoxelShape shape=VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
+						shapeCache.put(id, shape);
+						return shape;
+					}
 					
-					double minX=(dir==Direction.EAST) ?0.0:0.3125;
-					double maxX=(dir==Direction.WEST) ?1.0:0.6875;
-					double minZ=(dir==Direction.SOUTH)?0.0:0.3125;
-					double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
+					return shapeCache.get(id);
 					
-					return VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
+//					double minY=flipped?0.0:0.34375;
+//					double maxY=flipped?0.65625:1.0;
+//					
+//					double minX=(dir==Direction.EAST) ?0.0:0.3125;
+//					double maxX=(dir==Direction.WEST) ?1.0:0.6875;
+//					double minZ=(dir==Direction.SOUTH)?0.0:0.3125;
+//					double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
+//					
+//					return VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
 				}
 				case EMPTY:{
 					Direction facing=state.get(FACING);
