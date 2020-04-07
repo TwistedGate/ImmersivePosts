@@ -54,7 +54,7 @@ minecraft {
 			property 'forge.logging.markers', ''
 			property 'forge.logging.console.level', 'info' // Yes, "debug" recommended, but lagging the shit out of my system.
             property 'fml.earlyprogresswindow', 'false'
-			args '--mod', 'immersiveposts', '--all', '--output', file('src/generated/resources/') '--validate', '--existing', sourceSets.main.resources.srcDirs[0]
+			args '--mod', 'immersiveposts', '--all', '--output', file('src/generated/resources/'), '--validate', '--existing', sourceSets.main.resources.srcDirs[0]
 			mods {
 				immersiveposts {
 					source sourceSets.main
