@@ -47,7 +47,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
-import twistedgate.immersiveposts.utils.BlockHelper;
 
 /**
  * All-in-one package. Containing everything into one neat class is the best.
@@ -157,7 +156,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				for(int y=0;y<(worldIn.getActualHeight()-pos.getY());y++){
 					BlockPos nPos=pos.add(0,y,0);
 					
-					if(BlockHelper.getBlockFrom(worldIn, nPos) instanceof BlockPost){
+					if(getBlockFrom(worldIn, nPos) instanceof BlockPost){
 						BlockState s=worldIn.getBlockState(nPos);
 						EnumPostType type=s.get(BlockPost.TYPE);
 						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIP)){
@@ -165,7 +164,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						}
 						
 						BlockPos up=nPos.offset(Direction.UP);
-						if(BlockHelper.getBlockFrom(worldIn, up) instanceof BlockPost){
+						if(getBlockFrom(worldIn, up) instanceof BlockPost){
 							s=worldIn.getBlockState(up);
 							type=s.get(BlockPost.TYPE);
 							if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
@@ -199,7 +198,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 									defaultState=defaultState.with(FACING, facing);
 									worldIn.setBlockState(nPos, defaultState);
 									defaultState.neighborChanged(worldIn, nPos, this, null, false);
-								}else if(BlockHelper.getBlockFrom(worldIn, nPos)==this){
+								}else if(getBlockFrom(worldIn, nPos)==this){
 									switch(worldIn.getBlockState(nPos).get(TYPE)){
 										case ARM:{
 											worldIn.setBlockState(nPos, Blocks.AIR.getDefaultState());
@@ -396,7 +395,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			
 			if(thisType.id()<=1){ // If POST (0) or POST_TOP (1)
 				BlockPos belowPos=pos.offset(Direction.DOWN);
-				if(BlockHelper.getBlockFrom(world, belowPos)==Blocks.AIR){
+				if(getBlockFrom(world, belowPos)==Blocks.AIR){
 					Block.spawnDrops(this, world, pos);
 					world.setBlockState(pos, Blocks.AIR.getDefaultState());
 					return;
@@ -475,6 +474,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						case WEST:	id|=0x08;
 						default:	id|=0x01; // Basicly default to North
 					}
+					
 					if(!shapeCache.containsKey(id)){
 						double minY=flipped?0.0:0.34375;
 						double maxY=flipped?0.65625:1.0;
@@ -490,16 +490,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					}
 					
 					return shapeCache.get(id);
-					
-//					double minY=flipped?0.0:0.34375;
-//					double maxY=flipped?0.65625:1.0;
-//					
-//					double minX=(dir==Direction.EAST) ?0.0:0.3125;
-//					double maxX=(dir==Direction.WEST) ?1.0:0.6875;
-//					double minZ=(dir==Direction.SOUTH)?0.0:0.3125;
-//					double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
-//					
-//					return VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
 				}
 				case EMPTY:{
 					Direction facing=state.get(FACING);

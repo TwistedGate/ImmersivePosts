@@ -34,7 +34,6 @@ import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
-import twistedgate.immersiveposts.utils.BlockHelper;
 
 /**
  * @author TwistedGate
@@ -88,7 +87,7 @@ public class BlockPostBase extends IPOBlockBase{
 				for(int y=1;y<(worldIn.getActualHeight()-pos.getY());y++){
 					BlockPos nPos=pos.add(0,y,0);
 					
-					if((BlockHelper.getBlockFrom(worldIn, nPos) instanceof BlockPost)){
+					if((getBlockFrom(worldIn, nPos) instanceof BlockPost)){
 						BlockState s=worldIn.getBlockState(nPos);
 						EnumPostType type=s.get(BlockPost.TYPE);
 						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIP)){
@@ -96,7 +95,7 @@ public class BlockPostBase extends IPOBlockBase{
 						}
 						
 						BlockPos up=nPos.offset(Direction.UP);
-						if(BlockHelper.getBlockFrom(worldIn, up) instanceof BlockPost){
+						if(getBlockFrom(worldIn, up) instanceof BlockPost){
 							s=worldIn.getBlockState(up);
 							type=s.get(BlockPost.TYPE);
 							if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
