@@ -1,5 +1,9 @@
 {
 	"usage1":{
+		"type": "item_display",
+		"item": "immersiveengineering:hammer"
+	},
+	"usage2":{
 		"type": "image",
 		"images":[
 			{
@@ -11,7 +15,7 @@
 			}
 		]
 	},
-	"usage2":{
+	"usage3":{
 		"type": "image",
 		"images":[
 			{
@@ -23,7 +27,7 @@
 			}
 		]
 	},
-	"usage3":{
+	"usage4":{
 		"type": "image",
 		"images":[
 			{
@@ -35,7 +39,7 @@
 			}
 		]
 	},
-	"usage4":{
+	"usage5":{
 		"type": "image",
 		"images":[
 			{
@@ -47,7 +51,7 @@
 			}
 		]
 	},
-	"usage5":{
+	"usage6":{
 		"type": "image",
 		"images":[
 			{

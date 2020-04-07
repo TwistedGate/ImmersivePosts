@@ -2,18 +2,52 @@ Accepted Blocks
 Hm, what to pick..
 <&index0><np>
 <&index1><np>
-<&treated>Treated-Wood.<br><br><br><br><br>The old-school.<np>
-<&nether>Nether Bricks<br><br><br><br><br><br><br><br><br><br>The hot-headed.<np>
-<&iron>Iron<br><br><br><br><br>The rusty-boi.<np>
-<&gold>Gold<br><br><br><br><br><br>The gangsta-bling.<np>
-<&copper>Copper<br><br><br><br><br><br>The common.<np>
-<&lead>Lead<br><br><br><br><br><br>The heavy.<np>
-<&silver>Silver<br><br><br><br><br><br>The shiny.<np>
-<&nickel>Nickel<br><br><br><br><br><br>The half band.<np>
-<&constantan>Constantan<br><br><br><br><br><br>The weirdo.<np>
-<&electrum>Electrum<br><br><br><br><br><br>The shocker.<np>
-<&uranium>Uranium<br>Emits a little bit of light aswell.<br>Though it seems only as much as a redstone torch.<br><br>The long half-life.<np>
-<&aluminium>Aluminium? No.<br>Aluminum? Nah.<br>Alumnum. Perfect.<br><br><br>The split-opinion.<np>
-<&steel>Steel<br><br><br><br><br>The stronger rusty-boi.<np>
-<&concrete>Concrete<br><br><br><br><br><br><br><br><br><br><br><br>The crumbly.<np>
-<&leadedconcrete>Leaded Concrete<br><br><br><br><br><br><br><br><br><br><br><br>The reinforced crumbly.
+<&treated>Treated-Wood.
+
+The old-school.<np>
+<&nether>Nether Bricks.
+
+The hot-headed.<np>
+<&iron>Iron.
+
+The rusty-boi.<np>
+<&gold>Gold.
+
+The gangsta-bling.<np>
+<&copper>Copper.
+
+The common.<np>
+<&lead>Lead.
+
+The heavy.<np>
+<&silver>Silver.
+
+The shiny.<np>
+<&nickel>Nickel.
+
+The half band.<np>
+<&constantan>Constantan.
+
+The weirdo.<np>
+<&electrum>Electrum.
+
+The shocker.<np>
+<&uranium>Uranium
+Emits a little bit of light aswell.
+Though it seems only as much as a redstone torch.
+
+The long half-life.<np>
+<&aluminium>Aluminium? No.
+Aluminum? Nah.
+Alumnum. Perfect.
+
+The split-opinion.<np>
+<&steel>Steel.
+
+The stronger rusty-boi.<np>
+<&concrete>Concrete.
+
+The crumbly.<np>
+<&leadedconcrete>Leaded Concrete.
+
+The reinforced crumbly.

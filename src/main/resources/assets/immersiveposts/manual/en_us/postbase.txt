@@ -2,4 +2,4 @@ Extendable Post
 The Sky's the Limit.
 <&postbase>Used as a start for the custom-sized posts.
 
-(See <link;immersiveposts:usage;§o§nUsage§r;0> on how to use it.)
+(See <link;immersiveposts:usage;Usage;start> on how to use it.)
