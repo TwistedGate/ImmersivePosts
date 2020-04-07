@@ -47,6 +47,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 	private Block block;
 	private Supplier<Block> supplier;
 	private boolean isFence;
+	private Block.Properties props;
 	private EnumPostMaterial(String name, Block block){
 		this.name=name;
 		this.block=block;
@@ -88,23 +89,13 @@ public enum EnumPostMaterial implements IStringSerializable{
 	}
 	
 	
-	private static final Material WOOD_LIKE = new Material.Builder(MaterialColor.WOOD)
-			.doesNotBlockMovement()
-			.notSolid()
-			.build();
-	
-	private static final Material STONE_LIKE = new Material.Builder(MaterialColor.STONE)
-			.doesNotBlockMovement()
-			.notSolid()
-			.build();
-	
-	private static final Material METAL_LIKE=new Material.Builder(MaterialColor.IRON)
-			.doesNotBlockMovement()
-			.notSolid()
-			.build();
+	private static final Material WOOD_LIKE	=new Material.Builder(MaterialColor.WOOD).build();
+	private static final Material STONE_LIKE=new Material.Builder(MaterialColor.STONE).build();
+	private static final Material METAL_LIKE=new Material.Builder(MaterialColor.IRON).build();
 	
 	public Block.Properties getProperties(){
-		return blockPropertiesFrom(this);
+		if(this.props==null) this.props=blockPropertiesFrom(this);
+		return this.props;
 	}
 	
 	public static Block.Properties blockPropertiesFrom(EnumPostMaterial postMaterial){

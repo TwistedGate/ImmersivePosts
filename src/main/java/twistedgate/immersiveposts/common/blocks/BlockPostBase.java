@@ -41,7 +41,7 @@ import twistedgate.immersiveposts.utils.BlockHelper;
  */
 public class BlockPostBase extends IPOBlockBase{
 	private static final VoxelShape BASE_SIZE=VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
-	private static final Material BaseMaterial = new Material.Builder(MaterialColor.STONE).doesNotBlockMovement().notSolid().build();
+	private static final Material BaseMaterial = new Material.Builder(MaterialColor.STONE).build();
 	
 	public BlockPostBase(){
 		super("postbase", Properties.create(BaseMaterial)
