@@ -26,7 +26,7 @@ public class ClientProxy extends CommonProxy{
 	public void setupManualPage(){
 		ManualInstance man=ManualHelper.getManual();
 		
-		InnerNode<ResourceLocation, ManualEntry> cat=man.contentTree.getRoot().getOrCreateSubnode(modLoc("main"), 1);
+		InnerNode<ResourceLocation, ManualEntry> cat=man.getRoot().getOrCreateSubnode(modLoc("main"), 1);
 		
 		man.addEntry(cat, modLoc("postbase"), 0);
 		man.addEntry(cat, modLoc("usage"), 1);
