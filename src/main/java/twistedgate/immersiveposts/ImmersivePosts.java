@@ -21,7 +21,7 @@ import twistedgate.immersiveposts.common.CommonProxy;
 @Mod(IPOMod.ID)
 public class ImmersivePosts{
 	
-	public static final ItemGroup creativeTab=new ItemGroup("tab"+IPOMod.ID){
+	public static final ItemGroup creativeTab=new ItemGroup(IPOMod.ID){
 		@Override
 		public ItemStack createIcon(){
 			return new ItemStack(IPOStuff.post_Base==null?Items.BARRIER:IPOStuff.post_Base);
