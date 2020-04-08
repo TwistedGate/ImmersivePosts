@@ -48,13 +48,13 @@
       },
       "apply": {
         "model": "immersiveposts:ironpost/post_arm",
-        "y": -90
+        "y": 270
       }
     },
     {
       "when": {
-        "facing": "north",
         "type": "arm",
+        "facing": "north",
         "flip": "false"
       },
       "apply": {
@@ -63,8 +63,8 @@
     },
     {
       "when": {
-        "facing": "north",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "north"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm_double"
@@ -72,8 +72,8 @@
     },
     {
       "when": {
-        "facing": "east",
         "type": "arm",
+        "facing": "east",
         "flip": "false"
       },
       "apply": {
@@ -83,8 +83,8 @@
     },
     {
       "when": {
-        "facing": "east",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "east"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm_double",
@@ -93,8 +93,8 @@
     },
     {
       "when": {
-        "facing": "south",
         "type": "arm",
+        "facing": "south",
         "flip": "false"
       },
       "apply": {
@@ -104,8 +104,8 @@
     },
     {
       "when": {
-        "facing": "south",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "south"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm_double",
@@ -114,29 +114,29 @@
     },
     {
       "when": {
-        "facing": "west",
         "type": "arm",
+        "facing": "west",
         "flip": "false"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm",
-        "y": -90
+        "y": 270
       }
     },
     {
       "when": {
-        "facing": "west",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "west"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm_double",
-        "y": -90
+        "y": 270
       }
     },
     {
       "when": {
+        "type": "arm",
         "facing": "north",
-        "type": "arm",
         "flip": "true"
       },
       "apply": {
@@ -147,20 +147,20 @@
     },
     {
       "when": {
-        "facing": "east",
         "type": "arm",
+        "facing": "east",
         "flip": "true"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm",
         "x": 180,
-        "y": -90
+        "y": 270
       }
     },
     {
       "when": {
-        "facing": "south",
         "type": "arm",
+        "facing": "south",
         "flip": "true"
       },
       "apply": {
@@ -170,8 +170,8 @@
     },
     {
       "when": {
-        "facing": "west",
         "type": "arm",
+        "facing": "west",
         "flip": "true"
       },
       "apply": {
