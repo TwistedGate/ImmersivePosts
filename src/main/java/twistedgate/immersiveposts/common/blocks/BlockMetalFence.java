@@ -14,7 +14,7 @@ import twistedgate.immersiveposts.ImmersivePosts;
  */
 public class BlockMetalFence extends FenceBlock{
 	public BlockMetalFence(String name){
-		super(Properties.create(Material.IRON).hardnessAndResistance(3.5F, 15.0F));
+		super(Properties.create(Material.IRON).hardnessAndResistance(3.0F, 15.0F));
 		setRegistryName(new ResourceLocation(IPOMod.ID, name));
 		
 		IPOStuff.BLOCKS.add(this);

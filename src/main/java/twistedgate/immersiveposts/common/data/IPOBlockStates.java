@@ -100,7 +100,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		builder.part().modelFile(modelPostArm).rotationY(180).addModel()
 			.condition(BlockPost.LPARM_SOUTH, true);
 		
-		builder.part().modelFile(modelPostArm).rotationY(-90).addModel()
+		builder.part().modelFile(modelPostArm).rotationY(270).addModel()
 			.condition(BlockPost.LPARM_WEST, true);
 		
 		for(int i=0;i<=1;i++){
@@ -112,13 +112,13 @@ public class IPOBlockStates extends BlockStateProvider{
 					switch(dir){
 						case WEST:	yArmRot=90; break;
 						case SOUTH:	yArmRot=0; break;
-						case EAST:	yArmRot=-90; break;
+						case EAST:	yArmRot=270; break;
 						case NORTH:
 						default:	yArmRot=180; break;
 					}
 				}else{
 					switch(dir){
-						case WEST:	yArmRot=-90; break;
+						case WEST:	yArmRot=270; break;
 						case SOUTH:	yArmRot=180; break;
 						case EAST:	yArmRot=90; break;
 						case NORTH:

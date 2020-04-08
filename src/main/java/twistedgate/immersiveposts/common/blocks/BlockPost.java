@@ -24,7 +24,6 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Hand;
@@ -72,8 +71,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	public static final EnumProperty<EnumPostType> TYPE=EnumProperty.create("type", EnumPostType.class);
 	public static final BooleanProperty FLIP=BooleanProperty.create("flip");
 	
-	protected EnumPostMaterial postMaterial;
-	protected StateContainer<Block, BlockState> altStateContainer;
+	protected final EnumPostMaterial postMaterial;
+	private StateContainer<Block, BlockState> altStateContainer=null;
 	public BlockPost(EnumPostMaterial postMaterial){
 		super(postMaterial.getName(), postMaterial.getProperties());
 		this.postMaterial=postMaterial;
@@ -81,7 +80,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		setDefaultState(getStateContainer().getBaseState()
 				.with(FACING, Direction.NORTH)
 				.with(FLIP, false)
-				.with(TYPE, EnumPostType.POST)
+				.with(TYPE, EnumPostType.POST_TOP)
 				.with(LPARM_NORTH, false)
 				.with(LPARM_EAST, false)
 				.with(LPARM_SOUTH, false)
@@ -94,11 +93,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	}
 	
 	@Override
-	public BlockRenderLayer getRenderLayer(){
-		return BlockRenderLayer.SOLID;
-	}
-	
-	@Override
 	public StateContainer<Block, BlockState> getStateContainer(){
 		if(this.altStateContainer==null){
 			StateContainer.Builder<Block, BlockState> builder=new StateContainer.Builder<>(this);
@@ -106,7 +100,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					FACING, FLIP, TYPE,
 					LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
 					);
-			this.altStateContainer=builder.create(PostState::new);
+			
+			this.altStateContainer=builder.create(PostState::new); // There has to be a better way for this
 		}
 		
 		return this.altStateContainer;
@@ -278,6 +273,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		if(!shape.isEmpty()){
 			AxisAlignedBB box=shape.getBoundingBox();
 			boolean b;
+			
 			switch(facingIn){
 				case NORTH:	b=(box.maxZ==1.0);break;
 				case SOUTH:	b=(box.minZ==0.0);break;
@@ -285,6 +281,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				case EAST:	b=(box.minX==0.0);break;
 				default:	b=false;
 			}
+			
 			if(b && ((facingIn.getAxis()==Axis.Z && box.minX>0.0 && box.maxX<1.0) || (facingIn.getAxis()==Axis.X && box.minZ>0.0 && box.maxZ<1.0))){
 				return true;
 			}
@@ -300,12 +297,11 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		@Override
 		public BlockState updatePostPlacement(Direction face, BlockState queried, IWorld world, BlockPos pos, BlockPos offsetPos){
-			if(this.getBlockState().get(TYPE).id()>1){
-				return this.getBlockState()
-						.with(LPARM_NORTH, false)
-						.with(LPARM_EAST, false)
-						.with(LPARM_SOUTH, false)
-						.with(LPARM_WEST, false);
+			if(this.get(TYPE).id()>1){
+				return this.with(LPARM_NORTH, false)
+							.with(LPARM_EAST, false)
+							.with(LPARM_SOUTH, false)
+							.with(LPARM_WEST, false);
 				/*
 				 * canConnect is rather time consuming, so this is an attempt to speed this up.
 				 */
@@ -316,11 +312,10 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			boolean b2=canConnect(world, pos, Direction.SOUTH);
 			boolean b3=canConnect(world, pos, Direction.WEST);
 			
-			return this.getBlockState()
-					.with(LPARM_NORTH, b0)
-					.with(LPARM_EAST, b1)
-					.with(LPARM_SOUTH, b2)
-					.with(LPARM_WEST, b3);
+			return this.with(LPARM_NORTH, b0)
+						.with(LPARM_EAST, b1)
+						.with(LPARM_SOUTH, b2)
+						.with(LPARM_WEST, b3);
 		}
 		
 		@Override
@@ -371,8 +366,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		@Override
 		public boolean func_224755_d(IBlockReader world, BlockPos pos, Direction dir){
-			boolean b=!(world.getBlockState(pos.offset(dir)).getBlock() instanceof FourWayBlock);
-			return b;
+			return false;
 		}
 		
 		@Override
@@ -386,12 +380,17 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		}
 		
 		@Override
-		public void neighborChanged(World world, BlockPos posA, Block block, BlockPos fromPos, boolean isMoving){
-			neighborChanged(world, posA, block, fromPos);
+		public void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
+			updateState(world, pos);
 		}
 		
-		private void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos){
-			EnumPostType thisType=this.getBlockState().get(BlockPost.TYPE);
+		@Override
+		public void updateNeighbors(IWorld world, BlockPos pos, int flags){
+			//super.updateNeighbors(world, pos, flags);
+		}
+		
+		private void updateState(World world, BlockPos pos){
+			EnumPostType thisType=this.get(BlockPost.TYPE);
 			
 			if(thisType.id()<=1){ // If POST (0) or POST_TOP (1)
 				BlockPos belowPos=pos.offset(Direction.DOWN);
@@ -407,16 +406,16 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			switch(thisType){
 				case POST:{
 					if(!(aboveBlock instanceof BlockPost))
-						world.setBlockState(pos, this.getBlockState().with(BlockPost.TYPE, EnumPostType.POST_TOP));
+						world.setBlockState(pos, this.with(BlockPost.TYPE, EnumPostType.POST_TOP));
 					return;
 				}
 				case POST_TOP:{
 					if((aboveBlock instanceof BlockPost) && aboveState.get(BlockPost.TYPE)==EnumPostType.POST_TOP)
-						world.setBlockState(pos, this.getBlockState().with(BlockPost.TYPE, EnumPostType.POST));
+						world.setBlockState(pos, this.with(BlockPost.TYPE, EnumPostType.POST));
 					return;
 				}
 				case ARM:{
-					Direction f=this.getBlockState().get(BlockPost.FACING).getOpposite();
+					Direction f=this.get(BlockPost.FACING).getOpposite();
 					BlockState state=world.getBlockState(pos.offset(f));
 					if(state!=null && !(state.getBlock() instanceof BlockPost)){
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -424,23 +423,23 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					}
 					
 					if(aboveBlock!=Blocks.AIR && (aboveBlock instanceof BlockPost && aboveState.get(BlockPost.TYPE)!=EnumPostType.ARM)){
-						world.setBlockState(pos, this.getBlockState().with(BlockPost.FLIP, false));
+						world.setBlockState(pos, this.with(BlockPost.FLIP, false));
 					}else{
 						boolean bool=BlockPost.canConnect(world, pos, Direction.DOWN);
-						world.setBlockState(pos, this.getBlockState().with(BlockPost.FLIP, bool));
+						world.setBlockState(pos, this.with(BlockPost.FLIP, bool));
 					}
 					return;
 				}
 				case ARM_DOUBLE:{
-					Direction f=this.getBlockState().get(BlockPost.FACING).getOpposite();
+					Direction f=this.get(BlockPost.FACING).getOpposite();
 					BlockState state=world.getBlockState(pos.offset(f));
-					if(state!=null && !(state.getBlock() instanceof BlockPost)){
+					if(state!=null && !(state.getBlock() instanceof BlockPost))
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
-					}
+					
 					return;
 				}
 				case EMPTY:{
-					Direction f=this.getBlockState().get(BlockPost.FACING).getOpposite();
+					Direction f=this.get(BlockPost.FACING).getOpposite();
 					BlockState state=world.getBlockState(pos.offset(f));
 					if(state!=null && !(state.getBlock() instanceof BlockPost)){
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -450,28 +449,31 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					state=world.getBlockState(pos);
 					f=state.get(FACING);
 					state=world.getBlockState(pos.offset(f));
-					if(state.getBlock()==Blocks.AIR){
+					if(state.getBlock()==Blocks.AIR)
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
-					}
 				}
 			}
 		}
 		
 		private static final VoxelShape X_BOUNDS=VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
 		private static final VoxelShape Z_BOUNDS=VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
-		private static final Map<Byte, VoxelShape> shapeCache=new HashMap<>();
+		private static final Map<Integer, VoxelShape> shapeCache=new HashMap<>();
 		static VoxelShape stateBounds(BlockState state){
-			switch(state.get(TYPE)){
+			EnumPostType type=state.get(TYPE);
+			switch(type){
 				case ARM:case ARM_DOUBLE:{
 					Direction dir=state.get(FACING);
 					boolean flipped=state.get(FLIP);
 					
-					byte id=(byte)(flipped?0x10:0x00); // Bit5=Flip, Bit4=West, Bit3=South, Bit2=East, Bit1=North
+					int id=0x00; // Bit5=Flip, Bit4=West, Bit3=South, Bit2=East, Bit1=North
+					
+					if(flipped)
+						id=0x10;
+					
 					switch(dir){
-						case NORTH:	id|=0x01;
-						case EAST:	id|=0x02;
-						case SOUTH:	id|=0x04;
 						case WEST:	id|=0x08;
+						case SOUTH:	id|=0x04;
+						case EAST:	id|=0x02;
 						default:	id|=0x01; // Basicly default to North
 					}
 					
@@ -492,12 +494,9 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					return shapeCache.get(id);
 				}
 				case EMPTY:{
-					Direction facing=state.get(FACING);
-					Axis axis=facing.getAxis();
-					
-					if(axis==Axis.X){
+					if(state.get(FACING).getAxis()==Axis.X)
 						return X_BOUNDS;
-					}
+					
 					return Z_BOUNDS;
 				}
 				default: return POST_SHAPE;
