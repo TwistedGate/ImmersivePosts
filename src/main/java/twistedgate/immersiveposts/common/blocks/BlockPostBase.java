@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -40,7 +41,7 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  */
 public class BlockPostBase extends IPOBlockBase{
 	private static final VoxelShape BASE_SIZE=VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
-	private static final Material BaseMaterial = new Material.Builder(MaterialColor.STONE).build();
+	private static final Material BaseMaterial = new Material(MaterialColor.STONE, false, true, false, false, false, false, false, PushReaction.BLOCK);
 	
 	public BlockPostBase(){
 		super("postbase", Properties.create(BaseMaterial)
@@ -57,11 +58,6 @@ public class BlockPostBase extends IPOBlockBase{
 	
 	@Override
 	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side){
-		return false;
-	}
-	
-	@Override
-	public boolean isSolid(BlockState state){
 		return false;
 	}
 	

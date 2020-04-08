@@ -10,6 +10,7 @@ import net.minecraft.block.FenceBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
@@ -89,9 +90,9 @@ public enum EnumPostMaterial implements IStringSerializable{
 	}
 	
 	
-	private static final Material WOOD_LIKE	=new Material.Builder(MaterialColor.WOOD).build();
-	private static final Material STONE_LIKE=new Material.Builder(MaterialColor.STONE).build();
-	private static final Material METAL_LIKE=new Material.Builder(MaterialColor.IRON).build();
+	private static final Material WOOD_LIKE	=new Material(MaterialColor.WOOD, false, false, false, false, false, false, false, PushReaction.BLOCK);
+	private static final Material STONE_LIKE=new Material(MaterialColor.STONE, false, false, false, false, false, false, false, PushReaction.BLOCK);
+	private static final Material METAL_LIKE=new Material(MaterialColor.IRON, false, false, false, false, false, false, false, PushReaction.BLOCK);
 	
 	public Block.Properties getProperties(){
 		if(this.props==null) this.props=blockPropertiesFrom(this);
@@ -102,16 +103,14 @@ public enum EnumPostMaterial implements IStringSerializable{
 		Block.Properties prop=null;
 		switch(postMaterial){
 			case WOOD: // For the *one* post that wants to be different..
-				prop=Block.Properties.create(WOOD_LIKE).harvestTool(ToolType.AXE).harvestLevel(0).sound(SoundType.WOOD); break;
+				prop=Block.Properties.create(WOOD_LIKE).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).hardnessAndResistance(2.0F, 5.0F); break;
 			case NETHERBRICK: case CONCRETE: case CONCRETE_LEADED:
-				prop=Block.Properties.create(STONE_LIKE).harvestTool(ToolType.PICKAXE).harvestLevel(1).sound(SoundType.STONE); break;
+				prop=Block.Properties.create(STONE_LIKE).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(1.5F, 6.0F); break;
 			default:
-				prop=Block.Properties.create(METAL_LIKE).harvestTool(ToolType.PICKAXE).harvestLevel(1).sound(SoundType.METAL);
+				prop=Block.Properties.create(METAL_LIKE).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(3.0F, 15.0F);
 		}
 		
 		prop.lightValue(postMaterial==EnumPostMaterial.URANIUM?8:0);
-		prop.hardnessAndResistance(3.0F, 5.0F);
-		prop.noDrops();
 		
 		return prop;
 	}
