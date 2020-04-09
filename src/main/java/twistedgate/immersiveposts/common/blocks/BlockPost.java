@@ -320,12 +320,12 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		@Override
 		public boolean isSolid(){
-			return false;
+			return true;
 		}
 		
 		@Override
 		public boolean isOpaqueCube(IBlockReader worldIn, BlockPos pos){
-			return false;
+			return true;
 		}
 		
 		@Override
@@ -365,11 +365,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		}
 		
 		@Override
-		public boolean func_224755_d(IBlockReader world, BlockPos pos, Direction dir){
-			return false;
-		}
-		
-		@Override
 		public VoxelShape getShape(IBlockReader worldIn, BlockPos pos, ISelectionContext context){
 			return stateBounds(this);
 		}
@@ -382,11 +377,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		@Override
 		public void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
 			updateState(world, pos);
-		}
-		
-		@Override
-		public void updateNeighbors(IWorld world, BlockPos pos, int flags){
-			//super.updateNeighbors(world, pos, flags);
 		}
 		
 		private void updateState(World world, BlockPos pos){
@@ -499,7 +489,16 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					
 					return Z_BOUNDS;
 				}
-				default: return POST_SHAPE;
+				default:{
+					VoxelShape shape=POST_SHAPE;
+					
+					if(state.get(LPARM_NORTH)) shape=VoxelShapes.or(shape, LPARM_NORTH_BOUNDS);
+					if(state.get(LPARM_SOUTH)) shape=VoxelShapes.or(shape, LPARM_SOUTH_BOUNDS);
+					if(state.get(LPARM_EAST)) shape=VoxelShapes.or(shape, LPARM_EAST_BOUNDS);
+					if(state.get(LPARM_WEST)) shape=VoxelShapes.or(shape, LPARM_WEST_BOUNDS);
+					
+					return shape;
+				}
 			}
 		}
 	}
