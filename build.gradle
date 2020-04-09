@@ -23,6 +23,17 @@ repositories {
 	maven {	name = "BlameJared"; url = "https://maven.blamejared.com/" } // IE files
 }
 
+sourceSets {
+	main {
+		resources {
+			srcDirs = [
+				"$rootDir/src/main/resources",
+				"$rootDir/src/generated/resources"
+			]
+		}
+	}
+}
+
 minecraft {
 	mappings channel: 'snapshot', version: "${version_fml_mappings}"
 	// accessTransformer = file('build/resources/main/META-INF/accesstransformer.cfg')
