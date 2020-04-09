@@ -23,6 +23,7 @@ public class IPODataGen{
 		if(event.includeServer()){
 			DataGenerator generator=event.getGenerator();
 			
+			generator.addProvider(new IPOBlockTags(generator));
 			generator.addProvider(new IPOItemTags(generator));
 			generator.addProvider(new IPORecipes(generator));
 			

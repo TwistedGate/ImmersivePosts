@@ -1,6 +1,8 @@
 package twistedgate.immersiveposts;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
@@ -20,8 +22,6 @@ public class IPOTags{
 		private static final Tag<Item> ingotTag(String name){
 			return new ItemTags.Wrapper(new ResourceLocation("forge","ingots/"+name));
 		}
-		
-		private Ingots(){}
 	}
 	
 	public static class Rods{
@@ -40,9 +40,9 @@ public class IPOTags{
 		private static final Tag<Item> rodTag(String name){
 			return new ItemTags.Wrapper(new ResourceLocation("forge","rods/"+name));
 		}
-		
-		private Rods(){}
 	}
 	
-	private IPOTags(){}
+	public static class Fences{
+		public static final Tag<Block> ALL=new BlockTags.Wrapper(new ResourceLocation("fences"));
+	}
 }

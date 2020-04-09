@@ -42,17 +42,17 @@ public class IPOBlockStates extends BlockStateProvider{
 		
 		for(Block block:IPOStuff.BLOCKS)
 			if(block instanceof BlockPost)
-				alternateGenerator((BlockPost)block);//generateStatesFor((BlockPost)block);
+				postStateFor((BlockPost)block);
 		
-		fence(IPOStuff.fence_Iron,		"fences/iron",		mcLoc("block/iron_block"));
-		fence(IPOStuff.fence_Gold,		"fences/gold",		mcLoc("block/gold_block"));
-		fence(IPOStuff.fence_Copper,	"fences/copper",	ieLoc("block/metal/storage_copper"));
-		fence(IPOStuff.fence_Lead,		"fences/lead",		ieLoc("block/metal/storage_lead"));
-		fence(IPOStuff.fence_Silver,	"fences/silver",	ieLoc("block/metal/storage_silver"));
-		fence(IPOStuff.fence_Nickel,	"fences/nickel",	ieLoc("block/metal/storage_nickel"));
-		fence(IPOStuff.fence_Constantan,"fences/constantan",ieLoc("block/metal/storage_constantan"));
-		fence(IPOStuff.fence_Electrum,	"fences/electrum",	ieLoc("block/metal/storage_electrum"));
-		fence(IPOStuff.fence_Uranium,	"fences/uranium",	ieLoc("block/metal/storage_uranium_side"));
+		fence(IPOStuff.fence_Iron,		"fence/iron",		mcLoc("block/iron_block"));
+		fence(IPOStuff.fence_Gold,		"fence/gold",		mcLoc("block/gold_block"));
+		fence(IPOStuff.fence_Copper,	"fence/copper",		ieLoc("block/metal/storage_copper"));
+		fence(IPOStuff.fence_Lead,		"fence/lead",		ieLoc("block/metal/storage_lead"));
+		fence(IPOStuff.fence_Silver,	"fence/silver",		ieLoc("block/metal/storage_silver"));
+		fence(IPOStuff.fence_Nickel,	"fence/nickel",		ieLoc("block/metal/storage_nickel"));
+		fence(IPOStuff.fence_Constantan,"fence/constantan",	ieLoc("block/metal/storage_constantan"));
+		fence(IPOStuff.fence_Electrum,	"fence/electrum",	ieLoc("block/metal/storage_electrum"));
+		fence(IPOStuff.fence_Uranium,	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 		
 		loadedModels.backupModels();
 	}
@@ -71,7 +71,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		}
 	}
 	
-	private void alternateGenerator(BlockPost block){
+	private void postStateFor(BlockPost block){
 		LoadedModelBuilder modelArm			=getPostModel(block, "arm");
 		LoadedModelBuilder modelArmDouble	=getPostModel(block, "arm_double");
 		LoadedModelBuilder modelPost		=getPostModel(block, "post");
