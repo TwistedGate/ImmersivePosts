@@ -1,12 +1,13 @@
 {
 	"homepage":"https://minecraft.curseforge.com/projects/immersiveposts",
 	"promos":{
-		"1.14.4-latest": "1.0.0",
-		"1.14.4-recommended": "1.0.0",
+		"1.14.4-latest": "1.0.0-rev1",
+		"1.14.4-recommended": "1.0.0-rev1",
 		"1.12.2-latest": "0.1.5",
 		"1.12.2-recommended": "0.1.5"
 	},
 	"1.14.4":{
+		"1.0.0-rev1": "Required forge version: 1.14.4-28.2.3\nRequires at least IE version: 0.14-95\n\n\n[F] Forgot to add the Generated Data",
 		"1.0.0":"Required forge version: 1.14.4-28.2.3\nFirst release for 1.14.4\n\n[R] Config for removing unwanted post types. (No point doing it)"
 	},
 	"1.12.2":{
