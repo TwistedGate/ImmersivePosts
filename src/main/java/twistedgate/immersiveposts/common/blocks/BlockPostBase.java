@@ -57,6 +57,11 @@ public class BlockPostBase extends IPOBlockBase{
 	}
 	
 	@Override
+	public List<ItemStack> getDrops(BlockState state, Builder builder){
+		return Arrays.asList(new ItemStack(this, 1));
+	}
+	
+	@Override
 	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side){
 		return false;
 	}
