@@ -1,5 +1,6 @@
 package twistedgate.immersiveposts.common.blocks;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
@@ -28,6 +29,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -41,7 +43,7 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  */
 public class BlockPostBase extends IPOBlockBase{
 	private static final VoxelShape BASE_SIZE=VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
-	private static final Material BaseMaterial = new Material(MaterialColor.STONE, false, true, false, false, false, false, false, PushReaction.BLOCK);
+	private static final Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, false, PushReaction.BLOCK);
 	
 	public BlockPostBase(){
 		super("postbase", Properties.create(BaseMaterial)

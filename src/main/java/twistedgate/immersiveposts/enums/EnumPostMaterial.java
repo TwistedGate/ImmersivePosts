@@ -90,9 +90,9 @@ public enum EnumPostMaterial implements IStringSerializable{
 	}
 	
 	
-	private static final Material WOOD_LIKE	=new Material(MaterialColor.WOOD, false, false, false, false, false, false, false, PushReaction.BLOCK);
-	private static final Material STONE_LIKE=new Material(MaterialColor.STONE, false, false, false, false, false, false, false, PushReaction.BLOCK);
-	private static final Material METAL_LIKE=new Material(MaterialColor.IRON, false, false, false, false, false, false, false, PushReaction.BLOCK);
+	private static final Material WOOD_LIKE	=new Material(MaterialColor.WOOD, false, true, true, true, true, false, false, PushReaction.BLOCK);
+	private static final Material STONE_LIKE=new Material(MaterialColor.STONE, false, true, true, true, false, false, false, PushReaction.BLOCK);
+	private static final Material METAL_LIKE=new Material(MaterialColor.IRON, false, true, true, true, false, false, false, PushReaction.BLOCK);
 	
 	public Block.Properties getProperties(){
 		if(this.props==null) this.props=blockPropertiesFrom(this);

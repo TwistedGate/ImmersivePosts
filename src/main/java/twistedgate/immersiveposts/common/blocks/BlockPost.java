@@ -108,6 +108,26 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	}
 	
 	@Override
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos){
+		return true;
+	}
+	
+	@Override
+	public boolean isLadder(BlockState state, IWorldReader world, BlockPos pos, LivingEntity entity){
+		return true;
+	}
+	
+	@Override
+	public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face){
+		return false;
+	}
+	
+	@Override
+	public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos){
+		return null;
+	}
+	
+	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder){
 		if(state.get(TYPE).id()<2)
 			return Arrays.asList(this.postMaterial.getItemStack());
@@ -318,44 +338,9 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						.with(LPARM_WEST, b3);
 		}
 		
-		@Override
-		public boolean isSolid(){
-			return true;
-		}
-		
-		@Override
-		public boolean isOpaqueCube(IBlockReader worldIn, BlockPos pos){
-			return true;
-		}
-		
-		@Override
-		public boolean isFlammable(IBlockReader world, BlockPos pos, Direction face){
-			return false;
-		}
-		
-		@Override
-		public boolean isLadder(IWorldReader world, BlockPos pos, LivingEntity entity){
-			return true;
-		}
-		
-		@Override
-		public boolean propagatesSkylightDown(IBlockReader worldIn, BlockPos pos){
-			return true;
-		}
-		
-		@Override // NO, just no..
-		public BlockState rotate(IWorld world, BlockPos pos, Rotation direction){
-			return this;
-		}
-		
 		@Override // Again, just no..
 		public BlockState rotate(Rotation rot){
 			return this;
-		}
-		
-		@Override // ...
-		public Direction[] getValidRotations(IBlockReader world, BlockPos pos){
-			return null;
 		}
 		
 		@Override
@@ -371,7 +356,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		@Override
 		public VoxelShape getCollisionShape(IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-			return stateBounds(this);
+			return getShape(worldIn, pos, context);
 		}
 		
 		@Override
