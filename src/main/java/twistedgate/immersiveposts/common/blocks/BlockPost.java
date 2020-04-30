@@ -49,7 +49,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
-import twistedgate.immersiveposts.utils.BlockHelper;
 
 /**
  * All-in-one package. Containing everything into one neat class is the best.
@@ -285,14 +284,14 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				for(int y=0;y<(worldIn.getActualHeight()-pos.getY());y++){
 					BlockPos nPos=pos.add(0,y,0);
 					
-					if((BlockHelper.getBlockFrom(worldIn, nPos) instanceof BlockPost)){
+					if((getBlockFrom(worldIn, nPos) instanceof BlockPost)){
 						IBlockState s=worldIn.getBlockState(nPos);
 						if(s.getValue(BlockPost.TYPE)==EnumPostType.ARM && s.getValue(BlockPost.FLIP)){
 							return true;
 						}
 						
 						BlockPos up=nPos.offset(EnumFacing.UP);
-						if((BlockHelper.getBlockFrom(worldIn, up) instanceof BlockPost)){
+						if((getBlockFrom(worldIn, up) instanceof BlockPost)){
 							s=worldIn.getBlockState(up);
 							if(s.getValue(BlockPost.TYPE)==EnumPostType.ARM){
 								return true;
@@ -324,7 +323,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 									defaultState=defaultState.withProperty(FACING, facing);
 									worldIn.setBlockState(nPos, defaultState);
 									defaultState.neighborChanged(worldIn, nPos, this, null);
-								}else if(BlockHelper.getBlockFrom(worldIn, nPos)==this){
+								}else if(getBlockFrom(worldIn, nPos)==this){
 									switch(worldIn.getBlockState(nPos).getValue(TYPE)){
 										case ARM:{
 											worldIn.setBlockToAir(nPos);
@@ -491,8 +490,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			
 			if(thisType.id()<2){
 				BlockPos belowPos=pos.offset(EnumFacing.DOWN);
-				if(BlockHelper.getBlockFrom(world, belowPos)==Blocks.AIR){
-					BlockHelper.getBlockFrom(world, pos).dropBlockAsItem(world, pos, this, 0);
+				if(getBlockFrom(world, belowPos)==Blocks.AIR){
+					getBlockFrom(world, pos).dropBlockAsItem(world, pos, this, 0);
 					world.setBlockToAir(pos);
 					return;
 				}

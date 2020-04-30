@@ -27,4 +27,11 @@ public class IPOBlockBase extends Block{
 	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis){
 		return false; // So far nothing needs it, and it'll only be a nuisance
 	}
+	
+	/** convenience method */
+	public static Block getBlockFrom(IBlockAccess world, BlockPos pos){
+		if(world==null || pos==null) return null;
+		
+		return world.getBlockState(pos).getBlock();
+	}
 }
