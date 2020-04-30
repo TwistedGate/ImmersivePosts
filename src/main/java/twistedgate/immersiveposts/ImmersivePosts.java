@@ -27,12 +27,11 @@ public class ImmersivePosts{
 			return new ItemStack(IPOStuff.post_Base==null?Items.BARRIER:IPOStuff.post_Base);
 		}
 	};
+	public static final Logger log=LogManager.getLogger(IPOMod.ID);
 	
 	public static CommonProxy proxy=DistExecutor.runForDist(()->ClientProxy::new, ()->CommonProxy::new);
-	public static Logger log;
 	
 	public ImmersivePosts(){
-		log=LogManager.getLogger(IPOMod.ID);
 		
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::violation);

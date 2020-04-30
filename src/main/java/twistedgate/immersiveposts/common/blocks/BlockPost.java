@@ -44,6 +44,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
@@ -69,7 +70,10 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	
 	public static final DirectionProperty FACING=DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	public static final EnumProperty<EnumPostType> TYPE=EnumProperty.create("type", EnumPostType.class);
+	
+	@Deprecated
 	public static final BooleanProperty FLIP=BooleanProperty.create("flip");
+	public static final EnumProperty<EnumFlipState> FLIPSTATE=EnumProperty.create("flipstate", EnumFlipState.class);
 	
 	protected final EnumPostMaterial postMaterial;
 	private StateContainer<Block, BlockState> altStateContainer=null;
@@ -79,7 +83,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(FACING, Direction.NORTH)
-				.with(FLIP, false)
+				.with(FLIPSTATE, EnumFlipState.UP)
 				.with(TYPE, EnumPostType.POST_TOP)
 				.with(LPARM_NORTH, false)
 				.with(LPARM_EAST, false)
@@ -97,7 +101,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		if(this.altStateContainer==null){
 			StateContainer.Builder<Block, BlockState> builder=new StateContainer.Builder<>(this);
 			builder.add(
-					FACING, FLIP, TYPE,
+					FACING, FLIPSTATE, TYPE,
 					LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
 					);
 			
@@ -174,7 +178,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					if(getBlockFrom(worldIn, nPos) instanceof BlockPost){
 						BlockState s=worldIn.getBlockState(nPos);
 						EnumPostType type=s.get(BlockPost.TYPE);
-						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIP)){
+						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
 							return true;
 						}
 						
@@ -234,8 +238,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					case ARM:{
 						Direction bfacing=state.get(FACING);
 						if(worldIn.isAirBlock(pos.offset(bfacing))){
-							worldIn.setBlockState(pos.offset(bfacing), state.with(TYPE, EnumPostType.ARM_DOUBLE).with(FLIP, false));
-							worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.EMPTY).with(FLIP, false));
+							worldIn.setBlockState(pos.offset(bfacing), state.with(TYPE, EnumPostType.ARM_DOUBLE));
+							worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.EMPTY));
 						}
 						return true;
 					}
@@ -321,7 +325,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				return this.with(LPARM_NORTH, false)
 							.with(LPARM_EAST, false)
 							.with(LPARM_SOUTH, false)
-							.with(LPARM_WEST, false);
+							.with(LPARM_WEST, false)
+							.with(FLIPSTATE, getFlipState(world, pos));
 				/*
 				 * canConnect is rather time consuming, so this is an attempt to speed this up.
 				 */
@@ -365,7 +370,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		}
 		
 		private void updateState(World world, BlockPos pos){
-			EnumPostType thisType=this.get(BlockPost.TYPE);
+			EnumPostType thisType=this.get(TYPE);
 			
 			if(thisType.id()<=1){ // If POST (0) or POST_TOP (1)
 				BlockPos belowPos=pos.offset(Direction.DOWN);
@@ -381,32 +386,28 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			switch(thisType){
 				case POST:{
 					if(!(aboveBlock instanceof BlockPost))
-						world.setBlockState(pos, this.with(BlockPost.TYPE, EnumPostType.POST_TOP));
+						world.setBlockState(pos, this.with(TYPE, EnumPostType.POST_TOP));
 					return;
 				}
 				case POST_TOP:{
-					if((aboveBlock instanceof BlockPost) && aboveState.get(BlockPost.TYPE)==EnumPostType.POST_TOP)
-						world.setBlockState(pos, this.with(BlockPost.TYPE, EnumPostType.POST));
+					if((aboveBlock instanceof BlockPost) && aboveState.get(TYPE)==EnumPostType.POST_TOP)
+						world.setBlockState(pos, this.with(TYPE, EnumPostType.POST));
 					return;
 				}
 				case ARM:{
-					Direction f=this.get(BlockPost.FACING).getOpposite();
+					Direction f=this.get(FACING).getOpposite();
 					BlockState state=world.getBlockState(pos.offset(f));
 					if(state!=null && !(state.getBlock() instanceof BlockPost)){
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 						return;
 					}
 					
-					if(aboveBlock!=Blocks.AIR && (aboveBlock instanceof BlockPost && aboveState.get(BlockPost.TYPE)!=EnumPostType.ARM)){
-						world.setBlockState(pos, this.with(BlockPost.FLIP, false));
-					}else{
-						boolean bool=BlockPost.canConnect(world, pos, Direction.DOWN);
-						world.setBlockState(pos, this.with(BlockPost.FLIP, bool));
-					}
+					world.setBlockState(pos, this.with(FLIPSTATE, getFlipState(world, pos)));
+					
 					return;
 				}
 				case ARM_DOUBLE:{
-					Direction f=this.get(BlockPost.FACING).getOpposite();
+					Direction f=this.get(FACING).getOpposite();
 					BlockState state=world.getBlockState(pos.offset(f));
 					if(state!=null && !(state.getBlock() instanceof BlockPost))
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -414,7 +415,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					return;
 				}
 				case EMPTY:{
-					Direction f=this.get(BlockPost.FACING).getOpposite();
+					Direction f=this.get(FACING).getOpposite();
 					BlockState state=world.getBlockState(pos.offset(f));
 					if(state!=null && !(state.getBlock() instanceof BlockPost)){
 						world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -430,6 +431,24 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			}
 		}
 		
+		private EnumFlipState getFlipState(IBlockReader world, BlockPos pos){
+			BlockState aboveState=world.getBlockState(pos.offset(Direction.UP));
+			BlockState belowState=world.getBlockState(pos.offset(Direction.DOWN));
+			
+			Block aboveBlock=aboveState.getBlock();
+			Block belowBlock=belowState.getBlock();
+			
+			boolean up=BlockPost.canConnect(world, pos, Direction.UP) && ((aboveBlock instanceof BlockPost)?aboveState.get(TYPE)!=EnumPostType.ARM:true);
+			boolean down=BlockPost.canConnect(world, pos, Direction.DOWN) && ((belowBlock instanceof BlockPost)?belowState.get(TYPE)!=EnumPostType.ARM:true);
+			
+			EnumFlipState flipState;
+			if(up && down) flipState=EnumFlipState.BOTH;
+			else if(down) flipState=EnumFlipState.DOWN;
+			else flipState=EnumFlipState.UP;
+			
+			return flipState;
+		}
+		
 		private static final VoxelShape X_BOUNDS=VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
 		private static final VoxelShape Z_BOUNDS=VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
 		private static final Map<Integer, VoxelShape> shapeCache=new HashMap<>();
@@ -438,12 +457,26 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			switch(type){
 				case ARM:case ARM_DOUBLE:{
 					Direction dir=state.get(FACING);
-					boolean flipped=state.get(FLIP);
+					EnumFlipState flipstate=state.get(FLIPSTATE);
 					
-					int id=0x00; // Bit5=Flip, Bit4=West, Bit3=South, Bit2=East, Bit1=North
+					/*
+						Bit6=FlipDown
+						Bit5=FlipUp
+						Bit4=West
+						Bit3=South
+						Bit2=East
+						Bit1=North
+						
+						If Bit5 and Bit6 are both 1 then its EnumFlipState.BOTH
+						By default it's EnumFlipState.UP
+					 */
+					int id=0x00;
 					
-					if(flipped)
-						id=0x10;
+					switch(flipstate){
+						case UP:	id=0x10; break;
+						case DOWN:	id=0x20; break;
+						case BOTH:	id=0x30; break;
+					}
 					
 					switch(dir){
 						case WEST:	id|=0x08;
@@ -453,8 +486,13 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					}
 					
 					if(!shapeCache.containsKey(id)){
-						double minY=flipped?0.0:0.34375;
-						double maxY=flipped?0.65625:1.0;
+						double minY=0.0;
+						double maxY=1.0;
+						switch(flipstate){
+							case UP:   minY=0.34375; maxY=1.0; break;
+							case DOWN: minY=0.0; maxY=0.65625; break;
+							case BOTH: minY=0.0; maxY=1.0; break;
+						}
 						
 						double minX=(dir==Direction.EAST) ?0.0:0.3125;
 						double maxX=(dir==Direction.WEST) ?1.0:0.6875;

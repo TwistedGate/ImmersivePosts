@@ -35,6 +35,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.ImmersivePosts;
+import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
@@ -93,7 +94,7 @@ public class BlockPostBase extends IPOBlockBase{
 					if((getBlockFrom(worldIn, nPos) instanceof BlockPost)){
 						BlockState s=worldIn.getBlockState(nPos);
 						EnumPostType type=s.get(BlockPost.TYPE);
-						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIP)){
+						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
 							return true;
 						}
 						

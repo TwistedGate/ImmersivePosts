@@ -15,6 +15,7 @@ import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
+import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
 /**
@@ -73,6 +74,7 @@ public class IPOBlockStates extends BlockStateProvider{
 	
 	private void postStateFor(BlockPost block){
 		LoadedModelBuilder modelArm			=getPostModel(block, "arm");
+		LoadedModelBuilder modelArmTwoWay	=getPostModel(block, "arm_twoway");
 		LoadedModelBuilder modelArmDouble	=getPostModel(block, "arm_double");
 		LoadedModelBuilder modelPost		=getPostModel(block, "post");
 		LoadedModelBuilder modelPostTop		=getPostModel(block, "post_top");
@@ -103,37 +105,22 @@ public class IPOBlockStates extends BlockStateProvider{
 		builder.part().modelFile(modelPostArm).rotationY(270).addModel()
 			.condition(BlockPost.LPARM_WEST, true);
 		
-		for(int i=0;i<=1;i++){
-			boolean flip=(i==1);
+		for(EnumFlipState flipstate:EnumFlipState.values()){
+			boolean isDown=(flipstate==EnumFlipState.DOWN);
+			boolean isUp=(flipstate==EnumFlipState.UP);
+			boolean isBoth=(flipstate==EnumFlipState.BOTH);
 			
 			for(Direction dir:Direction.Plane.HORIZONTAL){
-				int yArmRot;
-				if(flip){
-					switch(dir){
-						case WEST:	yArmRot=90; break;
-						case SOUTH:	yArmRot=0; break;
-						case EAST:	yArmRot=270; break;
-						case NORTH:
-						default:	yArmRot=180; break;
-					}
-				}else{
-					switch(dir){
-						case WEST:	yArmRot=270; break;
-						case SOUTH:	yArmRot=180; break;
-						case EAST:	yArmRot=90; break;
-						case NORTH:
-						default:	yArmRot=0; break;
-					}
-				}
+				int yArmRot=horizontalRotation(dir, isDown);
 				
 				builder.part()
-					.modelFile(modelArm).rotationX(flip?180:0).rotationY(yArmRot).addModel()
+					.modelFile(isBoth?modelArmTwoWay:modelArm).rotationX(flipstate==EnumFlipState.DOWN?180:0).rotationY(yArmRot).addModel()
 					.condition(BlockPost.TYPE, EnumPostType.ARM)
 					.condition(BlockPost.FACING, dir)
-					.condition(BlockPost.FLIP, flip)
+					.condition(BlockPost.FLIPSTATE, flipstate)
 					.end();
 				
-				if(i==0)
+				if(isUp)
 					builder.part()
 						.modelFile(modelArmDouble).rotationY(yArmRot).addModel()
 						.condition(BlockPost.TYPE, EnumPostType.ARM_DOUBLE)
@@ -146,6 +133,30 @@ public class IPOBlockStates extends BlockStateProvider{
 			.modelFile(modelEmpty).addModel()
 			.condition(BlockPost.TYPE, EnumPostType.EMPTY)
 			.end();
+	}
+	
+	private int horizontalRotation(Direction dir, boolean flip180){
+		int value;
+		
+		if(flip180){
+			switch(dir){
+				case WEST:	value=90; break;
+				case SOUTH:	value=0; break;
+				case EAST:	value=270; break;
+				case NORTH:
+				default:	value=180; break;
+			}
+		}else{
+			switch(dir){
+				case WEST:	value=270; break;
+				case SOUTH:	value=180; break;
+				case EAST:	value=90; break;
+				case NORTH:
+				default:	value=0; break;
+			}
+		}
+		
+		return value;
 	}
 	
 	// This is a hybrid of using IE's Builder and Forge's Loader stuff
