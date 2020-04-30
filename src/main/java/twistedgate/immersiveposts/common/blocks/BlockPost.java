@@ -91,7 +91,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		setDefaultState(this.blockState.getBaseState()
 				.withProperty(FACING, EnumFacing.NORTH)
-				//.withProperty(FLIP, false)
 				.withProperty(FLIPSTATE, EnumFlipState.UP)
 				.withProperty(TYPE, EnumPostType.POST)
 				.withProperty(LPARM_NORTH, false)
@@ -113,7 +112,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	@Override
 	protected BlockStateContainer createBlockState(){
 		return new BlockStateContainer(this, new IProperty<?>[]{
-			FACING, /*FLIP,*/ FLIPSTATE, TYPE,
+			FACING, FLIPSTATE, TYPE,
 			LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST,
 		}){
 			@Override
@@ -451,7 +450,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						.withProperty(LPARM_EAST, false)
 						.withProperty(LPARM_SOUTH, false)
 						.withProperty(LPARM_WEST, false)
-						.withProperty(BlockPost.FLIPSTATE, getFlipState(blockAccess, pos));
+						.withProperty(FLIPSTATE, getFlipState(blockAccess, pos));
 				/*
 				 * canConnect is rather time consuming, so this is an attempt to speed this up.
 				 */
@@ -521,7 +520,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		}
 		
 		private void updateState(World world, BlockPos pos){
-			EnumPostType thisType=this.getValue(BlockPost.TYPE);
+			EnumPostType thisType=this.getValue(TYPE);
 			
 			if(thisType.id()<=1){ // If POST (0) or POST_TOP (1)
 				BlockPos belowPos=pos.offset(EnumFacing.DOWN);
@@ -537,34 +536,28 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			switch(thisType){
 				case POST:{
 					if(!(aboveBlock instanceof BlockPost))
-						world.setBlockState(pos, this.withProperty(BlockPost.TYPE, EnumPostType.POST_TOP));
+						world.setBlockState(pos, this.withProperty(TYPE, EnumPostType.POST_TOP));
 					return;
 				}
 				case POST_TOP:{
-					if((aboveBlock instanceof BlockPost) && aboveState.getValue(BlockPost.TYPE)==EnumPostType.POST_TOP)
-						world.setBlockState(pos, this.withProperty(BlockPost.TYPE, EnumPostType.POST));
+					if((aboveBlock instanceof BlockPost) && aboveState.getValue(TYPE)==EnumPostType.POST_TOP)
+						world.setBlockState(pos, this.withProperty(TYPE, EnumPostType.POST));
 					return;
 				}
 				case ARM:{
-					EnumFacing f=this.getValue(BlockPost.FACING).getOpposite();
+					EnumFacing f=this.getValue(FACING).getOpposite();
 					IBlockState state=world.getBlockState(pos.offset(f));
 					if(state!=null && !(state.getBlock() instanceof BlockPost)){
 						world.setBlockToAir(pos);
 						return;
 					}
 					
-					world.setBlockState(pos, this.withProperty(BlockPost.FLIPSTATE, getFlipState(world, pos)));
+					world.setBlockState(pos, this.withProperty(FLIPSTATE, getFlipState(world, pos)));
 					
-//					if(aboveBlock!=Blocks.AIR && (aboveBlock instanceof BlockPost && aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM)){
-//						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, false));
-//					}else{
-//						boolean bool=BlockPost.canConnect(world, pos, EnumFacing.DOWN);
-//						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, bool));
-//					}
 					return;
 				}
 				case ARM_DOUBLE:{
-					EnumFacing f=this.getValue(BlockPost.FACING).getOpposite();
+					EnumFacing f=this.getValue(FACING).getOpposite();
 					IBlockState state=world.getBlockState(pos.offset(f));
 					if(state!=null && !(state.getBlock() instanceof BlockPost))
 						world.setBlockToAir(pos);
@@ -572,7 +565,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					return;
 				}
 				case EMPTY:{
-					EnumFacing f=this.getValue(BlockPost.FACING).getOpposite();
+					EnumFacing f=this.getValue(FACING).getOpposite();
 					IBlockState state=world.getBlockState(pos.offset(f));
 					if(state!=null && !(state.getBlock() instanceof BlockPost)){
 						world.setBlockToAir(pos);
@@ -595,8 +588,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			Block aboveBlock=aboveState.getBlock();
 			Block belowBlock=belowState.getBlock();
 			
-			boolean up=BlockPost.canConnect(world, pos, EnumFacing.UP) && ((aboveBlock instanceof BlockPost)?aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM:true);
-			boolean down=BlockPost.canConnect(world, pos, EnumFacing.DOWN) && ((belowBlock instanceof BlockPost)?belowState.getValue(BlockPost.TYPE)!=EnumPostType.ARM:true);
+			boolean up=BlockPost.canConnect(world, pos, EnumFacing.UP) && ((aboveBlock instanceof BlockPost)?aboveState.getValue(TYPE)!=EnumPostType.ARM:true);
+			boolean down=BlockPost.canConnect(world, pos, EnumFacing.DOWN) && ((belowBlock instanceof BlockPost)?belowState.getValue(TYPE)!=EnumPostType.ARM:true);
 			
 			EnumFlipState flipState;
 			if(up && down) flipState=EnumFlipState.BOTH;
@@ -621,7 +614,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						Bit3=South
 						Bit2=East
 						Bit1=North
-						
+
 						If Bit5 and Bit6 are both 1 then its EnumFlipState.BOTH
 						By default it's EnumFlipState.UP
 					 */
