@@ -14,22 +14,22 @@ authors="TwistedGate"
 description="Simply adds a way to have extendable posts. With a few post types to choose from."
 
 [[dependencies.immersiveengineering]]
-  modId="immersiveengineering"
-  mandatory=true
-  versionRange="[0.14-95,)"
-  ordering="BEFOR"
-  side="BOTH"
+	modId="immersiveengineering"
+	mandatory=true
+	versionRange="[0.14-95,)"
+	ordering="BEFOR"
+	side="BOTH"
 
 [[dependencies.immersiveposts]]
-    modId="forge"
-    mandatory=true
-    versionRange="[28.2.3,)"
-    ordering="NONE"
-    side="BOTH"
+	modId="forge"
+	mandatory=true
+	versionRange="[28.2.3,)"
+	ordering="NONE"
+	side="BOTH"
 
 [[dependencies.immersiveposts]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.14.4]"
-    ordering="NONE"
-    side="BOTH"
+	modId="minecraft"
+	mandatory=true
+	versionRange="[1.14.4]"
+	ordering="NONE"
+	side="BOTH"
