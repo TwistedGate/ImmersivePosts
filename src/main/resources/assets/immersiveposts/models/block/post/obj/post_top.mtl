@@ -1,7 +1,0 @@
-# Blender MTL File: 'post_segments.blend'
-# Material Count: 1
-
-newmtl post
-Kd 1.000000 1.000000 1.000000
-map_Kd #texture
-#immersiveposts:block/posts/post_wood
