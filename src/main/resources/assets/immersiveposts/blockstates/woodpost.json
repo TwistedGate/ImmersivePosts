@@ -31,25 +31,23 @@
 		},
 		"facing":{
 			"north":{"transform":{"rotation":{"y":0}}},
-			"east":{"transform":{"rotation":{"y":-90}}},
+			"east": {"transform":{"rotation":{"y":-90}}},
 			"south":{"transform":{"rotation":{"y":180}}},
-			"west":{"transform":{"rotation":{"y":90}}}
+			"west": {"transform":{"rotation":{"y":90}}}
 		},
-		"flip":{
-			"true":{
-				"__comment":"For this one i had to be specific. See below."
+		"flipstate":{
+			"up":  {
+				"__comment": "Already taken care of by type=arm."
 			},
-			"false":{}
+			"down":{
+				"__comment": "Having to be specific with this one. See below!"
+			},
+			"both":{ "model":"immersiveposts:post/obj/arm_twoway.obj" }
 		},
 		
-		"facing=north,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj" },
-		"facing=east,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "y":90 },
-		"facing=south,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "y":180 },
-		"facing=west,flip=false,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "y":270 },
-		
-		"facing=north,flip=true,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "x":180, "y":180 },
-		"facing=east,flip=true,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "x":180 , "y":270 },
-		"facing=south,flip=true,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "x":180 , "y":0 },
-		"facing=west,flip=true,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "x":180 , "y":90 }
+		"facing=north,flipstate=down,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "x":180, "y":180 },
+		"facing=east,flipstate=down,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "x":180 , "y":270 },
+		"facing=south,flipstate=down,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "x":180 , "y":0 },
+		"facing=west,flipstate=down,parm_east=false,parm_north=false,parm_south=false,parm_west=false,type=arm": { "model":"immersiveposts:post/obj/arm.obj", "x":180 , "y":90 }
 	}
 }

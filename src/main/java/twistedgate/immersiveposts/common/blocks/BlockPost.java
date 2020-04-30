@@ -1,7 +1,9 @@
 package twistedgate.immersiveposts.common.blocks;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -47,6 +49,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twistedgate.immersiveposts.IPOConfig;
+import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
@@ -67,9 +70,11 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	public static final PropertyBool LPARM_SOUTH=PropertyBool.create("parm_south");
 	public static final PropertyBool LPARM_WEST=PropertyBool.create("parm_west");
 	
+	//@Deprecated
+	//public static final PropertyBool FLIP=PropertyBool.create("flip");
 	public static final PropertyDirection FACING=PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyEnum<EnumPostType> TYPE=PropertyEnum.create("type", EnumPostType.class);
-	public static final PropertyBool FLIP=PropertyBool.create("flip");
+	public static final PropertyEnum<EnumFlipState> FLIPSTATE=PropertyEnum.create("flipstate", EnumFlipState.class);
 	
 	protected EnumPostMaterial postMaterial;
 	public BlockPost(Material blockMaterial, EnumPostMaterial postMaterial){
@@ -86,7 +91,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		setDefaultState(this.blockState.getBaseState()
 				.withProperty(FACING, EnumFacing.NORTH)
-				.withProperty(FLIP, false)
+				//.withProperty(FLIP, false)
+				.withProperty(FLIPSTATE, EnumFlipState.UP)
 				.withProperty(TYPE, EnumPostType.POST)
 				.withProperty(LPARM_NORTH, false)
 				.withProperty(LPARM_EAST, false)
@@ -107,7 +113,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	@Override
 	protected BlockStateContainer createBlockState(){
 		return new BlockStateContainer(this, new IProperty<?>[]{
-			FACING, FLIP, TYPE,
+			FACING, /*FLIP,*/ FLIPSTATE, TYPE,
 			LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST,
 		}){
 			@Override
@@ -126,25 +132,29 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	@Override
 	public int getMetaFromState(IBlockState state){
 		switch(state.getValue(TYPE)){
-			case POST: return 0;
+			//case POST: return 0; // Default below technicaly takes care of this already.
 			case POST_TOP: return 1;
 			case ARM:{
 				int rot;
 				switch(state.getValue(FACING)){
-					case EAST: rot=1;break;
-					case SOUTH:rot=2;break;
-					case WEST: rot=3;break;
-					default:   rot=0; // North, Up and Down
+					case WEST: rot=5;break;
+					case SOUTH:rot=4;break;
+					case EAST: rot=3;break;
+					default:   rot=2; // North, Up and Down
 				}
 				
-				return (state.getValue(FLIP)?6:2)+rot;
+				return rot;
+				// FlipState will be used in getActualState instead of the below to save meta ids
+				// Thus technicaly giving the ability to even flip the big arms now. Still won't make them flip tho ;)
+				
+				//return (state.getValue(FLIP)?6:2)+rot;
 			}
 			case ARM_DOUBLE:{
 				switch(state.getValue(FACING)){
-					case EAST: return 11;
-					case SOUTH:return 12;
-					case WEST: return 13;
-					default:   return 10; // North, Up and Down
+					case WEST: return 9;
+					case SOUTH:return 8;
+					case EAST: return 7;
+					default:   return 6; // North, Up and Down
 				}
 			}
 			case EMPTY: return 15;
@@ -152,27 +162,45 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		}
 	}
 	
+	/**
+	 * List of used Meta IDs
+	 * <blockquote><code>
+	 * <ul>
+	 * <li> 0 = POST</li>
+	 * <li> 1 = POST_TOP</li>
+	 * <li> 2 = ARM-NORTH</li>
+	 * <li> 3 = ARM-EAST</li>
+	 * <li> 4 = ARM-SOUTH</li>
+	 * <li> 5 = ARM-WEST</li>
+	 * <li> 6 = ARM_DOUBLE-NORTH</li>
+	 * <li> 7 = ARM_DOUBLE-EAST</li>
+	 * <li> 8 = ARM_DOUBLE-SOUTH</li>
+	 * <li> 9 = ARM_DOUBLE-WEST</li>
+	 * <li>10 = UNUSED (EMPTY)</li>
+	 * <li>11 = UNUSED (EMPTY)</li>
+	 * <li>12 = UNUSED (EMPTY)</li>
+	 * <li>13 = UNUSED (EMPTY)</li>
+	 * <li>14 = UNUSED (EMPTY)</li>
+	 * <li>15 = EMPTY</li>
+	 * </ul>
+	 * </code></blockquote>
+	 */
 	@Override
 	public IBlockState getStateFromMeta(int meta){
 		IBlockState state=getDefaultState();
-		if(meta==15) return state.withProperty(TYPE, EnumPostType.EMPTY);
-		
-		if(meta>0){
-			if(meta>9) state=state.withProperty(TYPE, EnumPostType.ARM_DOUBLE);
-			else if(meta>1) state=state.withProperty(TYPE, EnumPostType.ARM);
-			else state=state.withProperty(TYPE, EnumPostType.POST_TOP);
-			
-			if(meta>=6 && meta<=9) state=state.withProperty(FLIP, true);
-			
-			switch((meta-2)%4){
-				case 0: state=state.withProperty(FACING, EnumFacing.NORTH); break;
-				case 1: state=state.withProperty(FACING, EnumFacing.EAST); break;
-				case 2: state=state.withProperty(FACING, EnumFacing.SOUTH); break;
-				case 3: state=state.withProperty(FACING, EnumFacing.WEST); break;
-			}
+		switch(meta){
+			case 0: return state.withProperty(TYPE, EnumPostType.POST);
+			case 1: return state.withProperty(TYPE, EnumPostType.POST_TOP);
+			case 2: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(FACING, EnumFacing.NORTH);
+			case 3: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(FACING, EnumFacing.EAST);
+			case 4: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(FACING, EnumFacing.SOUTH);
+			case 5: return state.withProperty(TYPE, EnumPostType.ARM).withProperty(FACING, EnumFacing.WEST);
+			case 6: return state.withProperty(TYPE, EnumPostType.ARM_DOUBLE).withProperty(FACING, EnumFacing.NORTH);
+			case 7: return state.withProperty(TYPE, EnumPostType.ARM_DOUBLE).withProperty(FACING, EnumFacing.EAST);
+			case 8: return state.withProperty(TYPE, EnumPostType.ARM_DOUBLE).withProperty(FACING, EnumFacing.SOUTH);
+			case 9: return state.withProperty(TYPE, EnumPostType.ARM_DOUBLE).withProperty(FACING, EnumFacing.WEST);
+			default: return state.withProperty(TYPE, EnumPostType.EMPTY); // 10 - 14
 		}
-		
-		return state;
 	}
 	
 	@Override
@@ -286,14 +314,16 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					
 					if((getBlockFrom(worldIn, nPos) instanceof BlockPost)){
 						IBlockState s=worldIn.getBlockState(nPos);
-						if(s.getValue(BlockPost.TYPE)==EnumPostType.ARM && s.getValue(BlockPost.FLIP)){
+						EnumPostType type=s.getValue(BlockPost.TYPE);
+						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.getValue(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
 							return true;
 						}
 						
 						BlockPos up=nPos.offset(EnumFacing.UP);
 						if((getBlockFrom(worldIn, up) instanceof BlockPost)){
 							s=worldIn.getBlockState(up);
-							if(s.getValue(BlockPost.TYPE)==EnumPostType.ARM){
+							type=s.getValue(BlockPost.TYPE);
+							if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
 								return true;
 							}
 						}
@@ -420,7 +450,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						.withProperty(LPARM_NORTH, false)
 						.withProperty(LPARM_EAST, false)
 						.withProperty(LPARM_SOUTH, false)
-						.withProperty(LPARM_WEST, false);
+						.withProperty(LPARM_WEST, false)
+						.withProperty(BlockPost.FLIPSTATE, getFlipState(blockAccess, pos));
 				/*
 				 * canConnect is rather time consuming, so this is an attempt to speed this up.
 				 */
@@ -486,9 +517,13 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		@Override
 		public void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos){
+			updateState(world, pos);
+		}
+		
+		private void updateState(World world, BlockPos pos){
 			EnumPostType thisType=this.getValue(BlockPost.TYPE);
 			
-			if(thisType.id()<2){
+			if(thisType.id()<=1){ // If POST (0) or POST_TOP (1)
 				BlockPos belowPos=pos.offset(EnumFacing.DOWN);
 				if(getBlockFrom(world, belowPos)==Blocks.AIR){
 					getBlockFrom(world, pos).dropBlockAsItem(world, pos, this, 0);
@@ -506,7 +541,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					return;
 				}
 				case POST_TOP:{
-					if((aboveBlock instanceof BlockPost) && aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM)
+					if((aboveBlock instanceof BlockPost) && aboveState.getValue(BlockPost.TYPE)==EnumPostType.POST_TOP)
 						world.setBlockState(pos, this.withProperty(BlockPost.TYPE, EnumPostType.POST));
 					return;
 				}
@@ -518,20 +553,22 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						return;
 					}
 					
-					if(aboveBlock!=Blocks.AIR && (aboveBlock instanceof BlockPost && aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM)){
-						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, false));
-					}else{
-						boolean bool=BlockPost.canConnect(world, pos, EnumFacing.DOWN);
-						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, bool));
-					}
+					world.setBlockState(pos, this.withProperty(BlockPost.FLIPSTATE, getFlipState(world, pos)));
+					
+//					if(aboveBlock!=Blocks.AIR && (aboveBlock instanceof BlockPost && aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM)){
+//						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, false));
+//					}else{
+//						boolean bool=BlockPost.canConnect(world, pos, EnumFacing.DOWN);
+//						world.setBlockState(pos, this.withProperty(BlockPost.FLIP, bool));
+//					}
 					return;
 				}
 				case ARM_DOUBLE:{
 					EnumFacing f=this.getValue(BlockPost.FACING).getOpposite();
 					IBlockState state=world.getBlockState(pos.offset(f));
-					if(state!=null && !(state.getBlock() instanceof BlockPost)){
+					if(state!=null && !(state.getBlock() instanceof BlockPost))
 						world.setBlockToAir(pos);
-					}
+					
 					return;
 				}
 				case EMPTY:{
@@ -545,30 +582,84 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					state=world.getBlockState(pos);
 					f=state.getValue(FACING);
 					state=world.getBlockState(pos.offset(f));
-					if(state.getBlock()==Blocks.AIR){
+					if(state.getBlock()==Blocks.AIR)
 						world.setBlockToAir(pos);
-					}
 				}
 			}
 		}
 		
+		private EnumFlipState getFlipState(IBlockAccess world, BlockPos pos){
+			IBlockState aboveState=world.getBlockState(pos.offset(EnumFacing.UP));
+			IBlockState belowState=world.getBlockState(pos.offset(EnumFacing.DOWN));
+			
+			Block aboveBlock=aboveState.getBlock();
+			Block belowBlock=belowState.getBlock();
+			
+			boolean up=BlockPost.canConnect(world, pos, EnumFacing.UP) && ((aboveBlock instanceof BlockPost)?aboveState.getValue(BlockPost.TYPE)!=EnumPostType.ARM:true);
+			boolean down=BlockPost.canConnect(world, pos, EnumFacing.DOWN) && ((belowBlock instanceof BlockPost)?belowState.getValue(BlockPost.TYPE)!=EnumPostType.ARM:true);
+			
+			EnumFlipState flipState;
+			if(up && down) flipState=EnumFlipState.BOTH;
+			else if(down) flipState=EnumFlipState.DOWN;
+			else flipState=EnumFlipState.UP;
+			
+			return flipState;
+		}
+		
 		private static final AxisAlignedBB X_BOUNDS=new AxisAlignedBB(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
 		private static final AxisAlignedBB Z_BOUNDS=new AxisAlignedBB(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
+		private static final Map<Integer, AxisAlignedBB> shapeCache=new HashMap<>();
 		static AxisAlignedBB stateBounds(IBlockState state){
 			switch(state.getValue(TYPE)){
 				case ARM:case ARM_DOUBLE:{
-					EnumFacing facing=state.getValue(FACING);
-					boolean flipped=state.getValue(FLIP);
+					EnumFacing dir=state.getValue(FACING);
+					EnumFlipState flipstate=state.getValue(FLIPSTATE);
+					/*
+						Bit6=FlipDown
+						Bit5=FlipUp
+						Bit4=West
+						Bit3=South
+						Bit2=East
+						Bit1=North
+						
+						If Bit5 and Bit6 are both 1 then its EnumFlipState.BOTH
+						By default it's EnumFlipState.UP
+					 */
+					int id=0x00;
 					
-					double minY=flipped?0.0:0.34375;
-					double maxY=flipped?0.65625:1.0;
+					switch(flipstate){
+						case UP:	id=0x10; break;
+						case DOWN:	id=0x20; break;
+						case BOTH:	id=0x30; break;
+					}
 					
-					double minX=(facing==EnumFacing.EAST) ?0.0:0.3125;
-					double maxX=(facing==EnumFacing.WEST) ?1.0:0.6875;
-					double minZ=(facing==EnumFacing.SOUTH)?0.0:0.3125;
-					double maxZ=(facing==EnumFacing.NORTH)?1.0:0.6875;
+					switch(dir){
+						case WEST:	id|=0x08;
+						case SOUTH:	id|=0x04;
+						case EAST:	id|=0x02;
+						default:	id|=0x01; // Basicly default to North
+					}
 					
-					return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+					if(!shapeCache.containsKey(id)){
+						double minY=0.0;
+						double maxY=1.0;
+						switch(flipstate){
+							case UP:   minY=0.34375; maxY=1.0; break;
+							case DOWN: minY=0.0; maxY=0.65625; break;
+							case BOTH: minY=0.0; maxY=1.0; break;
+						}
+						
+						double minX=(dir==EnumFacing.EAST) ?0.0:0.3125;
+						double maxX=(dir==EnumFacing.WEST) ?1.0:0.6875;
+						double minZ=(dir==EnumFacing.SOUTH)?0.0:0.3125;
+						double maxZ=(dir==EnumFacing.NORTH)?1.0:0.6875;
+						
+						AxisAlignedBB shape=new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+						shapeCache.put(id, shape);
+						return shape;
+					}
+					
+					return shapeCache.get(id);
 				}
 				case EMPTY:{
 					EnumFacing facing=state.getValue(FACING);

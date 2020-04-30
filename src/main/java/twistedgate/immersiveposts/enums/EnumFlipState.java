@@ -7,13 +7,10 @@ import net.minecraft.util.IStringSerializable;
 /**
  * @author TwistedGate
  */
-public enum EnumPostType implements IStringSerializable{
-	POST,
-	POST_TOP,
-	ARM,
-	ARM_DOUBLE,
-	EMPTY
-	;
+public enum EnumFlipState implements IStringSerializable{
+	UP,
+	DOWN,
+	BOTH;
 	
 	public int id(){
 		return ordinal();

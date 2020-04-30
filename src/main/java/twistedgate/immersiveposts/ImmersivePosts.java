@@ -3,6 +3,7 @@ package twistedgate.immersiveposts;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -10,8 +11,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import twistedgate.immersiveposts.common.CommonProxy;
 
 /**
@@ -32,7 +31,12 @@ public class ImmersivePosts{
 	@SidedProxy(modId=IPOMod.ID, serverSide=IPOMod.PROXY_SERVER, clientSide=IPOMod.PROXY_CLIENT)
 	public static CommonProxy proxy;
 	
-	public static final CreativeTabs creativeTab=IPOCreativeTab.instance;
+	public static final CreativeTabs creativeTab=new CreativeTabs(IPOMod.ID){
+		@Override
+		public ItemStack createIcon(){
+			return new ItemStack(IPOStuff.postBase==null?Blocks.BARRIER:IPOStuff.postBase);
+		}
+	};
 	
 	public static Logger log;
 	
@@ -54,31 +58,5 @@ public class ImmersivePosts{
 	public void violation(FMLFingerprintViolationEvent event){
 		System.err.println("THIS IS NOT AN OFFICIAL BUILD OF "+IPOMod.NAME.toUpperCase()+"! Fingerprints: ["+event.getFingerprints()+"]");
 		// Guess thats what this would be used for? lol
-	}
-	
-	
-	public static class IPOCreativeTab extends CreativeTabs{
-		public static final IPOCreativeTab instance=new IPOCreativeTab();
-		
-		private ItemStack iconstack=null;
-		private IPOCreativeTab(){
-			super(IPOMod.ID);
-		}
-		
-		@Override
-		@SideOnly(Side.CLIENT)
-		public ItemStack createIcon(){
-			if(this.iconstack==null)
-				this.iconstack=new ItemStack(IPOStuff.postBase);
-			return this.iconstack;
-		}
-		
-		@Override
-		public boolean equals(Object obj){
-			if(obj instanceof IPOCreativeTab) return true;
-			if(obj==this) return true;
-			
-			return super.equals(obj);
-		}
 	}
 }
