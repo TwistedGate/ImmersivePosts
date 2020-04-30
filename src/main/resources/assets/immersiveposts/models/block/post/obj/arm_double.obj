@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'post_segments_new.blend'
 # www.blender.org
-mtllib arm_double.mtl
+mtllib post.mtl
 o doublearm
 v 0.375000 0.875000 2.374997
 v 0.375000 0.875000 0.374997

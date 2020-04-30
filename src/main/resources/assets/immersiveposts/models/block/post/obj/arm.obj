@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'post_segments.blend'
 # www.blender.org
-mtllib arm.mtl
+mtllib post.mtl
 o arm
 v 0.375000 0.875000 1.374997
 v 0.375000 0.875000 0.374997
