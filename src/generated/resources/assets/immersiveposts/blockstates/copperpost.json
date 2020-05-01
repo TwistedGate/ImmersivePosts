@@ -53,9 +53,9 @@
     },
     {
       "when": {
+        "type": "arm",
         "facing": "north",
-        "flip": "false",
-        "type": "arm"
+        "flipstate": "up"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm"
@@ -63,8 +63,8 @@
     },
     {
       "when": {
-        "facing": "north",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "north"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm_double"
@@ -72,9 +72,9 @@
     },
     {
       "when": {
+        "type": "arm",
         "facing": "east",
-        "flip": "false",
-        "type": "arm"
+        "flipstate": "up"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm",
@@ -83,8 +83,8 @@
     },
     {
       "when": {
-        "facing": "east",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "east"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm_double",
@@ -93,9 +93,9 @@
     },
     {
       "when": {
+        "type": "arm",
         "facing": "south",
-        "flip": "false",
-        "type": "arm"
+        "flipstate": "up"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm",
@@ -104,8 +104,8 @@
     },
     {
       "when": {
-        "facing": "south",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "south"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm_double",
@@ -114,9 +114,9 @@
     },
     {
       "when": {
+        "type": "arm",
         "facing": "west",
-        "flip": "false",
-        "type": "arm"
+        "flipstate": "up"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm",
@@ -125,8 +125,8 @@
     },
     {
       "when": {
-        "facing": "west",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "west"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm_double",
@@ -135,9 +135,9 @@
     },
     {
       "when": {
+        "type": "arm",
         "facing": "north",
-        "flip": "true",
-        "type": "arm"
+        "flipstate": "down"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm",
@@ -147,9 +147,9 @@
     },
     {
       "when": {
+        "type": "arm",
         "facing": "east",
-        "flip": "true",
-        "type": "arm"
+        "flipstate": "down"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm",
@@ -159,9 +159,9 @@
     },
     {
       "when": {
+        "type": "arm",
         "facing": "south",
-        "flip": "true",
-        "type": "arm"
+        "flipstate": "down"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm",
@@ -170,14 +170,57 @@
     },
     {
       "when": {
+        "type": "arm",
         "facing": "west",
-        "flip": "true",
-        "type": "arm"
+        "flipstate": "down"
       },
       "apply": {
         "model": "immersiveposts:copperpost/arm",
         "x": 180,
         "y": 90
+      }
+    },
+    {
+      "when": {
+        "type": "arm",
+        "facing": "north",
+        "flipstate": "both"
+      },
+      "apply": {
+        "model": "immersiveposts:copperpost/arm_twoway"
+      }
+    },
+    {
+      "when": {
+        "type": "arm",
+        "facing": "east",
+        "flipstate": "both"
+      },
+      "apply": {
+        "model": "immersiveposts:copperpost/arm_twoway",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "type": "arm",
+        "facing": "south",
+        "flipstate": "both"
+      },
+      "apply": {
+        "model": "immersiveposts:copperpost/arm_twoway",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "type": "arm",
+        "facing": "west",
+        "flipstate": "both"
+      },
+      "apply": {
+        "model": "immersiveposts:copperpost/arm_twoway",
+        "y": 270
       }
     },
     {

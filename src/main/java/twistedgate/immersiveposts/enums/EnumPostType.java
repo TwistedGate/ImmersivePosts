@@ -10,12 +10,10 @@ import net.minecraft.util.IStringSerializable;
 public enum EnumPostType implements IStringSerializable{
 	POST,
 	POST_TOP,
-	ARM,
+	ARM, // Includes the two-way arm
 	ARM_DOUBLE,
 	EMPTY
 	;
-	
-	private EnumPostType(){}
 	
 	public int id(){
 		return ordinal();

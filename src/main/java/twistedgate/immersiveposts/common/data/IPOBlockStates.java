@@ -135,10 +135,10 @@ public class IPOBlockStates extends BlockStateProvider{
 			.end();
 	}
 	
-	private int horizontalRotation(Direction dir, boolean flip180){
+	private int horizontalRotation(Direction dir, boolean xFlipped){
 		int value;
 		
-		if(flip180){
+		if(xFlipped){ // Should be true when X rotation is 180
 			switch(dir){
 				case WEST:	value=90; break;
 				case SOUTH:	value=0; break;

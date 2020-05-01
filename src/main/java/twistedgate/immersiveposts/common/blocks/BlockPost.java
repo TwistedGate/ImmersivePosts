@@ -306,8 +306,9 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 				default:	b=false;
 			}
 			
-			if(b && ((facingIn.getAxis()==Axis.Z && box.minX>0.0 && box.maxX<1.0) || (facingIn.getAxis()==Axis.X && box.minZ>0.0 && box.maxZ<1.0))){
-				return true;
+			if(b){
+				if(facingIn.getAxis()==Axis.Z && box.minX>0.0 && box.maxX<1.0) return true;
+				if(facingIn.getAxis()==Axis.X && box.minZ>0.0 && box.maxZ<1.0) return true;
 			}
 		}
 		
@@ -320,13 +321,12 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		}
 		
 		@Override
+		public void onBlockAdded(World worldIn, BlockPos pos, BlockState oldState, boolean isMoving){}
+		
+		@Override
 		public BlockState updatePostPlacement(Direction face, BlockState queried, IWorld world, BlockPos pos, BlockPos offsetPos){
 			if(this.get(TYPE).id()>1){
-				return this.with(LPARM_NORTH, false)
-							.with(LPARM_EAST, false)
-							.with(LPARM_SOUTH, false)
-							.with(LPARM_WEST, false)
-							.with(FLIPSTATE, getFlipState(world, pos));
+				return this;
 				/*
 				 * canConnect is rather time consuming, so this is an attempt to speed this up.
 				 */
@@ -366,6 +366,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		
 		@Override
 		public void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
+			if(world.isRemote) return;
+			
 			updateState(world, pos);
 		}
 		
@@ -460,12 +462,12 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					EnumFlipState flipstate=state.get(FLIPSTATE);
 					
 					/*
-						Bit6=FlipDown
-						Bit5=FlipUp
-						Bit4=West
-						Bit3=South
-						Bit2=East
-						Bit1=North
+						Bit-6 = FlipDown
+						Bit-5 = FlipUp
+						Bit-4 = West
+						Bit-3 = South
+						Bit-2 = East
+						Bit-1 = North
 						
 						If Bit5 and Bit6 are both 1 then its EnumFlipState.BOTH
 						By default it's EnumFlipState.UP
