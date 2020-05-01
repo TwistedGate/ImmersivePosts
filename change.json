@@ -9,7 +9,7 @@
 	"1.14.4":{
 		"1.1.0":"[C] 1-Block Arms can both Face Up & Down at the same time now.\n\nThis *may* break existing 1-Block Arms and will break 2-Block Arms thus a world-backup is recommended befor updating!",
 		"1.0.1":"Minimum IE Version: 0.14-95\n\n[F] Posts and Postbase being washed away by Fluids.\n[F] Lighting bug.\n[F] Postbase not dropping itself.",
-		"1.0.0-rev1_ie94","Same as 1.0.0-rev1, just for IE 0.14-94. Since 95 is not yet officialy been released.",
+		"1.0.0-rev1_ie94":"Same as 1.0.0-rev1, just for IE 0.14-94. Since 95 is not yet officialy been released.",
 		"1.0.0-rev1":"Requires IE version: 0.14-95\n\n\n[F] Forgot to add the Generated Data",
 		"1.0.0":"Required forge version: 1.14.4-28.2.3\nFirst release for 1.14.4\n\n[R] Config for removing unwanted post types. (No point doing it)"
 	},
