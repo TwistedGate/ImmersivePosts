@@ -445,7 +445,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 		@Override
 		public IBlockState getActualState(IBlockAccess blockAccess, BlockPos pos){
 			if(this.getValue(TYPE).id()>1){
-				return this;
+				return this.withProperty(FLIPSTATE, getFlipState(blockAccess, pos));
 				/*
 				 * canConnect is rather time consuming, so this is an attempt to speed this up.
 				 */
