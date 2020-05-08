@@ -3,8 +3,8 @@
 	"promos":{
 		"1.14.4-latest": "1.1.0",
 		"1.14.4-recommended": "1.1.0",
-		"1.12.2-latest": "0.2.0",
-		"1.12.2-recommended": "0.2.0"
+		"1.12.2-latest": "0.2.1",
+		"1.12.2-recommended": "0.2.1"
 	},
 	"1.14.4":{
 		"1.1.0":"[C] 1-Block Arms can both Face Up & Down at the same time now.\n\nThis *may* break existing 1-Block Arms and will break 2-Block Arms thus a world-backup is recommended befor updating!",
@@ -14,6 +14,7 @@
 		"1.0.0":"Required forge version: 1.14.4-28.2.3\nFirst release for 1.14.4\n\n[R] Config for removing unwanted post types. (No point doing it)"
 	},
 	"1.12.2":{
+		"0.2.1":"[F] 1-Block arms not connecting to bottom/top on server side.",
 		"0.2.0":"[C] 1-Block Arms can both Face Up & Down at the same time now.\n\nThis *will* break existing Arms (both 1-Block and 2-Block wide) thus a world-backup is recommended befor updating!",
 		"0.1.5":"Required forge version: 1.12.2-14.23.5.2820\n\n[A] Config for removing unwanted posts types. [Use with Caution]",
 		"0.1.4":"[A] 2-Wide Arm for Posts.\n[A] Chinese Translation. (scikirbypoke)\n[C] Semantic Corrections in Russian Translation. (Shellyoung)\n[C] PostBase Recipe. Now using Cobblestone instead of Cobblestone-Walls.\n[C] Manual Entries. Being more readable and adding some nice images aswell.\n[F] Collision for Mini-Arms won't cause trouble anymore.",
