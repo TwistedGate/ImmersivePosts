@@ -2,6 +2,9 @@ package twistedgate.immersiveposts;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.item.Item;
@@ -20,6 +23,8 @@ import twistedgate.immersiveposts.enums.EnumPostMaterial;
  */
 @Mod.EventBusSubscriber(modid=IPOMod.ID, bus=Bus.MOD)
 public class IPOStuff{
+	public static final Logger log=LogManager.getLogger(IPOMod.ID+"/Stuff");
+	
 	public static final ArrayList<Block> BLOCKS=new ArrayList<>(0);
 	public static final ArrayList<Item> ITEMS=new ArrayList<>(0);
 	
@@ -114,7 +119,7 @@ public class IPOStuff{
 			try{
 				event.getRegistry().register(block);
 			}catch(Throwable e) {
-				ImmersivePosts.log.error("Failed to register a block. ("+block+")");
+				log.error("Failed to register a block. ({})", block);
 				throw e;
 			}
 		}
@@ -126,7 +131,7 @@ public class IPOStuff{
 			try{
 				event.getRegistry().register(item);
 			}catch(Throwable e) {
-				ImmersivePosts.log.error("Failed to register an item. ("+item+", "+item.getRegistryName()+")");
+				log.error("Failed to register an item. ({}, {})", item, item.getRegistryName());
 				throw e;
 			}
 		}

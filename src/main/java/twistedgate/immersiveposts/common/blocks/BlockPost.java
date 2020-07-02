@@ -24,6 +24,7 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Hand;
@@ -163,13 +164,13 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	}
 	
 	@Override
-	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
 			if(EnumPostMaterial.isFenceItem(held)){
 				if(!held.isItemEqual(this.postMaterial.getItemStack())){
 					playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", new StringTextComponent(this.postMaterial.getItemStack().getDisplayName().getString())), true);
-					return true;
+					return ActionResultType.SUCCESS;
 				}
 				
 				for(int y=0;y<(worldIn.getActualHeight()-pos.getY());y++){
@@ -179,7 +180,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 						BlockState s=worldIn.getBlockState(nPos);
 						EnumPostType type=s.get(BlockPost.TYPE);
 						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
-							return true;
+							return ActionResultType.SUCCESS;
 						}
 						
 						BlockPos up=nPos.offset(Direction.UP);
@@ -187,7 +188,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 							s=worldIn.getBlockState(up);
 							type=s.get(BlockPost.TYPE);
 							if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
-								return true;
+								return ActionResultType.SUCCESS;
 							}
 						}
 					}
@@ -199,10 +200,10 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 								held.shrink(1);
 							}
 						}
-						return true;
+						return ActionResultType.SUCCESS;
 						
 					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof BlockPost)){
-						return true;
+						return ActionResultType.SUCCESS;
 					}
 				}
 			}else if(Utils.isHammer(held)){
@@ -221,11 +222,11 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 									switch(worldIn.getBlockState(nPos).get(TYPE)){
 										case ARM:{
 											worldIn.setBlockState(nPos, Blocks.AIR.getDefaultState());
-											return true;
+											return ActionResultType.SUCCESS;
 										}
 										case EMPTY:{
 											worldIn.setBlockState(nPos, Blocks.AIR.getDefaultState());
-											return true;
+											return ActionResultType.SUCCESS;
 										}
 										default:break;
 									}
@@ -233,7 +234,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 							}
 							default:break;
 						}
-						return true;
+						return ActionResultType.SUCCESS;
 					}
 					case ARM:{
 						Direction bfacing=state.get(FACING);
@@ -241,25 +242,29 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 							worldIn.setBlockState(pos.offset(bfacing), state.with(TYPE, EnumPostType.ARM_DOUBLE));
 							worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.EMPTY));
 						}
-						return true;
+						return ActionResultType.SUCCESS;
 					}
 					case ARM_DOUBLE:{
 						Direction bfacing=state.get(FACING);
 						worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
 						worldIn.setBlockState(pos.offset(bfacing.getOpposite()), state.with(TYPE, EnumPostType.ARM));
-						return true;
+						return ActionResultType.SUCCESS;
 					}
 					case EMPTY:{
 						Direction bfacing=state.get(FACING);
 						worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.ARM));
 						worldIn.setBlockState(pos.offset(bfacing), Blocks.AIR.getDefaultState());
-						return true;
+						return ActionResultType.SUCCESS;
 					}
 				}
 			}
 		}
 		
-		return Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isFenceItem(playerIn.getHeldItemMainhand());
+		// ActionResultType.SUCCESS
+		if(Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isFenceItem(playerIn.getHeldItemMainhand()))
+			return ActionResultType.SUCCESS;
+		
+		return ActionResultType.FAIL;
 	}
 	
 	

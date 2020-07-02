@@ -23,8 +23,10 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  */
 public class IPOBlockStates extends BlockStateProvider{
 	final IPOLoadedModels loadedModels;
+	final ExistingFileHelper exFileHelper;
 	public IPOBlockStates(DataGenerator gen, ExistingFileHelper exFileHelper, IPOLoadedModels loadedModels){
 		super(gen, IPOMod.ID, exFileHelper);
+		this.exFileHelper=exFileHelper;
 		this.loadedModels=loadedModels;
 	}
 	
@@ -36,10 +38,11 @@ public class IPOBlockStates extends BlockStateProvider{
 	
 	@Override
 	protected void registerStatesAndModels(){
-		ExistingModelFile postBase=new ExistingModelFile(modLoc("block/postbase"), existingFileHelper);
+		ExistingModelFile postBase=new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper);
 		getVariantBuilder(IPOStuff.post_Base).partialState()
 			.setModels(new ConfiguredModel(postBase));
-		getBuilder(IPOMod.ID+":item/postbase").parent(postBase); // Might aswell generate item model for it too
+		
+		//getBuilder(IPOMod.ID+":item/postbase").parent(postBase); // Might aswell generate item model for it too
 		
 		for(Block block:IPOStuff.BLOCKS)
 			if(block instanceof BlockPost)
@@ -62,11 +65,10 @@ public class IPOBlockStates extends BlockStateProvider{
 		try{
 			fenceBlock(block, name, texture);
 			
-			// While it's at it also make the inventory model ready
-			String[] s=name.split("/");
-			getBuilder(IPOMod.ID+":block/fences/inventory/"+s[1]+"_fence_inventory")
-				.parent(getExistingFile(new ResourceLocation("block/fence_inventory")))
-				.texture("texture", texture);
+//			String[] s=name.split("/");
+//			getBuilder(IPOMod.ID+":block/fences/inventory/"+s[1]+"_fence_inventory")
+//				.parent(new ExistingModelFile(new ResourceLocation("block/fence_inventory"), this.exFileHelper))
+//				.texture("texture", texture);
 		}catch(Throwable e){
 			IPODataGen.log.warn("Oops.. {}", e.getMessage());
 		}
@@ -79,7 +81,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		LoadedModelBuilder modelPost		=getPostModel(block, "post");
 		LoadedModelBuilder modelPostTop		=getPostModel(block, "post_top");
 		LoadedModelBuilder modelPostArm		=getPostModel(block, "post_arm");
-		ExistingModelFile modelEmpty		=getExistingFile(modLoc("block/empty"));
+		ExistingModelFile modelEmpty		=new ExistingModelFile(modLoc("block/empty"), this.exFileHelper);
 		
 		MultiPartBlockStateBuilder builder=getMultipartBuilder(block);
 		

@@ -17,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -70,7 +71,7 @@ public class BlockPostBase extends IPOBlockBase{
 	}
 	
 	@Override
-	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
 			if(EnumPostMaterial.isFenceItem(held)){
@@ -83,7 +84,7 @@ public class BlockPostBase extends IPOBlockBase{
 						ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
 						if(!held.isItemEqual(tmp)){
 							playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", new StringTextComponent(tmp.getDisplayName().getString())), true);
-							return true;
+							return ActionResultType.SUCCESS;
 						}
 					}
 				}
@@ -95,7 +96,7 @@ public class BlockPostBase extends IPOBlockBase{
 						BlockState s=worldIn.getBlockState(nPos);
 						EnumPostType type=s.get(BlockPost.TYPE);
 						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && s.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
-							return true;
+							return ActionResultType.SUCCESS;
 						}
 						
 						BlockPos up=nPos.offset(Direction.UP);
@@ -103,7 +104,7 @@ public class BlockPostBase extends IPOBlockBase{
 							s=worldIn.getBlockState(up);
 							type=s.get(BlockPost.TYPE);
 							if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
-								return true;
+								return ActionResultType.SUCCESS;
 							}
 						}
 					}
@@ -115,16 +116,19 @@ public class BlockPostBase extends IPOBlockBase{
 								held.shrink(1);
 							}
 						}
-						return true;
+						return ActionResultType.SUCCESS;
 						
 					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof BlockPost)){
-						return true;
+						return ActionResultType.SUCCESS;
 					}
 				}
 			}
 		}
 		
-		return EnumPostMaterial.isFenceItem(playerIn.getHeldItemMainhand());
+		if(EnumPostMaterial.isFenceItem(playerIn.getHeldItemMainhand()))
+			return ActionResultType.SUCCESS;
+		
+		return ActionResultType.FAIL;
 	}
 	
 	
@@ -149,7 +153,7 @@ public class BlockPostBase extends IPOBlockBase{
 		/** Find the key that is being pressed while minecraft is in focus */
 		@OnlyIn(Dist.CLIENT)
 		private boolean isPressing(int key){
-			long window=Minecraft.getInstance().mainWindow.getHandle();
+			long window=Minecraft.getInstance().getMainWindow().getHandle();
 			return GLFW.glfwGetKey(window, key)==GLFW.GLFW_PRESS;
 		}
 	}
