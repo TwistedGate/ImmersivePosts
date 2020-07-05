@@ -167,7 +167,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
-			if(EnumPostMaterial.isFenceItem(held)){
+			if(EnumPostMaterial.isValidItem(held)){
 				if(!held.isItemEqual(this.postMaterial.getItemStack())){
 					playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", new StringTextComponent(this.postMaterial.getItemStack().getDisplayName().getString())), true);
 					return ActionResultType.SUCCESS;
@@ -260,8 +260,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 			}
 		}
 		
-		// ActionResultType.SUCCESS
-		if(Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isFenceItem(playerIn.getHeldItemMainhand()))
+		if(Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isValidItem(playerIn.getHeldItemMainhand()))
 			return ActionResultType.SUCCESS;
 		
 		return ActionResultType.FAIL;

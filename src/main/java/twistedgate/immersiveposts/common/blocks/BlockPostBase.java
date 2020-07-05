@@ -27,6 +27,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -34,6 +35,7 @@ import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
+import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.enums.EnumFlipState;
@@ -74,7 +76,7 @@ public class BlockPostBase extends IPOBlockBase{
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
-			if(EnumPostMaterial.isFenceItem(held)){
+			if(EnumPostMaterial.isValidItem(held)){
 				
 				if(!worldIn.isAirBlock(pos.offset(Direction.UP))){
 					BlockState aboveState=worldIn.getBlockState(pos.offset(Direction.UP));
@@ -125,7 +127,7 @@ public class BlockPostBase extends IPOBlockBase{
 			}
 		}
 		
-		if(EnumPostMaterial.isFenceItem(playerIn.getHeldItemMainhand()))
+		if(EnumPostMaterial.isValidItem(playerIn.getHeldItemMainhand()))
 			return ActionResultType.SUCCESS;
 		
 		return ActionResultType.FAIL;
@@ -143,7 +145,14 @@ public class BlockPostBase extends IPOBlockBase{
 		public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn){
 			if(isPressing(GLFW.GLFW_KEY_LEFT_SHIFT) || isPressing(GLFW.GLFW_KEY_RIGHT_SHIFT)){
 				for(EnumPostMaterial t:EnumPostMaterial.values()){
-					tooltip.add(new StringTextComponent("- \u00A7a"+t.getItemStack().getDisplayName().getFormattedText()));
+					ITextComponent typeName=new StringTextComponent(t.getItemStack().getDisplayName().getFormattedText());
+					
+					if(IPOConfig.MAIN.isEnabled(t))
+						typeName.applyTextStyle(TextFormatting.GREEN);
+					else
+						typeName.applyTextStyles(TextFormatting.RED, TextFormatting.STRIKETHROUGH);
+					
+					tooltip.add(new StringTextComponent("- ").appendSibling(typeName));
 				}
 			}else{
 				tooltip.add(new StringTextComponent(I18n.format("tooltip.postbase")));

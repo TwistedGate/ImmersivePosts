@@ -71,15 +71,15 @@ public class IPOStuff{
 		// =========================================================================
 		// Fences
 		
-		fence_Iron		=new BlockMetalFence("fence_iron");
-		fence_Gold		=new BlockMetalFence("fence_gold");
-		fence_Copper	=new BlockMetalFence("fence_copper");
-		fence_Lead		=new BlockMetalFence("fence_lead");
-		fence_Silver	=new BlockMetalFence("fence_silver");
-		fence_Nickel	=new BlockMetalFence("fence_nickel");
-		fence_Constantan=new BlockMetalFence("fence_constantan");
-		fence_Electrum	=new BlockMetalFence("fence_electrum");
-		fence_Uranium	=new BlockMetalFence("fence_uranium");
+		fence_Iron		=new BlockMetalFence("iron");
+		fence_Gold		=new BlockMetalFence("gold");
+		fence_Copper	=new BlockMetalFence("copper");
+		fence_Lead		=new BlockMetalFence("lead");
+		fence_Silver	=new BlockMetalFence("silver");
+		fence_Nickel	=new BlockMetalFence("nickel");
+		fence_Constantan=new BlockMetalFence("constantan");
+		fence_Electrum	=new BlockMetalFence("electrum");
+		fence_Uranium	=new BlockMetalFence("uranium");
 		
 		// =========================================================================
 		// Posts

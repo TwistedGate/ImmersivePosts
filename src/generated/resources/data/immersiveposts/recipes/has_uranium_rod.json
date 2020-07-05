@@ -1,5 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "key": "uranium",
+      "value": true,
+      "type": "immersiveposts:cfg"
+    }
+  ],
   "pattern": [
     "i",
     "i"
