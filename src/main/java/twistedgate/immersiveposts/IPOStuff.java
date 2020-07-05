@@ -2,6 +2,9 @@ package twistedgate.immersiveposts;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.item.Item;
@@ -20,6 +23,8 @@ import twistedgate.immersiveposts.enums.EnumPostMaterial;
  */
 @Mod.EventBusSubscriber(modid=IPOMod.ID, bus=Bus.MOD)
 public class IPOStuff{
+	public static final Logger log=LogManager.getLogger(IPOMod.ID+"/Stuff");
+	
 	public static final ArrayList<Block> BLOCKS=new ArrayList<>(0);
 	public static final ArrayList<Item> ITEMS=new ArrayList<>(0);
 	
@@ -66,15 +71,15 @@ public class IPOStuff{
 		// =========================================================================
 		// Fences
 		
-		fence_Iron		=new BlockMetalFence("fence_iron");
-		fence_Gold		=new BlockMetalFence("fence_gold");
-		fence_Copper	=new BlockMetalFence("fence_copper");
-		fence_Lead		=new BlockMetalFence("fence_lead");
-		fence_Silver	=new BlockMetalFence("fence_silver");
-		fence_Nickel	=new BlockMetalFence("fence_nickel");
-		fence_Constantan=new BlockMetalFence("fence_constantan");
-		fence_Electrum	=new BlockMetalFence("fence_electrum");
-		fence_Uranium	=new BlockMetalFence("fence_uranium");
+		fence_Iron		=new BlockMetalFence("iron");
+		fence_Gold		=new BlockMetalFence("gold");
+		fence_Copper	=new BlockMetalFence("copper");
+		fence_Lead		=new BlockMetalFence("lead");
+		fence_Silver	=new BlockMetalFence("silver");
+		fence_Nickel	=new BlockMetalFence("nickel");
+		fence_Constantan=new BlockMetalFence("constantan");
+		fence_Electrum	=new BlockMetalFence("electrum");
+		fence_Uranium	=new BlockMetalFence("uranium");
 		
 		// =========================================================================
 		// Posts
@@ -114,7 +119,7 @@ public class IPOStuff{
 			try{
 				event.getRegistry().register(block);
 			}catch(Throwable e) {
-				ImmersivePosts.log.error("Failed to register a block. ("+block+")");
+				log.error("Failed to register a block. ({})", block);
 				throw e;
 			}
 		}
@@ -126,7 +131,7 @@ public class IPOStuff{
 			try{
 				event.getRegistry().register(item);
 			}catch(Throwable e) {
-				ImmersivePosts.log.error("Failed to register an item. ("+item+", "+item.getRegistryName()+")");
+				log.error("Failed to register an item. ({}, {})", item, item.getRegistryName());
 				throw e;
 			}
 		}

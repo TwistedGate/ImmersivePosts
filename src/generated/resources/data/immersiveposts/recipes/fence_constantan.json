@@ -1,5 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "key": "constantan",
+      "value": true,
+      "type": "immersiveposts:cfg"
+    }
+  ],
   "pattern": [
     "isi",
     "isi"

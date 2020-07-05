@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
+import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
@@ -104,8 +105,10 @@ public enum EnumPostMaterial implements IStringSerializable{
 		switch(postMaterial){
 			case WOOD: // For the *one* post that wants to be different..
 				prop=Block.Properties.create(WOOD_LIKE).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).hardnessAndResistance(2.0F, 5.0F); break;
+				
 			case NETHERBRICK: case CONCRETE: case CONCRETE_LEADED:
 				prop=Block.Properties.create(STONE_LIKE).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(1.5F, 6.0F); break;
+				
 			default:
 				prop=Block.Properties.create(METAL_LIKE).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(3.0F, 15.0F);
 		}
@@ -145,11 +148,11 @@ public enum EnumPostMaterial implements IStringSerializable{
 		return null;
 	}
 	
-	public static boolean isFenceItem(ItemStack stack){
+	public static boolean isValidItem(ItemStack stack){
 		if(stack==null || stack.isEmpty()) return false;
 		
 		for(EnumPostMaterial mat:values())
-			if(stack.isItemEqual(mat.getItemStack())) return true;
+			if(stack.isItemEqual(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)) return true;
 		
 		return false;
 	}
