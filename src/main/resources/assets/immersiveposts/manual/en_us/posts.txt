@@ -1,6 +1,6 @@
 Accepted Blocks
 Hm, what to pick..
-<&index0><np>
+<&index0>
 <&index1><np>
 <&treated>Treated-Wood.
 

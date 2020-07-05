@@ -25,7 +25,7 @@ public class ClientProxy extends CommonProxy{
 	public void setupManualPage(){
 		ManualInstance man=ManualHelper.getManual();
 		
-		InnerNode<ResourceLocation, ManualEntry> cat=man.getRoot().getOrCreateSubnode(modLoc("main"), 1);
+		InnerNode<ResourceLocation, ManualEntry> cat=man.getRoot().getOrCreateSubnode(modLoc("main"), 100);
 		
 		man.addEntry(cat, modLoc("postbase"), 0);
 		man.addEntry(cat, modLoc("usage"), 1);
@@ -46,7 +46,7 @@ public class ClientProxy extends CommonProxy{
 			
 			ManualEntry.ManualEntryBuilder builder=new ManualEntry.ManualEntryBuilder(man);
 			builder.addSpecialElement("index0", 0, new ManualElementTable(man, index0, false));
-			builder.addSpecialElement("index1", 1, new ManualElementTable(man, index1, false));
+			builder.addSpecialElement("index1", 0, new ManualElementTable(man, index1, false));
 			builder.readFromFile(modLoc("posts"));
 			man.addEntry(cat, builder.create(), 2);
 		}
