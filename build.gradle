@@ -42,7 +42,7 @@ minecraft {
 			workingDirectory project.file('run')
 			property 'forge.logging.markers', ''
 			property 'forge.logging.console.level', 'info'
-            property 'fml.earlyprogresswindow', 'false'
+			property 'fml.earlyprogresswindow', 'false'
 			mods {
 				immersiveposts {
 					source sourceSets.main
@@ -53,7 +53,7 @@ minecraft {
 			workingDirectory project.file('run')
 			property 'forge.logging.markers', ''
 			property 'forge.logging.console.level', 'info'
-            property 'fml.earlyprogresswindow', 'false'
+			property 'fml.earlyprogresswindow', 'false'
 			mods {
 				immersiveposts {
 					source sourceSets.main
@@ -64,7 +64,7 @@ minecraft {
 			workingDirectory project.file('run')
 			property 'forge.logging.markers', ''
 			property 'forge.logging.console.level', 'info'
-            property 'fml.earlyprogresswindow', 'false'
+			property 'fml.earlyprogresswindow', 'false'
 			args '--mod', 'immersiveposts', '--all', '--output', file('src/generated/resources/'), '--validate', '--existing', sourceSets.main.resources.srcDirs[0], '--existing', 'C:/Users/TwistedGate/.gradle/caches/forge_gradle/deobf_dependencies/blusunrize/immersiveengineering/ImmersiveEngineering/0.14-95-190fba3c_mapped_snapshot_20190719-1.14.3/ImmersiveEngineering-0.14-95-190fba3c_mapped_snapshot_20190719-1.14.3.jar'
 			mods {
 				immersiveposts {
