@@ -54,8 +54,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "north",
-        "flipstate": "up"
+        "flipstate": "up",
+        "facing": "north"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm"
@@ -73,8 +73,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "east",
-        "flipstate": "up"
+        "flipstate": "up",
+        "facing": "east"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm",
@@ -94,8 +94,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "south",
-        "flipstate": "up"
+        "flipstate": "up",
+        "facing": "south"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm",
@@ -115,8 +115,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "west",
-        "flipstate": "up"
+        "flipstate": "up",
+        "facing": "west"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm",
@@ -136,8 +136,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "north",
-        "flipstate": "down"
+        "flipstate": "down",
+        "facing": "north"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm",
@@ -148,8 +148,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "east",
-        "flipstate": "down"
+        "flipstate": "down",
+        "facing": "east"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm",
@@ -160,8 +160,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "south",
-        "flipstate": "down"
+        "flipstate": "down",
+        "facing": "south"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm",
@@ -171,8 +171,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "west",
-        "flipstate": "down"
+        "flipstate": "down",
+        "facing": "west"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm",
@@ -183,8 +183,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "north",
-        "flipstate": "both"
+        "flipstate": "both",
+        "facing": "north"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm_twoway"
@@ -193,8 +193,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "east",
-        "flipstate": "both"
+        "flipstate": "both",
+        "facing": "east"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm_twoway",
@@ -204,8 +204,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "south",
-        "flipstate": "both"
+        "flipstate": "both",
+        "facing": "south"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm_twoway",
@@ -215,8 +215,8 @@
     {
       "when": {
         "type": "arm",
-        "facing": "west",
-        "flipstate": "both"
+        "flipstate": "both",
+        "facing": "west"
       },
       "apply": {
         "model": "immersiveposts:ironpost/arm_twoway",
