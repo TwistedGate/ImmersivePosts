@@ -1,21 +1,23 @@
 {
 	"homepage":"https://minecraft.curseforge.com/projects/immersiveposts",
 	"promos":{
-		"1.15.2-latest": "2.0.0",
-		"1.15.2-recommended": "2.0.0",
-		"1.14.4-latest": "1.1.0",
-		"1.14.4-recommended": "1.1.0",
+		"1.15.2-latest": "2.1.0",
+		"1.15.2-recommended": "2.2.0",
+		"1.14.4-latest": "1.2.0",
+		"1.14.4-recommended": "1.2.0",
 		"1.12.2-latest": "0.2.1",
 		"1.12.2-recommended": "0.2.1"
 	},
 	"1.15.2":{
-		"2.0.0":"Minimum Forge version: 1.15.2-31.2.0\nMinimum IE version: 0.15-103\nInitial 1.15.2 Port"
+		"2.1.0":"[A] Config for removing unwanted posts. (Disables recipes and prevents them from being constructed in-world)\n[F] Ghost page between index tables in the manual.",
+		"2.0.0":"Minimum Forge version: 1.15.2-31.2.0\nMinimum IE version: 0.15-103\n\nInitial 1.15.2 Port"
 	},
 	"1.14.4":{
+		"1.2.0":"[A] Config for removing unwanted posts. (Disables recipes and prevents them from being constructed in-world)\n[F] Ghost page between index tables in the manual.",
 		"1.1.0":"[C] 1-Block Arms can both Face Up & Down at the same time now.\n\nThis *may* break existing 1-Block Arms and will break 2-Block Arms thus a world-backup is recommended befor updating!",
 		"1.0.1":"Minimum IE Version: 0.14-95\n\n[F] Posts and Postbase being washed away by Fluids.\n[F] Lighting bug.\n[F] Postbase not dropping itself.",
 		"1.0.0-rev1_ie94":"Same as 1.0.0-rev1, just for IE 0.14-94. Since 95 was not officialy released at the time.",
-		"1.0.0-rev1":"Minimum IE version: 0.14-95\n\n\n[F] Forgot to add the Generated Data",
+		"1.0.0-rev1":"Minimum IE version: 0.14-95\n\n[F] Forgot to add the Generated Data",
 		"1.0.0":"Minimum Forge version: 1.14.4-28.2.3\nFirst release for 1.14.4\n\n[R] Config for removing unwanted post types. (No point doing it)"
 	},
 	"1.12.2":{
