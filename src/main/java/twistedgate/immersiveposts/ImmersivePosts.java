@@ -36,7 +36,7 @@ public class ImmersivePosts{
 	public static CommonProxy proxy=DistExecutor.runForDist(()->ClientProxy::new, ()->CommonProxy::new);
 	
 	public ImmersivePosts(){
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IPOConfig.ALL); // TODO After initial 1.15.2 port
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IPOConfig.ALL);
 		
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::violation);
