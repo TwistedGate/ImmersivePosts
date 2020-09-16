@@ -21,6 +21,7 @@ archivesBaseName = "immersiveposts-${version_minecraft}"
 
 repositories {
 	maven {	name = "BlameJared"; url = "https://maven.blamejared.com/" } // IE files
+	maven { url 'https://www.dogforce-games.com/maven/' }                // gigaherz maven for 1.16.2 mappings
 }
 
 sourceSets {
@@ -76,7 +77,7 @@ minecraft {
 }
 
 dependencies {
-	minecraft "net.minecraftforge:forge:${version_forge_minecraft}"
+	minecraft "net.minecraftforge:forge:${version_minecraft}-${version_forge}"
 	compile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}")
 }
 
