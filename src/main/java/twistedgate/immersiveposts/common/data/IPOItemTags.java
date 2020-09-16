@@ -1,5 +1,6 @@
 package twistedgate.immersiveposts.common.data;
 
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import twistedgate.immersiveposts.IPOStuff;
@@ -9,13 +10,15 @@ import twistedgate.immersiveposts.IPOTags;
  * @author TwistedGate
  */
 public class IPOItemTags extends ItemTagsProvider{
-	public IPOItemTags(DataGenerator generatorIn){
-		super(generatorIn);
+	
+	@SuppressWarnings("deprecation")
+	public IPOItemTags(DataGenerator generatorIn, BlockTagsProvider exhelper){
+		super(generatorIn, exhelper);
 	}
 	
 	@Override
 	protected void registerTags(){
-		getBuilder(IPOTags.Rods.ALL)
+		getOrCreateBuilder(IPOTags.Rods.ALL)
 			.add(IPOStuff.rod_Gold)
 			.add(IPOStuff.rod_Copper)
 			.add(IPOStuff.rod_Lead)
@@ -25,28 +28,28 @@ public class IPOItemTags extends ItemTagsProvider{
 			.add(IPOStuff.rod_Electrum)
 			.add(IPOStuff.rod_Uranium);
 		
-		getBuilder(IPOTags.Rods.GOLD)
+		getOrCreateBuilder(IPOTags.Rods.GOLD)
 			.add(IPOStuff.rod_Gold);
 		
-		getBuilder(IPOTags.Rods.COPPER)
+		getOrCreateBuilder(IPOTags.Rods.COPPER)
 			.add(IPOStuff.rod_Copper);
 		
-		getBuilder(IPOTags.Rods.LEAD)
+		getOrCreateBuilder(IPOTags.Rods.LEAD)
 			.add(IPOStuff.rod_Lead);
 		
-		getBuilder(IPOTags.Rods.SILVER)
+		getOrCreateBuilder(IPOTags.Rods.SILVER)
 			.add(IPOStuff.rod_Silver);
 		
-		getBuilder(IPOTags.Rods.NICKEL)
+		getOrCreateBuilder(IPOTags.Rods.NICKEL)
 			.add(IPOStuff.rod_Nickel);
 		
-		getBuilder(IPOTags.Rods.CONSTANTAN)
+		getOrCreateBuilder(IPOTags.Rods.CONSTANTAN)
 			.add(IPOStuff.rod_Constantan);
 		
-		getBuilder(IPOTags.Rods.ELECTRUM)
+		getOrCreateBuilder(IPOTags.Rods.ELECTRUM)
 			.add(IPOStuff.rod_Electrum);
 		
-		getBuilder(IPOTags.Rods.URANIUM)
+		getOrCreateBuilder(IPOTags.Rods.URANIUM)
 			.add(IPOStuff.rod_Uranium);
 	}
 }

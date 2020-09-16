@@ -52,3 +52,5 @@ desktop.ini
 *.launch
 *.log
 *.tmp
+/bin/
+/libs/

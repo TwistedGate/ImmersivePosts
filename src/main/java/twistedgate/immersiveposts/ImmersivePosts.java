@@ -33,7 +33,7 @@ public class ImmersivePosts{
 	};
 	public static final Logger log=LogManager.getLogger(IPOMod.ID);
 	
-	public static CommonProxy proxy=DistExecutor.runForDist(()->ClientProxy::new, ()->CommonProxy::new);
+	public static CommonProxy proxy=DistExecutor.unsafeRunForDist(()->ClientProxy::new, ()->CommonProxy::new);
 	
 	public ImmersivePosts(){
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IPOConfig.ALL);

@@ -6,13 +6,15 @@ import twistedgate.immersiveposts.IPOStuff;
 import twistedgate.immersiveposts.IPOTags;
 
 public class IPOBlockTags extends BlockTagsProvider{
+	
+	@SuppressWarnings("deprecation")
 	public IPOBlockTags(DataGenerator generatorIn){
 		super(generatorIn);
 	}
 	
 	@Override
 	protected void registerTags(){
-		getBuilder(IPOTags.Fences.ALL)
+		getOrCreateBuilder(IPOTags.Fences.ALL)
 			.add(IPOStuff.fence_Iron)
 			.add(IPOStuff.fence_Gold)
 			.add(IPOStuff.fence_Copper)

@@ -13,8 +13,8 @@ import net.minecraft.data.RecipeProvider;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -59,9 +59,9 @@ public class IPORecipes extends RecipeProvider{
 	}
 	
 	/** Creates both a recipe for fences and the stick needed */
-	private void fenceAndStickRecipe(FenceBlock fence, Item rod, Tag<Item> stickTag, Tag<Item> ingotTag){
-		String stickMat=getMaterialName(stickTag.getId()); // Stick Material
-		String ingotMat=getMaterialName(ingotTag.getId()); // Ingot Material
+	private void fenceAndStickRecipe(FenceBlock fence, Item rod, ITag.INamedTag<Item> stickTag, ITag.INamedTag<Item> ingotTag){
+		String stickMat=getMaterialName(stickTag.getName()); // Stick Material
+		String ingotMat=getMaterialName(ingotTag.getName()); // Ingot Material
 		
 		if(fence!=IPOStuff.fence_Iron)
 			ShapedRecipeBuilder.shapedRecipe(rod, 4)

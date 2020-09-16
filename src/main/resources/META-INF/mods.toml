@@ -1,6 +1,7 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[25,)"
 issueTrackerURL="https://github.com/TwistedGate/ImmersivePosts/issues"
+license="TwistedGate's License of Common Sense (A modified copy of \"Blu's License of Common Sense\")"
 
 [[mods]]
 displayName="Immersive Posts"
@@ -16,20 +17,20 @@ description="Simply adds a way to have extendable posts. With a few post types t
 [[dependencies.immersiveengineering]]
 	modId="immersiveengineering"
 	mandatory=true
-	versionRange="[0.15-103,)"
+	versionRange="[1.16.3-4.0.0-pre.51,)"
 	ordering="BEFOR"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="forge"
 	mandatory=true
-	versionRange="[31.2.0,)"
+	versionRange="[34.0.2,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="minecraft"
 	mandatory=true
-	versionRange="[1.15.2]"
+	versionRange="[1.16.3]"
 	ordering="NONE"
 	side="BOTH"

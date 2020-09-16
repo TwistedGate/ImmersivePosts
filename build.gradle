@@ -66,7 +66,7 @@ minecraft {
 			property 'forge.logging.markers', ''
 			property 'forge.logging.console.level', 'info'
 			property 'fml.earlyprogresswindow', 'false'
-			args '--mod', 'immersiveposts', '--all', '--output', file('src/generated/resources/'), '--validate', '--existing', sourceSets.main.resources.srcDirs[0], '--existing', 'C:/Users/TwistedGate/.gradle/caches/forge_gradle/deobf_dependencies/blusunrize/immersiveengineering/ImmersiveEngineering/0.15-103-40a7f41c_mapped_snapshot_20200514-1.15.1/ImmersiveEngineering-0.15-103-40a7f41c_mapped_snapshot_20200514-1.15.1.jar'
+			args '--mod', 'immersiveposts', '--all', '--output', file('src/generated/resources/'), '--validate', '--existing', sourceSets.main.resources.srcDirs[0], '--existing', 'C:/Users/TwistedGate/.gradle/caches/forge_gradle/deobf_dependencies/blusunrize/immersiveengineering/ImmersiveEngineering/1.16.3-4.0.0-pre.51_mapped_snapshot_20200912-1.16.2/ImmersiveEngineering-1.16.3-4.0.0-pre.51_mapped_snapshot_20200912-1.16.2.jar'
 			mods {
 				immersiveposts {
 					source sourceSets.main

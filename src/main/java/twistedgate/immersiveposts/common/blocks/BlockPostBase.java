@@ -17,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -25,13 +26,14 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext.Builder;
+import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -47,7 +49,7 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  */
 public class BlockPostBase extends IPOBlockBase{
 	private static final VoxelShape BASE_SIZE=VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
-	private static final Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, false, PushReaction.BLOCK);
+	private static final Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
 	
 	public BlockPostBase(){
 		super("postbase", Properties.create(BaseMaterial)
@@ -63,7 +65,7 @@ public class BlockPostBase extends IPOBlockBase{
 	}
 	
 	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder){
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder){
 		return Arrays.asList(new ItemStack(this, 1));
 	}
 	
@@ -91,7 +93,7 @@ public class BlockPostBase extends IPOBlockBase{
 					}
 				}
 				
-				for(int y=1;y<(worldIn.getActualHeight()-pos.getY());y++){
+				for(int y=1;y<(worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ())-pos.getY());y++){
 					BlockPos nPos=pos.add(0,y,0);
 					
 					if((getBlockFrom(worldIn, nPos) instanceof BlockPost)){
@@ -145,14 +147,15 @@ public class BlockPostBase extends IPOBlockBase{
 		public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn){
 			if(isPressing(GLFW.GLFW_KEY_LEFT_SHIFT) || isPressing(GLFW.GLFW_KEY_RIGHT_SHIFT)){
 				for(EnumPostMaterial t:EnumPostMaterial.values()){
-					ITextComponent typeName=new StringTextComponent(t.getItemStack().getDisplayName().getFormattedText());
+					IFormattableTextComponent typeName=new StringTextComponent("");
+					typeName.append(t.getItemStack().getDisplayName());
 					
 					if(IPOConfig.MAIN.isEnabled(t))
-						typeName.applyTextStyle(TextFormatting.GREEN);
+						typeName.mergeStyle(TextFormatting.GREEN);
 					else
-						typeName.applyTextStyles(TextFormatting.RED, TextFormatting.STRIKETHROUGH);
+						typeName.mergeStyle(TextFormatting.RED, TextFormatting.STRIKETHROUGH);
 					
-					tooltip.add(new StringTextComponent("- ").appendSibling(typeName));
+					tooltip.add(new StringTextComponent("- ").append(typeName));
 				}
 			}else{
 				tooltip.add(new StringTextComponent(I18n.format("tooltip.postbase")));

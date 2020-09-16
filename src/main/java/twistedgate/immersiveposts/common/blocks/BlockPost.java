@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.MapCodec;
 
 import blusunrize.immersiveengineering.api.IPostBlock;
 import blusunrize.immersiveengineering.common.util.Utils;
@@ -18,11 +19,12 @@ import net.minecraft.block.FourWayBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -42,7 +44,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext.Builder;
+import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twistedgate.immersiveposts.enums.EnumFlipState;
@@ -79,7 +81,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	protected final EnumPostMaterial postMaterial;
 	private StateContainer<Block, BlockState> altStateContainer=null;
 	public BlockPost(EnumPostMaterial postMaterial){
-		super(postMaterial.getName(), postMaterial.getProperties());
+		super(postMaterial.getString(), postMaterial.getProperties());
 		this.postMaterial=postMaterial;
 		
 		setDefaultState(getStateContainer().getBaseState()
@@ -106,7 +108,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
 					);
 			
-			this.altStateContainer=builder.create(PostState::new); // There has to be a better way for this
+			this.altStateContainer=builder.func_235882_a_(Block::getDefaultState, PostState::new); // There has to be a better way for this
 		}
 		
 		return this.altStateContainer;
@@ -128,12 +130,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	}
 	
 	@Override
-	public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos){
-		return null;
-	}
-	
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder){
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder){
 		if(state.get(TYPE).id()<2)
 			return Arrays.asList(this.postMaterial.getItemStack());
 		
@@ -173,7 +170,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 					return ActionResultType.SUCCESS;
 				}
 				
-				for(int y=0;y<(worldIn.getActualHeight()-pos.getY());y++){
+				for(int y=0;y<(worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ())-pos.getY());y++){
 					BlockPos nPos=pos.add(0,y,0);
 					
 					if(getBlockFrom(worldIn, nPos) instanceof BlockPost){
@@ -320,8 +317,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock{
 	}
 	
 	public static class PostState extends BlockState{
-		public PostState(Block blockIn, ImmutableMap<IProperty<?>, Comparable<?>> properties){
-			super(blockIn, properties);
+		public PostState(Block block, ImmutableMap<Property<?>, Comparable<?>> propertiesToValueMap, MapCodec<BlockState> codec){
+			super(block, propertiesToValueMap, codec);
 		}
 		
 		@Override

@@ -86,14 +86,13 @@ public enum EnumPostMaterial implements IStringSerializable{
 	}
 	
 	@Override
-	public String getName(){
+	public String getString(){
 		return this.name;
 	}
 	
-	
-	private static final Material WOOD_LIKE	=new Material(MaterialColor.WOOD, false, true, true, true, true, false, false, PushReaction.BLOCK);
-	private static final Material STONE_LIKE=new Material(MaterialColor.STONE, false, true, true, true, false, false, false, PushReaction.BLOCK);
-	private static final Material METAL_LIKE=new Material(MaterialColor.IRON, false, true, true, true, false, false, false, PushReaction.BLOCK);
+	private static final Material WOOD_LIKE	=new Material(MaterialColor.WOOD, false, true, true, true, false, false, PushReaction.BLOCK);
+	private static final Material STONE_LIKE=new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
+	private static final Material METAL_LIKE=new Material(MaterialColor.IRON, false, true, true, true, false, false, PushReaction.BLOCK);
 	
 	public Block.Properties getProperties(){
 		if(this.props==null) this.props=blockPropertiesFrom(this);
@@ -113,7 +112,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 				prop=Block.Properties.create(METAL_LIKE).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(3.0F, 15.0F);
 		}
 		
-		prop.lightValue(postMaterial==EnumPostMaterial.URANIUM?8:0);
+		prop.setLightLevel(s->postMaterial==EnumPostMaterial.URANIUM?8:0);
 		
 		return prop;
 	}
