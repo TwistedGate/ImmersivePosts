@@ -20,7 +20,8 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
+import twistedgate.immersiveposts.IPOContent.Items;
 import twistedgate.immersiveposts.IPOTags;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer.IPOConfigCondition;
 
@@ -37,7 +38,7 @@ public class IPORecipes extends RecipeProvider{
 	protected void registerRecipes(Consumer<IFinishedRecipe> out){
 		this.out=out;
 		
-		ShapedRecipeBuilder.shapedRecipe(IPOStuff.post_Base, 6)
+		ShapedRecipeBuilder.shapedRecipe(twistedgate.immersiveposts.IPOContent.Blocks.post_Base, 6)
 			.key('w', Tags.Items.COBBLESTONE)
 			.key('s', Blocks.STONE_BRICKS)
 			.patternLine("s s")
@@ -47,15 +48,15 @@ public class IPORecipes extends RecipeProvider{
 			.addCriterion("has_stone_bricks", hasItem(ItemTags.STONE_BRICKS))
 			.build(out);
 		
-		fenceAndStickRecipe(IPOStuff.fence_Iron, null, IPOTags.Rods.IRON, IPOTags.Ingots.IRON);
-		fenceAndStickRecipe(IPOStuff.fence_Gold, IPOStuff.rod_Gold, IPOTags.Rods.GOLD, IPOTags.Ingots.GOLD);
-		fenceAndStickRecipe(IPOStuff.fence_Copper, IPOStuff.rod_Copper, IPOTags.Rods.COPPER, IPOTags.Ingots.COPPER);
-		fenceAndStickRecipe(IPOStuff.fence_Lead, IPOStuff.rod_Lead, IPOTags.Rods.LEAD, IPOTags.Ingots.LEAD);
-		fenceAndStickRecipe(IPOStuff.fence_Silver, IPOStuff.rod_Silver, IPOTags.Rods.SILVER, IPOTags.Ingots.SILVER);
-		fenceAndStickRecipe(IPOStuff.fence_Nickel, IPOStuff.rod_Nickel, IPOTags.Rods.NICKEL, IPOTags.Ingots.NICKEL);
-		fenceAndStickRecipe(IPOStuff.fence_Constantan, IPOStuff.rod_Constantan, IPOTags.Rods.CONSTANTAN, IPOTags.Ingots.CONSTANTAN);
-		fenceAndStickRecipe(IPOStuff.fence_Electrum, IPOStuff.rod_Electrum, IPOTags.Rods.ELECTRUM, IPOTags.Ingots.ELECTRUM);
-		fenceAndStickRecipe(IPOStuff.fence_Uranium, IPOStuff.rod_Uranium, IPOTags.Rods.URANIUM, IPOTags.Ingots.URANIUM);
+		fenceAndStickRecipe(Fences.iron, null, IPOTags.Rods.IRON, IPOTags.Ingots.IRON);
+		fenceAndStickRecipe(Fences.gold, Items.rod_Gold, IPOTags.Rods.GOLD, IPOTags.Ingots.GOLD);
+		fenceAndStickRecipe(Fences.copper, Items.rod_Copper, IPOTags.Rods.COPPER, IPOTags.Ingots.COPPER);
+		fenceAndStickRecipe(Fences.lead, Items.rod_Lead, IPOTags.Rods.LEAD, IPOTags.Ingots.LEAD);
+		fenceAndStickRecipe(Fences.silver, Items.rod_Silver, IPOTags.Rods.SILVER, IPOTags.Ingots.SILVER);
+		fenceAndStickRecipe(Fences.nickel, Items.rod_Nickel, IPOTags.Rods.NICKEL, IPOTags.Ingots.NICKEL);
+		fenceAndStickRecipe(Fences.constantan, Items.rod_Constantan, IPOTags.Rods.CONSTANTAN, IPOTags.Ingots.CONSTANTAN);
+		fenceAndStickRecipe(Fences.electrum, Items.rod_Electrum, IPOTags.Rods.ELECTRUM, IPOTags.Ingots.ELECTRUM);
+		fenceAndStickRecipe(Fences.uranium, Items.rod_Uranium, IPOTags.Rods.URANIUM, IPOTags.Ingots.URANIUM);
 	}
 	
 	/** Creates both a recipe for fences and the stick needed */
@@ -63,7 +64,7 @@ public class IPORecipes extends RecipeProvider{
 		String stickMat=getMaterialName(stickTag.getId()); // Stick Material
 		String ingotMat=getMaterialName(ingotTag.getId()); // Ingot Material
 		
-		if(fence!=IPOStuff.fence_Iron)
+		if(fence!=Fences.iron)
 			ShapedRecipeBuilder.shapedRecipe(rod, 4)
 				.patternLine("i")
 				.patternLine("i")

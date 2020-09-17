@@ -13,7 +13,9 @@ import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.IPOContent;
+import twistedgate.immersiveposts.IPOContent.Blocks;
+import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostType;
@@ -39,24 +41,24 @@ public class IPOBlockStates extends BlockStateProvider{
 	@Override
 	protected void registerStatesAndModels(){
 		ExistingModelFile postBase=new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper);
-		getVariantBuilder(IPOStuff.post_Base).partialState()
+		getVariantBuilder(Blocks.post_Base).partialState()
 			.setModels(new ConfiguredModel(postBase));
 		
 		//getBuilder(IPOMod.ID+":item/postbase").parent(postBase); // Might aswell generate item model for it too
 		
-		for(Block block:IPOStuff.BLOCKS)
+		for(Block block:IPOContent.BLOCKS)
 			if(block instanceof BlockPost)
 				postStateFor((BlockPost)block);
 		
-		fence(IPOStuff.fence_Iron,		"fence/iron",		mcLoc("block/iron_block"));
-		fence(IPOStuff.fence_Gold,		"fence/gold",		mcLoc("block/gold_block"));
-		fence(IPOStuff.fence_Copper,	"fence/copper",		ieLoc("block/metal/storage_copper"));
-		fence(IPOStuff.fence_Lead,		"fence/lead",		ieLoc("block/metal/storage_lead"));
-		fence(IPOStuff.fence_Silver,	"fence/silver",		ieLoc("block/metal/storage_silver"));
-		fence(IPOStuff.fence_Nickel,	"fence/nickel",		ieLoc("block/metal/storage_nickel"));
-		fence(IPOStuff.fence_Constantan,"fence/constantan",	ieLoc("block/metal/storage_constantan"));
-		fence(IPOStuff.fence_Electrum,	"fence/electrum",	ieLoc("block/metal/storage_electrum"));
-		fence(IPOStuff.fence_Uranium,	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
+		fence(Fences.iron,		"fence/iron",		mcLoc("block/iron_block"));
+		fence(Fences.gold,		"fence/gold",		mcLoc("block/gold_block"));
+		fence(Fences.copper,	"fence/copper",		ieLoc("block/metal/storage_copper"));
+		fence(Fences.lead,		"fence/lead",		ieLoc("block/metal/storage_lead"));
+		fence(Fences.silver,	"fence/silver",		ieLoc("block/metal/storage_silver"));
+		fence(Fences.nickel,	"fence/nickel",		ieLoc("block/metal/storage_nickel"));
+		fence(Fences.constantan,"fence/constantan",	ieLoc("block/metal/storage_constantan"));
+		fence(Fences.electrum,	"fence/electrum",	ieLoc("block/metal/storage_electrum"));
+		fence(Fences.uranium,	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 		
 		loadedModels.backupModels();
 	}

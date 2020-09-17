@@ -28,7 +28,7 @@ public class ImmersivePosts{
 	public static final ItemGroup creativeTab=new ItemGroup(IPOMod.ID){
 		@Override
 		public ItemStack createIcon(){
-			return new ItemStack(IPOStuff.post_Base==null?Items.BARRIER:IPOStuff.post_Base);
+			return new ItemStack(IPOContent.Blocks.post_Base==null?Items.BARRIER:IPOContent.Blocks.post_Base);
 		}
 	};
 	public static final Logger log=LogManager.getLogger(IPOMod.ID);
@@ -44,7 +44,7 @@ public class ImmersivePosts{
 		
 		CraftingHelper.register(new IPOConfigConditionSerializer());
 		
-		IPOStuff.populate();
+		IPOContent.populate();
 		
 		proxy.construct();
 	}

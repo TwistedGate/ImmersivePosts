@@ -7,7 +7,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.ImmersivePosts;
 
 /**
@@ -18,7 +18,7 @@ public class IPOItemBase extends Item{
 		super(new Item.Properties().group(ImmersivePosts.creativeTab));
 		setRegistryName(new ResourceLocation(IPOMod.ID, name));
 		
-		IPOStuff.ITEMS.add(this);
+		IPOContent.ITEMS.add(this);
 	}
 	
 	@Override

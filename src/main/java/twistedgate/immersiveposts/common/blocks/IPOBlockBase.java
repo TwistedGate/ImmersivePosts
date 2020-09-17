@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.IPOContent;
 
 /**
  * @author TwistedGate
@@ -19,7 +19,7 @@ public class IPOBlockBase extends Block{
 		
 		setRegistryName(new ResourceLocation(IPOMod.ID, name));
 		
-		IPOStuff.BLOCKS.add(this);
+		IPOContent.BLOCKS.add(this);
 	}
 	
 	@Override

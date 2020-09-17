@@ -17,7 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
 import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
+import twistedgate.immersiveposts.IPOContent.Blocks.Posts;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 
 /**
@@ -32,15 +33,15 @@ public enum EnumPostMaterial implements IStringSerializable{
 	
 	// Custom
 	NETHERBRICK("netherpost", Blocks.NETHER_BRICK_FENCE),
-	IRON("ironpost", IPOStuff.fence_Iron),
-	GOLD("goldpost", IPOStuff.fence_Gold),
-	COPPER("copperpost", IPOStuff.fence_Copper),
-	LEAD("leadpost", IPOStuff.fence_Lead),
-	SILVER("silverpost", IPOStuff.fence_Silver),
-	NICKEL("nickelpost", IPOStuff.fence_Nickel),
-	CONSTANTAN("constantanpost", IPOStuff.fence_Constantan),
-	ELECTRUM("electrumpost", IPOStuff.fence_Electrum),
-	URANIUM("uraniumpost", IPOStuff.fence_Uranium),
+	IRON("ironpost", Fences.iron),
+	GOLD("goldpost", Fences.gold),
+	COPPER("copperpost", Fences.copper),
+	LEAD("leadpost", Fences.lead),
+	SILVER("silverpost", Fences.silver),
+	NICKEL("nickelpost", Fences.nickel),
+	CONSTANTAN("constantanpost", Fences.constantan),
+	ELECTRUM("electrumpost", Fences.electrum),
+	URANIUM("uraniumpost", Fences.uranium),
 	CONCRETE("concretepost", ()->{return IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concrete);}),
 	CONCRETE_LEADED("leadedconcretepost", ()->{return IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concreteLeaded);})
 	;
@@ -63,7 +64,8 @@ public enum EnumPostMaterial implements IStringSerializable{
 	
 	/** Source-block itemstack */
 	public ItemStack getItemStack(){
-		return new ItemStack(getBlock(), 1);
+		Block block=getBlock();
+		return block == null ? ItemStack.EMPTY : new ItemStack(block);
 	}
 	
 	/** The texture for this material type */
@@ -71,11 +73,11 @@ public enum EnumPostMaterial implements IStringSerializable{
 		return new ResourceLocation(IPOMod.ID, "block/posts/post_"+this.toString().toLowerCase());
 	}
 	
-	/** Source-block*/
+	/** Source-block */
 	public Block getBlock(){
 		if(this.block==null){
 			this.block=this.supplier.get();
-			this.isFence=(this.block instanceof FenceBlock);
+			this.isFence=(this.block!=null && this.block instanceof FenceBlock);
 		}
 		return this.block;
 	}
@@ -121,29 +123,30 @@ public enum EnumPostMaterial implements IStringSerializable{
 	public static BlockState getPostStateFrom(ItemStack stack){
 		Block block=null;
 		switch(getFrom(stack)){
-			case ALUMINIUM:		 block=IPOStuff.post_Aluminium;break;
-			case CONSTANTAN:	 block=IPOStuff.post_Constantan;break;
-			case COPPER:		 block=IPOStuff.post_Copper;break;
-			case ELECTRUM:		 block=IPOStuff.post_Electrum;break;
-			case GOLD:			 block=IPOStuff.post_Gold;break;
-			case IRON:			 block=IPOStuff.post_Iron;break;
-			case LEAD:			 block=IPOStuff.post_Lead;break;
-			case NETHERBRICK:	 block=IPOStuff.post_Nether;break;
-			case NICKEL:		 block=IPOStuff.post_Nickel;break;
-			case SILVER:		 block=IPOStuff.post_Silver;break;
-			case STEEL:			 block=IPOStuff.post_Steel;break;
-			case URANIUM:		 block=IPOStuff.post_Uranium;break;
-			case WOOD:			 block=IPOStuff.post_Wood;break;
-			case CONCRETE:		 block=IPOStuff.post_Concrete;break;
-			case CONCRETE_LEADED:block=IPOStuff.post_ConcreteLeaded;break;
+			case ALUMINIUM:		 block=Posts.aluminium;break;
+			case CONSTANTAN:	 block=Posts.constantan;break;
+			case COPPER:		 block=Posts.copper;break;
+			case ELECTRUM:		 block=Posts.electrum;break;
+			case GOLD:			 block=Posts.gold;break;
+			case IRON:			 block=Posts.iron;break;
+			case LEAD:			 block=Posts.lead;break;
+			case NETHERBRICK:	 block=Posts.nether;break;
+			case NICKEL:		 block=Posts.nickel;break;
+			case SILVER:		 block=Posts.silver;break;
+			case STEEL:			 block=Posts.steel;break;
+			case URANIUM:		 block=Posts.uranium;break;
+			case WOOD:			 block=Posts.wood;break;
+			case CONCRETE:		 block=Posts.concrete;break;
+			case CONCRETE_LEADED:block=Posts.concrete_leaded;break;
 		}
 		
 		return block!=null?block.getDefaultState().with(BlockPost.TYPE, EnumPostType.POST_TOP):null;
 	}
 	
 	public static EnumPostMaterial getFrom(ItemStack stack){
-		for(EnumPostMaterial mat:values())
+		for(EnumPostMaterial mat:values()){
 			if(stack.isItemEqual(mat.getItemStack())) return mat;
+		}
 		
 		return null;
 	}
@@ -151,8 +154,11 @@ public enum EnumPostMaterial implements IStringSerializable{
 	public static boolean isValidItem(ItemStack stack){
 		if(stack==null || stack.isEmpty()) return false;
 		
-		for(EnumPostMaterial mat:values())
-			if(stack.isItemEqual(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)) return true;
+		for(EnumPostMaterial mat:values()){
+			if(mat.getItemStack()!=ItemStack.EMPTY && stack.isItemEqual(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)){
+				return true;
+			}
+		}
 		
 		return false;
 	}

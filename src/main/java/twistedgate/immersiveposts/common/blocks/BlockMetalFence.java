@@ -11,7 +11,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.ImmersivePosts;
 
 /**
@@ -24,8 +24,8 @@ public class BlockMetalFence extends FenceBlock{
 		super(DEFAULT_PROP);
 		setRegistryName(new ResourceLocation(IPOMod.ID, "fence_"+materialName));
 		
-		IPOStuff.BLOCKS.add(this);
-		IPOStuff.ITEMS.add(new BlockItem(this, new Item.Properties().group(ImmersivePosts.creativeTab)).setRegistryName(this.getRegistryName()));
+		IPOContent.BLOCKS.add(this);
+		IPOContent.ITEMS.add(new BlockItem(this, new Item.Properties().group(ImmersivePosts.creativeTab)).setRegistryName(this.getRegistryName()));
 	}
 	
 	@Override
