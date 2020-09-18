@@ -41,7 +41,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext.Builder;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -114,11 +115,6 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder){
 		return Arrays.asList(new ItemStack(this, 1));
-	}
-	
-	@Override
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side){
-		return false;
 	}
 	
 	@Override

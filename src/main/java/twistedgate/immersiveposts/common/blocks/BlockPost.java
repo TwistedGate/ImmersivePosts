@@ -49,7 +49,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext.Builder;
+import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twistedgate.immersiveposts.enums.EnumFlipState;
@@ -164,7 +164,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 	}
 	
 	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder){
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder){
 		if(state.get(TYPE).id()<2)
 			return Arrays.asList(this.postMaterial.getItemStack());
 		
@@ -246,21 +246,22 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 						switch(facing){
 							case NORTH:case EAST:case SOUTH:case WEST:{
 								BlockPos nPos=pos.offset(facing);
-								if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
+								BlockState nState=worldIn.getBlockState(nPos);
+								
+								if(nState.isAir(worldIn, nPos) || nState.getBlock()==Blocks.WATER){
 									defaultState=defaultState.with(FACING, facing)
-											.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
+											.with(WATERLOGGED, nState.getBlock()==Blocks.WATER);
 									
 									worldIn.setBlockState(nPos, defaultState);
 									defaultState.neighborChanged(worldIn, nPos, this, null, false);
 								}else if(getBlockFrom(worldIn, nPos)==this){
-									BlockState st=worldIn.getBlockState(nPos);
-									switch(st.get(TYPE)){
+									switch(nState.get(TYPE)){
 										case ARM:{
-											worldIn.setBlockState(nPos, st.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
+											worldIn.setBlockState(nPos, nState.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
 											return ActionResultType.SUCCESS;
 										}
 										case EMPTY:{
-											worldIn.setBlockState(nPos, st.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
+											worldIn.setBlockState(nPos, nState.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
 											return ActionResultType.SUCCESS;
 										}
 										default:break;
@@ -296,8 +297,9 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 			}
 		}
 		
-		if(Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isValidItem(playerIn.getHeldItemMainhand()))
+		if(Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isValidItem(playerIn.getHeldItemMainhand())){
 			return ActionResultType.SUCCESS;
+		}
 		
 		return ActionResultType.FAIL;
 	}

@@ -16,9 +16,9 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
 import twistedgate.immersiveposts.IPOConfig;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.IPOContent.Blocks.Posts;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 
 /**

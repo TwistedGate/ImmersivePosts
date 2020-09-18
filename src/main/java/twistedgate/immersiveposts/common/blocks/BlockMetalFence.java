@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.IPOConfig;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOContent;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.ImmersivePosts;
 
 /**
