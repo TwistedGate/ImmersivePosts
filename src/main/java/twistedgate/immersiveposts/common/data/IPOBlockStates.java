@@ -7,16 +7,16 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.IPOContent.Blocks;
 import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
+import twistedgate.immersiveposts.common.blocks.BlockPostBase;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
@@ -41,10 +41,15 @@ public class IPOBlockStates extends BlockStateProvider{
 	@Override
 	protected void registerStatesAndModels(){
 		ExistingModelFile postBase=new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper);
-		getVariantBuilder(Blocks.post_Base).partialState()
-			.setModels(new ConfiguredModel(postBase));
+		MultiPartBlockStateBuilder baseBuilder=getMultipartBuilder(Blocks.post_Base);
 		
-		//getBuilder(IPOMod.ID+":item/postbase").parent(postBase); // Might aswell generate item model for it too
+		baseBuilder.part()
+			.modelFile(postBase).addModel()
+			.condition(BlockPostBase.HIDDEN, false);
+		
+		baseBuilder.part()
+			.modelFile(new ExistingModelFile(modLoc("block/empty"), this.exFileHelper)).addModel()
+			.condition(BlockPostBase.HIDDEN, true);
 		
 		for(Block block:IPOContent.BLOCKS)
 			if(block instanceof BlockPost)

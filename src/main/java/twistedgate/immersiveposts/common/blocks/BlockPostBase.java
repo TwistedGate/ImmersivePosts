@@ -1,6 +1,6 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItem;
@@ -26,11 +27,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -49,6 +52,7 @@ import net.minecraftforge.common.ToolType;
 import twistedgate.immersiveposts.IPOConfig;
 import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.ImmersivePosts;
+import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
@@ -61,6 +65,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	private static final Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, false, PushReaction.BLOCK);
 	
 	public static final BooleanProperty WATERLOGGED=BlockStateProperties.WATERLOGGED;
+	public static final BooleanProperty HIDDEN=BooleanProperty.create("hidden");
 	
 	public BlockPostBase(){
 		super("postbase", Properties.create(BaseMaterial)
@@ -68,6 +73,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 				.hardnessAndResistance(5.0F, 3.0F));
 		
 		setDefaultState(getStateContainer().getBaseState()
+				.with(HIDDEN, false)
 				.with(WATERLOGGED, false)
 		);
 		
@@ -76,17 +82,28 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	
 	@Override
 	protected void fillStateContainer(net.minecraft.state.StateContainer.Builder<Block, BlockState> builder){
-		builder.add(WATERLOGGED);
+		builder.add(HIDDEN, WATERLOGGED);
 	}
 	
 	@Override
 	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos){
-		return !state.get(WATERLOGGED);
+		return state.get(HIDDEN) ? true : !state.get(WATERLOGGED);
+	}
+	
+	@Override
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player){
+		if(player.isSneaking() && state.get(HIDDEN)){
+			ItemStack stack=((PostBaseTileEntity)world.getTileEntity(pos)).stack;
+			if(stack!=ItemStack.EMPTY){
+				return stack;
+			}
+		}
+		return super.getPickBlock(state, target, world, pos, player);
 	}
 	
 	@Override
 	public IFluidState getFluidState(BlockState state){
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.getDefaultState();
+		return (!state.get(HIDDEN) && state.get(WATERLOGGED)) ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.getDefaultState();
 	}
 	
 	@Override
@@ -101,27 +118,74 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos){
-		if(state.get(WATERLOGGED)){
+		if(!state.get(HIDDEN) && state.get(WATERLOGGED)){
 			world.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return state;
 	}
 	
 	@Override
+	public boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid){
+		return !state.get(HIDDEN) && IWaterLoggable.super.canContainFluid(world, pos, state, fluid);
+	}
+	
+	@Override
+	public boolean hasTileEntity(BlockState state){
+		return true;
+	}
+	
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world){
+		return IPOContent.TE_POSTBASE.create();
+	}
+	
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
+		return this.getShape(state, worldIn, pos, context);
+	}
+	
+	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-		return BASE_SIZE;
+		return state.get(HIDDEN) ? VoxelShapes.fullCube() : BASE_SIZE;
 	}
 	
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder){
-		return Arrays.asList(new ItemStack(this, 1));
+		List<ItemStack> list=new ArrayList<>();
+		list.add(new ItemStack(this, 1));
+		if(state.get(HIDDEN)){
+			TileEntity te=builder.get(LootParameters.BLOCK_ENTITY);
+			if(te instanceof PostBaseTileEntity){
+				ItemStack teStack=((PostBaseTileEntity)te).stack;
+				list.add(teStack);
+			}
+		}
+		return list;
 	}
 	
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
-			if(held!=ItemStack.EMPTY){
+			
+			if(held==ItemStack.EMPTY){
+				if(playerIn.isSneaking()){
+					TileEntity te=worldIn.getTileEntity(pos);
+					if(te instanceof PostBaseTileEntity){
+						PostBaseTileEntity base=(PostBaseTileEntity)te;
+						ItemStack stack=base.stack;
+						if(stack!=ItemStack.EMPTY){
+							Block.spawnAsEntity(worldIn, pos, stack);
+							worldIn.setBlockState(pos, state.with(HIDDEN, false));
+							base.reset();
+							base.markDirty();
+						}
+						
+						return ActionResultType.SUCCESS;
+					}
+				}
+				
+			}else{
 				if(EnumPostMaterial.isValidItem(held)){
 					if(!worldIn.isAirBlock(pos.offset(Direction.UP))){
 						BlockState aboveState=worldIn.getBlockState(pos.offset(Direction.UP));
@@ -171,13 +235,42 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 						}
 					}
 				}
+				
+				if(held.getItem() instanceof BlockItem && (held.getItem() instanceof BlockItem && acceptedHidingBlock(Block.getBlockFromItem(held.getItem()), worldIn, pos))){
+					TileEntity te=worldIn.getTileEntity(pos);
+					if(te instanceof PostBaseTileEntity){
+						PostBaseTileEntity base=(PostBaseTileEntity)te;
+						
+						if(base.stack==ItemStack.EMPTY){
+							base.stack=new ItemStack(held.getItem(), 1, held.getTag());
+							worldIn.setBlockState(pos, state.with(HIDDEN, true));
+							
+							if(!playerIn.isCreative()){
+								held.shrink(1);
+							}
+							
+							base.markDirty();
+							
+							return ActionResultType.SUCCESS;
+						}
+					}
+				}
+			}
+		}else{
+			// Client Stuff here
+			ItemStack held=playerIn.getHeldItemMainhand();
+			if((playerIn.isSneaking() && held==ItemStack.EMPTY) || EnumPostMaterial.isValidItem(held) || (held.getItem() instanceof BlockItem && acceptedHidingBlock(Block.getBlockFromItem(held.getItem()), worldIn, pos))){
+				return ActionResultType.SUCCESS;
 			}
 		}
 		
-		if(EnumPostMaterial.isValidItem(playerIn.getHeldItemMainhand()))
-			return ActionResultType.SUCCESS;
-		
 		return ActionResultType.FAIL;
+	}
+	
+	/** Used to check wether the base can hide within a certain block */
+	private boolean acceptedHidingBlock(Block block, IBlockReader reader, BlockPos pos){
+		BlockState state=block.getDefaultState();
+		return block!=Blocks.AIR && state.isNormalCube(reader, pos) && state.isOpaqueCube(reader, pos);
 	}
 	
 	
