@@ -113,7 +113,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	}
 	
 	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder){
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder){
 		return Arrays.asList(new ItemStack(this, 1));
 	}
 	
