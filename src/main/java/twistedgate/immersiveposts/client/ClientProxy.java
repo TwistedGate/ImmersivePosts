@@ -6,16 +6,12 @@ import blusunrize.lib.manual.ManualEntry;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.Tree.InnerNode;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.CommonProxy;
 
 /**
  * @author TwistedGate
  */
-@Mod.EventBusSubscriber(value=Dist.CLIENT, modid=IPOMod.ID, bus=Bus.MOD)
 public class ClientProxy extends CommonProxy{
 	@Override
 	public void completed(){

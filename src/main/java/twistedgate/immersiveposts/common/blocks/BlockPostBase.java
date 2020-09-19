@@ -3,6 +3,7 @@ package twistedgate.immersiveposts.common.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.lwjgl.glfw.GLFW;
@@ -173,12 +174,12 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					TileEntity te=worldIn.getTileEntity(pos);
 					if(te instanceof PostBaseTileEntity){
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
-						ItemStack stack=base.stack;
-						if(stack!=ItemStack.EMPTY){
-							Block.spawnAsEntity(worldIn, pos, stack);
-							worldIn.setBlockState(pos, state.with(HIDDEN, false));
+						if(!base.stack.isEmpty()){
+							Block.spawnAsEntity(worldIn, pos, base.stack);
 							base.reset();
-							base.markDirty();
+							
+							worldIn.setBlockState(pos, state.with(HIDDEN, false));
+							base.updateContainingBlockInfo();
 						}
 						
 						return ActionResultType.SUCCESS;
@@ -241,15 +242,15 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					if(te instanceof PostBaseTileEntity){
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
 						
-						if(base.stack==ItemStack.EMPTY){
-							base.stack=new ItemStack(held.getItem(), 1, held.getTag());
+						if(base.stack.isEmpty()){
+							base.setStack(new ItemStack(held.getItem(), 1, held.getTag()));
+							
 							worldIn.setBlockState(pos, state.with(HIDDEN, true));
+							base.updateContainingBlockInfo();
 							
 							if(!playerIn.isCreative()){
 								held.shrink(1);
 							}
-							
-							base.markDirty();
 							
 							return ActionResultType.SUCCESS;
 						}
@@ -268,7 +269,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	}
 	
 	/** Used to check wether the base can hide within a certain block */
-	private boolean acceptedHidingBlock(Block block, IBlockReader reader, BlockPos pos){
+	private boolean acceptedHidingBlock(@Nonnull Block block, @Nonnull IBlockReader reader, @Nonnull BlockPos pos){
 		BlockState state=block.getDefaultState();
 		return block!=Blocks.AIR && state.isNormalCube(reader, pos) && state.isOpaqueCube(reader, pos);
 	}

@@ -16,8 +16,18 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		reset();
 	}
 	
+	public void setStack(ItemStack stack){
+		if(stack==null){
+			stack=ItemStack.EMPTY;
+		}else{
+			this.stack=stack;
+			markDirty();
+		}
+	}
+	
 	public void reset(){
 		this.stack=ItemStack.EMPTY;
+		markDirty();
 	}
 	
 	@Override
