@@ -142,7 +142,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 						}
 					}
 					
-					for(int y=1;y<(worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ())-pos.getY());y++){
+					for(int y=1;y<=(worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ())-pos.getY());y++){
 						BlockPos nPos=pos.add(0,y,0);
 						
 						BlockState nState=worldIn.getBlockState(nPos);
