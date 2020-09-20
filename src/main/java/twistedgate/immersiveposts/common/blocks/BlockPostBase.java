@@ -175,11 +175,11 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					if(te instanceof PostBaseTileEntity){
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
 						if(!base.stack.isEmpty()){
-							Block.spawnAsEntity(worldIn, pos, base.stack);
-							base.reset();
-							
 							worldIn.setBlockState(pos, state.with(HIDDEN, false));
 							base.updateContainingBlockInfo();
+							
+							Block.spawnAsEntity(worldIn, pos, base.stack);
+							base.reset();
 						}
 						
 						return ActionResultType.SUCCESS;
@@ -243,10 +243,10 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
 						
 						if(base.stack.isEmpty()){
-							base.setStack(new ItemStack(held.getItem(), 1, held.getTag()));
-							
 							worldIn.setBlockState(pos, state.with(HIDDEN, true));
 							base.updateContainingBlockInfo();
+							
+							base.setStack(new ItemStack(held.getItem(), 1, held.getTag()));
 							
 							if(!playerIn.isCreative()){
 								held.shrink(1);

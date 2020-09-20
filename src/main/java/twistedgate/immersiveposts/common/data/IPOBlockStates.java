@@ -9,12 +9,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelBuilder;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.IPOContent.Blocks;
 import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;
 import twistedgate.immersiveposts.enums.EnumFlipState;
@@ -40,16 +42,8 @@ public class IPOBlockStates extends BlockStateProvider{
 	
 	@Override
 	protected void registerStatesAndModels(){
-		ExistingModelFile postBase=new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper);
-		MultiPartBlockStateBuilder baseBuilder=getMultipartBuilder(Blocks.post_Base);
 		
-		baseBuilder.part()
-			.modelFile(postBase).addModel()
-			.condition(BlockPostBase.HIDDEN, false);
-		
-		baseBuilder.part()
-			.modelFile(new ExistingModelFile(modLoc("block/empty"), this.exFileHelper)).addModel()
-			.condition(BlockPostBase.HIDDEN, true);
+		postbase();
 		
 		for(Block block:IPOContent.BLOCKS)
 			if(block instanceof BlockPost)
@@ -66,6 +60,26 @@ public class IPOBlockStates extends BlockStateProvider{
 		fence(Fences.uranium,	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 		
 		loadedModels.backupModels();
+	}
+	
+	private void postbase(){
+		ExistingModelFile postBase=new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper);
+		MultiPartBlockStateBuilder baseBuilder=getMultipartBuilder(Blocks.post_Base);
+		
+		baseBuilder.part()
+			.modelFile(postBase).addModel()
+			.condition(BlockPostBase.HIDDEN, false);
+		
+		// TODO Create and use a model with SpecialPostBaseModel
+		ModelFile modelFile=this.loadedModels.getBuilder("postbase_covered")
+			.loader(PostBaseLoader.LOCATION);
+		
+		baseBuilder.part()
+			.modelFile(modelFile).addModel()
+			.condition(BlockPostBase.HIDDEN, true);
+//		baseBuilder.part()
+//			.modelFile(new ExistingModelFile(modLoc("block/empty"), this.exFileHelper)).addModel()
+//			.condition(BlockPostBase.HIDDEN, true);
 	}
 	
 	private void fence(FenceBlock block, String name, ResourceLocation texture){

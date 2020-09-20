@@ -13,7 +13,7 @@
         "hidden": "true"
       },
       "apply": {
-        "model": "immersiveposts:block/empty"
+        "model": "immersiveposts:block/postbase_covered"
       }
     }
   ]

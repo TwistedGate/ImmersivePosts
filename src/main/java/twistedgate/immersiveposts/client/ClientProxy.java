@@ -5,14 +5,27 @@ import blusunrize.lib.manual.ManualElementTable;
 import blusunrize.lib.manual.ManualEntry;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.Tree.InnerNode;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
 
 /**
  * @author TwistedGate
  */
 public class ClientProxy extends CommonProxy{
+	
+	@Override
+	public void construct(){
+		super.construct();
+		
+		if(Minecraft.getInstance()!=null){
+			ModelLoaderRegistry.registerLoader(PostBaseLoader.LOCATION, new PostBaseLoader());
+		}
+	}
+	
 	@Override
 	public void completed(){
 		setupManualPage();
