@@ -26,9 +26,6 @@ hs_err_pid*
 build
 .gradle
 
-# Forge Gradle datagen output
-src/generated
-
 # IDEs/editors
 .classpath
 .gimp
