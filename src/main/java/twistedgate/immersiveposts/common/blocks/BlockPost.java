@@ -243,21 +243,22 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 						switch(facing){
 							case NORTH:case EAST:case SOUTH:case WEST:{
 								BlockPos nPos=pos.offset(facing);
-								if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
+								BlockState nState=worldIn.getBlockState(nPos);
+								
+								if(nState.isAir(worldIn, nPos) || nState.getBlock()==Blocks.WATER){
 									defaultState=defaultState.with(FACING, facing)
-											.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
+											.with(WATERLOGGED, nState.getBlock()==Blocks.WATER);
 									
 									worldIn.setBlockState(nPos, defaultState);
 									defaultState.neighborChanged(worldIn, nPos, this, null, false);
 								}else if(getBlockFrom(worldIn, nPos)==this){
-									BlockState st=worldIn.getBlockState(nPos);
-									switch(st.get(TYPE)){
+									switch(nState.get(TYPE)){
 										case ARM:{
-											worldIn.setBlockState(nPos, st.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
+											worldIn.setBlockState(nPos, nState.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
 											return ActionResultType.SUCCESS;
 										}
 										case EMPTY:{
-											worldIn.setBlockState(nPos, st.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
+											worldIn.setBlockState(nPos, nState.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
 											return ActionResultType.SUCCESS;
 										}
 										default:break;
@@ -293,8 +294,9 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 			}
 		}
 		
-		if(Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isValidItem(playerIn.getHeldItemMainhand()))
+		if(Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isValidItem(playerIn.getHeldItemMainhand())){
 			return ActionResultType.SUCCESS;
+		}
 		
 		return ActionResultType.FAIL;
 	}

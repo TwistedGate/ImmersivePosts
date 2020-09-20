@@ -48,7 +48,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import twistedgate.immersiveposts.IPOConfig;
-import twistedgate.immersiveposts.IPOStuff;
+import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
@@ -72,7 +72,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 				.with(WATERLOGGED, false)
 		);
 		
-		IPOStuff.ITEMS.add(new ItemPostBase(this, new Item.Properties().group(ImmersivePosts.creativeTab)));
+		IPOContent.ITEMS.add(new ItemPostBase(this, new Item.Properties().group(ImmersivePosts.creativeTab)));
 	}
 	
 	@Override
@@ -127,53 +127,54 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
-			if(EnumPostMaterial.isValidItem(held)){
-				
-				if(!worldIn.isAirBlock(pos.offset(Direction.UP))){
-					BlockState aboveState=worldIn.getBlockState(pos.offset(Direction.UP));
-					Block b=aboveState.getBlock();
-					
-					if(b instanceof BlockPost){
-						ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
-						if(!held.isItemEqual(tmp)){
-							playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", new StringTextComponent(tmp.getDisplayName().getString())), true);
-							return ActionResultType.SUCCESS;
+			if(held!=ItemStack.EMPTY){
+				if(EnumPostMaterial.isValidItem(held)){
+					if(!worldIn.isAirBlock(pos.offset(Direction.UP))){
+						BlockState aboveState=worldIn.getBlockState(pos.offset(Direction.UP));
+						Block b=aboveState.getBlock();
+						
+						if(b instanceof BlockPost){
+							ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
+							if(!held.isItemEqual(tmp)){
+								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", new StringTextComponent(tmp.getDisplayName().getString())), true);
+								return ActionResultType.SUCCESS;
+							}
 						}
 					}
-				}
-				
-				for(int y=1;y<(worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ())-pos.getY());y++){
-					BlockPos nPos=pos.add(0,y,0);
 					
-					BlockState nState=worldIn.getBlockState(nPos);
-					if(nState.getBlock() instanceof BlockPost){
-						EnumPostType type=nState.get(BlockPost.TYPE);
-						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && nState.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
-							return ActionResultType.SUCCESS;
-						}else{
-							nState=worldIn.getBlockState(nPos.offset(Direction.UP));
-							if(nState.getBlock() instanceof BlockPost){
-								type=nState.get(BlockPost.TYPE);
-								if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
-									return ActionResultType.SUCCESS;
+					for(int y=1;y<(worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ())-pos.getY());y++){
+						BlockPos nPos=pos.add(0,y,0);
+						
+						BlockState nState=worldIn.getBlockState(nPos);
+						if(nState.getBlock() instanceof BlockPost){
+							EnumPostType type=nState.get(BlockPost.TYPE);
+							if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && nState.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
+								return ActionResultType.SUCCESS;
+							}else{
+								nState=worldIn.getBlockState(nPos.offset(Direction.UP));
+								if(nState.getBlock() instanceof BlockPost){
+									type=nState.get(BlockPost.TYPE);
+									if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
+										return ActionResultType.SUCCESS;
+									}
 								}
 							}
 						}
-					}
-					
-					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
-						BlockState fb=EnumPostMaterial.getPostStateFrom(held)
-								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
 						
-						if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb.updatePostPlacement(null, null, worldIn, nPos, null))){
-							if(!playerIn.isCreative()){
-								held.shrink(1);
+						if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
+							BlockState fb=EnumPostMaterial.getPostStateFrom(held)
+									.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
+							
+							if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb.updatePostPlacement(null, null, worldIn, nPos, null))){
+								if(!playerIn.isCreative()){
+									held.shrink(1);
+								}
 							}
+							return ActionResultType.SUCCESS;
+							
+						}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof BlockPost)){
+							return ActionResultType.SUCCESS;
 						}
-						return ActionResultType.SUCCESS;
-						
-					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof BlockPost)){
-						return ActionResultType.SUCCESS;
 					}
 				}
 			}
