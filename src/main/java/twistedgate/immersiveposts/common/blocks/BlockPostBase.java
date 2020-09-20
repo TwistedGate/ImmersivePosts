@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
@@ -58,15 +59,23 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  * @author TwistedGate
  */
 public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
-	private static final VoxelShape BASE_SIZE=VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
-	private static final Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
+	private static Block.Properties prop(){
+		Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
+		
+		Block.Properties prop=Block.Properties.create(BaseMaterial)
+				.sound(SoundType.STONE)
+				.setRequiresTool()
+				.harvestTool(ToolType.PICKAXE)
+				.hardnessAndResistance(5.0F, 3.0F)
+				.notSolid();
+		
+		return prop;
+	}
 	
 	public static final BooleanProperty WATERLOGGED=BlockStateProperties.WATERLOGGED;
 	
 	public BlockPostBase(){
-		super("postbase", Properties.create(BaseMaterial)
-				.harvestTool(ToolType.PICKAXE)
-				.hardnessAndResistance(5.0F, 3.0F));
+		super("postbase", prop());
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(WATERLOGGED, false)
@@ -108,6 +117,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 		return state;
 	}
 	
+	private static final VoxelShape BASE_SIZE=VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
 		return BASE_SIZE;

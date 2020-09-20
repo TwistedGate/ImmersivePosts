@@ -104,14 +104,35 @@ public enum EnumPostMaterial implements IStringSerializable{
 	public static Block.Properties blockPropertiesFrom(EnumPostMaterial postMaterial){
 		Block.Properties prop=null;
 		switch(postMaterial){
-			case WOOD: // For the *one* post that wants to be different..
-				prop=Block.Properties.create(WOOD_LIKE).sound(SoundType.WOOD).harvestTool(ToolType.AXE).harvestLevel(0).hardnessAndResistance(2.0F, 5.0F); break;
-				
-			case NETHERBRICK: case CONCRETE: case CONCRETE_LEADED:
-				prop=Block.Properties.create(STONE_LIKE).sound(SoundType.STONE).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(1.5F, 6.0F); break;
-				
-			default:
-				prop=Block.Properties.create(METAL_LIKE).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).harvestLevel(1).hardnessAndResistance(3.0F, 15.0F);
+			case WOOD:{ // For the *one* post that wants to be different..
+				prop=Block.Properties.create(WOOD_LIKE)
+						.sound(SoundType.WOOD)
+						.harvestTool(ToolType.AXE)
+						.hardnessAndResistance(2.0F, 5.0F)
+						.notSolid()
+						.setBlocksVision((s,r,p)->false);
+				break;
+			}
+			case NETHERBRICK: case CONCRETE: case CONCRETE_LEADED:{
+				prop=Block.Properties.create(STONE_LIKE)
+						.sound(SoundType.STONE)
+						.setRequiresTool()
+						.harvestTool(ToolType.PICKAXE)
+						.hardnessAndResistance(1.5F, 6.0F)
+						.notSolid()
+						.setBlocksVision((s,r,p)->false);
+				break;
+			}
+			default:{
+				prop=Block.Properties.create(METAL_LIKE)
+						.sound(SoundType.METAL)
+						.setRequiresTool()
+						.harvestTool(ToolType.PICKAXE)
+						.hardnessAndResistance(3.0F, 15.0F)
+						.notSolid()
+						.setBlocksVision((s,r,p)->false);
+				break;
+			}
 		}
 		
 		prop.setLightLevel(s->postMaterial==EnumPostMaterial.URANIUM?8:0);
