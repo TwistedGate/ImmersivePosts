@@ -1,13 +1,17 @@
 package twistedgate.immersiveposts.client;
 
+import static blusunrize.immersiveengineering.client.ClientUtils.mc;
+
 import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.lib.manual.ManualElementTable;
 import blusunrize.lib.manual.ManualEntry;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.Tree.InnerNode;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
@@ -16,6 +20,15 @@ import twistedgate.immersiveposts.common.CommonProxy;
  * @author TwistedGate
  */
 public class ClientProxy extends CommonProxy{
+	
+	@Override
+	public void setup(){
+		super.setup();
+		
+		ClientEventHandler handler=new ClientEventHandler();
+		MinecraftForge.EVENT_BUS.register(handler);
+		((IReloadableResourceManager)mc().getResourceManager()).addReloadListener(handler);
+	}
 	
 	@Override
 	public void construct(){
