@@ -14,7 +14,6 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	
 	public PostBaseTileEntity(){
 		super(IPOContent.TE_POSTBASE);
-		reset();
 	}
 	
 	public void setStack(ItemStack stack){
@@ -24,6 +23,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		}else if(stack.getItem() instanceof BlockItem){
 			this.stack=stack;
 			markDirty();
+			requestModelDataUpdate();
 		}
 	}
 	
@@ -41,5 +41,6 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	@Override
 	protected void readCustom(CompoundNBT compound){
 		this.stack=ItemStack.read(compound.getCompound("stack"));
+		requestModelDataUpdate();
 	}
 }
