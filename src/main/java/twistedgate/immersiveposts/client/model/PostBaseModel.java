@@ -134,6 +134,18 @@ public class PostBaseModel extends IPOBakedModel{
 	private static class SpecialPostBaseModel extends PostBaseModel{
 		private static final Random RANDOM=new Random();
 		
+		private static final Vec3d[] verts=new Vec3d[]{
+				new Vec3d(0.25F, 1.001F, 0.25F), new Vec3d(0.25F, 1.001F, 0.75F),
+				new Vec3d(0.75F, 1.001F, 0.75F), new Vec3d(0.75F, 1.001F, 0.25F),
+		};
+		
+		private static final double[] uvs=new double[]{
+				8,0,
+				16,8
+		};
+		
+		private static final float[] color=new float[]{1.0F, 1.0F, 1.0F, 1.0F};
+		
 		List<List<BakedQuad>> quads=new ArrayList<>(6);
 		public SpecialPostBaseModel(Key key){
 			build(key);
@@ -150,23 +162,7 @@ public class PostBaseModel extends IPOBakedModel{
 					TextureAtlasSprite sprite=Minecraft.getInstance()
 						.getModelManager()
 						.getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
-						.getSprite(new ResourceLocation(IPOMod.ID, "block/postbase_overlay"));
-					
-					Vec3d[] verts=new Vec3d[]{
-							new Vec3d(1F, 1.001F, 1F),
-							new Vec3d(1F, 1.001F, 0F),
-							new Vec3d(0F, 1.001F, 0F),
-							new Vec3d(0F, 1.001F, 1F)
-					};
-					
-					double[] uvs=new double[]{
-							0.0,
-							1.0,
-							0.0,
-							1.0
-					};
-					
-					float[] color=new float[]{1.0F, 1.0F, 1.0F, 1.0F};
+						.getSprite(new ResourceLocation(IPOMod.ID, "block/postbase"));
 					
 					quads.add(ClientUtils.createBakedQuad(DefaultVertexFormats.BLOCK, verts, side, sprite, uvs, color, false));
 				}
