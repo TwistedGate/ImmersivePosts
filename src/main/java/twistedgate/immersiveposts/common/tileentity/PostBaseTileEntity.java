@@ -10,10 +10,14 @@ import twistedgate.immersiveposts.IPOContent;
 public class PostBaseTileEntity extends IPOTileEntityBase{
 	
 	@Nonnull
-	public ItemStack stack=ItemStack.EMPTY;
+	protected ItemStack stack=ItemStack.EMPTY;
 	
 	public PostBaseTileEntity(){
 		super(IPOContent.TE_POSTBASE);
+	}
+	
+	public ItemStack getStack(){
+		return this.stack;
 	}
 	
 	public void setStack(ItemStack stack){
@@ -24,6 +28,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 			this.stack=stack;
 			markDirty();
 			requestModelDataUpdate();
+			
 		}
 	}
 	

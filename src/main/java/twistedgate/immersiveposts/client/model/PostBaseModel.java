@@ -72,7 +72,7 @@ public class PostBaseModel extends IPOBakedModel{
 		if(te instanceof PostBaseTileEntity){
 			PostBaseTileEntity base=(PostBaseTileEntity)te;
 			
-			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(Block.getBlockFromItem(base.stack.getItem()).getDefaultState());
+			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(Block.getBlockFromItem(base.getStack().getItem()).getDefaultState());
 			
 			list.add(new SinglePropertyModelData<>(data, IPOModelData.POSTBASE));
 		}

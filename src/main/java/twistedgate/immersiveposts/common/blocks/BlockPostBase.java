@@ -94,7 +94,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player){
 		if(player.isSneaking() && state.get(HIDDEN)){
-			ItemStack stack=((PostBaseTileEntity)world.getTileEntity(pos)).stack;
+			ItemStack stack=((PostBaseTileEntity)world.getTileEntity(pos)).getStack();
 			if(stack!=ItemStack.EMPTY){
 				return stack;
 			}
@@ -157,7 +157,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 		if(state.get(HIDDEN)){
 			TileEntity te=builder.get(LootParameters.BLOCK_ENTITY);
 			if(te instanceof PostBaseTileEntity){
-				ItemStack teStack=((PostBaseTileEntity)te).stack;
+				ItemStack teStack=((PostBaseTileEntity)te).getStack();
 				list.add(teStack);
 			}
 		}
@@ -174,11 +174,11 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					TileEntity te=worldIn.getTileEntity(pos);
 					if(te instanceof PostBaseTileEntity){
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
-						if(!base.stack.isEmpty()){
+						if(!base.getStack().isEmpty()){
 							worldIn.setBlockState(pos, state.with(HIDDEN, false));
 							base.updateContainingBlockInfo();
 							
-							Block.spawnAsEntity(worldIn, pos, base.stack);
+							Block.spawnAsEntity(worldIn, pos, base.getStack());
 							base.reset();
 						}
 						
@@ -242,7 +242,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					if(te instanceof PostBaseTileEntity){
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
 						
-						if(base.stack.isEmpty()){
+						if(base.getStack().isEmpty()){
 							worldIn.setBlockState(pos, state.with(HIDDEN, true));
 							base.updateContainingBlockInfo();
 							
