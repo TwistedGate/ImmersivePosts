@@ -105,32 +105,6 @@ public class PostBaseModel extends IPOBakedModel{
 		return ItemOverrideList.EMPTY;
 	}
 	
-	private static class Key{
-		final BlockState state;
-		
-		public Key(BlockState state){
-			this.state=state;
-		}
-		
-		@Override
-		public boolean equals(Object obj){
-			if(this==obj){
-				return true;
-			}
-			if(obj==null || this.getClass()!=obj.getClass()){
-				return false;
-			}
-			
-			Key other=(Key)obj;
-			return this.state.equals(other.state);
-		}
-		
-		@Override
-		public int hashCode(){
-			return 31 * Utils.hashBlockstate(this.state);
-		}
-	}
-	
 	private static class SpecialPostBaseModel extends PostBaseModel{
 		private static final Random RANDOM=new Random();
 		
@@ -175,6 +149,32 @@ public class PostBaseModel extends IPOBakedModel{
 		@Override
 		public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
 			return quads.get(side == null ? 6 : side.getIndex());
+		}
+	}
+	
+	private static class Key{
+		final BlockState state;
+		
+		public Key(BlockState state){
+			this.state=state;
+		}
+		
+		@Override
+		public boolean equals(Object obj){
+			if(this==obj){
+				return true;
+			}
+			if(obj==null || this.getClass()!=obj.getClass()){
+				return false;
+			}
+			
+			Key other=(Key)obj;
+			return this.state.equals(other.state);
+		}
+		
+		@Override
+		public int hashCode(){
+			return 31 * Utils.hashBlockstate(this.state);
 		}
 	}
 }

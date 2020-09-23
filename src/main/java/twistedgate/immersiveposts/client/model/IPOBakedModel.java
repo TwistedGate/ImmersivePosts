@@ -15,6 +15,8 @@ import net.minecraftforge.client.model.data.IModelData;
 
 public abstract class IPOBakedModel implements IBakedModel{
 	
+	@Nonnull
+	@Override
 	public abstract List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData);
 	
 	@Override

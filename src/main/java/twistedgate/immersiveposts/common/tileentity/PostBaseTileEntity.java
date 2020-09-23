@@ -28,13 +28,13 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 			this.stack=stack;
 			markDirty();
 			requestModelDataUpdate();
-			
 		}
 	}
 	
 	public void reset(){
 		this.stack=ItemStack.EMPTY;
 		markDirty();
+		requestModelDataUpdate();
 	}
 	
 	@Override

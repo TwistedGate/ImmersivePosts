@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.common.MinecraftForge;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
@@ -26,7 +25,6 @@ public class ClientProxy extends CommonProxy{
 		super.setup();
 		
 		ClientEventHandler handler=new ClientEventHandler();
-		MinecraftForge.EVENT_BUS.register(handler);
 		((IReloadableResourceManager)mc().getResourceManager()).addReloadListener(handler);
 	}
 	
