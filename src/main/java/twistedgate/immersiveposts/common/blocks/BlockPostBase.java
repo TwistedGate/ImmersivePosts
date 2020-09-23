@@ -193,7 +193,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 						if(b instanceof BlockPost){
 							ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
 							if(!held.isItemEqual(tmp)){
-								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", new StringTextComponent(tmp.getDisplayName().getString())), true);
+								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", tmp.getDisplayName()), true);
 								return ActionResultType.SUCCESS;
 							}
 						}
