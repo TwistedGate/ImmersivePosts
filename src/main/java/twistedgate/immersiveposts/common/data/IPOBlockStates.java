@@ -6,10 +6,12 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.IPOContent.Blocks;
 import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
@@ -40,15 +42,15 @@ public class IPOBlockStates extends BlockStateProvider{
 		ModelFile modelFile=this.loadedModels.getBuilder("postbase_covered")
 				.loader(PostBaseLoader.LOCATION);
 		
-		MultiPartBlockStateBuilder baseBuilder=getMultipartBuilder(Blocks.post_Base);
+		VariantBlockStateBuilder variantBuilder=getVariantBuilder(Blocks.post_Base);
 		
-		baseBuilder.part()
-			.modelFile(postBase).addModel()
-			.condition(BlockPostBase.HIDDEN, false);
+		variantBuilder.partialState()
+			.with(BlockPostBase.HIDDEN, false)
+			.setModels(new ConfiguredModel(postBase));
 		
-		baseBuilder.part()
-			.modelFile(modelFile).addModel()
-			.condition(BlockPostBase.HIDDEN, true);
+		variantBuilder.partialState()
+			.with(BlockPostBase.HIDDEN, true)
+			.setModels(new ConfiguredModel(modelFile));
 		
 		// POSTS
 		for(Block block:IPOContent.BLOCKS){

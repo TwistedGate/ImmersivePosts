@@ -1,20 +1,10 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "hidden": "false"
-      },
-      "apply": {
-        "model": "immersiveposts:block/postbase"
-      }
+  "variants": {
+    "hidden=false": {
+      "model": "immersiveposts:block/postbase"
     },
-    {
-      "when": {
-        "hidden": "true"
-      },
-      "apply": {
-        "model": "immersiveposts:block/postbase_covered"
-      }
+    "hidden=true": {
+      "model": "immersiveposts:block/postbase_covered"
     }
-  ]
+  }
 }
