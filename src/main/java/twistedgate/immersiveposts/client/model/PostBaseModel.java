@@ -130,7 +130,7 @@ public class PostBaseModel extends IPOBakedModel{
 			IBakedModel model=Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(key.state);
 			
 			for(Direction side:Direction.values()){
-				List<BakedQuad> quads=model.getQuads(key.state, side, RANDOM);
+				List<BakedQuad> quads=new ArrayList<>(model.getQuads(key.state, side, RANDOM));
 				
 				if(side==Direction.UP){
 					TextureAtlasSprite sprite=Minecraft.getInstance()
