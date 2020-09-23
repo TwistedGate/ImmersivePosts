@@ -27,14 +27,12 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		}else if(stack.getItem() instanceof BlockItem){
 			this.stack=stack;
 			markDirty();
-			requestModelDataUpdate();
 		}
 	}
 	
 	public void reset(){
 		this.stack=ItemStack.EMPTY;
 		markDirty();
-		requestModelDataUpdate();
 	}
 	
 	@Override
@@ -46,6 +44,5 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	@Override
 	protected void readCustom(CompoundNBT compound){
 		this.stack=ItemStack.read(compound.getCompound("stack"));
-		requestModelDataUpdate();
 	}
 }
