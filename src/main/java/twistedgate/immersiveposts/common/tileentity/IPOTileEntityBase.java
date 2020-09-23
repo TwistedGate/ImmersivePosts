@@ -33,7 +33,9 @@ public abstract class IPOTileEntityBase extends TileEntity{
 	
 	@Override
 	public CompoundNBT getUpdateTag(){
-		return write(new CompoundNBT());
+		CompoundNBT nbt=new CompoundNBT();
+		write(nbt);
+		return nbt;
 	}
 	
 	@Override

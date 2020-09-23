@@ -2,13 +2,11 @@ package twistedgate.immersiveposts.common.data;
 
 import blusunrize.immersiveengineering.common.data.models.LoadedModelBuilder;
 import net.minecraft.block.Block;
-import net.minecraft.block.FenceBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
-import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
@@ -34,65 +32,43 @@ public class IPOBlockStates extends BlockStateProvider{
 		this.loadedModels=loadedModels;
 	}
 	
-	class Test extends ModelBuilder<Test>{
-		protected Test(ResourceLocation outputLocation, ExistingFileHelper existingFileHelper){
-			super(outputLocation, existingFileHelper);
-		}
-	}
-	
 	@Override
 	protected void registerStatesAndModels(){
-		
-		postbase();
-		
-		for(Block block:IPOContent.BLOCKS)
-			if(block instanceof BlockPost)
-				postStateFor((BlockPost)block);
-		
-		fence(Fences.iron,		"fence/iron",		mcLoc("block/iron_block"));
-		fence(Fences.gold,		"fence/gold",		mcLoc("block/gold_block"));
-		fence(Fences.copper,	"fence/copper",		ieLoc("block/metal/storage_copper"));
-		fence(Fences.lead,		"fence/lead",		ieLoc("block/metal/storage_lead"));
-		fence(Fences.silver,	"fence/silver",		ieLoc("block/metal/storage_silver"));
-		fence(Fences.nickel,	"fence/nickel",		ieLoc("block/metal/storage_nickel"));
-		fence(Fences.constantan,"fence/constantan",	ieLoc("block/metal/storage_constantan"));
-		fence(Fences.electrum,	"fence/electrum",	ieLoc("block/metal/storage_electrum"));
-		fence(Fences.uranium,	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
-		
-		loadedModels.backupModels();
-	}
-	
-	private void postbase(){
+		// POST BASE
 		ExistingModelFile postBase=new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper);
+		
+		ModelFile modelFile=this.loadedModels.getBuilder("postbase_covered")
+				.loader(PostBaseLoader.LOCATION);
+		
 		MultiPartBlockStateBuilder baseBuilder=getMultipartBuilder(Blocks.post_Base);
 		
 		baseBuilder.part()
 			.modelFile(postBase).addModel()
 			.condition(BlockPostBase.HIDDEN, false);
 		
-		// TODO Create and use a model with SpecialPostBaseModel
-		ModelFile modelFile=this.loadedModels.getBuilder("postbase_covered")
-			.loader(PostBaseLoader.LOCATION);
-		
 		baseBuilder.part()
 			.modelFile(modelFile).addModel()
 			.condition(BlockPostBase.HIDDEN, true);
-//		baseBuilder.part()
-//			.modelFile(new ExistingModelFile(modLoc("block/empty"), this.exFileHelper)).addModel()
-//			.condition(BlockPostBase.HIDDEN, true);
-	}
-	
-	private void fence(FenceBlock block, String name, ResourceLocation texture){
-		try{
-			fenceBlock(block, name, texture);
-			
-//			String[] s=name.split("/");
-//			getBuilder(IPOMod.ID+":block/fences/inventory/"+s[1]+"_fence_inventory")
-//				.parent(new ExistingModelFile(new ResourceLocation("block/fence_inventory"), this.exFileHelper))
-//				.texture("texture", texture);
-		}catch(Throwable e){
-			IPODataGen.log.warn("Oops.. {}", e.getMessage());
+		
+		// POSTS
+		for(Block block:IPOContent.BLOCKS){
+			if(block instanceof BlockPost){
+				postStateFor((BlockPost)block);
+			}
 		}
+		
+		// FENCES
+		fenceBlock(Fences.iron,			"fence/iron",		mcLoc("block/iron_block"));
+		fenceBlock(Fences.gold,			"fence/gold",		mcLoc("block/gold_block"));
+		fenceBlock(Fences.copper,		"fence/copper",		ieLoc("block/metal/storage_copper"));
+		fenceBlock(Fences.lead,			"fence/lead",		ieLoc("block/metal/storage_lead"));
+		fenceBlock(Fences.silver,		"fence/silver",		ieLoc("block/metal/storage_silver"));
+		fenceBlock(Fences.nickel,		"fence/nickel",		ieLoc("block/metal/storage_nickel"));
+		fenceBlock(Fences.constantan,	"fence/constantan",	ieLoc("block/metal/storage_constantan"));
+		fenceBlock(Fences.electrum,		"fence/electrum",	ieLoc("block/metal/storage_electrum"));
+		fenceBlock(Fences.uranium,		"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
+		
+		loadedModels.backupModels();
 	}
 	
 	private void postStateFor(BlockPost block){
@@ -108,13 +84,11 @@ public class IPOBlockStates extends BlockStateProvider{
 		
 		builder.part()
 			.modelFile(modelPost).addModel()
-			.condition(BlockPost.TYPE, EnumPostType.POST)
-			.end();
+			.condition(BlockPost.TYPE, EnumPostType.POST);
 		
 		builder.part()
 			.modelFile(modelPostTop).addModel()
-			.condition(BlockPost.TYPE, EnumPostType.POST_TOP)
-			.end();
+			.condition(BlockPost.TYPE, EnumPostType.POST_TOP);
 		
 		builder.part().modelFile(modelPostArm).rotationY(0).addModel()
 			.condition(BlockPost.LPARM_NORTH, true);
@@ -140,22 +114,20 @@ public class IPOBlockStates extends BlockStateProvider{
 					.modelFile(isBoth?modelArmTwoWay:modelArm).rotationX(flipstate==EnumFlipState.DOWN?180:0).rotationY(yArmRot).addModel()
 					.condition(BlockPost.TYPE, EnumPostType.ARM)
 					.condition(BlockPost.FACING, dir)
-					.condition(BlockPost.FLIPSTATE, flipstate)
-					.end();
+					.condition(BlockPost.FLIPSTATE, flipstate);
 				
-				if(isUp)
+				if(isUp){
 					builder.part()
 						.modelFile(modelArmDouble).rotationY(yArmRot).addModel()
 						.condition(BlockPost.TYPE, EnumPostType.ARM_DOUBLE)
-						.condition(BlockPost.FACING, dir)
-						.end();
+						.condition(BlockPost.FACING, dir);
+				}
 			}
 		}
 		
 		builder.part()
 			.modelFile(modelEmpty).addModel()
-			.condition(BlockPost.TYPE, EnumPostType.EMPTY)
-			.end();
+			.condition(BlockPost.TYPE, EnumPostType.EMPTY);
 	}
 	
 	private int horizontalRotation(Direction dir, boolean xFlipped){
@@ -191,8 +163,7 @@ public class IPOBlockStates extends BlockStateProvider{
 			.loader(FORGE_LOADER)
 			.additional("model", modLoc("models/block/post/obj/"+name+".obj"))
 			.texture("texture", texture)
-			.texture("particle", texture)
-			;
+			.texture("particle", texture);
 		
 		return b;
 	}
