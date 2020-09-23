@@ -21,18 +21,28 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	}
 	
 	public void setStack(ItemStack stack){
+		ItemStack last=this.stack;
 		if(stack==null){
-			stack=ItemStack.EMPTY;
+			this.stack=ItemStack.EMPTY;
 			
 		}else if(stack.getItem() instanceof BlockItem){
 			this.stack=stack;
+		}
+		
+		if(this.stack!=last){
 			markDirty();
+			getWorldNonnull().notifyBlockUpdate(this.pos, getBlockState(), getBlockState(), 3);
 		}
 	}
 	
 	public void reset(){
+		ItemStack last=this.stack;
 		this.stack=ItemStack.EMPTY;
-		markDirty();
+		
+		if(this.stack!=last){
+			markDirty();
+			getWorldNonnull().notifyBlockUpdate(this.pos, getBlockState(), getBlockState(), 3);
+		}
 	}
 	
 	@Override
@@ -43,6 +53,11 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	
 	@Override
 	protected void readCustom(CompoundNBT compound){
+		ItemStack last=this.stack;
 		this.stack=ItemStack.read(compound.getCompound("stack"));
+		
+		if(this.stack!=last && getWorld()!=null){
+			getWorld().notifyBlockUpdate(this.pos, getBlockState(), getBlockState(), 3);
+		}
 	}
 }

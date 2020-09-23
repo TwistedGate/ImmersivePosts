@@ -148,7 +148,7 @@ public class PostBaseModel extends IPOBakedModel{
 		
 		@Override
 		public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
-			return quads.get(side == null ? 6 : side.getIndex());
+			return this.quads.get(side == null ? (this.quads.size()-1) : side.getIndex());
 		}
 	}
 	
