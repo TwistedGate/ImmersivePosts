@@ -247,7 +247,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 								held.shrink(1);
 							}
 							
-							worldIn.setBlockState(pos, state.with(HIDDEN, true));
+							worldIn.setBlockState(pos, state.with(HIDDEN, true).with(WATERLOGGED, false));
 							
 							return ActionResultType.SUCCESS;
 						}
