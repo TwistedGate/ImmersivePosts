@@ -43,9 +43,9 @@ public abstract class IPOTileEntityBase extends TileEntity{
 	
 	@Override
 	public CompoundNBT write(CompoundNBT compound){
-		CompoundNBT nbt=super.write(compound);
-		writeCustom(nbt);
-		return nbt;
+		super.write(compound);
+		writeCustom(compound);
+		return compound;
 	}
 	
 	@Override
