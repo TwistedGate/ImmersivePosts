@@ -88,13 +88,13 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	
 	@Override
 	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos){
-		return state.get(HIDDEN) ? true : !state.get(WATERLOGGED);
+		return !state.get(HIDDEN) ? !state.get(WATERLOGGED) : super.propagatesSkylightDown(state, reader, pos);
 	}
 	
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player){
 		if(player.isSneaking() && state.get(HIDDEN)){
-			ItemStack stack=((PostBaseTileEntity)world.getTileEntity(pos)).stack;
+			ItemStack stack=((PostBaseTileEntity)world.getTileEntity(pos)).getStack();
 			if(stack!=ItemStack.EMPTY){
 				return stack;
 			}
@@ -157,7 +157,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 		if(state.get(HIDDEN)){
 			TileEntity te=builder.get(LootParameters.BLOCK_ENTITY);
 			if(te instanceof PostBaseTileEntity){
-				ItemStack teStack=((PostBaseTileEntity)te).stack;
+				ItemStack teStack=((PostBaseTileEntity)te).getStack();
 				list.add(teStack);
 			}
 		}
@@ -174,12 +174,10 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					TileEntity te=worldIn.getTileEntity(pos);
 					if(te instanceof PostBaseTileEntity){
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
-						if(!base.stack.isEmpty()){
-							Block.spawnAsEntity(worldIn, pos, base.stack);
+						if(!base.getStack().isEmpty()){
+							Block.spawnAsEntity(worldIn, pos, base.getStack());
 							base.reset();
-							
 							worldIn.setBlockState(pos, state.with(HIDDEN, false));
-							base.updateContainingBlockInfo();
 						}
 						
 						return ActionResultType.SUCCESS;
@@ -195,7 +193,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 						if(b instanceof BlockPost){
 							ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
 							if(!held.isItemEqual(tmp)){
-								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", new StringTextComponent(tmp.getDisplayName().getString())), true);
+								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", tmp.getDisplayName()), true);
 								return ActionResultType.SUCCESS;
 							}
 						}
@@ -242,15 +240,14 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					if(te instanceof PostBaseTileEntity){
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
 						
-						if(base.stack.isEmpty()){
+						if(base.getStack().isEmpty()){
 							base.setStack(new ItemStack(held.getItem(), 1, held.getTag()));
-							
-							worldIn.setBlockState(pos, state.with(HIDDEN, true));
-							base.updateContainingBlockInfo();
 							
 							if(!playerIn.isCreative()){
 								held.shrink(1);
 							}
+							
+							worldIn.setBlockState(pos, state.with(HIDDEN, true));
 							
 							return ActionResultType.SUCCESS;
 						}

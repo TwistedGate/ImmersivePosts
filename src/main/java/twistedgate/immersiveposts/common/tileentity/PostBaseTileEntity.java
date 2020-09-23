@@ -2,6 +2,7 @@ package twistedgate.immersiveposts.common.tileentity;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import twistedgate.immersiveposts.IPOContent;
@@ -9,17 +10,21 @@ import twistedgate.immersiveposts.IPOContent;
 public class PostBaseTileEntity extends IPOTileEntityBase{
 	
 	@Nonnull
-	public ItemStack stack=ItemStack.EMPTY;
+	protected ItemStack stack=ItemStack.EMPTY;
 	
 	public PostBaseTileEntity(){
 		super(IPOContent.TE_POSTBASE);
-		reset();
+	}
+	
+	public ItemStack getStack(){
+		return this.stack;
 	}
 	
 	public void setStack(ItemStack stack){
 		if(stack==null){
 			stack=ItemStack.EMPTY;
-		}else{
+			
+		}else if(stack.getItem() instanceof BlockItem){
 			this.stack=stack;
 			markDirty();
 		}

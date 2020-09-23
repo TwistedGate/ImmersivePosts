@@ -1,5 +1,8 @@
 Extendable Post
 The Sky's the Limit.
-<&postbase>Used as a start for the custom-sized posts.
+<&postbase>Used as the start of the custom-sized posts.
+(See <link;immersiveposts:usage;§1Usage§r;start> on how to use it.)
 
-(See <link;immersiveposts:usage;Usage;start> on how to use it.)
+The base can be hidden simply by holding a block in your hand, rightclicking and it will pretend to be that block.
+
+However, it only accepts solid and opaque blocks.

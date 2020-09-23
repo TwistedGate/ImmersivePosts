@@ -43,7 +43,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -200,7 +199,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 			ItemStack held=playerIn.getHeldItemMainhand();
 			if(EnumPostMaterial.isValidItem(held)){
 				if(!held.isItemEqual(this.postMaterial.getItemStack())){
-					playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", new StringTextComponent(this.postMaterial.getItemStack().getDisplayName().getString())), true);
+					playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", this.postMaterial.getItemStack().getDisplayName()), true);
 					return ActionResultType.SUCCESS;
 				}
 				

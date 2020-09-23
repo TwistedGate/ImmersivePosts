@@ -53,9 +53,9 @@
     },
     {
       "when": {
-        "facing": "north",
         "flipstate": "up",
-        "type": "arm"
+        "type": "arm",
+        "facing": "north"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm"
@@ -63,8 +63,8 @@
     },
     {
       "when": {
-        "facing": "north",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "north"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm_double"
@@ -72,9 +72,9 @@
     },
     {
       "when": {
-        "facing": "east",
         "flipstate": "up",
-        "type": "arm"
+        "type": "arm",
+        "facing": "east"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm",
@@ -83,8 +83,8 @@
     },
     {
       "when": {
-        "facing": "east",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "east"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm_double",
@@ -93,9 +93,9 @@
     },
     {
       "when": {
-        "facing": "south",
         "flipstate": "up",
-        "type": "arm"
+        "type": "arm",
+        "facing": "south"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm",
@@ -104,8 +104,8 @@
     },
     {
       "when": {
-        "facing": "south",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "south"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm_double",
@@ -114,9 +114,9 @@
     },
     {
       "when": {
-        "facing": "west",
         "flipstate": "up",
-        "type": "arm"
+        "type": "arm",
+        "facing": "west"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm",
@@ -125,8 +125,8 @@
     },
     {
       "when": {
-        "facing": "west",
-        "type": "arm_double"
+        "type": "arm_double",
+        "facing": "west"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm_double",
@@ -135,9 +135,9 @@
     },
     {
       "when": {
-        "facing": "north",
         "flipstate": "down",
-        "type": "arm"
+        "type": "arm",
+        "facing": "north"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm",
@@ -147,9 +147,9 @@
     },
     {
       "when": {
-        "facing": "east",
         "flipstate": "down",
-        "type": "arm"
+        "type": "arm",
+        "facing": "east"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm",
@@ -159,9 +159,9 @@
     },
     {
       "when": {
-        "facing": "south",
         "flipstate": "down",
-        "type": "arm"
+        "type": "arm",
+        "facing": "south"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm",
@@ -170,9 +170,9 @@
     },
     {
       "when": {
-        "facing": "west",
         "flipstate": "down",
-        "type": "arm"
+        "type": "arm",
+        "facing": "west"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm",
@@ -182,9 +182,9 @@
     },
     {
       "when": {
-        "facing": "north",
         "flipstate": "both",
-        "type": "arm"
+        "type": "arm",
+        "facing": "north"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm_twoway"
@@ -192,9 +192,9 @@
     },
     {
       "when": {
-        "facing": "east",
         "flipstate": "both",
-        "type": "arm"
+        "type": "arm",
+        "facing": "east"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm_twoway",
@@ -203,9 +203,9 @@
     },
     {
       "when": {
-        "facing": "south",
         "flipstate": "both",
-        "type": "arm"
+        "type": "arm",
+        "facing": "south"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm_twoway",
@@ -214,9 +214,9 @@
     },
     {
       "when": {
-        "facing": "west",
         "flipstate": "both",
-        "type": "arm"
+        "type": "arm",
+        "facing": "west"
       },
       "apply": {
         "model": "immersiveposts:goldpost/arm_twoway",
