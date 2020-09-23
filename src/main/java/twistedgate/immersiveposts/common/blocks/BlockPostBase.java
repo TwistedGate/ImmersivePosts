@@ -88,7 +88,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	
 	@Override
 	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos){
-		return state.get(HIDDEN) ? true : !state.get(WATERLOGGED);
+		return !state.get(HIDDEN) ? !state.get(WATERLOGGED) : super.propagatesSkylightDown(state, reader, pos);
 	}
 	
 	@Override
