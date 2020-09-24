@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -12,20 +14,27 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 
+import blusunrize.immersiveengineering.api.ApiUtils;
 import blusunrize.immersiveengineering.client.ClientUtils;
 import blusunrize.immersiveengineering.client.utils.CombinedModelData;
 import blusunrize.immersiveengineering.client.utils.SinglePropertyModelData;
 import blusunrize.immersiveengineering.common.util.Utils;
+import it.unimi.dsi.fastutil.ints.Int2IntFunction;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.TransformationMatrix;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.container.PlayerContainer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -33,6 +42,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ILightReader;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
@@ -47,16 +57,18 @@ public class PostBaseModel extends IPOBakedModel{
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
 		BlockState hState=Blocks.DIRT.getDefaultState();
+		Int2IntFunction colorMul=i->0xffffffff;
 		
 		if(extraData.hasProperty(IPOModelData.POSTBASE)){
 			IPOModelData.PostBaseModelData data=extraData.getData(IPOModelData.POSTBASE);
 			hState=data.state;
+			colorMul=data.color;
 		}
 		
-		Key key=new Key(hState);
+		Key key=new Key(hState, colorMul);
 		SpecialPostBaseModel special=CACHE.getIfPresent(key);
 		if(special==null){
-			special=new SpecialPostBaseModel(key);
+			special=new SpecialPostBaseModel(key, colorMul);
 			CACHE.put(key, special);
 		}
 		
@@ -71,8 +83,10 @@ public class PostBaseModel extends IPOBakedModel{
 		TileEntity te=world.getTileEntity(pos);
 		if(te instanceof PostBaseTileEntity){
 			PostBaseTileEntity base=(PostBaseTileEntity)te;
+			BlockState otherState=Block.getBlockFromItem(base.getStack().getItem()).getDefaultState();
 			
-			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(Block.getBlockFromItem(base.getStack().getItem()).getDefaultState());
+			int color = Minecraft.getInstance().getBlockColors().getColor(otherState, world, pos, 0);
+			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(otherState, i->color);
 			
 			list.add(new SinglePropertyModelData<>(data, IPOModelData.POSTBASE));
 		}
@@ -121,16 +135,32 @@ public class PostBaseModel extends IPOBakedModel{
 		private static final float[] color=new float[]{1.0F, 1.0F, 1.0F, 1.0F};
 		
 		List<List<BakedQuad>> quads=new ArrayList<>(6);
-		public SpecialPostBaseModel(Key key){
-			build(key);
+		public SpecialPostBaseModel(Key key, Int2IntFunction colorMul){
+			build(key, colorMul);
 		}
 		
-		@SuppressWarnings("deprecation")
-		private void build(Key key){
+		private void build(Key key, Int2IntFunction colorMulBasic){
+			if(colorMulBasic==null){
+				ItemColors colors=Minecraft.getInstance().getItemColors();
+				ItemStack stack=new ItemStack(key.state.getBlock());
+				colorMulBasic=(i)->colors.getColor(stack, i);
+			}
+			
+			key.usedColorMultipliers=new Int2IntOpenHashMap();
+			final Int2IntFunction f=colorMulBasic;
+			Int2IntFunction colorMul=(i)->{
+				int v=f.get(i);
+				key.usedColorMultipliers.put(i, v);
+				return v;
+			};
+			
+			Function<BakedQuad, BakedQuad> tintTransformer=ApiUtils.transformQuad(TransformationMatrix.identity(), colorMul);
 			IBakedModel model=Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(key.state);
 			
 			for(Direction side:Direction.values()){
-				List<BakedQuad> quads=new ArrayList<>(model.getQuads(key.state, side, RANDOM));
+				List<BakedQuad> quads=model.getQuads(key.state, side, RANDOM, EmptyModelData.INSTANCE).stream()
+						.map(tintTransformer)
+						.collect(Collectors.toCollection(ArrayList::new));
 				
 				if(side==Direction.UP){
 					TextureAtlasSprite sprite=Minecraft.getInstance()
@@ -154,22 +184,45 @@ public class PostBaseModel extends IPOBakedModel{
 	
 	private static class Key{
 		final BlockState state;
+		@Nullable
+		Int2IntMap usedColorMultipliers;
+		@Nullable
+		final Int2IntFunction allColorMultipliers;
 		
-		public Key(BlockState state){
+		public Key(BlockState state, Int2IntFunction colorMul){
 			this.state=state;
+			this.allColorMultipliers=colorMul;
+			this.usedColorMultipliers=null;
 		}
 		
 		@Override
 		public boolean equals(Object obj){
-			if(this==obj){
+			if(this == obj){
 				return true;
 			}
-			if(obj==null || this.getClass()!=obj.getClass()){
+			if(obj == null || this.getClass() != obj.getClass()){
 				return false;
 			}
 			
 			Key other=(Key)obj;
-			return this.state.equals(other.state);
+			return this.state.equals(other.state) && sameColorMultipliersAs(other);
+		}
+		
+		private boolean sameColorMultipliersAs(Key that){
+			if(that.usedColorMultipliers != null && this.usedColorMultipliers != null)
+				return this.usedColorMultipliers.equals(that.usedColorMultipliers);
+			else if(that.usedColorMultipliers != null && this.allColorMultipliers != null){
+				for(int i:that.usedColorMultipliers.keySet()){
+					if(this.allColorMultipliers.get(i) != that.usedColorMultipliers.get(i)){
+						return false;
+					}
+				}
+				return true;
+			}else if(that.allColorMultipliers != null && this.usedColorMultipliers != null){
+				return that.sameColorMultipliersAs(this);
+			}else{
+				throw new IllegalStateException("Can't compare PostBaseMOdel.Key's that use functions!");
+			}
 		}
 		
 		@Override
