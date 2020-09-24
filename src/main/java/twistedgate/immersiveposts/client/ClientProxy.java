@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
@@ -26,6 +27,8 @@ public class ClientProxy extends CommonProxy{
 		
 		ClientEventHandler handler=new ClientEventHandler();
 		((IReloadableResourceManager)mc().getResourceManager()).addReloadListener(handler);
+		
+		Minecraft.getInstance().getBlockColors().register(new ColorHandler(), IPOContent.Blocks.post_Base);
 	}
 	
 	@Override

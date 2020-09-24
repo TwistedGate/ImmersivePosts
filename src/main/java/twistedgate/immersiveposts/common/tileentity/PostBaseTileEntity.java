@@ -16,6 +16,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		super(IPOContent.TE_POSTBASE);
 	}
 	
+	@Nonnull
 	public ItemStack getStack(){
 		return this.stack;
 	}

@@ -85,8 +85,7 @@ public class PostBaseModel extends IPOBakedModel{
 			PostBaseTileEntity base=(PostBaseTileEntity)te;
 			BlockState otherState=Block.getBlockFromItem(base.getStack().getItem()).getDefaultState();
 			
-			int color = Minecraft.getInstance().getBlockColors().getColor(otherState, world, pos, 0);
-			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(otherState, i->color);
+			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(otherState, i->i);
 			
 			list.add(new SinglePropertyModelData<>(data, IPOModelData.POSTBASE));
 		}
