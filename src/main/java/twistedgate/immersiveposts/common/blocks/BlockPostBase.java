@@ -241,7 +241,9 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
 						
 						if(base.getStack().isEmpty()){
-							base.setStack(new ItemStack(held.getItem(), 1, held.getTag()));
+							ItemStack copy=held.copy();
+							copy.setCount(1);
+							base.setStack(copy);
 							
 							if(!playerIn.isCreative()){
 								held.shrink(1);
