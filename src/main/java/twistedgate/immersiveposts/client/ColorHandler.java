@@ -1,6 +1,5 @@
 package twistedgate.immersiveposts.client;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
@@ -17,8 +16,7 @@ public class ColorHandler implements IBlockColor{
 			if(te instanceof PostBaseTileEntity && !((PostBaseTileEntity)te).getStack().isEmpty()){
 				PostBaseTileEntity base=(PostBaseTileEntity)te;
 				
-				BlockState otherState=Block.getBlockFromItem(base.getStack().getItem()).getDefaultState();
-				int color=Minecraft.getInstance().getBlockColors().getColor(otherState, world, pos, index);
+				int color=Minecraft.getInstance().getBlockColors().getColor(base.getCoverState(), world, pos, index);
 				return color;
 			}
 		}

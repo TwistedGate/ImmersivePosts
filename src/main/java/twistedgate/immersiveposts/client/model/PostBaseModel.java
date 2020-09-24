@@ -22,7 +22,6 @@ import blusunrize.immersiveengineering.common.util.Utils;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -83,9 +82,8 @@ public class PostBaseModel extends IPOBakedModel{
 		TileEntity te=world.getTileEntity(pos);
 		if(te instanceof PostBaseTileEntity){
 			PostBaseTileEntity base=(PostBaseTileEntity)te;
-			BlockState otherState=Block.getBlockFromItem(base.getStack().getItem()).getDefaultState();
 			
-			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(otherState, i->i);
+			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(base.getCoverState(), i->i);
 			
 			list.add(new SinglePropertyModelData<>(data, IPOModelData.POSTBASE));
 		}
