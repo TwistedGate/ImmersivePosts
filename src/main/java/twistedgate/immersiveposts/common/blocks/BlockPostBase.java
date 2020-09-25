@@ -175,6 +175,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					if(te instanceof PostBaseTileEntity){
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
 						if(!base.getStack().isEmpty()){
+							base.setFacing(Direction.NORTH);
 							Block.spawnAsEntity(worldIn, pos, base.getStack());
 							base.setStack(ItemStack.EMPTY);
 							worldIn.setBlockState(pos, state.with(HIDDEN, false));
@@ -241,6 +242,8 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 						PostBaseTileEntity base=(PostBaseTileEntity)te;
 						
 						if(base.getStack().isEmpty()){
+							base.setFacing(playerIn.getHorizontalFacing().getOpposite());
+							
 							ItemStack copy=held.copy();
 							copy.setCount(1);
 							base.setStack(copy);

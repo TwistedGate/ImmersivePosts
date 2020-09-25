@@ -2,6 +2,7 @@ package twistedgate.immersiveposts.client.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -57,14 +58,16 @@ public class PostBaseModel extends IPOBakedModel{
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
 		BlockState hState=Blocks.DIRT.getDefaultState();
 		Int2IntFunction colorMul=i->0xffffffff;
+		Direction facing=Direction.NORTH;
 		
 		if(extraData.hasProperty(IPOModelData.POSTBASE)){
 			IPOModelData.PostBaseModelData data=extraData.getData(IPOModelData.POSTBASE);
 			hState=data.state;
 			colorMul=data.color;
+			facing=data.facing;
 		}
 		
-		Key key=new Key(hState, colorMul);
+		Key key=new Key(hState, colorMul, facing);
 		SpecialPostBaseModel special=CACHE.getIfPresent(key);
 		if(special==null){
 			special=new SpecialPostBaseModel(key, colorMul);
@@ -83,7 +86,7 @@ public class PostBaseModel extends IPOBakedModel{
 		if(te instanceof PostBaseTileEntity){
 			PostBaseTileEntity base=(PostBaseTileEntity)te;
 			
-			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(base.getCoverState(), i->i);
+			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(base.getCoverState(), base.getFacing(), i->i);
 			
 			list.add(new SinglePropertyModelData<>(data, IPOModelData.POSTBASE));
 		}
@@ -181,13 +184,15 @@ public class PostBaseModel extends IPOBakedModel{
 	
 	private static class Key{
 		final BlockState state;
+		final Direction facing;
 		@Nullable
 		Int2IntMap usedColorMultipliers;
 		@Nullable
 		final Int2IntFunction allColorMultipliers;
 		
-		public Key(BlockState state, Int2IntFunction colorMul){
+		public Key(BlockState state, Int2IntFunction colorMul, Direction facing){
 			this.state=state;
+			this.facing=facing;
 			this.allColorMultipliers=colorMul;
 			this.usedColorMultipliers=null;
 		}
@@ -202,7 +207,7 @@ public class PostBaseModel extends IPOBakedModel{
 			}
 			
 			Key other=(Key)obj;
-			return this.state.equals(other.state) && sameColorMultipliersAs(other);
+			return this.state.equals(other.state) && this.facing==other.facing && sameColorMultipliersAs(other);
 		}
 		
 		private boolean sameColorMultipliersAs(Key that){
@@ -224,7 +229,7 @@ public class PostBaseModel extends IPOBakedModel{
 		
 		@Override
 		public int hashCode(){
-			return 31 * Utils.hashBlockstate(this.state);
+			return 31 * Utils.hashBlockstate(this.state) + Objects.hash(this.facing);
 		}
 	}
 }

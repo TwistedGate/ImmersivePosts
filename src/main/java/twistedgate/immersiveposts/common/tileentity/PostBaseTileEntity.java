@@ -1,5 +1,7 @@
 package twistedgate.immersiveposts.common.tileentity;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.BlockState;
@@ -7,6 +9,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.Lazy;
 import twistedgate.immersiveposts.IPOContent;
 
@@ -17,6 +21,8 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	protected ItemStack stack=ItemStack.EMPTY;
 	@Nonnull
 	protected Lazy<BlockState> coverstate=EMPTY;
+	/** Horizontal Only */
+	protected Direction facing=Direction.NORTH;
 	
 	public PostBaseTileEntity(){
 		super(IPOContent.TE_POSTBASE);
@@ -33,6 +39,16 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 			return EMPTY.get();
 		}
 		return this.coverstate.get();
+	}
+	
+	public Direction getFacing(){
+		return this.facing;
+	}
+	
+	public void setFacing(Direction facing){
+		if(Direction.Plane.HORIZONTAL.test(facing)){
+			this.facing=facing;
+		}
 	}
 	
 	/**
@@ -54,14 +70,13 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	 */
 	public ItemStack setStack(ItemStack stack, boolean notifySelf){
 		ItemStack last=this.stack;
-		if(stack==null || stack.isEmpty()){
+		if(stack == null || stack.isEmpty()){
 			this.stack=ItemStack.EMPTY;
 			
 		}else if(stack.getItem() instanceof BlockItem){
 			this.stack=stack;
 		}
 		boolean changed=this.stack != last;
-		
 		
 		if(changed){
 			updateLazy(changed);
@@ -78,12 +93,14 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	
 	@Override
 	protected CompoundNBT writeCustom(CompoundNBT compound){
+		compound.putString("facing", this.facing != null ? this.facing.getName2() : Direction.NORTH.getName2());
 		compound.put("stack", this.stack.serializeNBT());
 		return compound;
 	}
 	
 	@Override
 	protected void readCustom(CompoundNBT compound){
+		this.facing=Direction.byName(compound.getString("facing"));
 		ItemStack last=this.stack;
 		this.stack=ItemStack.read(compound.getCompound("stack"));
 		boolean changed=this.stack != last;
@@ -101,9 +118,21 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		if(this.stack == null || this.stack.isEmpty()){
 			this.coverstate=EMPTY;
 		}else{
-			this.coverstate=Lazy.of(() -> {
+			this.coverstate=Lazy.of(()->{
 				if(this.stack.getItem() instanceof BlockItem){
-					return ((BlockItem)this.stack.getItem()).getBlock().getDefaultState();
+					BlockState state=((BlockItem)this.stack.getItem()).getBlock().getDefaultState();
+					
+					Optional<DirectionProperty> prop=state.getProperties().stream()
+							.filter(p->p instanceof DirectionProperty && p.getName().equals("facing"))
+							.map(p->(DirectionProperty)p)
+							.filter(p->p.getAllowedValues().stream().allMatch(d->Direction.Plane.HORIZONTAL.test(d)))
+							.findAny();
+					
+					if(prop.isPresent()){
+						state=state.with(prop.get(), this.facing);
+					}
+					
+					return state;
 				}
 				
 				return EMPTY.get();
