@@ -62,20 +62,9 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	 * Set's the stack to be used for the cover. Automaticly causes a blockupdate to itself.
 	 * 
 	 * @param stack The stack to be used, requires the item to be a instance of {@link BlockItem}.
-	 * @return The previous stack (may be {@link ItemStack#EMPTY})
+	 * @return true if it changed, false otherwise
 	 */
-	public ItemStack setStack(ItemStack stack){
-		return setStack(stack, true);
-	}
-	
-	/**
-	 * Set's the stack to be used for the cover.
-	 * 
-	 * @param stack The stack to be used, requires the item to be a instance of {@link BlockItem}.
-	 * @param notifySelf If the TE should blockupdate itself
-	 * @return The previous stack (may be {@link ItemStack#EMPTY})
-	 */
-	public ItemStack setStack(ItemStack stack, boolean notifySelf){
+	public boolean setStack(ItemStack stack){
 		ItemStack last=this.stack;
 		if(stack == null || stack.isEmpty()){
 			this.stack=ItemStack.EMPTY;
@@ -83,19 +72,16 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		}else if(stack.getItem() instanceof BlockItem){
 			this.stack=stack;
 		}
-		boolean changed=this.stack != last;
+		
+		boolean changed=!ItemStack.areItemStacksEqual(this.stack, last);
+		
+		updateLazy(changed);
 		
 		if(changed){
-			updateLazy(changed);
-			
 			markDirty();
-			
-			if(notifySelf){
-				getWorldNonnull().notifyBlockUpdate(this.pos, getBlockState(), getBlockState(), 3);
-			}
 		}
 		
-		return last;
+		return changed;
 	}
 	
 	@Override
@@ -110,7 +96,8 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		this.facing=Direction.byName(compound.getString("facing"));
 		ItemStack last=this.stack;
 		this.stack=ItemStack.read(compound.getCompound("stack"));
-		boolean changed=this.stack != last;
+		
+		boolean changed=!ItemStack.areItemStacksEqual(this.stack, last);
 		
 		updateLazy(changed);
 		
@@ -128,6 +115,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 					setFacing(Direction.NORTH);
 					Block.spawnAsEntity(world, pos, getStack());
 					setStack(ItemStack.EMPTY);
+					
 					world.setBlockState(pos, state.with(BlockPostBase.HIDDEN, false));
 				}
 				
