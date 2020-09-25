@@ -1,6 +1,7 @@
 package twistedgate.immersiveposts;
 
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,6 +9,9 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +22,7 @@ import twistedgate.immersiveposts.common.blocks.BlockMetalFence;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;
 import twistedgate.immersiveposts.common.items.IPOItemBase;
+import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 /**
@@ -29,6 +34,8 @@ public class IPOContent{
 	
 	public static final ArrayList<Block> BLOCKS=new ArrayList<>(0);
 	public static final ArrayList<Item> ITEMS=new ArrayList<>(0);
+	
+	public static TileEntityType<PostBaseTileEntity> TE_POSTBASE;
 	
 	public static class Blocks{
 		public static BlockPostBase post_Base;
@@ -145,5 +152,21 @@ public class IPOContent{
 				throw e;
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public static void registerTileEntities(RegistryEvent.Register<TileEntityType<?>> event){
+		try{
+			event.getRegistry().register(TE_POSTBASE=create("postbase", PostBaseTileEntity::new, Blocks.post_Base));
+		}catch(Throwable e){
+			log.error("Failed to register postbase tileentity. {}", e.getMessage());
+			throw e;
+		}
+	}
+	
+	private static <T extends TileEntity> TileEntityType<T> create(String name, Supplier<T> factory, Block... validBlocks){
+		TileEntityType<T> te=TileEntityType.Builder.create(factory, validBlocks).build(null);
+		te.setRegistryName(new ResourceLocation(IPOMod.ID, name));
+		return te;
 	}
 }

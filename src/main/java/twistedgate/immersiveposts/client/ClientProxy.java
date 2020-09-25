@@ -1,24 +1,47 @@
 package twistedgate.immersiveposts.client;
 
+import static blusunrize.immersiveengineering.client.ClientUtils.mc;
+
 import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.lib.manual.ManualElementTable;
 import blusunrize.lib.manual.ManualEntry;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.Tree.InnerNode;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
 
 /**
  * @author TwistedGate
  */
-@Mod.EventBusSubscriber(value=Dist.CLIENT, modid=IPOMod.ID, bus=Bus.MOD)
 public class ClientProxy extends CommonProxy{
+	
+	@Override
+	public void setup(){
+		super.setup();
+		
+		ClientEventHandler handler=new ClientEventHandler();
+		((IReloadableResourceManager)mc().getResourceManager()).addReloadListener(handler);
+		
+		Minecraft.getInstance().getBlockColors().register(new ColorHandler(), IPOContent.Blocks.post_Base);
+	}
+	
+	@Override
+	public void construct(){
+		super.construct();
+		
+		if(Minecraft.getInstance()!=null){
+			ModelLoaderRegistry.registerLoader(PostBaseLoader.LOCATION, new PostBaseLoader());
+		}
+	}
+	
 	@Override
 	public void completed(){
 		setupManualPage();

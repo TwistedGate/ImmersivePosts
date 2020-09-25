@@ -92,12 +92,14 @@ public enum EnumPostMaterial implements IStringSerializable{
 		return this.name;
 	}
 	
-	private static final Material WOOD_LIKE	=new Material(MaterialColor.WOOD, false, true, true, true, false, false, PushReaction.BLOCK);
-	private static final Material STONE_LIKE=new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
-	private static final Material METAL_LIKE=new Material(MaterialColor.IRON, false, true, true, true, false, false, PushReaction.BLOCK);
+	private static final Material WOOD_LIKE	=material(MaterialColor.WOOD, false, true, true, true, false, false, PushReaction.BLOCK);
+	private static final Material STONE_LIKE=material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
+	private static final Material METAL_LIKE=material(MaterialColor.IRON, false, true, true, true, false, false, PushReaction.BLOCK);
 	
 	public Block.Properties getProperties(){
-		if(this.props==null) this.props=blockPropertiesFrom(this);
+		if(this.props==null){
+			this.props=blockPropertiesFrom(this);
+		}
 		return this.props;
 	}
 	
@@ -131,11 +133,14 @@ public enum EnumPostMaterial implements IStringSerializable{
 						.hardnessAndResistance(3.0F, 15.0F)
 						.notSolid()
 						.setBlocksVision((s,r,p)->false);
+				
+				if(postMaterial==EnumPostMaterial.URANIUM){
+					prop.setLightLevel(s->8);
+				}
+				
 				break;
 			}
 		}
-		
-		prop.setLightLevel(s->postMaterial==EnumPostMaterial.URANIUM?8:0);
 		
 		return prop;
 	}
@@ -164,6 +169,8 @@ public enum EnumPostMaterial implements IStringSerializable{
 	}
 	
 	public static EnumPostMaterial getFrom(ItemStack stack){
+		if(stack==null || stack.isEmpty()) return null;
+		
 		for(EnumPostMaterial mat:values()){
 			if(stack.isItemEqual(mat.getItemStack())) return mat;
 		}
@@ -181,5 +188,10 @@ public enum EnumPostMaterial implements IStringSerializable{
 		}
 		
 		return false;
+	}
+	
+	/** Sources are not being read properly for some reason, so this is just so i know what the hell is what */
+	private static Material material(MaterialColor color, boolean isLiquid, boolean isSolid, boolean blocksMovement, boolean isOpaque, boolean flammable, boolean replaceable, PushReaction pushReaction){
+		return new Material(color, isLiquid, isSolid, blocksMovement, isOpaque, flammable, replaceable, pushReaction);
 	}
 }

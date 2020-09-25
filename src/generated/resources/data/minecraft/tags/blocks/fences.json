@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "immersiveposts:fence_iron",
+    "immersiveposts:fence_gold",
+    "immersiveposts:fence_copper",
+    "immersiveposts:fence_lead",
+    "immersiveposts:fence_silver",
+    "immersiveposts:fence_nickel",
+    "immersiveposts:fence_constantan",
+    "immersiveposts:fence_electrum",
+    "immersiveposts:fence_uranium"
+  ]
+}
