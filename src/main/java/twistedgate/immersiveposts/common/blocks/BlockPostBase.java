@@ -3,7 +3,6 @@ package twistedgate.immersiveposts.common.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.lwjgl.glfw.GLFW;
@@ -166,114 +165,74 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
+		TileEntity te=worldIn.getTileEntity(pos);
+		if(te instanceof PostBaseTileEntity){
+			if(((PostBaseTileEntity)te).interact(state, worldIn, pos, playerIn, handIn)){
+				return ActionResultType.SUCCESS;
+			}
+		}
+		
 		if(!worldIn.isRemote){
 			ItemStack held=playerIn.getHeldItemMainhand();
 			
-			if(held==ItemStack.EMPTY){
-				if(playerIn.isSneaking()){
-					TileEntity te=worldIn.getTileEntity(pos);
-					if(te instanceof PostBaseTileEntity){
-						PostBaseTileEntity base=(PostBaseTileEntity)te;
-						if(!base.getStack().isEmpty()){
-							base.setFacing(Direction.NORTH);
-							Block.spawnAsEntity(worldIn, pos, base.getStack());
-							base.setStack(ItemStack.EMPTY);
-							worldIn.setBlockState(pos, state.with(HIDDEN, false));
+			if(EnumPostMaterial.isValidItem(held)){
+				if(!worldIn.isAirBlock(pos.offset(Direction.UP))){
+					BlockState aboveState=worldIn.getBlockState(pos.offset(Direction.UP));
+					Block b=aboveState.getBlock();
+					
+					if(b instanceof BlockPost){
+						ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
+						if(!held.isItemEqual(tmp)){
+							playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", tmp.getDisplayName()), true);
+							return ActionResultType.SUCCESS;
 						}
-						
-						return ActionResultType.SUCCESS;
 					}
 				}
 				
-			}else{
-				if(EnumPostMaterial.isValidItem(held)){
-					if(!worldIn.isAirBlock(pos.offset(Direction.UP))){
-						BlockState aboveState=worldIn.getBlockState(pos.offset(Direction.UP));
-						Block b=aboveState.getBlock();
-						
-						if(b instanceof BlockPost){
-							ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
-							if(!held.isItemEqual(tmp)){
-								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", tmp.getDisplayName()), true);
-								return ActionResultType.SUCCESS;
+				for(int y=1;y<(worldIn.getActualHeight()-pos.getY());y++){
+					BlockPos nPos=pos.add(0,y,0);
+					
+					BlockState nState=worldIn.getBlockState(nPos);
+					if(nState.getBlock() instanceof BlockPost){
+						EnumPostType type=nState.get(BlockPost.TYPE);
+						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && nState.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
+							return ActionResultType.SUCCESS;
+						}else{
+							nState=worldIn.getBlockState(nPos.offset(Direction.UP));
+							if(nState.getBlock() instanceof BlockPost){
+								type=nState.get(BlockPost.TYPE);
+								if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
+									return ActionResultType.SUCCESS;
+								}
 							}
 						}
 					}
 					
-					for(int y=1;y<(worldIn.getActualHeight()-pos.getY());y++){
-						BlockPos nPos=pos.add(0,y,0);
+					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
+						BlockState fb=EnumPostMaterial.getPostStateFrom(held)
+								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
 						
-						BlockState nState=worldIn.getBlockState(nPos);
-						if(nState.getBlock() instanceof BlockPost){
-							EnumPostType type=nState.get(BlockPost.TYPE);
-							if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && nState.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
-								return ActionResultType.SUCCESS;
-							}else{
-								nState=worldIn.getBlockState(nPos.offset(Direction.UP));
-								if(nState.getBlock() instanceof BlockPost){
-									type=nState.get(BlockPost.TYPE);
-									if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
-										return ActionResultType.SUCCESS;
-									}
-								}
-							}
-						}
-						
-						if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
-							BlockState fb=EnumPostMaterial.getPostStateFrom(held)
-									.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
-							
-							if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb.updatePostPlacement(null, null, worldIn, nPos, null))){
-								if(!playerIn.isCreative()){
-									held.shrink(1);
-								}
-							}
-							return ActionResultType.SUCCESS;
-							
-						}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof BlockPost)){
-							return ActionResultType.SUCCESS;
-						}
-					}
-				}
-				
-				if(held.getItem() instanceof BlockItem && (held.getItem() instanceof BlockItem && acceptedHidingBlock(Block.getBlockFromItem(held.getItem()), worldIn, pos))){
-					TileEntity te=worldIn.getTileEntity(pos);
-					if(te instanceof PostBaseTileEntity){
-						PostBaseTileEntity base=(PostBaseTileEntity)te;
-						
-						if(base.getStack().isEmpty()){
-							base.setFacing(playerIn.getHorizontalFacing().getOpposite());
-							
-							ItemStack copy=held.copy();
-							copy.setCount(1);
-							base.setStack(copy);
-							
+						if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb.updatePostPlacement(null, null, worldIn, nPos, null))){
 							if(!playerIn.isCreative()){
 								held.shrink(1);
 							}
-							
-							worldIn.setBlockState(pos, state.with(HIDDEN, true).with(WATERLOGGED, false));
-							
-							return ActionResultType.SUCCESS;
 						}
+						return ActionResultType.SUCCESS;
+						
+					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof BlockPost)){
+						return ActionResultType.SUCCESS;
 					}
 				}
 			}
 		}else{
 			// Client Stuff here
 			ItemStack held=playerIn.getHeldItemMainhand();
-			if((playerIn.isSneaking() && held==ItemStack.EMPTY) || EnumPostMaterial.isValidItem(held) || (held.getItem() instanceof BlockItem && acceptedHidingBlock(Block.getBlockFromItem(held.getItem()), worldIn, pos))){
+			if(EnumPostMaterial.isValidItem(held)){
 				return ActionResultType.SUCCESS;
 			}
 		}
 		
 		return ActionResultType.FAIL;
-	}
-	
-	/** Used to check wether the base can hide within a certain block */
-	private boolean acceptedHidingBlock(@Nonnull Block block, @Nonnull IBlockReader reader, @Nonnull BlockPos pos){
-		BlockState state=block.getDefaultState();
-		return block!=Blocks.AIR && state.isNormalCube(reader, pos) && state.isOpaqueCube(reader, pos);
 	}
 	
 	
