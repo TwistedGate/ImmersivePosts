@@ -15,7 +15,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 
-import blusunrize.immersiveengineering.api.ApiUtils;
+import blusunrize.immersiveengineering.api.utils.QuadTransformer;
 import blusunrize.immersiveengineering.client.ClientUtils;
 import blusunrize.immersiveengineering.client.utils.CombinedModelData;
 import blusunrize.immersiveengineering.client.utils.SinglePropertyModelData;
@@ -26,7 +26,6 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -39,8 +38,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.ILightReader;
+import net.minecraft.util.math.vector.TransformationMatrix;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
@@ -78,7 +78,7 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
-	public IModelData getModelData(@Nonnull ILightReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData){
+	public IModelData getModelData(IBlockDisplayReader world, BlockPos pos, BlockState state, IModelData tileData){
 		List<IModelData> list=new ArrayList<>();
 		list.add(tileData);
 		
@@ -122,9 +122,9 @@ public class PostBaseModel extends IPOBakedModel{
 	private static class SpecialPostBaseModel extends PostBaseModel{
 		private static final Random RANDOM=new Random();
 		
-		private static final Vec3d[] verts=new Vec3d[]{
-				new Vec3d(0.25F, 1.001F, 0.25F), new Vec3d(0.25F, 1.001F, 0.75F),
-				new Vec3d(0.75F, 1.001F, 0.75F), new Vec3d(0.75F, 1.001F, 0.25F),
+		private static final Vector3d[] verts=new Vector3d[]{
+				new Vector3d(0.25F, 1.001F, 0.25F), new Vector3d(0.25F, 1.001F, 0.75F),
+				new Vector3d(0.75F, 1.001F, 0.75F), new Vector3d(0.75F, 1.001F, 0.25F),
 		};
 		
 		private static final double[] uvs=new double[]{
@@ -154,7 +154,7 @@ public class PostBaseModel extends IPOBakedModel{
 				return v;
 			};
 			
-			Function<BakedQuad, BakedQuad> tintTransformer=ApiUtils.transformQuad(TransformationMatrix.identity(), colorMul);
+			Function<BakedQuad, BakedQuad> tintTransformer=new QuadTransformer(TransformationMatrix.identity(), colorMul);
 			IBakedModel model=Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(key.state);
 			
 			for(Direction side:Direction.values()){

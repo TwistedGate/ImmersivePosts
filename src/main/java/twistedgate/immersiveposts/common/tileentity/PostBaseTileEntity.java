@@ -92,7 +92,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	}
 	
 	@Override
-	protected void readCustom(CompoundNBT compound){
+	protected void readCustom(BlockState state, CompoundNBT compound){
 		this.facing=Direction.byName(compound.getString("facing"));
 		ItemStack last=this.stack;
 		this.stack=ItemStack.read(compound.getCompound("stack"));

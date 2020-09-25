@@ -5,12 +5,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ILightReader;
+import net.minecraft.world.IBlockDisplayReader;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
 public class ColorHandler implements IBlockColor{
 	@Override
-	public int getColor(BlockState state, ILightReader world, BlockPos pos, int index){
+	public int getColor(BlockState state, IBlockDisplayReader world, BlockPos pos, int index){
 		if(index>=0){
 			TileEntity te=world.getTileEntity(pos);
 			if(te instanceof PostBaseTileEntity && !((PostBaseTileEntity)te).getStack().isEmpty()){

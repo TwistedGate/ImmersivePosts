@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -27,8 +28,8 @@ public abstract class IPOTileEntityBase extends TileEntity{
 	}
 	
 	@Override
-	public void handleUpdateTag(CompoundNBT tag){
-		read(tag);
+	public void handleUpdateTag(BlockState state, CompoundNBT tag){
+		read(state, tag);
 	}
 	
 	@Override
@@ -40,7 +41,7 @@ public abstract class IPOTileEntityBase extends TileEntity{
 	
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
-		read(pkt.getNbtCompound());
+		read(getBlockState(), pkt.getNbtCompound());
 	}
 	
 	@Override
@@ -51,12 +52,12 @@ public abstract class IPOTileEntityBase extends TileEntity{
 	}
 	
 	@Override
-	public void read(CompoundNBT compound){
-		super.read(compound);
-		readCustom(compound);
+	public void read(BlockState state, CompoundNBT compound){
+		super.read(state, compound);
+		readCustom(state, compound);
 	}
 	
 	protected abstract CompoundNBT writeCustom(CompoundNBT compound);
 	
-	protected abstract void readCustom(CompoundNBT compound);
+	protected abstract void readCustom(BlockState state, CompoundNBT compound);
 }
