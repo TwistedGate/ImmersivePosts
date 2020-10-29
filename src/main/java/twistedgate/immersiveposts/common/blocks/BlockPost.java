@@ -2,9 +2,7 @@ package twistedgate.immersiveposts.common.blocks;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -14,6 +12,8 @@ import com.mojang.serialization.MapCodec;
 
 import blusunrize.immersiveengineering.api.IPostBlock;
 import blusunrize.immersiveengineering.common.util.Utils;
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectArrayMap;
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -42,6 +42,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -497,7 +498,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 		
 		private static final VoxelShape X_BOUNDS=VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
 		private static final VoxelShape Z_BOUNDS=VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
-		private static final Map<Integer, VoxelShape> shapeCache=new HashMap<>();
+		private static final Byte2ObjectMap<VoxelShape> armMap=new Byte2ObjectArrayMap<>();
+		private static final Byte2ObjectMap<VoxelShape> defaultMap=new Byte2ObjectArrayMap<>();
 		static VoxelShape stateBounds(BlockState state){
 			EnumPostType type=state.get(TYPE);
 			switch(type){
@@ -516,22 +518,22 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 						If Bit5 and Bit6 are both 1 then its EnumFlipState.BOTH
 						By default it's EnumFlipState.UP
 					 */
-					int id=0x00;
+					byte bid=0x00;
 					
 					switch(flipstate){
-						case UP:	id=0x10; break;
-						case DOWN:	id=0x20; break;
-						case BOTH:	id=0x30; break;
+						case UP:	bid=0x10; break;
+						case DOWN:	bid=0x20; break;
+						case BOTH:	bid=0x30; break;
 					}
 					
 					switch(dir){
-						case WEST:	id|=0x08;
-						case SOUTH:	id|=0x04;
-						case EAST:	id|=0x02;
-						default:	id|=0x01; // Basicly default to North
+						case WEST:	bid|=0x08; break;
+						case SOUTH:	bid|=0x04; break;
+						case EAST:	bid|=0x02; break;
+						default:	bid|=0x01; // Basicly default to North
 					}
 					
-					if(!shapeCache.containsKey(id)){
+					if(!armMap.containsKey(bid)){
 						double minY=0.0;
 						double maxY=1.0;
 						switch(flipstate){
@@ -546,27 +548,40 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 						double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
 						
 						VoxelShape shape=VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
-						shapeCache.put(id, shape);
+						armMap.put(bid, shape);
 						return shape;
 					}
 					
-					return shapeCache.get(id);
+					return armMap.get(bid);
 				}
 				case EMPTY:{
-					if(state.get(FACING).getAxis()==Axis.X)
+					if(state.get(FACING).getAxis()==Axis.X){
 						return X_BOUNDS;
+					}
 					
 					return Z_BOUNDS;
 				}
 				default:{
-					VoxelShape shape=POST_SHAPE;
+					byte bid=0x00;
+					if(state.get(LPARM_NORTH)) bid|=0x01;
+					if(state.get(LPARM_SOUTH)) bid|=0x02;
+					if(state.get(LPARM_EAST))  bid|=0x04;
+					if(state.get(LPARM_WEST))  bid|=0x08;
 					
-					if(state.get(LPARM_NORTH)) shape=VoxelShapes.or(shape, LPARM_NORTH_BOUNDS);
-					if(state.get(LPARM_SOUTH)) shape=VoxelShapes.or(shape, LPARM_SOUTH_BOUNDS);
-					if(state.get(LPARM_EAST)) shape=VoxelShapes.or(shape, LPARM_EAST_BOUNDS);
-					if(state.get(LPARM_WEST)) shape=VoxelShapes.or(shape, LPARM_WEST_BOUNDS);
+					if(!defaultMap.containsKey(bid)){
+						VoxelShape shape=POST_SHAPE;
+						
+						if(state.get(LPARM_NORTH)) shape=VoxelShapes.combine(shape, LPARM_NORTH_BOUNDS, IBooleanFunction.OR);
+						if(state.get(LPARM_SOUTH)) shape=VoxelShapes.combine(shape, LPARM_SOUTH_BOUNDS, IBooleanFunction.OR);
+						if(state.get(LPARM_EAST))  shape=VoxelShapes.combine(shape, LPARM_EAST_BOUNDS, IBooleanFunction.OR);
+						if(state.get(LPARM_WEST))  shape=VoxelShapes.combine(shape, LPARM_WEST_BOUNDS, IBooleanFunction.OR);
+						
+						shape=shape.simplify();
+						defaultMap.put(bid, shape);
+						return shape;
+					}
 					
-					return shape;
+					return defaultMap.get(bid);
 				}
 			}
 		}
