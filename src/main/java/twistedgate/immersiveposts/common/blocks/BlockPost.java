@@ -7,9 +7,6 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.MapCodec;
-
 import blusunrize.immersiveengineering.api.IPostBlock;
 import blusunrize.immersiveengineering.common.util.Utils;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectArrayMap;
@@ -30,14 +27,12 @@ import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
-import net.minecraft.state.Property;
-import net.minecraft.state.StateContainer;
+import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -86,7 +81,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 	public static final EnumProperty<EnumFlipState> FLIPSTATE=EnumProperty.create("flipstate", EnumFlipState.class);
 	
 	protected final EnumPostMaterial postMaterial;
-	private StateContainer<Block, BlockState> altStateContainer=null;
 	public BlockPost(EnumPostMaterial postMaterial){
 		super(postMaterial.getString(), postMaterial.getProperties());
 		this.postMaterial=postMaterial;
@@ -103,23 +97,16 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 				);
 	}
 	
-	public final EnumPostMaterial getPostMaterial(){
-		return this.postMaterial;
+	@Override
+	protected void fillStateContainer(Builder<Block, BlockState> builder){
+		builder.add(
+				WATERLOGGED, FACING, FLIPSTATE, TYPE,
+				LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
+				);
 	}
 	
-	@Override
-	public StateContainer<Block, BlockState> getStateContainer(){
-		if(this.altStateContainer==null){
-			StateContainer.Builder<Block, BlockState> builder=new StateContainer.Builder<>(this);
-			builder.add(
-					WATERLOGGED, FACING, FLIPSTATE, TYPE,
-					LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
-					);
-			
-			this.altStateContainer=builder.func_235882_a_(Block::getDefaultState, PostState::new); // There has to be a better way for this
-		}
-		
-		return this.altStateContainer;
+	public final EnumPostMaterial getPostMaterial(){
+		return this.postMaterial;
 	}
 	
 	@Override
@@ -147,7 +134,23 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 		if(state.get(WATERLOGGED)){
 			world.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
-		return state;
+		
+		if(state.get(TYPE).id()>1){
+			return state;
+			/*
+			 * canConnect is rather time consuming, so this is an attempt to speed this up.
+			 */
+		}
+		
+		boolean b0=canConnect(world, pos, Direction.NORTH);
+		boolean b1=canConnect(world, pos, Direction.EAST);
+		boolean b2=canConnect(world, pos, Direction.SOUTH);
+		boolean b3=canConnect(world, pos, Direction.WEST);
+		
+		return state.with(LPARM_NORTH, b0)
+					.with(LPARM_EAST, b1)
+					.with(LPARM_SOUTH, b2)
+					.with(LPARM_WEST, b3);
 	}
 	
 	@Override
@@ -179,6 +182,12 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 				worldIn.addParticle(URAN_PARTICLE, x,y,z, 0.0, 0.0, 0.0);
 			}
 		}
+	}
+	
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side){
+		return false;
 	}
 	
 	@Override
@@ -301,6 +310,194 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 		return ActionResultType.FAIL;
 	}
 	
+	@Override
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
+		if(world.isRemote) return;
+		
+		updateState(state, world, pos);
+	}
+	
+	private void updateState(BlockState stateIn, World world, BlockPos pos){
+		EnumPostType thisType=stateIn.get(TYPE);
+		
+		if(thisType.id()<=1){ // If POST (0) or POST_TOP (1)
+			BlockState state=world.getBlockState(pos.offset(Direction.DOWN));
+			if(state.getBlock()==Blocks.AIR || state.getBlock()==Blocks.WATER){
+				Block.spawnDrops(stateIn, world, pos);
+				replaceSelf(stateIn, world, pos);
+				return;
+			}
+		}
+		
+		BlockState aboveState=world.getBlockState(pos.offset(Direction.UP));
+		Block aboveBlock=aboveState.getBlock();
+		switch(thisType){
+			case POST:{
+				if(!(aboveBlock instanceof BlockPost)){
+					world.setBlockState(pos, stateIn.with(TYPE, EnumPostType.POST_TOP));
+				}
+				return;
+			}
+			case POST_TOP:{
+				if((aboveBlock instanceof BlockPost) && aboveState.get(TYPE)==EnumPostType.POST_TOP){
+					world.setBlockState(pos, stateIn.with(TYPE, EnumPostType.POST));
+				}
+				return;
+			}
+			case ARM:{
+				Direction f=stateIn.get(FACING).getOpposite();
+				BlockState state=world.getBlockState(pos.offset(f));
+				
+				if(state!=null && !(state.getBlock() instanceof BlockPost)){
+					replaceSelf(stateIn, world, pos);
+				}else{
+					world.setBlockState(pos, stateIn.with(FLIPSTATE, getFlipState(world, pos)));
+				}
+				
+				return;
+			}
+			case ARM_DOUBLE:{
+				Direction f=stateIn.get(FACING).getOpposite();
+				BlockState state=world.getBlockState(pos.offset(f));
+				if(state!=null && !(state.getBlock() instanceof BlockPost)){
+					replaceSelf(stateIn, world, pos);
+				}
+				
+				return;
+			}
+			case EMPTY:{
+				BlockState state=world.getBlockState(pos.offset(stateIn.get(FACING).getOpposite()));
+				if(state!=null && !(state.getBlock() instanceof BlockPost)){
+					replaceSelf(stateIn, world, pos);
+					return;
+				}
+				
+				state=world.getBlockState(pos.offset(stateIn.get(FACING)));
+				if(state.getBlock()==Blocks.AIR || state.getBlock()==Blocks.WATER){
+					replaceSelf(stateIn, world, pos);
+				}
+			}
+		}
+	}
+	
+	/** Replaces itself with Air or with Water if Waterlogged. (Convenience Method) */
+	private void replaceSelf(BlockState stateIn, World world, BlockPos pos){
+		world.setBlockState(pos, stateIn.get(WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
+	}
+	
+	private EnumFlipState getFlipState(IBlockReader world, BlockPos pos){
+		BlockState aboveState=world.getBlockState(pos.offset(Direction.UP));
+		BlockState belowState=world.getBlockState(pos.offset(Direction.DOWN));
+		
+		Block aboveBlock=aboveState.getBlock();
+		Block belowBlock=belowState.getBlock();
+		
+		boolean up=BlockPost.canConnect(world, pos, Direction.UP) && ((aboveBlock instanceof BlockPost)?aboveState.get(TYPE)!=EnumPostType.ARM:true);
+		boolean down=BlockPost.canConnect(world, pos, Direction.DOWN) && ((belowBlock instanceof BlockPost)?belowState.get(TYPE)!=EnumPostType.ARM:true);
+		
+		EnumFlipState flipState;
+		if(up && down) flipState=EnumFlipState.BOTH;
+		else if(down) flipState=EnumFlipState.DOWN;
+		else flipState=EnumFlipState.UP;
+		
+		return flipState;
+	}
+	
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
+		return stateBounds(state);
+	}
+	
+	private static final VoxelShape X_BOUNDS=VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
+	private static final VoxelShape Z_BOUNDS=VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
+	private static final Byte2ObjectMap<VoxelShape> armMap=new Byte2ObjectArrayMap<>();
+	private static final Byte2ObjectMap<VoxelShape> defaultMap=new Byte2ObjectArrayMap<>();
+	private static VoxelShape stateBounds(BlockState state){
+		EnumPostType type=state.get(TYPE);
+		switch(type){
+			case ARM:case ARM_DOUBLE:{
+				Direction dir=state.get(FACING);
+				EnumFlipState flipstate=state.get(FLIPSTATE);
+				
+				/*
+					Bit-6 = FlipDown
+					Bit-5 = FlipUp
+					Bit-4 = West
+					Bit-3 = South
+					Bit-2 = East
+					Bit-1 = North
+					
+					If Bit5 and Bit6 are both 1 then its EnumFlipState.BOTH
+					By default it's EnumFlipState.UP
+				 */
+				byte bid=0x00;
+				
+				switch(flipstate){
+					case UP:	bid=0x10; break;
+					case DOWN:	bid=0x20; break;
+					case BOTH:	bid=0x30; break;
+				}
+				
+				switch(dir){
+					case WEST:	bid|=0x08; break;
+					case SOUTH:	bid|=0x04; break;
+					case EAST:	bid|=0x02; break;
+					default:	bid|=0x01; // Basicly default to North
+				}
+				
+				if(!armMap.containsKey(bid)){
+					double minY=0.0;
+					double maxY=1.0;
+					switch(flipstate){
+						case UP:   minY=0.34375; maxY=1.0; break;
+						case DOWN: minY=0.0; maxY=0.65625; break;
+						case BOTH: minY=0.0; maxY=1.0; break;
+					}
+					
+					double minX=(dir==Direction.EAST) ?0.0:0.3125;
+					double maxX=(dir==Direction.WEST) ?1.0:0.6875;
+					double minZ=(dir==Direction.SOUTH)?0.0:0.3125;
+					double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
+					
+					VoxelShape shape=VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
+					armMap.put(bid, shape);
+					return shape;
+				}
+				
+				return armMap.get(bid);
+			}
+			case EMPTY:{
+				if(state.get(FACING).getAxis()==Axis.X){
+					return X_BOUNDS;
+				}
+				
+				return Z_BOUNDS;
+			}
+			default:{
+				byte bid=0x00;
+				if(state.get(LPARM_NORTH)) bid|=0x01;
+				if(state.get(LPARM_SOUTH)) bid|=0x02;
+				if(state.get(LPARM_EAST))  bid|=0x04;
+				if(state.get(LPARM_WEST))  bid|=0x08;
+				
+				if(!defaultMap.containsKey(bid)){
+					VoxelShape shape=POST_SHAPE;
+					
+					if(state.get(LPARM_NORTH)) shape=VoxelShapes.combine(shape, LPARM_NORTH_BOUNDS, IBooleanFunction.OR);
+					if(state.get(LPARM_SOUTH)) shape=VoxelShapes.combine(shape, LPARM_SOUTH_BOUNDS, IBooleanFunction.OR);
+					if(state.get(LPARM_EAST))  shape=VoxelShapes.combine(shape, LPARM_EAST_BOUNDS, IBooleanFunction.OR);
+					if(state.get(LPARM_WEST))  shape=VoxelShapes.combine(shape, LPARM_WEST_BOUNDS, IBooleanFunction.OR);
+					
+					shape=shape.simplify();
+					defaultMap.put(bid, shape);
+					return shape;
+				}
+				
+				return defaultMap.get(bid);
+			}
+		}
+	}
+	
 	
 	public static boolean canConnect(IBlockReader worldIn, BlockPos posIn, Direction facingIn){
 		BlockPos nPos=posIn.offset(facingIn);
@@ -352,238 +549,5 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 		}
 		
 		return false;
-	}
-	
-	public static class PostState extends BlockState{
-		public PostState(Block block, ImmutableMap<Property<?>, Comparable<?>> propertiesToValueMap, MapCodec<BlockState> codec){
-			super(block, propertiesToValueMap, codec);
-		}
-		
-		@Override
-		public void onBlockAdded(World worldIn, BlockPos pos, BlockState oldState, boolean isMoving){}
-		
-		@Override
-		public BlockState updatePostPlacement(Direction face, BlockState queried, IWorld world, BlockPos pos, BlockPos offsetPos){
-			if(this.get(TYPE).id()>1){
-				return this;
-				/*
-				 * canConnect is rather time consuming, so this is an attempt to speed this up.
-				 */
-			}
-			
-			boolean b0=canConnect(world, pos, Direction.NORTH);
-			boolean b1=canConnect(world, pos, Direction.EAST);
-			boolean b2=canConnect(world, pos, Direction.SOUTH);
-			boolean b3=canConnect(world, pos, Direction.WEST);
-			
-			return this.with(LPARM_NORTH, b0)
-						.with(LPARM_EAST, b1)
-						.with(LPARM_SOUTH, b2)
-						.with(LPARM_WEST, b3);
-		}
-		
-		@Override // Again, just no..
-		public BlockState rotate(Rotation rot){
-			return this;
-		}
-		
-		@Override
-		@OnlyIn(Dist.CLIENT)
-		public boolean isSideInvisible(BlockState state, Direction face){
-			return false;
-		}
-		
-		@Override
-		public VoxelShape getShape(IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-			return stateBounds(this);
-		}
-		
-		@Override
-		public VoxelShape getCollisionShape(IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-			return getShape(worldIn, pos, context);
-		}
-		
-		@Override
-		public void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
-			if(world.isRemote) return;
-			
-			updateState(world, pos);
-		}
-		
-		private void updateState(World world, BlockPos pos){
-			EnumPostType thisType=this.get(TYPE);
-			
-			if(thisType.id()<=1){ // If POST (0) or POST_TOP (1)
-				BlockState state=world.getBlockState(pos.offset(Direction.DOWN));
-				if(state.getBlock()==Blocks.AIR || state.getBlock()==Blocks.WATER){
-					Block.spawnDrops(this, world, pos);
-					replaceSelf(world, pos);
-					return;
-				}
-			}
-			
-			BlockState aboveState=world.getBlockState(pos.offset(Direction.UP));
-			Block aboveBlock=aboveState.getBlock();
-			switch(thisType){
-				case POST:{
-					if(!(aboveBlock instanceof BlockPost)){
-						world.setBlockState(pos, this.with(TYPE, EnumPostType.POST_TOP));
-					}
-					return;
-				}
-				case POST_TOP:{
-					if((aboveBlock instanceof BlockPost) && aboveState.get(TYPE)==EnumPostType.POST_TOP){
-						world.setBlockState(pos, this.with(TYPE, EnumPostType.POST));
-					}
-					return;
-				}
-				case ARM:{
-					Direction f=this.get(FACING).getOpposite();
-					BlockState state=world.getBlockState(pos.offset(f));
-					
-					if(state!=null && !(state.getBlock() instanceof BlockPost)){
-						replaceSelf(world, pos);
-					}else{
-						world.setBlockState(pos, this.with(FLIPSTATE, getFlipState(world, pos)));
-					}
-					
-					return;
-				}
-				case ARM_DOUBLE:{
-					Direction f=this.get(FACING).getOpposite();
-					BlockState state=world.getBlockState(pos.offset(f));
-					if(state!=null && !(state.getBlock() instanceof BlockPost)){
-						replaceSelf(world, pos);
-					}
-					
-					return;
-				}
-				case EMPTY:{
-					BlockState state=world.getBlockState(pos.offset(this.get(FACING).getOpposite()));
-					if(state!=null && !(state.getBlock() instanceof BlockPost)){
-						replaceSelf(world, pos);
-						return;
-					}
-					
-					state=world.getBlockState(pos.offset(this.get(FACING)));
-					if(state.getBlock()==Blocks.AIR || state.getBlock()==Blocks.WATER){
-						replaceSelf(world, pos);
-					}
-				}
-			}
-		}
-		
-		/** Replaces itself with Air or with Water if Waterlogged. (Convenience Method) */
-		private void replaceSelf(World world, BlockPos pos){
-			world.setBlockState(pos, this.get(WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
-		}
-		
-		private EnumFlipState getFlipState(IBlockReader world, BlockPos pos){
-			BlockState aboveState=world.getBlockState(pos.offset(Direction.UP));
-			BlockState belowState=world.getBlockState(pos.offset(Direction.DOWN));
-			
-			Block aboveBlock=aboveState.getBlock();
-			Block belowBlock=belowState.getBlock();
-			
-			boolean up=BlockPost.canConnect(world, pos, Direction.UP) && ((aboveBlock instanceof BlockPost)?aboveState.get(TYPE)!=EnumPostType.ARM:true);
-			boolean down=BlockPost.canConnect(world, pos, Direction.DOWN) && ((belowBlock instanceof BlockPost)?belowState.get(TYPE)!=EnumPostType.ARM:true);
-			
-			EnumFlipState flipState;
-			if(up && down) flipState=EnumFlipState.BOTH;
-			else if(down) flipState=EnumFlipState.DOWN;
-			else flipState=EnumFlipState.UP;
-			
-			return flipState;
-		}
-		
-		private static final VoxelShape X_BOUNDS=VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
-		private static final VoxelShape Z_BOUNDS=VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
-		private static final Byte2ObjectMap<VoxelShape> armMap=new Byte2ObjectArrayMap<>();
-		private static final Byte2ObjectMap<VoxelShape> defaultMap=new Byte2ObjectArrayMap<>();
-		static VoxelShape stateBounds(BlockState state){
-			EnumPostType type=state.get(TYPE);
-			switch(type){
-				case ARM:case ARM_DOUBLE:{
-					Direction dir=state.get(FACING);
-					EnumFlipState flipstate=state.get(FLIPSTATE);
-					
-					/*
-						Bit-6 = FlipDown
-						Bit-5 = FlipUp
-						Bit-4 = West
-						Bit-3 = South
-						Bit-2 = East
-						Bit-1 = North
-						
-						If Bit5 and Bit6 are both 1 then its EnumFlipState.BOTH
-						By default it's EnumFlipState.UP
-					 */
-					byte bid=0x00;
-					
-					switch(flipstate){
-						case UP:	bid=0x10; break;
-						case DOWN:	bid=0x20; break;
-						case BOTH:	bid=0x30; break;
-					}
-					
-					switch(dir){
-						case WEST:	bid|=0x08; break;
-						case SOUTH:	bid|=0x04; break;
-						case EAST:	bid|=0x02; break;
-						default:	bid|=0x01; // Basicly default to North
-					}
-					
-					if(!armMap.containsKey(bid)){
-						double minY=0.0;
-						double maxY=1.0;
-						switch(flipstate){
-							case UP:   minY=0.34375; maxY=1.0; break;
-							case DOWN: minY=0.0; maxY=0.65625; break;
-							case BOTH: minY=0.0; maxY=1.0; break;
-						}
-						
-						double minX=(dir==Direction.EAST) ?0.0:0.3125;
-						double maxX=(dir==Direction.WEST) ?1.0:0.6875;
-						double minZ=(dir==Direction.SOUTH)?0.0:0.3125;
-						double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
-						
-						VoxelShape shape=VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
-						armMap.put(bid, shape);
-						return shape;
-					}
-					
-					return armMap.get(bid);
-				}
-				case EMPTY:{
-					if(state.get(FACING).getAxis()==Axis.X){
-						return X_BOUNDS;
-					}
-					
-					return Z_BOUNDS;
-				}
-				default:{
-					byte bid=0x00;
-					if(state.get(LPARM_NORTH)) bid|=0x01;
-					if(state.get(LPARM_SOUTH)) bid|=0x02;
-					if(state.get(LPARM_EAST))  bid|=0x04;
-					if(state.get(LPARM_WEST))  bid|=0x08;
-					
-					if(!defaultMap.containsKey(bid)){
-						VoxelShape shape=POST_SHAPE;
-						
-						if(state.get(LPARM_NORTH)) shape=VoxelShapes.combine(shape, LPARM_NORTH_BOUNDS, IBooleanFunction.OR);
-						if(state.get(LPARM_SOUTH)) shape=VoxelShapes.combine(shape, LPARM_SOUTH_BOUNDS, IBooleanFunction.OR);
-						if(state.get(LPARM_EAST))  shape=VoxelShapes.combine(shape, LPARM_EAST_BOUNDS, IBooleanFunction.OR);
-						if(state.get(LPARM_WEST))  shape=VoxelShapes.combine(shape, LPARM_WEST_BOUNDS, IBooleanFunction.OR);
-						
-						shape=shape.simplify();
-						defaultMap.put(bid, shape);
-						return shape;
-					}
-					
-					return defaultMap.get(bid);
-				}
-			}
-		}
 	}
 }
