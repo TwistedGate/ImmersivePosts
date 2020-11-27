@@ -1,3 +1,10 @@
+---
+name: Bug report
+about: Create a report to help me improve this addon
+title: ''
+labels: 
+assignees: 
+---
 ### Before reporting:
 Please use the search function to make sure an issue hasn't been reported already. This avoids duplicates.  
 Also, please give this issue a descriptive name that contains the game version in the title, eg.: "[1.16] Rightclick on Post Crash"
