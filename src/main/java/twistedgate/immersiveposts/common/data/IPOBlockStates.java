@@ -1,16 +1,18 @@
 package twistedgate.immersiveposts.common.data;
 
-import blusunrize.immersiveengineering.common.data.models.LoadedModelBuilder;
+import blusunrize.immersiveengineering.common.data.models.SpecialModelBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
+import net.minecraftforge.client.model.generators.loaders.OBJLoaderBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.IPOContent.Blocks;
@@ -26,12 +28,10 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  * @author TwistedGate
  */
 public class IPOBlockStates extends BlockStateProvider{
-	final IPOLoadedModels loadedModels;
 	final ExistingFileHelper exFileHelper;
-	public IPOBlockStates(DataGenerator gen, ExistingFileHelper exFileHelper, IPOLoadedModels loadedModels){
+	public IPOBlockStates(DataGenerator gen, ExistingFileHelper exFileHelper){
 		super(gen, IPOMod.ID, exFileHelper);
 		this.exFileHelper=exFileHelper;
-		this.loadedModels=loadedModels;
 	}
 	
 	@Override
@@ -39,8 +39,8 @@ public class IPOBlockStates extends BlockStateProvider{
 		// POST BASE
 		ExistingModelFile postBase=new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper);
 		
-		ModelFile modelFile=this.loadedModels.getBuilder("postbase_covered")
-				.loader(PostBaseLoader.LOCATION);
+		ModelFile modelFile=this.models().getBuilder("postbase_covered")
+				.customLoader(SpecialModelBuilder.forLoader(PostBaseLoader.LOCATION)).end();
 		
 		VariantBlockStateBuilder variantBuilder=getVariantBuilder(Blocks.post_Base);
 		
@@ -60,26 +60,24 @@ public class IPOBlockStates extends BlockStateProvider{
 		}
 		
 		// FENCES
-		fenceBlock(Fences.iron,			"fence/iron",		mcLoc("block/iron_block"));
-		fenceBlock(Fences.gold,			"fence/gold",		mcLoc("block/gold_block"));
+		fenceBlock(Fences.iron,			"fence/iron",			mcLoc("block/iron_block"));
+		fenceBlock(Fences.gold,			"fence/gold",			mcLoc("block/gold_block"));
 		fenceBlock(Fences.copper,		"fence/copper",		ieLoc("block/metal/storage_copper"));
-		fenceBlock(Fences.lead,			"fence/lead",		ieLoc("block/metal/storage_lead"));
+		fenceBlock(Fences.lead,			"fence/lead",			ieLoc("block/metal/storage_lead"));
 		fenceBlock(Fences.silver,		"fence/silver",		ieLoc("block/metal/storage_silver"));
 		fenceBlock(Fences.nickel,		"fence/nickel",		ieLoc("block/metal/storage_nickel"));
 		fenceBlock(Fences.constantan,	"fence/constantan",	ieLoc("block/metal/storage_constantan"));
-		fenceBlock(Fences.electrum,		"fence/electrum",	ieLoc("block/metal/storage_electrum"));
-		fenceBlock(Fences.uranium,		"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
-		
-		loadedModels.backupModels();
+		fenceBlock(Fences.electrum,		"fence/electrum",		ieLoc("block/metal/storage_electrum"));
+		fenceBlock(Fences.uranium,		"fence/uranium",		ieLoc("block/metal/storage_uranium_side"));
 	}
 	
 	private void postStateFor(BlockPost block){
-		LoadedModelBuilder modelArm			=getPostModel(block, "arm");
-		LoadedModelBuilder modelArmTwoWay	=getPostModel(block, "arm_twoway");
-		LoadedModelBuilder modelArmDouble	=getPostModel(block, "arm_double");
-		LoadedModelBuilder modelPost		=getPostModel(block, "post");
-		LoadedModelBuilder modelPostTop		=getPostModel(block, "post_top");
-		LoadedModelBuilder modelPostArm		=getPostModel(block, "post_arm");
+		BlockModelBuilder modelArm			=getPostModel(block, "arm");
+		BlockModelBuilder modelArmTwoWay	=getPostModel(block, "arm_twoway");
+		BlockModelBuilder modelArmDouble	=getPostModel(block, "arm_double");
+		BlockModelBuilder modelPost			=getPostModel(block, "post");
+		BlockModelBuilder modelPostTop		=getPostModel(block, "post_top");
+		BlockModelBuilder modelPostArm		=getPostModel(block, "post_arm");
 		ExistingModelFile modelEmpty		=new ExistingModelFile(modLoc("block/empty"), this.exFileHelper);
 		
 		MultiPartBlockStateBuilder builder=getMultipartBuilder(block);
@@ -155,15 +153,13 @@ public class IPOBlockStates extends BlockStateProvider{
 		
 		return value;
 	}
-	
-	// This is a hybrid of using IE's Builder and Forge's Loader stuff
-	protected static final ResourceLocation FORGE_LOADER=new ResourceLocation("forge","obj");
-	private LoadedModelBuilder getPostModel(BlockPost block, String name){
+
+	private BlockModelBuilder getPostModel(BlockPost block, String name){
 		ResourceLocation texture=modLoc("block/posts/post_"+block.getPostMaterial().name().toLowerCase());
 		
-		LoadedModelBuilder b=this.loadedModels.withExistingParent(postModelPath(block, name), mcLoc("block"))
-			.loader(FORGE_LOADER)
-			.additional("model", modLoc("models/block/post/obj/"+name+".obj"))
+		BlockModelBuilder b=this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
+			.customLoader(OBJLoaderBuilder::begin)
+			.modelLocation(modLoc("models/block/post/obj/"+name+".obj")).end()
 			.texture("texture", texture)
 			.texture("particle", texture);
 		

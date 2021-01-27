@@ -53,9 +53,9 @@
     },
     {
       "when": {
-        "flipstate": "up",
         "type": "arm",
-        "facing": "north"
+        "facing": "north",
+        "flipstate": "up"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm"
@@ -72,9 +72,9 @@
     },
     {
       "when": {
-        "flipstate": "up",
         "type": "arm",
-        "facing": "east"
+        "facing": "east",
+        "flipstate": "up"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm",
@@ -93,9 +93,9 @@
     },
     {
       "when": {
-        "flipstate": "up",
         "type": "arm",
-        "facing": "south"
+        "facing": "south",
+        "flipstate": "up"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm",
@@ -114,9 +114,9 @@
     },
     {
       "when": {
-        "flipstate": "up",
         "type": "arm",
-        "facing": "west"
+        "facing": "west",
+        "flipstate": "up"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm",
@@ -135,9 +135,9 @@
     },
     {
       "when": {
-        "flipstate": "down",
         "type": "arm",
-        "facing": "north"
+        "facing": "north",
+        "flipstate": "down"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm",
@@ -147,9 +147,9 @@
     },
     {
       "when": {
-        "flipstate": "down",
         "type": "arm",
-        "facing": "east"
+        "facing": "east",
+        "flipstate": "down"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm",
@@ -159,9 +159,9 @@
     },
     {
       "when": {
-        "flipstate": "down",
         "type": "arm",
-        "facing": "south"
+        "facing": "south",
+        "flipstate": "down"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm",
@@ -170,9 +170,9 @@
     },
     {
       "when": {
-        "flipstate": "down",
         "type": "arm",
-        "facing": "west"
+        "facing": "west",
+        "flipstate": "down"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm",
@@ -182,9 +182,9 @@
     },
     {
       "when": {
-        "flipstate": "both",
         "type": "arm",
-        "facing": "north"
+        "facing": "north",
+        "flipstate": "both"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm_twoway"
@@ -192,9 +192,9 @@
     },
     {
       "when": {
-        "flipstate": "both",
         "type": "arm",
-        "facing": "east"
+        "facing": "east",
+        "flipstate": "both"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm_twoway",
@@ -203,9 +203,9 @@
     },
     {
       "when": {
-        "flipstate": "both",
         "type": "arm",
-        "facing": "south"
+        "facing": "south",
+        "flipstate": "both"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm_twoway",
@@ -214,9 +214,9 @@
     },
     {
       "when": {
-        "flipstate": "both",
         "type": "arm",
-        "facing": "west"
+        "facing": "west",
+        "flipstate": "both"
       },
       "apply": {
         "model": "immersiveposts:aluminiumpost/arm_twoway",

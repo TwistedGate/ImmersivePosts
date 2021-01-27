@@ -1,9 +1,9 @@
 package twistedgate.immersiveposts.common.data;
 
-import blusunrize.immersiveengineering.common.data.models.LoadedModelProvider;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
@@ -13,23 +13,14 @@ import twistedgate.immersiveposts.enums.EnumPostMaterial;
 /**
  * @author TwistedGate
  */
-public class IPOItemModels extends LoadedModelProvider{
-	IPOBlockStates blockStates;
-	final ExistingFileHelper exFileHelper;
-	public IPOItemModels(DataGenerator gen, ExistingFileHelper exHelper, IPOBlockStates blockStates){
-		super(gen, IPOMod.ID, "item", exHelper);
-		this.exFileHelper=exHelper;
-		this.blockStates=blockStates;
-	}
-	
-	@Override
-	public String getName(){
-		return "Item Models";
+public class IPOItemModels extends ItemModelProvider {
+	public IPOItemModels(DataGenerator gen, ExistingFileHelper exHelper){
+		super(gen, IPOMod.ID, exHelper);
 	}
 	
 	@Override
 	protected void registerModels(){
-		getBuilder(IPOMod.ID+":item/postbase").parent(new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper));
+		getBuilder(IPOMod.ID+":item/postbase").parent(new ExistingModelFile(modLoc("block/postbase"), this.existingFileHelper));
 		
 		fence(Fences.iron,		"fence/iron",		mcLoc("block/iron_block"));
 		fence(Fences.gold,		"fence/gold",		mcLoc("block/gold_block"));
@@ -61,7 +52,7 @@ public class IPOItemModels extends LoadedModelProvider{
 		try{
 			String[] s=name.split("/");
 			getBuilder(IPOMod.ID+":block/fences/inventory/"+s[1]+"_fence_inventory")
-				.parent(new ExistingModelFile(new ResourceLocation("block/fence_inventory"), this.exFileHelper))
+				.parent(new ExistingModelFile(new ResourceLocation("block/fence_inventory"), this.existingFileHelper))
 				.texture("texture", texture);
 		}catch(Throwable e){
 			IPODataGen.log.warn("Oops.. {}", e.getMessage());

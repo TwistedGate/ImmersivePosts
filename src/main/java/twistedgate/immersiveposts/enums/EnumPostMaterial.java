@@ -3,6 +3,7 @@ package twistedgate.immersiveposts.enums;
 import java.util.function.Supplier;
 
 import blusunrize.immersiveengineering.common.blocks.IEBlocks;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -50,7 +51,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 	private Block block;
 	private Supplier<Block> supplier;
 	private boolean isFence;
-	private Block.Properties props;
+	private AbstractBlock.Properties props;
 	private EnumPostMaterial(String name, Block block){
 		this.name=name;
 		this.block=block;
@@ -96,18 +97,18 @@ public enum EnumPostMaterial implements IStringSerializable{
 	private static final Material STONE_LIKE=material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
 	private static final Material METAL_LIKE=material(MaterialColor.IRON, false, true, true, true, false, false, PushReaction.BLOCK);
 	
-	public Block.Properties getProperties(){
+	public AbstractBlock.Properties getProperties(){
 		if(this.props==null){
 			this.props=blockPropertiesFrom(this);
 		}
 		return this.props;
 	}
 	
-	public static Block.Properties blockPropertiesFrom(EnumPostMaterial postMaterial){
-		Block.Properties prop=null;
+	public static AbstractBlock.Properties blockPropertiesFrom(EnumPostMaterial postMaterial){
+		AbstractBlock.Properties prop=null;
 		switch(postMaterial){
 			case WOOD:{ // For the *one* post that wants to be different..
-				prop=Block.Properties.create(WOOD_LIKE)
+				prop=AbstractBlock.Properties.create(WOOD_LIKE)
 						.sound(SoundType.WOOD)
 						.harvestTool(ToolType.AXE)
 						.hardnessAndResistance(2.0F, 5.0F)
@@ -116,7 +117,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 				break;
 			}
 			case NETHERBRICK: case CONCRETE: case CONCRETE_LEADED:{
-				prop=Block.Properties.create(STONE_LIKE)
+				prop=AbstractBlock.Properties.create(STONE_LIKE)
 						.sound(SoundType.STONE)
 						.setRequiresTool()
 						.harvestTool(ToolType.PICKAXE)
@@ -126,7 +127,7 @@ public enum EnumPostMaterial implements IStringSerializable{
 				break;
 			}
 			default:{
-				prop=Block.Properties.create(METAL_LIKE)
+				prop=AbstractBlock.Properties.create(METAL_LIKE)
 						.sound(SoundType.METAL)
 						.setRequiresTool()
 						.harvestTool(ToolType.PICKAXE)

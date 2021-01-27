@@ -17,20 +17,20 @@ description="Simply adds a way to have extendable posts. With a few post types t
 [[dependencies.immersiveengineering]]
 	modId="immersiveengineering"
 	mandatory=true
-	versionRange="[1.16.3-4.0.1-121,)"
-	ordering="BEFOR"
+	versionRange="[1.16.5-4.2.0-130,)"
+	ordering="BEFORE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="forge"
 	mandatory=true
-	versionRange="[34.0.2,)"
+	versionRange="[35,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="minecraft"
 	mandatory=true
-	versionRange="[1.16.3]"
+	versionRange="[1.16.4,1.17]"
 	ordering="NONE"
 	side="BOTH"

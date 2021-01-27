@@ -24,16 +24,8 @@ repositories {
 	maven { url 'https://www.dogforce-games.com/maven/' }                // gigaherz maven for 1.16.2 mappings
 }
 
-sourceSets {
-	main {
-		resources {
-			srcDirs = [
-				"$rootDir/src/main/resources",
-				"$rootDir/src/generated/resources"
-			]
-		}
-	}
-}
+// Make sure datagen'd resources are included in the main sourceSet
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 minecraft {
 	mappings channel: 'snapshot', version: "${version_fml_mappings}"
@@ -44,6 +36,7 @@ minecraft {
 			property 'forge.logging.markers', ''
 			property 'forge.logging.console.level', 'info'
 			property 'fml.earlyprogresswindow', 'false'
+			property 'mixin.env.disableRefMap', 'true'
 			mods {
 				immersiveposts {
 					source sourceSets.main
@@ -55,6 +48,7 @@ minecraft {
 			property 'forge.logging.markers', ''
 			property 'forge.logging.console.level', 'info'
 			property 'fml.earlyprogresswindow', 'false'
+			property 'mixin.env.disableRefMap', 'true'
 			mods {
 				immersiveposts {
 					source sourceSets.main
@@ -66,7 +60,8 @@ minecraft {
 			property 'forge.logging.markers', ''
 			property 'forge.logging.console.level', 'info'
 			property 'fml.earlyprogresswindow', 'false'
-			args '--mod', 'immersiveposts', '--all', '--output', file('src/generated/resources/'), '--validate', '--existing', sourceSets.main.resources.srcDirs[0], '--existing', 'C:/Users/TwistedGate/.gradle/caches/forge_gradle/deobf_dependencies/blusunrize/immersiveengineering/ImmersiveEngineering/1.16.3-4.0.0-pre.51_mapped_snapshot_20200912-1.16.2/ImmersiveEngineering-1.16.3-4.0.0-pre.51_mapped_snapshot_20200912-1.16.2.jar'
+			property 'mixin.env.disableRefMap', 'true'
+			args '--mod', 'immersiveposts', '--all', '--output', file('src/generated/resources/'), '--validate', '--existing', file('src/main/resources'), '--existing-mod', 'immersiveengineering'
 			mods {
 				immersiveposts {
 					source sourceSets.main

@@ -12,6 +12,7 @@ import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import twistedgate.immersiveposts.IPOContent;
 import twistedgate.immersiveposts.IPOMod;
@@ -62,11 +63,11 @@ public class ClientProxy extends CommonProxy{
 			int page=1;
 			for(int i=0;i<index0.length;i++){
 				index0[i][0]=new StringTextComponent(Integer.toString(page++));
-				index0[i][1]=new StringTextComponent("index.page_0_entry."+Integer.toString(i+1));
+				index0[i][1]=new TranslationTextComponent("index.page_0_entry."+Integer.toString(i+1));
 			}
 			for(int i=0;i<index1.length;i++){
 				index1[i][0]=new StringTextComponent(Integer.toString(page++));
-				index1[i][1]=new StringTextComponent("index.page_1_entry."+Integer.toString(i+1));
+				index1[i][1]=new TranslationTextComponent("index.page_1_entry."+Integer.toString(i+1));
 			}
 			
 			ManualEntry.ManualEntryBuilder builder=new ManualEntry.ManualEntryBuilder(man);
