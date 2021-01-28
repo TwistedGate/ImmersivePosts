@@ -27,7 +27,7 @@ public class IPODataGen{
 			generator.addProvider(blocktags);
 			generator.addProvider(new IPOItemTags(generator, blocktags, exhelper));
 			generator.addProvider(new IPORecipes(generator));
-			generator.addProvider(new IPOLootTables(generator));
+			generator.addProvider(new IPOLootTableProvider(generator));
 		}
 		if(event.includeClient()) {
 			generator.addProvider(new IPOBlockStates(generator, exhelper));
