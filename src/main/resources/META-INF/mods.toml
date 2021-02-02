@@ -31,6 +31,6 @@ description="Simply adds a way to have extendable posts. With a few post types t
 [[dependencies.immersiveposts]]
 	modId="minecraft"
 	mandatory=true
-	versionRange="[1.16.4,1.17]"
+	versionRange="[1.16.4,1.17)"
 	ordering="NONE"
 	side="BOTH"
