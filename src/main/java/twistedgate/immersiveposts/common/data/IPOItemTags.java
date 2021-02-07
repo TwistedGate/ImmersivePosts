@@ -3,19 +3,20 @@ package twistedgate.immersiveposts.common.data;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twistedgate.immersiveposts.IPOContent.Items;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOTags;
 
 /**
  * @author TwistedGate
  */
 public class IPOItemTags extends ItemTagsProvider{
-	
-	@SuppressWarnings("deprecation")
-	public IPOItemTags(DataGenerator generatorIn, BlockTagsProvider exhelper){
-		super(generatorIn, exhelper);
+
+	public IPOItemTags(DataGenerator dataGen, BlockTagsProvider blockTags, ExistingFileHelper exFileHelper) {
+		super(dataGen, blockTags, IPOMod.ID, exFileHelper);
 	}
-	
+
 	@Override
 	protected void registerTags(){
 		getOrCreateBuilder(IPOTags.Rods.ALL)

@@ -17,25 +17,21 @@ import twistedgate.immersiveposts.IPOMod;
 @EventBusSubscriber(modid=IPOMod.ID, bus=Bus.MOD)
 public class IPODataGen{
 	public static final Logger log=LogManager.getLogger(IPOMod.ID+"/DataGenerator");
-	
-	
+
 	@SubscribeEvent
 	public static void generate(GatherDataEvent event){
+		DataGenerator generator=event.getGenerator();
+		ExistingFileHelper exhelper=event.getExistingFileHelper();
 		if(event.includeServer()){
-			DataGenerator generator=event.getGenerator();
-			ExistingFileHelper exhelper=event.getExistingFileHelper();
-			
-			IPOBlockTags blocktags=new IPOBlockTags(generator);
+			IPOBlockTags blocktags=new IPOBlockTags(generator, exhelper);
 			generator.addProvider(blocktags);
-			generator.addProvider(new IPOItemTags(generator, blocktags));
+			generator.addProvider(new IPOItemTags(generator, blocktags, exhelper));
 			generator.addProvider(new IPORecipes(generator));
-			
-			IPOLoadedModels loadedModels=new IPOLoadedModels(generator, exhelper);
-			IPOBlockStates blockStates=new IPOBlockStates(generator, exhelper, loadedModels);
-			
-			generator.addProvider(blockStates);
-			generator.addProvider(loadedModels);
-			generator.addProvider(new IPOItemModels(generator, exhelper, blockStates));
+			generator.addProvider(new IPOLootTableProvider(generator));
+		}
+		if(event.includeClient()) {
+			generator.addProvider(new IPOBlockStates(generator, exhelper));
+			generator.addProvider(new IPOItemModels(generator, exhelper));
 		}
 	}
 }

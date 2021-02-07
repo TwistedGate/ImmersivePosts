@@ -2,16 +2,17 @@ package twistedgate.immersiveposts.common.data;
 
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOTags;
 
 public class IPOBlockTags extends BlockTagsProvider{
-	
-	@SuppressWarnings("deprecation")
-	public IPOBlockTags(DataGenerator generatorIn){
-		super(generatorIn);
+
+	public IPOBlockTags(DataGenerator dataGen, ExistingFileHelper exFileHelper) {
+		super(dataGen, IPOMod.ID, exFileHelper);
 	}
-	
+
 	@Override
 	protected void registerTags(){
 		getOrCreateBuilder(IPOTags.Fences.ALL)

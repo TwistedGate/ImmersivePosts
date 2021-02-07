@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import org.lwjgl.glfw.GLFW;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -64,10 +65,10 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  * @author TwistedGate
  */
 public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
-	private static Block.Properties prop(){
+	private static AbstractBlock.Properties prop(){
 		Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
 		
-		Block.Properties prop=Block.Properties.create(BaseMaterial)
+		AbstractBlock.Properties prop=AbstractBlock.Properties.create(BaseMaterial)
 				.sound(SoundType.STONE)
 				.setRequiresTool()
 				.harvestTool(ToolType.PICKAXE)

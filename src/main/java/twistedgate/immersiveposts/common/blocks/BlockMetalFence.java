@@ -1,6 +1,6 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -20,7 +20,7 @@ import twistedgate.immersiveposts.ImmersivePosts;
  * @author TwistedGate
  */
 public class BlockMetalFence extends FenceBlock{
-	static final Block.Properties DEFAULT_PROP=Block.Properties.create(Material.IRON)
+	static final AbstractBlock.Properties DEFAULT_PROP=AbstractBlock.Properties.create(Material.IRON)
 			.hardnessAndResistance(3.0F, 15.0F)
 			.sound(SoundType.METAL)
 			.setRequiresTool()

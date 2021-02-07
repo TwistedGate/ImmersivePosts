@@ -24,16 +24,8 @@ repositories {
 	maven { url 'https://www.dogforce-games.com/maven/' }                // gigaherz maven for 1.16.2 mappings
 }
 
-sourceSets {
-	main {
-		resources {
-			srcDirs = [
-				"$rootDir/src/main/resources",
-				"$rootDir/src/generated/resources"
-			]
-		}
-	}
-}
+// Make sure datagen'd resources are included in the main sourceSet
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 minecraft {
 	mappings channel: 'snapshot', version: "${version_fml_mappings}"
