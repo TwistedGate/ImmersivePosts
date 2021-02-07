@@ -21,11 +21,25 @@ archivesBaseName = "immersiveposts-${version_minecraft}"
 
 repositories {
 	maven {	name = "BlameJared"; url = "https://maven.blamejared.com/" } // IE files
-	maven { url 'https://www.dogforce-games.com/maven/' }                // gigaherz maven for 1.16.2 mappings
+	//maven { url 'https://www.dogforce-games.com/maven/' }                // gigaherz maven for 1.16.2 mappings
 }
 
-// Make sure datagen'd resources are included in the main sourceSet
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets {
+	main {
+		resources {
+			srcDirs = [
+				"$rootDir/src/main/resources",
+				"$rootDir/src/generated/resources"
+			]
+		}
+	}
+	datagen {
+		compileClasspath += main.compileClasspath
+		runtimeClasspath += main.runtimeClasspath
+		compileClasspath += main.output
+		runtimeClasspath += main.output
+	}
+}
 
 minecraft {
 	mappings channel: 'snapshot', version: "${version_fml_mappings}"
@@ -65,6 +79,7 @@ minecraft {
 			mods {
 				immersiveposts {
 					source sourceSets.main
+					source sourceSets.datagen
 				}
 			}
 		}
@@ -74,6 +89,7 @@ minecraft {
 dependencies {
 	minecraft "net.minecraftforge:forge:${version_minecraft}-${version_forge}"
 	compile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}")
+	datagenCompile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}:datagen")
 }
 
 processResources {
@@ -84,8 +100,6 @@ processResources {
 	from(sourceSets.main.resources.srcDirs) {
 		exclude 'META-INF/mods.toml'
 	}
-	outputs.upToDateWhen { false }
-	doLast { file("${sourceSets.main.output.resourcesDir}/.gitversion-immersiveposts").text = 'git log "-1" "--format=%h"'.execute().in.text.trim() }
 }
 
 jar {
@@ -102,6 +116,8 @@ jar {
 	}
 }
 
+
+
 def reobfFile = file("$buildDir/reobfJar/output.jar")
 def reobfArtifact = artifacts.add('default', reobfFile) { type 'jar'; builtBy 'reobfJar'; }
 
@@ -117,6 +133,19 @@ task signJar(type: SignJar, dependsOn: jar) {
 	}
 }
 build.dependsOn signJar
+
+task datagenJar(type: Jar, dependsOn: datagenClasses) {
+	classifier = 'datagen'
+	from sourceSets.datagen.output
+	manifest {
+		attributes "FMLModType": "LIBRARY"
+	}
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
 
 publishing {
 	publications { mavenJava(MavenPublication) { artifact reobfArtifact } }

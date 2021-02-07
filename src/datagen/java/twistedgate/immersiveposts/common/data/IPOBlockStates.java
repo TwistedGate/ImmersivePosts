@@ -1,6 +1,6 @@
 package twistedgate.immersiveposts.common.data;
 
-import blusunrize.immersiveengineering.common.data.models.SpecialModelBuilder;
+import blusunrize.immersiveengineering.data.models.SpecialModelBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Direction;
