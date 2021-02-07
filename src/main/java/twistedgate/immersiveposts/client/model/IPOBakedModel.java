@@ -28,4 +28,5 @@ public abstract class IPOBakedModel implements IBakedModel{
 	public boolean isSideLit(){
 		return true;
 	}
+	
 }
