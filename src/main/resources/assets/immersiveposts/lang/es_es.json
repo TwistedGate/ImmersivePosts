@@ -1,0 +1,86 @@
+{
+    "_comment": "################## Blocks ##################",
+	
+    "block.immersiveposts.postbase": "Poste extensible",
+    "block.immersiveposts.woodpost": "Poste de madera",
+    "block.immersiveposts.ironpost": "Poste de hierro",
+    "block.immersiveposts.goldpost": "Poste de oro",
+    "block.immersiveposts.copperpost": "Poste de cobre",
+    "block.immersiveposts.leadpost": "Poste de plomo",
+    "block.immersiveposts.silverpost": "Poste de plata",
+    "block.immersiveposts.nickelpost": "Poste de níquel",
+    "block.immersiveposts.constantanpost": "Poste de constantan",
+    "block.immersiveposts.electrumpost": "Poste de electrum",
+    "block.immersiveposts.uraniumpost": "Poste de uranio",
+    "block.immersiveposts.netherpost": "Poste de ladrillos del Nether",
+    "block.immersiveposts.aluminiumpost": "Poste de aluminio",
+    "block.immersiveposts.steelpost": "Poste de acero",
+    "block.immersiveposts.concretepost": "Poste de hormigón",
+    "block.immersiveposts.leadedconcretepost": "Poste de hormigón plomado",
+	
+    "block.immersiveposts.fence_iron": "Valla de hierro",
+    "block.immersiveposts.fence_gold": "Valla de oro",
+    "block.immersiveposts.fence_copper": "Valla de cobre",
+    "block.immersiveposts.fence_lead": "Valla de plomo",
+    "block.immersiveposts.fence_silver": "Valla de plata",
+    "block.immersiveposts.fence_nickel": "Valla de níquel",
+    "block.immersiveposts.fence_constantan": "Valla de constantan",
+    "block.immersiveposts.fence_electrum": "Valla de electrum",
+    "block.immersiveposts.fence_uranium": "Valla de uranio",
+	
+    "_comment": "################## Items ##################",
+	
+    "item.immersiveposts.stick_gold": "Palo de oro",
+    "item.immersiveposts.stick_copper": "Palo de cobre",
+    "item.immersiveposts.stick_lead": "Palo de plomo",
+    "item.immersiveposts.stick_silver": "Palo de plata",
+    "item.immersiveposts.stick_nickel": "Palo de níquel",
+    "item.immersiveposts.stick_constantan": "Palo de constantan",
+    "item.immersiveposts.stick_electrum": "Palo de electrum",
+    "item.immersiveposts.stick_uranium": "Palo de uranio",
+	
+    "item.immersiveposts.metal_rods.stick_gold": "Varilla de oro",
+    "item.immersiveposts.metal_rods.stick_copper": "Varilla de cobre",
+    "item.immersiveposts.metal_rods.stick_lead": "Varilla de plomo",
+    "item.immersiveposts.metal_rods.stick_silver": "Varilla de plata",
+    "item.immersiveposts.metal_rods.stick_nickel": "Varilla de níquel",
+    "item.immersiveposts.metal_rods.stick_constantan": "Varilla de constantan",
+    "item.immersiveposts.metal_rods.stick_electrum": "Varilla de electrum",
+    "item.immersiveposts.metal_rods.stick_uranium": "Varilla de uranio",
+	
+    "_comment": "################## Creative Tab ##################",
+	
+    "itemGroup.immersiveposts": "Immersive Posts",
+	
+    "_comment": "################## Postbase Tooltip(s) ##################",
+	
+    "tooltip.postbase": "[Mantener shift] ยง6Bloques aceptados.",
+	
+    "_comment": "################## Miscellaneous ##################",
+
+    "immersiveposts.expectedlocal": "Esperado: %s",
+	
+    "_comment": "################## IE-Manual ##################",
+	
+    "manual.immersiveposts.main": "Immersive Posts",
+	
+    "_comment": "Índice",
+    "index.page_0_entry.1": "Índice página 1",
+    "index.page_0_entry.2": "Índice página 2",
+    "index.page_0_entry.3": "Madera tratada",
+    "index.page_0_entry.4": "Ladrillo del Nether",
+    "index.page_0_entry.5": "Hierro",
+    "index.page_0_entry.6": "Oro",
+    "index.page_0_entry.7": "Cobre",
+    "index.page_0_entry.8": "Plomo",
+    "index.page_0_entry.9": "Plata",
+    "index.page_0_entry.10": "Níquel",
+    "index.page_0_entry.11": "Constantan",
+    "index.page_0_entry.12": "Electrum",
+    "index.page_0_entry.13": "Uranio",
+	
+    "index.page_1_entry.1": "Aluminio",
+    "index.page_1_entry.2": "Acero",
+    "index.page_1_entry.3": "Hormigón",
+    "index.page_1_entry.4": "Hormigón (Plomado)"
+}
