@@ -12,7 +12,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import twistedgate.immersiveposts.client.ClientProxy;
@@ -39,7 +38,6 @@ public class ImmersivePosts{
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IPOConfig.ALL);
 		
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::violation);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
 		
 		CraftingHelper.register(new IPOConfigConditionSerializer());
@@ -55,11 +53,5 @@ public class ImmersivePosts{
 	
 	public void loadComplete(FMLLoadCompleteEvent event){
 		proxy.completed();
-	}
-	
-	public void violation(FMLFingerprintViolationEvent event){
-		System.err.println("\r\nTHIS IS NOT AN OFFICIAL BUILD OF "+IPOMod.NAME.toUpperCase()+"! Fingerprints: ["+event.getFingerprints()+"]");
-		System.err.println("If you didnt download this mod from the official curse page: Stop Drop and Roll this jar right out of your mods folder!\r\n");
-		// Guess thats what this would be used for? lol
 	}
 }
