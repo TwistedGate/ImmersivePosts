@@ -1,6 +1,5 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -27,8 +26,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
@@ -160,20 +157,6 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
 		return state.get(HIDDEN) ? VoxelShapes.fullCube() : BASE_SIZE;
-	}
-	
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder){
-		List<ItemStack> list=new ArrayList<>();
-		list.add(new ItemStack(this, 1));
-		if(state.get(HIDDEN)){
-			TileEntity te=builder.get(LootParameters.BLOCK_ENTITY);
-			if(te instanceof PostBaseTileEntity){
-				ItemStack teStack=((PostBaseTileEntity)te).getStack();
-				list.add(teStack);
-			}
-		}
-		return list;
 	}
 	
 	@Override

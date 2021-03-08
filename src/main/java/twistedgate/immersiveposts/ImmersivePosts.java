@@ -17,6 +17,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import twistedgate.immersiveposts.client.ClientProxy;
 import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer;
+import twistedgate.immersiveposts.util.loot.BaseCoverDropLootEntry;
 
 /**
  * @author TwistedGate
@@ -43,6 +44,7 @@ public class ImmersivePosts{
 		CraftingHelper.register(new IPOConfigConditionSerializer());
 		
 		IPOContent.populate();
+		BaseCoverDropLootEntry.modConstruction();
 		
 		proxy.construct();
 	}
