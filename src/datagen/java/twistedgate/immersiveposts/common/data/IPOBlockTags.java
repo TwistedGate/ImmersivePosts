@@ -8,11 +8,10 @@ import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.IPOTags;
 
 public class IPOBlockTags extends BlockTagsProvider{
-
 	public IPOBlockTags(DataGenerator dataGen, ExistingFileHelper exFileHelper) {
 		super(dataGen, IPOMod.ID, exFileHelper);
 	}
-
+	
 	@Override
 	protected void registerTags(){
 		getOrCreateBuilder(IPOTags.Fences.ALL)

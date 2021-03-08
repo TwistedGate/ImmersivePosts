@@ -12,11 +12,10 @@ import twistedgate.immersiveposts.IPOTags;
  * @author TwistedGate
  */
 public class IPOItemTags extends ItemTagsProvider{
-
 	public IPOItemTags(DataGenerator dataGen, BlockTagsProvider blockTags, ExistingFileHelper exFileHelper) {
 		super(dataGen, blockTags, IPOMod.ID, exFileHelper);
 	}
-
+	
 	@Override
 	protected void registerTags(){
 		getOrCreateBuilder(IPOTags.Rods.ALL)

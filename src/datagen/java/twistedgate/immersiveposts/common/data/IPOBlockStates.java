@@ -60,15 +60,15 @@ public class IPOBlockStates extends BlockStateProvider{
 		}
 		
 		// FENCES
-		fenceBlock(Fences.iron,			"fence/iron",			mcLoc("block/iron_block"));
-		fenceBlock(Fences.gold,			"fence/gold",			mcLoc("block/gold_block"));
+		fenceBlock(Fences.iron,			"fence/iron",		mcLoc("block/iron_block"));
+		fenceBlock(Fences.gold,			"fence/gold",		mcLoc("block/gold_block"));
 		fenceBlock(Fences.copper,		"fence/copper",		ieLoc("block/metal/storage_copper"));
-		fenceBlock(Fences.lead,			"fence/lead",			ieLoc("block/metal/storage_lead"));
+		fenceBlock(Fences.lead,			"fence/lead",		ieLoc("block/metal/storage_lead"));
 		fenceBlock(Fences.silver,		"fence/silver",		ieLoc("block/metal/storage_silver"));
 		fenceBlock(Fences.nickel,		"fence/nickel",		ieLoc("block/metal/storage_nickel"));
 		fenceBlock(Fences.constantan,	"fence/constantan",	ieLoc("block/metal/storage_constantan"));
-		fenceBlock(Fences.electrum,		"fence/electrum",		ieLoc("block/metal/storage_electrum"));
-		fenceBlock(Fences.uranium,		"fence/uranium",		ieLoc("block/metal/storage_uranium_side"));
+		fenceBlock(Fences.electrum,		"fence/electrum",	ieLoc("block/metal/storage_electrum"));
+		fenceBlock(Fences.uranium,		"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 	}
 	
 	private void postStateFor(BlockPost block){
