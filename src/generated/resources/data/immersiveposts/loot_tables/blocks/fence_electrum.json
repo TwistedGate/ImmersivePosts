@@ -2,7 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "blocks/fence_electrum",
       "rolls": 1,
       "entries": [
         {

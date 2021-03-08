@@ -2,7 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "blocks/fence_copper",
       "rolls": 1,
       "entries": [
         {
