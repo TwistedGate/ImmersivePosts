@@ -32,15 +32,6 @@ public class IPOBlockLoot extends LootGenerator implements IDataProvider{
 	
 	@Override
 	protected void registerTables(){
-//		registerSelfDropping(IPOContent.Blocks.Fences.iron);
-//		registerSelfDropping(IPOContent.Blocks.Fences.gold);
-//		registerSelfDropping(IPOContent.Blocks.Fences.copper);
-//		registerSelfDropping(IPOContent.Blocks.Fences.lead);
-//		registerSelfDropping(IPOContent.Blocks.Fences.silver);
-//		registerSelfDropping(IPOContent.Blocks.Fences.nickel);
-//		registerSelfDropping(IPOContent.Blocks.Fences.constantan);
-//		registerSelfDropping(IPOContent.Blocks.Fences.electrum);
-//		registerSelfDropping(IPOContent.Blocks.Fences.uranium);
 		
 		// Fences
 		for(FenceBlock b:IPOContent.Blocks.Fences.ALL){
