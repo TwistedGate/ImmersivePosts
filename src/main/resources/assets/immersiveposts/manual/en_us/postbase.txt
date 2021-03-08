@@ -4,5 +4,6 @@ The Sky's the Limit.
 (See <link;immersiveposts:usage;§1Usage§r;start> on how to use it.)
 
 The base can be hidden simply by holding a block in your hand, rightclicking and it will pretend to be that block.
+Sneak + rightclick removes the cover.
 
-However, it only accepts solid and opaque blocks.
+It only accepts solid and opaque blocks however.
