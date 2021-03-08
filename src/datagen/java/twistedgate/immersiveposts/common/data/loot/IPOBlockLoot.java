@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import blusunrize.immersiveengineering.data.loot.LootGenerator;
 import net.minecraft.block.Block;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.loot.ConstantRange;
@@ -15,7 +16,9 @@ import net.minecraft.loot.conditions.SurvivesExplosion;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.IPOContent;
+import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.util.loot.BaseCoverDropLootEntry;
+import twistedgate.immersiveposts.util.loot.PostMaterialDropLootEntry;
 
 public class IPOBlockLoot extends LootGenerator implements IDataProvider{
 	public IPOBlockLoot(DataGenerator gen){
@@ -29,15 +32,25 @@ public class IPOBlockLoot extends LootGenerator implements IDataProvider{
 	
 	@Override
 	protected void registerTables(){
-		registerSelfDropping(IPOContent.Blocks.Fences.iron);
-		registerSelfDropping(IPOContent.Blocks.Fences.gold);
-		registerSelfDropping(IPOContent.Blocks.Fences.copper);
-		registerSelfDropping(IPOContent.Blocks.Fences.lead);
-		registerSelfDropping(IPOContent.Blocks.Fences.silver);
-		registerSelfDropping(IPOContent.Blocks.Fences.nickel);
-		registerSelfDropping(IPOContent.Blocks.Fences.constantan);
-		registerSelfDropping(IPOContent.Blocks.Fences.electrum);
-		registerSelfDropping(IPOContent.Blocks.Fences.uranium);
+//		registerSelfDropping(IPOContent.Blocks.Fences.iron);
+//		registerSelfDropping(IPOContent.Blocks.Fences.gold);
+//		registerSelfDropping(IPOContent.Blocks.Fences.copper);
+//		registerSelfDropping(IPOContent.Blocks.Fences.lead);
+//		registerSelfDropping(IPOContent.Blocks.Fences.silver);
+//		registerSelfDropping(IPOContent.Blocks.Fences.nickel);
+//		registerSelfDropping(IPOContent.Blocks.Fences.constantan);
+//		registerSelfDropping(IPOContent.Blocks.Fences.electrum);
+//		registerSelfDropping(IPOContent.Blocks.Fences.uranium);
+		
+		// Fences
+		for(FenceBlock b:IPOContent.Blocks.Fences.ALL){
+			registerSelfDropping(b);
+		}
+		
+		// Posts
+		for(BlockPost b:IPOContent.Blocks.Posts.ALL){
+			register(b, createPoolBuilder().addEntry(PostMaterialDropLootEntry.builder()));
+		}
 		
 		registerSelfDropping(IPOContent.Blocks.post_Base, createPoolBuilder().addEntry(BaseCoverDropLootEntry.builder()));
 	}

@@ -17,15 +17,12 @@ import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
 public class BaseCoverDropLootEntry extends StandaloneLootEntry{
 	public static final ResourceLocation ID = new ResourceLocation(IPOMod.ID, "base_cover_drop");
-	
-	public static LootPoolEntryType baseDrop;
 	
 	protected BaseCoverDropLootEntry(int weightIn, int qualityIn, ILootCondition[] conditionsIn, ILootFunction[] functionsIn){
 		super(weightIn, qualityIn, conditionsIn, functionsIn);
@@ -48,16 +45,13 @@ public class BaseCoverDropLootEntry extends StandaloneLootEntry{
 	
 	@Override
 	public LootPoolEntryType func_230420_a_(){
-		return baseDrop;
+		return IPOLootFunctions.baseCoverDrop;
 	}
 	
 	public static StandaloneLootEntry.Builder<?> builder(){
 		return builder(BaseCoverDropLootEntry::new);
 	}
 	
-	public static void modConstruction(){
-		baseDrop = Registry.register(Registry.LOOT_POOL_ENTRY_TYPE, ID, new LootPoolEntryType(new Serializer()));
-	}
 	
 	public static class Serializer extends StandaloneLootEntry.Serializer<BaseCoverDropLootEntry>{
 		@Nonnull

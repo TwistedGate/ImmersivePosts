@@ -41,6 +41,9 @@ public class IPOContent{
 		public static BlockPostBase post_Base;
 		
 		public static class Fences{
+			/** Contains (or should) all Fence Blocks added by IPO */
+			public static FenceBlock[] ALL;
+			
 			public static FenceBlock iron;
 			public static FenceBlock gold;
 			public static FenceBlock copper;
@@ -53,6 +56,9 @@ public class IPOContent{
 		}
 		
 		public static class Posts{
+			/** Contains (or should) all Post Blocks added by IPO */
+			public static BlockPost[] ALL;
+			
 			public static BlockPost wood;
 			public static BlockPost iron;
 			public static BlockPost gold;
@@ -83,51 +89,54 @@ public class IPOContent{
 	}
 	
 	public static final void populate(){
-		Blocks.post_Base=new BlockPostBase();
+		Blocks.post_Base = new BlockPostBase();
 		
 		// =========================================================================
 		// Fences
 		
-		Fences.iron			=new BlockMetalFence("iron");
-		Fences.gold			=new BlockMetalFence("gold");
-		Fences.copper		=new BlockMetalFence("copper");
-		Fences.lead			=new BlockMetalFence("lead");
-		Fences.silver		=new BlockMetalFence("silver");
-		Fences.nickel		=new BlockMetalFence("nickel");
-		Fences.constantan	=new BlockMetalFence("constantan");
-		Fences.electrum		=new BlockMetalFence("electrum");
-		Fences.uranium		=new BlockMetalFence("uranium");
-		
+		Fences.ALL = new FenceBlock[]{
+			Fences.iron			= new BlockMetalFence("iron"),
+			Fences.gold			= new BlockMetalFence("gold"),
+			Fences.copper		= new BlockMetalFence("copper"),
+			Fences.lead			= new BlockMetalFence("lead"),
+			Fences.silver		= new BlockMetalFence("silver"),
+			Fences.nickel		= new BlockMetalFence("nickel"),
+			Fences.constantan	= new BlockMetalFence("constantan"),
+			Fences.electrum		= new BlockMetalFence("electrum"),
+			Fences.uranium		= new BlockMetalFence("uranium")
+		};
 		// =========================================================================
 		// Posts
 		
-		Posts.wood				=new BlockPost(EnumPostMaterial.WOOD);
-		Posts.iron				=new BlockPost(EnumPostMaterial.IRON);
-		Posts.gold				=new BlockPost(EnumPostMaterial.GOLD);
-		Posts.copper			=new BlockPost(EnumPostMaterial.COPPER);
-		Posts.lead				=new BlockPost(EnumPostMaterial.LEAD);
-		Posts.silver			=new BlockPost(EnumPostMaterial.SILVER);
-		Posts.nickel			=new BlockPost(EnumPostMaterial.NICKEL);
-		Posts.constantan		=new BlockPost(EnumPostMaterial.CONSTANTAN);
-		Posts.electrum			=new BlockPost(EnumPostMaterial.ELECTRUM);
-		Posts.uranium			=new BlockPost(EnumPostMaterial.URANIUM);
-		Posts.nether			=new BlockPost(EnumPostMaterial.NETHERBRICK);
-		Posts.aluminium			=new BlockPost(EnumPostMaterial.ALUMINIUM);
-		Posts.steel				=new BlockPost(EnumPostMaterial.STEEL);
-		Posts.concrete			=new BlockPost(EnumPostMaterial.CONCRETE);
-		Posts.concrete_leaded	=new BlockPost(EnumPostMaterial.CONCRETE_LEADED);
+		Posts.ALL = new BlockPost[]{
+			Posts.wood				= new BlockPost(EnumPostMaterial.WOOD),
+			Posts.iron				= new BlockPost(EnumPostMaterial.IRON),
+			Posts.gold				= new BlockPost(EnumPostMaterial.GOLD),
+			Posts.copper			= new BlockPost(EnumPostMaterial.COPPER),
+			Posts.lead				= new BlockPost(EnumPostMaterial.LEAD),
+			Posts.silver			= new BlockPost(EnumPostMaterial.SILVER),
+			Posts.nickel			= new BlockPost(EnumPostMaterial.NICKEL),
+			Posts.constantan		= new BlockPost(EnumPostMaterial.CONSTANTAN),
+			Posts.electrum			= new BlockPost(EnumPostMaterial.ELECTRUM),
+			Posts.uranium			= new BlockPost(EnumPostMaterial.URANIUM),
+			Posts.nether			= new BlockPost(EnumPostMaterial.NETHERBRICK),
+			Posts.aluminium			= new BlockPost(EnumPostMaterial.ALUMINIUM),
+			Posts.steel				= new BlockPost(EnumPostMaterial.STEEL),
+			Posts.concrete			= new BlockPost(EnumPostMaterial.CONCRETE),
+			Posts.concrete_leaded	= new BlockPost(EnumPostMaterial.CONCRETE_LEADED)
+		};
 		
 		// =========================================================================
 		// Items
 		
-		Items.rod_Gold		=new IPOItemBase("stick_gold");
-		Items.rod_Copper	=new IPOItemBase("stick_copper");
-		Items.rod_Lead		=new IPOItemBase("stick_lead");
-		Items.rod_Silver	=new IPOItemBase("stick_silver");
-		Items.rod_Nickel	=new IPOItemBase("stick_nickel");
-		Items.rod_Constantan=new IPOItemBase("stick_constantan");
-		Items.rod_Electrum	=new IPOItemBase("stick_electrum");
-		Items.rod_Uranium	=new IPOItemBase("stick_uranium");
+		Items.rod_Gold		= new IPOItemBase("stick_gold");
+		Items.rod_Copper	= new IPOItemBase("stick_copper");
+		Items.rod_Lead		= new IPOItemBase("stick_lead");
+		Items.rod_Silver	= new IPOItemBase("stick_silver");
+		Items.rod_Nickel	= new IPOItemBase("stick_nickel");
+		Items.rod_Constantan= new IPOItemBase("stick_constantan");
+		Items.rod_Electrum	= new IPOItemBase("stick_electrum");
+		Items.rod_Uranium	= new IPOItemBase("stick_uranium");
 	}
 	
 	@SubscribeEvent

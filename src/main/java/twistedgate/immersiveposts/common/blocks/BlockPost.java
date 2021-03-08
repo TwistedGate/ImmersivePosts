@@ -1,8 +1,5 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -22,7 +19,6 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -161,14 +157,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 	@Override
 	public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face){
 		return false;
-	}
-	
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder){
-		if(state.get(TYPE).id()<2)
-			return Arrays.asList(this.postMaterial.getItemStack());
-		
-		return Collections.emptyList();
 	}
 	
 	@Override
