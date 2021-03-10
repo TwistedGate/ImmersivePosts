@@ -53,3 +53,4 @@ desktop.ini
 *.tmp
 /bin/
 /libs/
+/logs/
