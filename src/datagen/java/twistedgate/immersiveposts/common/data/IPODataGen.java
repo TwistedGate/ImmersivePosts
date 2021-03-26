@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import twistedgate.immersiveposts.common.IPOMod;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.data.loot.IPOBlockLoot;
 
 /**

@@ -1,4 +1,4 @@
-package twistedgate.immersiveposts;
+package twistedgate.immersiveposts.common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.config.ModConfig.ModConfigEvent;
-import twistedgate.immersiveposts.common.IPOMod;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 @EventBusSubscriber(modid = IPOMod.ID, bus = Bus.MOD)

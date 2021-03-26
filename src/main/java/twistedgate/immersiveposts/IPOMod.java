@@ -1,4 +1,4 @@
-package twistedgate.immersiveposts.common;
+package twistedgate.immersiveposts;
 
 /**
  * Class holding informations about Immersive Posts

@@ -19,9 +19,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.IPOContent.Items;
-import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.common.IPOTags;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer.IPOConfigCondition;
 

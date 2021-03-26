@@ -16,6 +16,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
 import twistedgate.immersiveposts.common.blocks.BlockMetalFence;

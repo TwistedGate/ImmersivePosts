@@ -6,8 +6,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
-import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 /**

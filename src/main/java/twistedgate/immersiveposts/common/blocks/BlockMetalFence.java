@@ -11,10 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
-import twistedgate.immersiveposts.IPOConfig;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.ImmersivePosts;
+import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
-import twistedgate.immersiveposts.common.IPOMod;
 
 /**
  * @author TwistedGate

@@ -14,10 +14,10 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.common.IPOContent;
-import twistedgate.immersiveposts.common.IPOMod;
 
 /**
  * @author TwistedGate

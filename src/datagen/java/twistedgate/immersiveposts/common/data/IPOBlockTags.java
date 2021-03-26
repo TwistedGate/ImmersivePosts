@@ -3,8 +3,8 @@ package twistedgate.immersiveposts.common.data;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
-import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.common.IPOTags;
 
 public class IPOBlockTags extends BlockTagsProvider{
