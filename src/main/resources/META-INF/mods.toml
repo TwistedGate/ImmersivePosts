@@ -4,27 +4,27 @@ issueTrackerURL="https://github.com/TwistedGate/ImmersivePosts/issues"
 license="TwistedGate's License of Common Sense (A modified copy of \"Blu's License of Common Sense\")"
 
 [[mods]]
-displayName="Immersive Posts"
-modId="immersiveposts"
-version="${version}"
-logoFile="logo.png"
-displayURL="https://minecraft.curseforge.com/projects/immersiveposts"
-updateJSONURL="https://raw.githubusercontent.com/TwistedGate/ImmersivePosts/master/change.json"
-credits="\n§nInspired by ImmersiveIntegration's extendable posts.§r\n\n§l§2--- Translations ---§r\nRussian: Shellyoung\nChinese: scikirbypoke\n"
-authors="TwistedGate"
-description="Simply adds a way to have extendable posts. With a few post types to choose from."
+	displayName="Immersive Posts"
+	modId="immersiveposts"
+	version="${version}"
+	logoFile="logo.png"
+	displayURL="https://minecraft.curseforge.com/projects/immersiveposts"
+	updateJSONURL="https://raw.githubusercontent.com/TwistedGate/ImmersivePosts/master/change.json"
+	credits="\n§nInspired by ImmersiveIntegration's extendable posts.§r\n\n§l§2--- Translations ---§r\nRussian: Shellyoung\nChinese: scikirbypoke\n"
+	authors="TwistedGate"
+	description="Simply adds a way to have extendable posts. With a few post types to choose from."
 
 [[dependencies.immersiveposts]]
 	modId="immersiveengineering"
 	mandatory=true
-	versionRange="[1.16.5-4.2.2-132,)"
+	versionRange="[1.16.5-5.0.0,)"
 	ordering="BEFORE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="forge"
 	mandatory=true
-	versionRange="[36.0.27,)"
+	versionRange="[36.1.0,)"
 	ordering="NONE"
 	side="BOTH"
 
