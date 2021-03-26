@@ -18,7 +18,7 @@ import com.google.common.collect.ImmutableList;
 import blusunrize.immersiveengineering.api.utils.QuadTransformer;
 import blusunrize.immersiveengineering.api.utils.client.CombinedModelData;
 import blusunrize.immersiveengineering.api.utils.client.SinglePropertyModelData;
-import blusunrize.immersiveengineering.client.ClientUtils;
+import blusunrize.immersiveengineering.client.utils.ModelUtils;
 import blusunrize.immersiveengineering.common.util.Utils;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
@@ -168,7 +168,7 @@ public class PostBaseModel extends IPOBakedModel{
 						.getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
 						.getSprite(new ResourceLocation(IPOMod.ID, "block/postbase"));
 					
-					quads.add(ClientUtils.createBakedQuad(DefaultVertexFormats.BLOCK, verts, side, sprite, uvs, color, false));
+					quads.add(ModelUtils.createBakedQuad(DefaultVertexFormats.BLOCK, verts, side, sprite, uvs, color, false));
 				}
 				
 				this.quads.add(quads);
