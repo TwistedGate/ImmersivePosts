@@ -13,9 +13,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.resource.IResourceType;
 import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 import net.minecraftforge.resource.VanillaResourceType;
-import twistedgate.immersiveposts.IPOContent;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseModel;
+import twistedgate.immersiveposts.common.IPOContent;
+import twistedgate.immersiveposts.common.IPOMod;
 
 @EventBusSubscriber(modid=IPOMod.ID, value={Dist.CLIENT}, bus=Bus.MOD)
 public class ClientEventHandler implements ISelectiveResourceReloadListener{

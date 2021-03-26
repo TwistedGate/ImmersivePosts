@@ -15,7 +15,7 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.conditions.SurvivesExplosion;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
-import twistedgate.immersiveposts.IPOContent;
+import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.util.loot.BaseCoverDropLootEntry;
 import twistedgate.immersiveposts.util.loot.PostMaterialDropLootEntry;

@@ -1,4 +1,4 @@
-package twistedgate.immersiveposts;
+package twistedgate.immersiveposts.common;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;
@@ -16,8 +16,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
-import twistedgate.immersiveposts.IPOContent.Blocks.Posts;
+import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
+import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
 import twistedgate.immersiveposts.common.blocks.BlockMetalFence;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;

@@ -17,7 +17,7 @@ import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 

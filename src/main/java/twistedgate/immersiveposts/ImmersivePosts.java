@@ -16,6 +16,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import twistedgate.immersiveposts.client.ClientProxy;
 import twistedgate.immersiveposts.common.CommonProxy;
+import twistedgate.immersiveposts.common.IPOContent;
+import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer;
 import twistedgate.immersiveposts.util.loot.IPOLootFunctions;
 
@@ -36,7 +38,7 @@ public class ImmersivePosts{
 	public static CommonProxy proxy=DistExecutor.unsafeRunForDist(()->ClientProxy::new, ()->CommonProxy::new);
 	
 	public ImmersivePosts(){
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, IPOConfig.ALL);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, IPOConfig.ALL);
 		
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);

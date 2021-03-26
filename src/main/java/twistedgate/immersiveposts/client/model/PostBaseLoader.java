@@ -21,8 +21,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.IModelLoader;
 import net.minecraftforge.client.model.geometry.IModelGeometry;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader.PostBaseModelRaw;
+import twistedgate.immersiveposts.common.IPOMod;
 
 public class PostBaseLoader implements IModelLoader<PostBaseModelRaw>{
 	

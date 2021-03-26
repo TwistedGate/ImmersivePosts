@@ -19,10 +19,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
-import twistedgate.immersiveposts.IPOContent.Blocks.Fences;
-import twistedgate.immersiveposts.IPOContent.Items;
-import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.IPOTags;
+import twistedgate.immersiveposts.common.IPOMod;
+import twistedgate.immersiveposts.common.IPOTags;
+import twistedgate.immersiveposts.common.IPOContent.Items;
+import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer.IPOConfigCondition;
 
 /**
@@ -38,7 +38,7 @@ public class IPORecipes extends RecipeProvider{
 	protected void registerRecipes(Consumer<IFinishedRecipe> out){
 		this.out=out;
 		
-		ShapedRecipeBuilder.shapedRecipe(twistedgate.immersiveposts.IPOContent.Blocks.post_Base, 6)
+		ShapedRecipeBuilder.shapedRecipe(twistedgate.immersiveposts.common.IPOContent.Blocks.post_Base, 6)
 			.key('w', Tags.Items.COBBLESTONE)
 			.key('s', Blocks.STONE_BRICKS)
 			.patternLine("s s")

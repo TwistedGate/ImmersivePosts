@@ -14,7 +14,7 @@ import net.minecraft.loot.StandaloneLootEntry;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.ResourceLocation;
-import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 
 public class PostMaterialDropLootEntry extends StandaloneLootEntry{

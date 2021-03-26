@@ -6,18 +6,24 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.config.ModConfig.ModConfigEvent;
+import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
+@EventBusSubscriber(modid = IPOMod.ID, bus = Bus.MOD)
 public class IPOConfig{
-	public static final Logger log=LogManager.getLogger(IPOMod.ID+"/Config");
+	public static final Logger log = LogManager.getLogger(IPOMod.ID + "/Config");
 	
 	public static final ForgeConfigSpec ALL;
 	public static final Posts MAIN;
 	
 	static{
-		ForgeConfigSpec.Builder builder=new ForgeConfigSpec.Builder();
-		MAIN=new Posts(builder);
-		ALL=builder.build();
+		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+		MAIN = new Posts(builder);
+		ALL = builder.build();
 	}
 	
 	public static class Posts{
@@ -59,10 +65,10 @@ public class IPOConfig{
 		public boolean isEnabled(ResourceLocation loc){
 			try{
 				String name=loc.getPath().substring(loc.getPath().indexOf('_')+1).toUpperCase();
-				log.debug("Calling isDisabled({}) -> {}", loc, name);
+				log.debug("Calling isEnabled({}) -> {}", loc, name);
 				return isEnabled(EnumPostMaterial.valueOf(name));
 			}catch(Exception e){
-				log.debug("isDisabled({}) failed. ({})", loc, e.getMessage());
+				log.debug("isEnabled({}) failed. ({})", loc, e.getMessage());
 				return true;
 			}
 		}
@@ -70,7 +76,7 @@ public class IPOConfig{
 		public boolean isEnabled(EnumPostMaterial material){
 			if(material==null) return true;
 			
-			log.debug("Calling isDisabled({})", material);
+			log.debug("Calling isEnabled({})", material);
 			
 			switch(material){
 				case CONCRETE:			return enableConcrete.get();
@@ -88,5 +94,10 @@ public class IPOConfig{
 				default:				return true; // Treated, Alu and Steel cannot be disabled.
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public static void onConfigReload(ModConfigEvent ev){
+		
 	}
 }

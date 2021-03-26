@@ -44,7 +44,7 @@ import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
-import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
 public class PostBaseModel extends IPOBakedModel{

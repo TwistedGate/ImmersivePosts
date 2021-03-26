@@ -1,4 +1,4 @@
-package twistedgate.immersiveposts;
+package twistedgate.immersiveposts.common;
 
 import java.util.List;
 import java.util.Optional;

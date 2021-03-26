@@ -10,7 +10,7 @@ import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 import twistedgate.immersiveposts.IPOConfig;
-import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer.IPOConfigCondition;
 
 public class IPOConfigConditionSerializer implements IConditionSerializer<IPOConfigCondition>{
