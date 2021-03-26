@@ -4,9 +4,9 @@ import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import twistedgate.immersiveposts.common.IPOContent.Items;
 import twistedgate.immersiveposts.common.IPOMod;
 import twistedgate.immersiveposts.common.IPOTags;
-import twistedgate.immersiveposts.common.IPOContent.Items;
 
 /**
  * @author TwistedGate

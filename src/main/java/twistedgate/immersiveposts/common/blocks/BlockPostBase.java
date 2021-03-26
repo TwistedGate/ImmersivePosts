@@ -249,14 +249,14 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 			if(isPressing(GLFW.GLFW_KEY_LEFT_SHIFT) || isPressing(GLFW.GLFW_KEY_RIGHT_SHIFT)){
 				for(EnumPostMaterial t:EnumPostMaterial.values()){
 					IFormattableTextComponent typeName=new StringTextComponent("");
-					typeName.append(t.getItemStack().getDisplayName());
+					typeName.appendSibling(t.getItemStack().getDisplayName());
 					
 					if(IPOConfig.MAIN.isEnabled(t))
 						typeName.mergeStyle(TextFormatting.GREEN);
 					else
 						typeName.mergeStyle(TextFormatting.RED, TextFormatting.STRIKETHROUGH);
 					
-					tooltip.add(new StringTextComponent("- ").append(typeName));
+					tooltip.add(new StringTextComponent("- ").appendSibling(typeName));
 				}
 			}else{
 				tooltip.add(new StringTextComponent(I18n.format("tooltip.postbase")));
