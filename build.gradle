@@ -93,8 +93,8 @@ minecraft {
 dependencies {
 	minecraft "net.minecraftforge:forge:${version_minecraft}-${version_forge}"
 	
-	runtimeOnly fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}")
-	compileOnly fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}:api")
+	compile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}")
+	//compile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}:api")
 	datagenCompile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}:datagen")
 }
 
