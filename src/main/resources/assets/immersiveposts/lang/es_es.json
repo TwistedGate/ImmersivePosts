@@ -54,7 +54,7 @@
 	
     "_comment": "################## Postbase Tooltip(s) ##################",
 	
-    "tooltip.postbase": "[Mantener shift] ยง6Bloques aceptados.",
+    "tooltip.postbase": "[Mantener shift] §6Bloques aceptados.",
 	
     "_comment": "################## Miscellaneous ##################",
 
@@ -65,8 +65,8 @@
     "manual.immersiveposts.main": "Immersive Posts",
 	
     "_comment": "Índice",
-    "index.page_0_entry.1": "Índice página 1",
-    "index.page_0_entry.2": "Índice página 2",
+    "index.page_0_entry.1": "Índice-1",
+    "index.page_0_entry.2": "Índice-2",
     "index.page_0_entry.3": "Madera tratada",
     "index.page_0_entry.4": "Ladrillo del Nether",
     "index.page_0_entry.5": "Hierro",
