@@ -1,0 +1,9 @@
+§lPostes extensibles§r
+§oEl cielo es el límite§r.
+<&postbase>Se utilizan como punto de partida de los postes de tamaño personalizado.
+(Ver §1<link;immersiveposts:usage;Cómo usar;start>§r para más detalles).
+
+La base se puede ocultar simplemente sosteniendo un bloque en la mano, haciéndole clic derecho y se hará pasar por ese bloque.
+Si se usa mayús izq + clic derecho, se quita la cubierta.
+
+Sin embargo, sólo acepta bloques sólidos y opacos.

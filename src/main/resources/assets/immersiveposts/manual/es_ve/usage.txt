@@ -1,0 +1,17 @@
+§lCómo usar§r
+
+<&usage1>Vas a necesitar el §lMartillo del Ingeniero§r y un material de tu elección.
+Ver §1<link;immersiveposts:posts;esto;start>§r para una lista detallada de las cosas que se pueden utilizar.
+O simplemente pasa el cursor por encima de la base y mantén pulsada la tecla mayús izq (¡Funciona incluso §1<link;immersiveposts:postbase;aquí;start>!)<np>
+<&usage2>Después, con el material elegido en la mano, haz clic derecho en la base y debería ser como se muestra en la imagen de arriba.
+Nota: ¡Siempre tiene que ser del mismo tipo! Un §lposte de madera§r, por ejemplo, sólo acepta §lvallas de madera tratada§r, y nada más!<np>
+<&usage3>Desde aquí también puedes hacer clic derecho en el propio §lposte§r, lo que facilita ver la altura a la que ya lo has hecho.
+
+¿No es genial?<np>
+<&usage4>Ahora, para obtener el §nbrazo simple§r, haz clic derecho con el §lMartillo del Ingeniero§r en el lateral y la altura deseados.  Para quitarlo, haz clic derecho en el lado del §lposte§r en el que está el brazo. (O romperlo con un §lhacha§r)
+Nota: No aparecerá si hay un bloque en el camino.<np>
+<&usage5>Al hacer clic derecho sobre el brazo, éste se convertirá en un §nbrazo doble§r y viceversa.
+
+Al igual que con el §nbrazo simple§r, si no hay suficiente espacio no cambiará.<np>
+<&usage5>El §nbrazo simple§r se voltea hacia arriba y hacia abajo si detecta algún bloque por debajo de él, incluso si ya hay uno por encima.
+Por razones de estabilidad, el §nbrazo doble§r no puede voltearse hacia arriba y hacia abajo.
