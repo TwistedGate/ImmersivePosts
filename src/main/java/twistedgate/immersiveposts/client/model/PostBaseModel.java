@@ -19,7 +19,6 @@ import blusunrize.immersiveengineering.api.utils.QuadTransformer;
 import blusunrize.immersiveengineering.api.utils.client.CombinedModelData;
 import blusunrize.immersiveengineering.api.utils.client.SinglePropertyModelData;
 import blusunrize.immersiveengineering.client.utils.ModelUtils;
-import blusunrize.immersiveengineering.common.util.Utils;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -223,13 +222,13 @@ public class PostBaseModel extends IPOBakedModel{
 			}else if(that.allColorMultipliers != null && this.usedColorMultipliers != null){
 				return that.sameColorMultipliersAs(this);
 			}else{
-				throw new IllegalStateException("Can't compare PostBaseMOdel.Key's that use functions!");
+				throw new IllegalStateException("Can't compare PostBaseModel. Key's that use functions!");
 			}
 		}
 		
 		@Override
 		public int hashCode(){
-			return 31 * Utils.hashBlockstate(this.state) + Objects.hash(this.facing);
+			return 31 * this.state.hashCode() + Objects.hash(this.facing);
 		}
 	}
 }
