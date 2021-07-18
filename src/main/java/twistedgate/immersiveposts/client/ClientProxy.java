@@ -1,7 +1,5 @@
 package twistedgate.immersiveposts.client;
 
-import static blusunrize.immersiveengineering.client.ClientUtils.mc;
-
 import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.lib.manual.ManualElementTable;
 import blusunrize.lib.manual.ManualEntry;
@@ -29,7 +27,7 @@ public class ClientProxy extends CommonProxy{
 		super.setup();
 		
 		ClientEventHandler handler=new ClientEventHandler();
-		((IReloadableResourceManager)mc().getResourceManager()).addReloadListener(handler);
+		((IReloadableResourceManager)Minecraft.getInstance().getResourceManager()).addReloadListener(handler);
 		
 		Minecraft.getInstance().getBlockColors().register(new ColorHandler(), IPOContent.Blocks.post_Base);
 	}
