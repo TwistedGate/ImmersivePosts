@@ -1,0 +1,51 @@
+§lBloques aceptados§r
+§oHm, qué elegir..§r
+<&index0>
+<&index1><np>
+<&treated>Madera tratada.
+
+La vieja escuela.<np>
+<&nether>§lLadrillos del Nether§r.
+
+El cabeza caliente.<np>
+<&iron>§lHierro§r.
+
+El chico oxidado.<np>
+<&gold>§lOro§r.
+
+El gángster.<np>
+<&copper>§lCobre§r.
+
+El común.<np>
+<&lead>§lPlomo§r.
+
+El pesado.<np>
+<&silver>§lPlata§r.
+
+El brillante.<np>
+<&nickel>§lNíquel§r.
+
+La media banda.<np>
+<&constantan>§lConstantán§r.
+
+El raro.<np>
+<&electrum>§lElectro§r.
+
+La sorpresa.<np>
+<&uranium>§lUranio§r
+También emite un poco de luz.
+Aunque parece que tan solo como una antorcha de redstone.
+
+La larga vida media.<np>
+<&aluminium>§lAluminio§r
+
+El divisor de opiniones.<np>
+<&steel>§lAcero§r.
+
+El chico oxidado más fuerte.<np>
+<&concrete>§lHormigón§r.
+
+El desmenuzado.<np>
+<&leadedconcrete>§lHormigón reforzado§r.
+
+La miga reforzada.
