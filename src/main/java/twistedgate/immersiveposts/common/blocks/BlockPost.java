@@ -242,7 +242,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 								BlockPos nPos=pos.offset(facing);
 								BlockState nState=worldIn.getBlockState(nPos);
 								
-								if(nState.isAir(worldIn, nPos) || nState.getBlock()==Blocks.WATER){
+								if(nState.getBlock().isAir(nState, worldIn, nPos) || nState.getBlock()==Blocks.WATER){
 									defaultState=defaultState.with(FACING, facing)
 											.with(WATERLOGGED, nState.getBlock()==Blocks.WATER);
 									
