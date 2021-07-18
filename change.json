@@ -1,8 +1,8 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/immersiveposts",
 	"promos":{
-		"1.16.5-latest": "4.1.0",
-		"1.16.5-recommended": "4.1.0",
+		"1.16.5-latest": "4.1.1",
+		"1.16.5-recommended": "4.1.1",
 		
 		"1.16.3-latest": "3.0.0",
 		"1.16.3-recommended": "3.0.0",
@@ -17,7 +17,8 @@
 		"1.12.2-recommended": "0.2.1"
 	},
 	"1.16.5": {
-		"4.1.0": "Compiled with Forge: 1.16.5-36.1.0\n\nRequired update for to run with IEs breaking API changes with 1.16.5-5.0.0-135!",
+		"4.1.1": "Minimum IE version: 1.16.5-5.0.2-137\n\n[A] Added FrannDzs to Credits. (Spanish Language)\n[F] NoSuchMethodError crash related to Utils.hashBlockstate",
+		"4.1.0": "Minimum Forge version: 1.16.5-36.1.0\n\nRequired update for to run with IEs breaking API changes with 1.16.5-5.0.0-135!",
 		"4.0.0": "Minimum Forge version: 1.16.5-36.0.0\nMinimum IE version: 1.16.5-4.2.2-132\n\n[A] Loot Tables for Posts, PostBase and Fences. (Parker8283 & TwistedGate)\n[A] Added Spanish (es_es) language. (FrannDzs)\n[F] Manual text not being resolved from lang file in \"Accepted Blocks\" index pages. (Parker8283)\n[F] Fences not dropping themselves when broken. (Parker8283)"
 	},
 	"1.16.3": {
