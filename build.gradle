@@ -14,7 +14,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
 //----------------------------------------------------------------------------------------------------------------------
+
 version = "${version_immersiveposts}"
 group = "twistedgate.immersiveposts"
 archivesBaseName = "immersiveposts-${version_minecraft}"
@@ -32,6 +34,7 @@ sourceSets {
 			]
 		}
 	}
+	
 	datagen {
 		compileClasspath += main.compileClasspath
 		runtimeClasspath += main.runtimeClasspath
@@ -56,6 +59,7 @@ minecraft {
 				}
 			}
 		}
+		
 		server {
 			workingDirectory project.file('run')
 			property 'forge.logging.markers', ''
@@ -68,6 +72,7 @@ minecraft {
 				}
 			}
 		}
+		
 		data {
 			workingDirectory project.file('run')
 			property 'forge.logging.markers', ''
@@ -103,6 +108,7 @@ processResources {
 		include 'META-INF/mods.toml'
 		expand 'version': project.version
 	}
+	
 	from(sourceSets.main.resources.srcDirs) {
 		exclude 'META-INF/mods.toml'
 	}
@@ -155,5 +161,6 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 publishing {
 	publications { mavenJava(MavenPublication) { artifact reobfArtifact } }
+	
 	repositories { maven { url "file:///${project.projectDir}/mcmodsrepo" } }
 }
