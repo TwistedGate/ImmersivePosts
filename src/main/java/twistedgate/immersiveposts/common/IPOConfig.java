@@ -65,18 +65,14 @@ public class IPOConfig{
 		public boolean isEnabled(ResourceLocation loc){
 			try{
 				String name=loc.getPath().substring(loc.getPath().indexOf('_')+1).toUpperCase();
-				log.debug("Calling isEnabled({}) -> {}", loc, name);
 				return isEnabled(EnumPostMaterial.valueOf(name));
 			}catch(Exception e){
-				log.debug("isEnabled({}) failed. ({})", loc, e.getMessage());
 				return true;
 			}
 		}
 		
 		public boolean isEnabled(EnumPostMaterial material){
 			if(material==null) return true;
-			
-			log.debug("Calling isEnabled({})", material);
 			
 			switch(material){
 				case CONCRETE:			return enableConcrete.get();
