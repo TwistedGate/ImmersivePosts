@@ -29,7 +29,8 @@ public class IPOBlockBase extends Block{
 	
 	/** convenience method */
 	public static Block getBlockFrom(IBlockReader world, BlockPos pos){
-		if(world==null || pos==null) return null;
+		if(world == null || pos == null)
+			return null;
 		
 		return world.getBlockState(pos).getBlock();
 	}

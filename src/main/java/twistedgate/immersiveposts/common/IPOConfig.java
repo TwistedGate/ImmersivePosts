@@ -48,23 +48,23 @@ public class IPOConfig{
 					"" // "Spacer"
 					);
 			
-			enableIron			=builder.define("iron", true);
-			enableGold			=builder.define("gold", true);
-			enableCopper		=builder.define("copper", true);
-			enableLead			=builder.define("lead", true);
-			enableSilver		=builder.define("silver", true);
-			enableNickel		=builder.define("nickel", true);
-			enableConstantan	=builder.define("constantan", true);
-			enableElectrum		=builder.define("electrum", true);
-			enableUranium		=builder.define("uranium", true);
-			enableNether		=builder.define("nether", true);
-			enableConcrete		=builder.define("concrete", true);
-			enableConcreteLeaded=builder.define("concreteleaded", true);
+			enableIron			= builder.define("iron", true);
+			enableGold			= builder.define("gold", true);
+			enableCopper		= builder.define("copper", true);
+			enableLead			= builder.define("lead", true);
+			enableSilver		= builder.define("silver", true);
+			enableNickel		= builder.define("nickel", true);
+			enableConstantan	= builder.define("constantan", true);
+			enableElectrum		= builder.define("electrum", true);
+			enableUranium		= builder.define("uranium", true);
+			enableNether		= builder.define("nether", true);
+			enableConcrete		= builder.define("concrete", true);
+			enableConcreteLeaded= builder.define("concreteleaded", true);
 		}
 		
 		public boolean isEnabled(ResourceLocation loc){
 			try{
-				String name=loc.getPath().substring(loc.getPath().indexOf('_')+1).toUpperCase();
+				String name = loc.getPath().substring(loc.getPath().indexOf('_') + 1).toUpperCase();
 				return isEnabled(EnumPostMaterial.valueOf(name));
 			}catch(Exception e){
 				return true;

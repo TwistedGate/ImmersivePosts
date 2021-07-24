@@ -37,8 +37,6 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -49,7 +47,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.enums.EnumFlipState;
-import twistedgate.immersiveposts.enums.EnumHorizontalPostType;
+import twistedgate.immersiveposts.enums.EnumHorizontalTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
@@ -57,7 +55,7 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  * All-in-one package. Containing everything into one neat class is the best.
  * @author TwistedGate
  */
-public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLoggable{
+public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLoggable{
 	public static final RedstoneParticleData URAN_PARTICLE=new RedstoneParticleData(0.0F, 1.0F, 0.0F, 1.0F);
 	
 	public static final VoxelShape POST_SHAPE=VoxelShapes.create(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
@@ -80,7 +78,7 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 	
 	public static final EnumProperty<EnumFlipState> FLIPSTATE=EnumProperty.create("flipstate", EnumFlipState.class);
 	
-	public BlockPost(EnumPostMaterial postMaterial){
+	public PostBlock(EnumPostMaterial postMaterial){
 		super(postMaterial, "");
 		
 		setDefaultState(getStateContainer().getBaseState()
@@ -116,8 +114,8 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context){
-		BlockState state=super.getStateForPlacement(context);
-		FluidState fs=context.getWorld().getFluidState(context.getPos());
+		BlockState state = super.getStateForPlacement(context);
+		FluidState fs = context.getWorld().getFluidState(context.getPos());
 		
 		return state.with(WATERLOGGED, fs.getFluid() == Fluids.WATER);
 	}
@@ -128,17 +126,17 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 			world.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		
-		if(state.get(TYPE).id()>1){
+		if(state.get(TYPE).id() > 1){
 			return state;
 			/*
 			 * canConnect is rather time consuming, so this is an attempt to speed this up.
 			 */
 		}
 		
-		boolean b0=canConnect(world, pos, Direction.NORTH);
-		boolean b1=canConnect(world, pos, Direction.EAST);
-		boolean b2=canConnect(world, pos, Direction.SOUTH);
-		boolean b3=canConnect(world, pos, Direction.WEST);
+		boolean b0 = canConnect(world, pos, Direction.NORTH);
+		boolean b1 = canConnect(world, pos, Direction.EAST);
+		boolean b2 = canConnect(world, pos, Direction.SOUTH);
+		boolean b3 = canConnect(world, pos, Direction.WEST);
 		
 		return state.with(LPARM_NORTH, b0)
 					.with(LPARM_EAST, b1)
@@ -159,12 +157,12 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand){
-		if(this.postMaterial==EnumPostMaterial.URANIUM){
-			if(stateIn.get(TYPE)!=EnumPostType.ARM && rand.nextFloat()<0.125F){
-				double x=pos.getX()+0.375+0.25*rand.nextDouble();
-				double y=pos.getY()+rand.nextDouble();
-				double z=pos.getZ()+0.375+0.25*rand.nextDouble();
-				worldIn.addParticle(URAN_PARTICLE, x,y,z, 0.0, 0.0, 0.0);
+		if(this.postMaterial == EnumPostMaterial.URANIUM){
+			if(stateIn.get(TYPE) != EnumPostType.ARM && rand.nextFloat() < 0.125F){
+				double x = pos.getX() + 0.375 + 0.25 * rand.nextDouble();
+				double y = pos.getY() + rand.nextDouble();
+				double z = pos.getZ() + 0.375 + 0.25 * rand.nextDouble();
+				worldIn.addParticle(URAN_PARTICLE, x, y, z, 0.0, 0.0, 0.0);
 			}
 		}
 	}
@@ -182,50 +180,50 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 	
 	@Override
 	public boolean canConnectTransformer(IBlockReader world, BlockPos pos){
-		return world.getBlockState(pos).get(TYPE).id()<2;
+		return world.getBlockState(pos).get(TYPE).id() < 2;
 	}
 	
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
 		if(!worldIn.isRemote){
-			ItemStack held=playerIn.getHeldItemMainhand();
+			ItemStack held = playerIn.getHeldItemMainhand();
 			if(EnumPostMaterial.isValidItem(held)){
 				if(!held.isItemEqual(this.postMaterial.getItemStack())){
 					playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", this.postMaterial.getItemStack().getDisplayName()), true);
 					return ActionResultType.SUCCESS;
 				}
 				
-				for(int y=0;y<=(worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ())-pos.getY());y++){
-					BlockPos nPos=pos.add(0,y,0);
+				for(int y = 0;y <= (worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ()) - pos.getY());y++){
+					BlockPos nPos = pos.add(0, y, 0);
 					
-					BlockState nState=worldIn.getBlockState(nPos);
-					if(nState.getBlock() instanceof BlockPost){
-						EnumPostType type=nState.get(BlockPost.TYPE);
-						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && nState.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
+					BlockState nState = worldIn.getBlockState(nPos);
+					if(nState.getBlock() instanceof PostBlock){
+						EnumPostType type = nState.get(PostBlock.TYPE);
+						if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP) && nState.get(PostBlock.FLIPSTATE) == EnumFlipState.DOWN){
 							return ActionResultType.SUCCESS;
 						}else{
-							nState=worldIn.getBlockState(nPos.offset(Direction.UP));
-							if(nState.getBlock() instanceof BlockPost){
-								type=nState.get(BlockPost.TYPE);
-								if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
+							nState = worldIn.getBlockState(nPos.offset(Direction.UP));
+							if(nState.getBlock() instanceof PostBlock){
+								type = nState.get(PostBlock.TYPE);
+								if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP)){
 									return ActionResultType.SUCCESS;
 								}
 							}
 						}
 					}
 					
-					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
+					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock() == Blocks.WATER){
 						BlockState fb=EnumPostMaterial.getPostState(held)
-								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
+								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock() == Blocks.WATER);
 						
-						if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb)){
+						if(fb != null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb)){
 							if(!playerIn.isCreative()){
 								held.shrink(1);
 							}
 						}
 						return ActionResultType.SUCCESS;
 						
-					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof BlockPost)){
+					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof PostBlock)){
 						return ActionResultType.SUCCESS;
 					}
 				}
@@ -247,7 +245,7 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 								BlockState nState = worldIn.getBlockState(nPos);
 								
 								boolean b = !nState.getBlock().isAir(nState, worldIn, nPos);
-								if(b && (nState.getBlock() instanceof BlockPost && nState.get(TYPE).id()<=1)){
+								if(b && (nState.getBlock() instanceof PostBlock && nState.get(TYPE).id() <= 1)){
 									success = true;
 									break;
 								}else if(b && nState.getBlock() != Blocks.WATER){
@@ -261,22 +259,22 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 									BlockPos nPos = pos.offset(facing, i + 1);
 									BlockState nState = worldIn.getBlockState(nPos);
 									BlockState hState = IPOContent.Blocks.HorizontalPosts.get(getPostMaterial()).getDefaultState()
-											.with(HorizontalPostBlock.FACING, facing)
+											.with(HorizontalTrussBlock.FACING, facing)
 											.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
 									
 									if(i == 0){
 										// A (Start)
-										worldIn.setBlockState(nPos, hState.with(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_A));
+										worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_A));
 									}else if(i == (size - 1)){
 										// D (End)
-										worldIn.setBlockState(nPos, hState.with(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_D));
+										worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D));
 									}else{
 										if(i % 2 == 0){
 											// C (Middle Evem)
-											worldIn.setBlockState(nPos, hState.with(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_C));
+											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_C));
 										}else{
 											// B (Middle Odd)
-											worldIn.setBlockState(nPos, hState.with(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_B));
+											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_B));
 										}
 									}
 								}
@@ -291,20 +289,20 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 				}else{
 					switch(state.get(TYPE)){
 						case POST:case POST_TOP:{
-							Direction facing=hit.getFace();
-							BlockState defaultState=getDefaultState().with(TYPE, EnumPostType.ARM);
+							Direction facing = hit.getFace();
+							BlockState defaultState =getDefaultState().with(TYPE, EnumPostType.ARM);
 							switch(facing){
 								case NORTH:case EAST:case SOUTH:case WEST:{
-									BlockPos nPos=pos.offset(facing);
-									BlockState nState=worldIn.getBlockState(nPos);
+									BlockPos nPos = pos.offset(facing);
+									BlockState nState = worldIn.getBlockState(nPos);
 									
-									if(nState.getBlock().isAir(nState, worldIn, nPos) || nState.getBlock()==Blocks.WATER){
-										defaultState=defaultState.with(FACING, facing)
+									if(nState.getBlock().isAir(nState, worldIn, nPos) || nState.getBlock() == Blocks.WATER){
+										defaultState = defaultState.with(FACING, facing)
 												.with(WATERLOGGED, nState.getBlock()==Blocks.WATER);
 										
 										worldIn.setBlockState(nPos, defaultState);
 										defaultState.neighborChanged(worldIn, nPos, this, null, false);
-									}else if(getBlockFrom(worldIn, nPos)==this){
+									}else if(getBlockFrom(worldIn, nPos) == this){
 										switch(nState.get(TYPE)){
 											case ARM: case EMPTY:{
 												replaceSelf(nState, worldIn, nPos);
@@ -319,8 +317,8 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 							return ActionResultType.SUCCESS;
 						}
 						case ARM:{
-							Direction bfacing=state.get(FACING);
-							BlockPos offset=pos.offset(bfacing);
+							Direction bfacing = state.get(FACING);
+							BlockPos offset = pos.offset(bfacing);
 							if(worldIn.isAirBlock(offset) || worldIn.getBlockState(offset).getBlock() == Blocks.WATER){
 								worldIn.setBlockState(offset, state.with(TYPE, EnumPostType.ARM_DOUBLE).with(WATERLOGGED, worldIn.getBlockState(offset).getBlock() == Blocks.WATER));
 								worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.EMPTY));
@@ -328,13 +326,13 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 							return ActionResultType.SUCCESS;
 						}
 						case ARM_DOUBLE:{
-							Direction bfacing=state.get(FACING);
+							Direction bfacing = state.get(FACING);
 							replaceSelf(state, worldIn, pos);
 							worldIn.setBlockState(pos.offset(bfacing.getOpposite()), state.with(TYPE, EnumPostType.ARM));
 							return ActionResultType.SUCCESS;
 						}
 						case EMPTY:{
-							Direction bfacing=state.get(FACING);
+							Direction bfacing = state.get(FACING);
 							worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.ARM));
 							replaceSelf(state, worldIn, pos.offset(bfacing));
 							return ActionResultType.SUCCESS;
@@ -353,43 +351,44 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 	
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
-		if(world.isRemote) return;
+		if(world.isRemote)
+			return;
 		
 		updateState(state, world, pos);
 	}
 	
 	private void updateState(BlockState stateIn, World world, BlockPos pos){
-		EnumPostType thisType=stateIn.get(TYPE);
+		EnumPostType thisType = stateIn.get(TYPE);
 		
-		if(thisType.id()<=1){ // If POST (0) or POST_TOP (1)
-			BlockState state=world.getBlockState(pos.offset(Direction.DOWN));
-			if(state.getBlock()==Blocks.AIR || state.getBlock()==Blocks.WATER){
+		if(thisType.id() <= 1){ // If POST (0) or POST_TOP (1)
+			BlockState state = world.getBlockState(pos.offset(Direction.DOWN));
+			if(state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.WATER){
 				Block.spawnDrops(stateIn, world, pos);
 				replaceSelf(stateIn, world, pos);
 				return;
 			}
 		}
 		
-		BlockState aboveState=world.getBlockState(pos.offset(Direction.UP));
-		Block aboveBlock=aboveState.getBlock();
+		BlockState aboveState = world.getBlockState(pos.offset(Direction.UP));
+		Block aboveBlock = aboveState.getBlock();
 		switch(thisType){
 			case POST:{
-				if(!(aboveBlock instanceof BlockPost)){
+				if(!(aboveBlock instanceof PostBlock)){
 					world.setBlockState(pos, stateIn.with(TYPE, EnumPostType.POST_TOP));
 				}
 				return;
 			}
 			case POST_TOP:{
-				if((aboveBlock instanceof BlockPost) && aboveState.get(TYPE)==EnumPostType.POST_TOP){
+				if((aboveBlock instanceof PostBlock) && aboveState.get(TYPE) == EnumPostType.POST_TOP){
 					world.setBlockState(pos, stateIn.with(TYPE, EnumPostType.POST));
 				}
 				return;
 			}
 			case ARM:{
-				Direction f=stateIn.get(FACING).getOpposite();
-				BlockState state=world.getBlockState(pos.offset(f));
+				Direction f = stateIn.get(FACING).getOpposite();
+				BlockState state = world.getBlockState(pos.offset(f));
 				
-				if(state!=null && !(state.getBlock() instanceof BlockPost)){
+				if(state != null && !(state.getBlock() instanceof PostBlock)){
 					replaceSelf(stateIn, world, pos);
 				}else{
 					world.setBlockState(pos, stateIn.with(FLIPSTATE, getFlipState(world, pos)));
@@ -398,23 +397,23 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 				return;
 			}
 			case ARM_DOUBLE:{
-				Direction f=stateIn.get(FACING).getOpposite();
-				BlockState state=world.getBlockState(pos.offset(f));
-				if(state!=null && !(state.getBlock() instanceof BlockPost)){
+				Direction f = stateIn.get(FACING).getOpposite();
+				BlockState state = world.getBlockState(pos.offset(f));
+				if(state != null && !(state.getBlock() instanceof PostBlock)){
 					replaceSelf(stateIn, world, pos);
 				}
 				
 				return;
 			}
 			case EMPTY:{
-				BlockState state=world.getBlockState(pos.offset(stateIn.get(FACING).getOpposite()));
-				if(state!=null && !(state.getBlock() instanceof BlockPost)){
+				BlockState state = world.getBlockState(pos.offset(stateIn.get(FACING).getOpposite()));
+				if(state != null && !(state.getBlock() instanceof PostBlock)){
 					replaceSelf(stateIn, world, pos);
 					return;
 				}
 				
-				state=world.getBlockState(pos.offset(stateIn.get(FACING)));
-				if(state.getBlock()==Blocks.AIR || state.getBlock()==Blocks.WATER){
+				state = world.getBlockState(pos.offset(stateIn.get(FACING)));
+				if(state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.WATER){
 					replaceSelf(stateIn, world, pos);
 				}
 			}
@@ -422,19 +421,22 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 	}
 	
 	private EnumFlipState getFlipState(IBlockReader world, BlockPos pos){
-		BlockState aboveState=world.getBlockState(pos.offset(Direction.UP));
-		BlockState belowState=world.getBlockState(pos.offset(Direction.DOWN));
+		BlockState aboveState = world.getBlockState(pos.offset(Direction.UP));
+		BlockState belowState = world.getBlockState(pos.offset(Direction.DOWN));
 		
-		Block aboveBlock=aboveState.getBlock();
-		Block belowBlock=belowState.getBlock();
+		Block aboveBlock = aboveState.getBlock();
+		Block belowBlock = belowState.getBlock();
 		
-		boolean up=BlockPost.canConnect(world, pos, Direction.UP) && ((aboveBlock instanceof BlockPost)?aboveState.get(TYPE)!=EnumPostType.ARM:true);
-		boolean down=BlockPost.canConnect(world, pos, Direction.DOWN) && ((belowBlock instanceof BlockPost)?belowState.get(TYPE)!=EnumPostType.ARM:true);
+		boolean up = PostBlock.canConnect(world, pos, Direction.UP) && ((aboveBlock instanceof PostBlock) ? aboveState.get(TYPE) != EnumPostType.ARM : true);
+		boolean down = PostBlock.canConnect(world, pos, Direction.DOWN) && ((belowBlock instanceof PostBlock) ? belowState.get(TYPE) != EnumPostType.ARM : true);
 		
 		EnumFlipState flipState;
-		if(up && down) flipState=EnumFlipState.BOTH;
-		else if(down) flipState=EnumFlipState.DOWN;
-		else flipState=EnumFlipState.UP;
+		if(up && down)
+			flipState = EnumFlipState.BOTH;
+		else if(down)
+			flipState = EnumFlipState.DOWN;
+		else
+			flipState = EnumFlipState.UP;
 		
 		return flipState;
 	}
@@ -444,16 +446,17 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 		return stateBounds(state);
 	}
 	
-	private static final VoxelShape X_BOUNDS=VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
-	private static final VoxelShape Z_BOUNDS=VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
-	private static final Byte2ObjectMap<VoxelShape> armMap=new Byte2ObjectArrayMap<>();
-	private static final Byte2ObjectMap<VoxelShape> defaultMap=new Byte2ObjectArrayMap<>();
+	private static final VoxelShape X_BOUNDS = VoxelShapes.create(0.0, 0.34375, 0.3125, 1.0, 1.0, 0.6875);
+	private static final VoxelShape Z_BOUNDS = VoxelShapes.create(0.3125, 0.34375, 0.0, 0.6875, 1.0, 1.0);
+	private static final Byte2ObjectMap<VoxelShape> armMap = new Byte2ObjectArrayMap<>();
+	private static final Byte2ObjectMap<VoxelShape> defaultMap = new Byte2ObjectArrayMap<>();
 	private static VoxelShape stateBounds(BlockState state){
-		EnumPostType type=state.get(TYPE);
+		EnumPostType type = state.get(TYPE);
 		switch(type){
-			case ARM:case ARM_DOUBLE:{
-				Direction dir=state.get(FACING);
-				EnumFlipState flipstate=state.get(FLIPSTATE);
+			case ARM:
+			case ARM_DOUBLE:{
+				Direction dir = state.get(FACING);
+				EnumFlipState flipstate = state.get(FLIPSTATE);
 				
 				/*
 					Bit-6 = FlipDown
@@ -466,36 +469,36 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 					If Bit5 and Bit6 are both 1 then its EnumFlipState.BOTH
 					By default it's EnumFlipState.UP
 				 */
-				byte bid=0x00;
+				byte bid = 0x00;
 				
 				switch(flipstate){
-					case UP:	bid=0x10; break;
-					case DOWN:	bid=0x20; break;
-					case BOTH:	bid=0x30; break;
+					case UP:	bid = 0x10; break;
+					case DOWN:	bid = 0x20; break;
+					case BOTH:	bid = 0x30; break;
 				}
 				
 				switch(dir){
-					case WEST:	bid|=0x08; break;
-					case SOUTH:	bid|=0x04; break;
-					case EAST:	bid|=0x02; break;
-					default:	bid|=0x01; // Basicly default to North
+					case WEST:	bid |= 0x08; break;
+					case SOUTH:	bid |= 0x04; break;
+					case EAST:	bid |= 0x02; break;
+					default:	bid |= 0x01; // Basicly default to North
 				}
 				
 				if(!armMap.containsKey(bid)){
-					double minY=0.0;
-					double maxY=1.0;
+					double minY = 0.0;
+					double maxY = 1.0;
 					switch(flipstate){
-						case UP:   minY=0.34375; maxY=1.0; break;
-						case DOWN: minY=0.0; maxY=0.65625; break;
-						case BOTH: minY=0.0; maxY=1.0; break;
+						case UP:	minY = 0.34375; maxY = 1.0; break;
+						case DOWN:	minY = 0.0; maxY = 0.65625; break;
+						case BOTH:	minY = 0.0; maxY = 1.0; break;
 					}
 					
-					double minX=(dir==Direction.EAST) ?0.0:0.3125;
-					double maxX=(dir==Direction.WEST) ?1.0:0.6875;
-					double minZ=(dir==Direction.SOUTH)?0.0:0.3125;
-					double maxZ=(dir==Direction.NORTH)?1.0:0.6875;
+					double minX = (dir == Direction.EAST) ? 0.0 : 0.3125;
+					double maxX = (dir == Direction.WEST) ? 1.0 : 0.6875;
+					double minZ = (dir == Direction.SOUTH) ? 0.0 : 0.3125;
+					double maxZ = (dir == Direction.NORTH) ? 1.0 : 0.6875;
 					
-					VoxelShape shape=VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
+					VoxelShape shape = VoxelShapes.create(minX, minY, minZ, maxX, maxY, maxZ);
 					armMap.put(bid, shape);
 					return shape;
 				}
@@ -503,28 +506,28 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 				return armMap.get(bid);
 			}
 			case EMPTY:{
-				if(state.get(FACING).getAxis()==Axis.X){
+				if(state.get(FACING).getAxis() == Axis.X){
 					return X_BOUNDS;
 				}
 				
 				return Z_BOUNDS;
 			}
 			default:{
-				byte bid=0x00;
-				if(state.get(LPARM_NORTH)) bid|=0x01;
-				if(state.get(LPARM_SOUTH)) bid|=0x02;
-				if(state.get(LPARM_EAST))  bid|=0x04;
-				if(state.get(LPARM_WEST))  bid|=0x08;
+				byte bid = 0x00;
+				if(state.get(LPARM_NORTH))	bid |= 0x01;
+				if(state.get(LPARM_SOUTH))	bid |= 0x02;
+				if(state.get(LPARM_EAST))	bid |= 0x04;
+				if(state.get(LPARM_WEST))	bid |= 0x08;
 				
 				if(!defaultMap.containsKey(bid)){
-					VoxelShape shape=POST_SHAPE;
+					VoxelShape shape = POST_SHAPE;
 					
-					if(state.get(LPARM_NORTH)) shape=VoxelShapes.combine(shape, LPARM_NORTH_BOUNDS, IBooleanFunction.OR);
-					if(state.get(LPARM_SOUTH)) shape=VoxelShapes.combine(shape, LPARM_SOUTH_BOUNDS, IBooleanFunction.OR);
-					if(state.get(LPARM_EAST))  shape=VoxelShapes.combine(shape, LPARM_EAST_BOUNDS, IBooleanFunction.OR);
-					if(state.get(LPARM_WEST))  shape=VoxelShapes.combine(shape, LPARM_WEST_BOUNDS, IBooleanFunction.OR);
+					if(state.get(LPARM_NORTH))	shape = VoxelShapes.combine(shape, LPARM_NORTH_BOUNDS, IBooleanFunction.OR);
+					if(state.get(LPARM_SOUTH))	shape = VoxelShapes.combine(shape, LPARM_SOUTH_BOUNDS, IBooleanFunction.OR);
+					if(state.get(LPARM_EAST))	shape = VoxelShapes.combine(shape, LPARM_EAST_BOUNDS, IBooleanFunction.OR);
+					if(state.get(LPARM_WEST))	shape = VoxelShapes.combine(shape, LPARM_WEST_BOUNDS, IBooleanFunction.OR);
 					
-					shape=shape.simplify();
+					shape = shape.simplify();
 					defaultMap.put(bid, shape);
 					return shape;
 				}
@@ -536,28 +539,28 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 	
 	
 	public static boolean canConnect(IBlockReader worldIn, BlockPos posIn, Direction facingIn){
-		BlockPos nPos=posIn.offset(facingIn);
+		BlockPos nPos = posIn.offset(facingIn);
 		
-		BlockState otherState=worldIn.getBlockState(nPos);
-		Block otherBlock=otherState.getBlock();
+		BlockState otherState = worldIn.getBlockState(nPos);
+		Block otherBlock = otherState.getBlock();
 		
 		// Go straight out if air, no questions asked.
-		if(otherBlock==Blocks.AIR)
+		if(otherBlock == Blocks.AIR)
 			return false;
 		
 		// Secondary, more indepth check
-		if(otherBlock.isAir(otherState, worldIn, nPos) || otherBlock instanceof FourWayBlock || otherBlock instanceof BlockPost || otherBlock instanceof HorizontalPostBlock)
+		if(otherBlock.isAir(otherState, worldIn, nPos) || otherBlock instanceof FourWayBlock || otherBlock instanceof PostBlock || otherBlock instanceof HorizontalTrussBlock)
 			return false;
 		
-		if(facingIn==Direction.DOWN || facingIn==Direction.UP){
-			VoxelShape shape=otherState.getShape(worldIn, nPos);
-			if(!shape.isEmpty()) {
-				AxisAlignedBB box=shape.getBoundingBox();
+		if(facingIn == Direction.DOWN || facingIn == Direction.UP){
+			VoxelShape shape = otherState.getShape(worldIn, nPos);
+			if(!shape.isEmpty()){
+				AxisAlignedBB box = shape.getBoundingBox();
 				switch(facingIn){
-					case UP:	return box.minY==0.0;
+					case UP:	return box.minY == 0.0;
 					case DOWN:{
-						boolean bool=otherBlock instanceof BlockPost;
-						return !bool && box.maxY==1.0;
+						boolean bool = otherBlock instanceof PostBlock;
+						return !bool && box.maxY == 1.0;
 					}
 					default: break;
 				}
@@ -565,22 +568,22 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 			}
 		}
 		
-		VoxelShape shape=otherState.getShape(worldIn, nPos);
+		VoxelShape shape = otherState.getShape(worldIn, nPos);
 		if(!shape.isEmpty()){
-			AxisAlignedBB box=shape.getBoundingBox();
+			AxisAlignedBB box = shape.getBoundingBox();
 			boolean b;
 			
 			switch(facingIn){
-				case NORTH:	b=(box.maxZ==1.0);break;
-				case SOUTH:	b=(box.minZ==0.0);break;
-				case WEST:	b=(box.maxX==1.0);break;
-				case EAST:	b=(box.minX==0.0);break;
-				default:	b=false;
+				case NORTH: b = (box.maxZ == 1.0); break;
+				case SOUTH: b = (box.minZ == 0.0); break;
+				case WEST:  b = (box.maxX == 1.0); break;
+				case EAST:  b = (box.minX == 0.0); break;
+				default: b = false;
 			}
 			
 			if(b){
-				if(facingIn.getAxis()==Axis.Z && box.minX>0.0 && box.maxX<1.0) return true;
-				if(facingIn.getAxis()==Axis.X && box.minZ>0.0 && box.maxZ<1.0) return true;
+				if(facingIn.getAxis() == Axis.Z && box.minX > 0.0 && box.maxX < 1.0) return true;
+				if(facingIn.getAxis() == Axis.X && box.minZ > 0.0 && box.maxZ < 1.0) return true;
 			}
 		}
 		

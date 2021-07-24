@@ -9,9 +9,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
-public class BlockGenericPost extends IPOBlockBase{
+public class GenericPostBlock extends IPOBlockBase{
 	protected final EnumPostMaterial postMaterial;
-	public BlockGenericPost(EnumPostMaterial postMaterial, @Nonnull String name_post){
+	public GenericPostBlock(EnumPostMaterial postMaterial, @Nonnull String name_post){
 		super(postMaterial.getString() + name_post, postMaterial.getProperties());
 		this.postMaterial = postMaterial;
 	}

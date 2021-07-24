@@ -11,12 +11,12 @@ import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 public class ColorHandler implements IBlockColor{
 	@Override
 	public int getColor(BlockState state, IBlockDisplayReader world, BlockPos pos, int index){
-		if(index>=0){
-			TileEntity te=world.getTileEntity(pos);
-			if(te instanceof PostBaseTileEntity && !((PostBaseTileEntity)te).getStack().isEmpty()){
-				PostBaseTileEntity base=(PostBaseTileEntity)te;
+		if(index >= 0){
+			TileEntity te = world.getTileEntity(pos);
+			if(te instanceof PostBaseTileEntity && !((PostBaseTileEntity) te).getStack().isEmpty()){
+				PostBaseTileEntity base = (PostBaseTileEntity) te;
 				
-				int color=Minecraft.getInstance().getBlockColors().getColor(base.getCoverState(), world, pos, index);
+				int color = Minecraft.getInstance().getBlockColors().getColor(base.getCoverState(), world, pos, index);
 				return color;
 			}
 		}

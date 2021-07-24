@@ -18,7 +18,7 @@ import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.common.blocks.BlockPostBase;
+import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
 public class BaseCoverDropLootEntry extends StandaloneLootEntry{
@@ -33,7 +33,7 @@ public class BaseCoverDropLootEntry extends StandaloneLootEntry{
 		if(context.has(LootParameters.BLOCK_STATE) && context.has(LootParameters.BLOCK_ENTITY)){
 			BlockState state = context.get(LootParameters.BLOCK_STATE);
 			
-			if(state.hasProperty(BlockPostBase.HIDDEN) && state.get(BlockPostBase.HIDDEN)){
+			if(state.hasProperty(PostBaseBlock.HIDDEN) && state.get(PostBaseBlock.HIDDEN)){
 				TileEntity te = context.get(LootParameters.BLOCK_ENTITY);
 				if(te instanceof PostBaseTileEntity){
 					ItemStack teStack = ((PostBaseTileEntity) te).getStack();
@@ -51,7 +51,6 @@ public class BaseCoverDropLootEntry extends StandaloneLootEntry{
 	public static StandaloneLootEntry.Builder<?> builder(){
 		return builder(BaseCoverDropLootEntry::new);
 	}
-	
 	
 	public static class Serializer extends StandaloneLootEntry.Serializer<BaseCoverDropLootEntry>{
 		@Nonnull

@@ -15,7 +15,7 @@ import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.common.blocks.BlockPost;
+import twistedgate.immersiveposts.common.blocks.PostBlock;
 
 public class PostMaterialDropLootEntry extends StandaloneLootEntry{
 	public static final ResourceLocation ID = new ResourceLocation(IPOMod.ID, "post_material_drop");
@@ -28,8 +28,8 @@ public class PostMaterialDropLootEntry extends StandaloneLootEntry{
 	protected void func_216154_a(Consumer<ItemStack> stackConsumer, LootContext context){
 		if(context.has(LootParameters.BLOCK_STATE)){
 			BlockState state = context.get(LootParameters.BLOCK_STATE);
-			if(state.hasProperty(BlockPost.TYPE) && state.get(BlockPost.TYPE).id() < 2){
-				ItemStack stack = ((BlockPost)state.getBlock()).getPostMaterial().getItemStack();
+			if(state.hasProperty(PostBlock.TYPE) && state.get(PostBlock.TYPE).id() < 2){
+				ItemStack stack = ((PostBlock) state.getBlock()).getPostMaterial().getItemStack();
 				stackConsumer.accept(stack);
 			}
 		}
@@ -43,7 +43,6 @@ public class PostMaterialDropLootEntry extends StandaloneLootEntry{
 	public static StandaloneLootEntry.Builder<?> builder(){
 		return builder(PostMaterialDropLootEntry::new);
 	}
-	
 	
 	public static class Serializer extends StandaloneLootEntry.Serializer<PostMaterialDropLootEntry>{
 		@Override

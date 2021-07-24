@@ -19,7 +19,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Lazy;
 import twistedgate.immersiveposts.common.IPOContent;
-import twistedgate.immersiveposts.common.blocks.BlockPostBase;
+import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 
 public class PostBaseTileEntity extends IPOTileEntityBase{
 	protected static final Lazy<BlockState> EMPTY=Lazy.of(()->Blocks.AIR.getDefaultState());
@@ -116,7 +116,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 					Block.spawnAsEntity(world, pos, getStack());
 					setStack(ItemStack.EMPTY);
 					
-					world.setBlockState(pos, state.with(BlockPostBase.HIDDEN, false));
+					world.setBlockState(pos, state.with(PostBaseBlock.HIDDEN, false));
 				}
 				
 				return true;
@@ -135,7 +135,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 						held.shrink(1);
 					}
 					
-					world.setBlockState(pos, state.with(BlockPostBase.HIDDEN, true).with(BlockPostBase.WATERLOGGED, false));
+					world.setBlockState(pos, state.with(PostBaseBlock.HIDDEN, true).with(PostBaseBlock.WATERLOGGED, false));
 				}
 				
 				return true;

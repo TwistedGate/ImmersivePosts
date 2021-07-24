@@ -15,10 +15,10 @@ import twistedgate.immersiveposts.common.data.loot.IPOBlockLoot;
 /**
  * @author TwistedGate
  */
-@EventBusSubscriber(modid=IPOMod.ID, bus=Bus.MOD)
+@EventBusSubscriber(modid = IPOMod.ID, bus = Bus.MOD)
 public class IPODataGen{
-	public static final Logger log=LogManager.getLogger(IPOMod.ID+"/DataGenerator");
-
+	public static final Logger log = LogManager.getLogger(IPOMod.ID + "/DataGenerator");
+	
 	@SubscribeEvent
 	public static void generate(GatherDataEvent event){
 		DataGenerator generator = event.getGenerator();

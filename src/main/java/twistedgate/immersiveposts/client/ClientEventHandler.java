@@ -17,7 +17,7 @@ import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseModel;
 import twistedgate.immersiveposts.common.IPOContent;
 
-@EventBusSubscriber(modid=IPOMod.ID, value={Dist.CLIENT}, bus=Bus.MOD)
+@EventBusSubscriber(modid = IPOMod.ID, value = {Dist.CLIENT}, bus = Bus.MOD)
 public class ClientEventHandler implements ISelectiveResourceReloadListener{
 	@Override
 	public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate){

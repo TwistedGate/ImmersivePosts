@@ -32,10 +32,10 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twistedgate.immersiveposts.enums.EnumHorizontalPostType;
+import twistedgate.immersiveposts.enums.EnumHorizontalTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
-public class HorizontalPostBlock extends BlockGenericPost implements IPostBlock, IWaterLoggable{
+public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock, IWaterLoggable{
 	
 	public static final BooleanProperty CONNECTOR_POINT_TOP = BooleanProperty.create("connector_point_top");
 	public static final BooleanProperty CONNECTOR_POINT_BOTTOM = BooleanProperty.create("connector_point_bottom");
@@ -43,15 +43,15 @@ public class HorizontalPostBlock extends BlockGenericPost implements IPostBlock,
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final EnumProperty<EnumHorizontalPostType> TYPE = EnumProperty.create("type", EnumHorizontalPostType.class);
+	public static final EnumProperty<EnumHorizontalTrussType> TYPE = EnumProperty.create("type", EnumHorizontalTrussType.class);
 	
-	public HorizontalPostBlock(EnumPostMaterial postMaterial){
+	public HorizontalTrussBlock(EnumPostMaterial postMaterial){
 		super(postMaterial, "_horizontal");
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(WATERLOGGED, false)
 				.with(FACING, Direction.NORTH)
-				.with(TYPE, EnumHorizontalPostType.HORIZONTAL_A)
+				.with(TYPE, EnumHorizontalTrussType.HORIZONTAL_A)
 				.with(CONNECTOR_POINT_TOP, false)
 				.with(CONNECTOR_POINT_BOTTOM, false)
 				);
@@ -88,11 +88,11 @@ public class HorizontalPostBlock extends BlockGenericPost implements IPostBlock,
 		}
 		
 		if(facing == Direction.UP){
-			boolean b = BlockPost.canConnect(world, pos, facing);
+			boolean b = PostBlock.canConnect(world, pos, facing);
 			state = state.with(CONNECTOR_POINT_TOP, b);
 		}
 		if(facing == Direction.DOWN){
-			boolean b = BlockPost.canConnect(world, pos, facing);
+			boolean b = PostBlock.canConnect(world, pos, facing);
 			state = state.with(CONNECTOR_POINT_BOTTOM, b);
 		}
 		
@@ -117,7 +117,7 @@ public class HorizontalPostBlock extends BlockGenericPost implements IPostBlock,
 				double x = pos.getX() + 0.375 + 0.25 * rand.nextDouble();
 				double y = pos.getY() + rand.nextDouble();
 				double z = pos.getZ() + 0.375 + 0.25 * rand.nextDouble();
-				worldIn.addParticle(BlockPost.URAN_PARTICLE, x, y, z, 0.0, 0.0, 0.0);
+				worldIn.addParticle(PostBlock.URAN_PARTICLE, x, y, z, 0.0, 0.0, 0.0);
 			}
 		}
 	}

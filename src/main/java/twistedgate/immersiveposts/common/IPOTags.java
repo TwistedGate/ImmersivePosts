@@ -14,41 +14,41 @@ import net.minecraft.util.ResourceLocation;
 
 public class IPOTags{
 	public static class Ingots{
-		public static final ITag.INamedTag<Item> IRON=ingotTag("iron");
-		public static final ITag.INamedTag<Item> GOLD=ingotTag("gold");
-		public static final ITag.INamedTag<Item> COPPER=ingotTag("copper");
-		public static final ITag.INamedTag<Item> LEAD=ingotTag("lead");
-		public static final ITag.INamedTag<Item> SILVER=ingotTag("silver");
-		public static final ITag.INamedTag<Item> NICKEL=ingotTag("nickel");
-		public static final ITag.INamedTag<Item> CONSTANTAN=ingotTag("constantan");
-		public static final ITag.INamedTag<Item> ELECTRUM=ingotTag("electrum");
-		public static final ITag.INamedTag<Item> URANIUM=ingotTag("uranium");
+		public static final ITag.INamedTag<Item> IRON = ingotTag("iron");
+		public static final ITag.INamedTag<Item> GOLD = ingotTag("gold");
+		public static final ITag.INamedTag<Item> COPPER = ingotTag("copper");
+		public static final ITag.INamedTag<Item> LEAD = ingotTag("lead");
+		public static final ITag.INamedTag<Item> SILVER = ingotTag("silver");
+		public static final ITag.INamedTag<Item> NICKEL = ingotTag("nickel");
+		public static final ITag.INamedTag<Item> CONSTANTAN = ingotTag("constantan");
+		public static final ITag.INamedTag<Item> ELECTRUM = ingotTag("electrum");
+		public static final ITag.INamedTag<Item> URANIUM = ingotTag("uranium");
 		
 		private static final ITag.INamedTag<Item> ingotTag(String name){
-			return createItemWrapper(new ResourceLocation("forge","ingots/"+name));
+			return createItemWrapper(new ResourceLocation("forge", "ingots/" + name));
 		}
 	}
 	
 	public static class Rods{
-		public static final ITag.INamedTag<Item> ALL=rodTag("all_metal");
-
-		public static final ITag.INamedTag<Item> IRON=rodTag("iron");
-		public static final ITag.INamedTag<Item> GOLD=rodTag("gold");
-		public static final ITag.INamedTag<Item> COPPER=rodTag("copper");
-		public static final ITag.INamedTag<Item> LEAD=rodTag("lead");
-		public static final ITag.INamedTag<Item> SILVER=rodTag("silver");
-		public static final ITag.INamedTag<Item> NICKEL=rodTag("nickel");
-		public static final ITag.INamedTag<Item> CONSTANTAN=rodTag("constantan");
-		public static final ITag.INamedTag<Item> ELECTRUM=rodTag("electrum");
-		public static final ITag.INamedTag<Item> URANIUM=rodTag("uranium");
+		public static final ITag.INamedTag<Item> ALL = rodTag("all_metal");
+		
+		public static final ITag.INamedTag<Item> IRON = rodTag("iron");
+		public static final ITag.INamedTag<Item> GOLD = rodTag("gold");
+		public static final ITag.INamedTag<Item> COPPER = rodTag("copper");
+		public static final ITag.INamedTag<Item> LEAD = rodTag("lead");
+		public static final ITag.INamedTag<Item> SILVER = rodTag("silver");
+		public static final ITag.INamedTag<Item> NICKEL = rodTag("nickel");
+		public static final ITag.INamedTag<Item> CONSTANTAN = rodTag("constantan");
+		public static final ITag.INamedTag<Item> ELECTRUM = rodTag("electrum");
+		public static final ITag.INamedTag<Item> URANIUM = rodTag("uranium");
 		
 		private static final ITag.INamedTag<Item> rodTag(String name){
-			return createItemWrapper(new ResourceLocation("forge","rods/"+name));
+			return createItemWrapper(new ResourceLocation("forge", "rods/" + name));
 		}
 	}
 	
 	public static class Fences{
-		public static final ITag.INamedTag<Block> ALL=createBlockWrapper(new ResourceLocation("fences"));
+		public static final ITag.INamedTag<Block> ALL = createBlockWrapper(new ResourceLocation("fences"));
 	}
 	
 	private static ITag.INamedTag<Item> createItemWrapper(ResourceLocation name){

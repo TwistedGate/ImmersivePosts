@@ -19,12 +19,12 @@ import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPOContent.Blocks;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
-import twistedgate.immersiveposts.common.blocks.BlockGenericPost;
-import twistedgate.immersiveposts.common.blocks.BlockPost;
-import twistedgate.immersiveposts.common.blocks.BlockPostBase;
-import twistedgate.immersiveposts.common.blocks.HorizontalPostBlock;
+import twistedgate.immersiveposts.common.blocks.GenericPostBlock;
+import twistedgate.immersiveposts.common.blocks.PostBlock;
+import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
+import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.enums.EnumFlipState;
-import twistedgate.immersiveposts.enums.EnumHorizontalPostType;
+import twistedgate.immersiveposts.enums.EnumHorizontalTrussType;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
 /**
@@ -48,19 +48,19 @@ public class IPOBlockStates extends BlockStateProvider{
 		VariantBlockStateBuilder variantBuilder=getVariantBuilder(Blocks.post_Base);
 		
 		variantBuilder.partialState()
-			.with(BlockPostBase.HIDDEN, false)
+			.with(PostBaseBlock.HIDDEN, false)
 			.setModels(new ConfiguredModel(postBase));
 		
 		variantBuilder.partialState()
-			.with(BlockPostBase.HIDDEN, true)
+			.with(PostBaseBlock.HIDDEN, true)
 			.setModels(new ConfiguredModel(modelFile));
 		
 		// POSTS
 		for(Block block:IPOContent.BLOCKS){
-			if(block instanceof BlockPost){
-				postStateFor((BlockPost) block);
-			}else if(block instanceof HorizontalPostBlock){
-				horizontalPostStateFor((HorizontalPostBlock) block);
+			if(block instanceof PostBlock){
+				postStateFor((PostBlock) block);
+			}else if(block instanceof HorizontalTrussBlock){
+				horizontalPostStateFor((HorizontalTrussBlock) block);
 			}
 		}
 		
@@ -76,7 +76,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		fenceBlock(Fences.uranium,		"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 	}
 	
-	private void horizontalPostStateFor(HorizontalPostBlock block){
+	private void horizontalPostStateFor(HorizontalTrussBlock block){
 		BlockModelBuilder modelHorizontalA	= getPostModel(block, "post_horizontal_a");
 		BlockModelBuilder modelHorizontalB	= getPostModel(block, "post_horizontal_b");
 		BlockModelBuilder modelHorizontalC	= getPostModel(block, "post_horizontal_c");
@@ -91,36 +91,36 @@ public class IPOBlockStates extends BlockStateProvider{
 			
 			builder.part()
 				.modelFile(modelHorizontalA).rotationY(yRot).addModel()
-				.condition(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_A)
-				.condition(BlockPost.FACING, dir);
+				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_A)
+				.condition(PostBlock.FACING, dir);
 			
 			builder.part()
 				.modelFile(modelHorizontalB).rotationY(yRot).addModel()
-				.condition(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_B)
-				.condition(BlockPost.FACING, dir);
+				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_B)
+				.condition(PostBlock.FACING, dir);
 			
 			builder.part()
 				.modelFile(modelHorizontalC).rotationY(yRot).addModel()
-				.condition(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_C)
-				.condition(BlockPost.FACING, dir);
+				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_C)
+				.condition(PostBlock.FACING, dir);
 			
 			builder.part()
 				.modelFile(modelHorizontalD).rotationY(yRot).addModel()
-				.condition(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_D)
-				.condition(BlockPost.FACING, dir);
+				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D)
+				.condition(PostBlock.FACING, dir);
 			
 		}
 		
 		builder.part()
 			.modelFile(modelPointTop).addModel()
-			.condition(HorizontalPostBlock.CONNECTOR_POINT_TOP, true);
+			.condition(HorizontalTrussBlock.CONNECTOR_POINT_TOP, true);
 		
 		builder.part()
 			.modelFile(modelPointBottom).addModel()
-			.condition(HorizontalPostBlock.CONNECTOR_POINT_BOTTOM, true);
+			.condition(HorizontalTrussBlock.CONNECTOR_POINT_BOTTOM, true);
 	}
 	
-	private void postStateFor(BlockPost block){
+	private void postStateFor(PostBlock block){
 		BlockModelBuilder modelArm			=getPostModel(block, "arm");
 		BlockModelBuilder modelArmTwoWay	=getPostModel(block, "arm_twoway");
 		BlockModelBuilder modelArmDouble	=getPostModel(block, "arm_double");
@@ -133,23 +133,23 @@ public class IPOBlockStates extends BlockStateProvider{
 		
 		builder.part()
 			.modelFile(modelPost).addModel()
-			.condition(BlockPost.TYPE, EnumPostType.POST);
+			.condition(PostBlock.TYPE, EnumPostType.POST);
 		
 		builder.part()
 			.modelFile(modelPostTop).addModel()
-			.condition(BlockPost.TYPE, EnumPostType.POST_TOP);
+			.condition(PostBlock.TYPE, EnumPostType.POST_TOP);
 		
 		builder.part().modelFile(modelPostArm).rotationY(0).addModel()
-			.condition(BlockPost.LPARM_NORTH, true);
+			.condition(PostBlock.LPARM_NORTH, true);
 		
 		builder.part().modelFile(modelPostArm).rotationY(90).addModel()
-			.condition(BlockPost.LPARM_EAST, true);
+			.condition(PostBlock.LPARM_EAST, true);
 		
 		builder.part().modelFile(modelPostArm).rotationY(180).addModel()
-			.condition(BlockPost.LPARM_SOUTH, true);
+			.condition(PostBlock.LPARM_SOUTH, true);
 		
 		builder.part().modelFile(modelPostArm).rotationY(270).addModel()
-			.condition(BlockPost.LPARM_WEST, true);
+			.condition(PostBlock.LPARM_WEST, true);
 		
 		for(EnumFlipState flipstate:EnumFlipState.values()){
 			boolean isDown=(flipstate==EnumFlipState.DOWN);
@@ -161,22 +161,22 @@ public class IPOBlockStates extends BlockStateProvider{
 				
 				builder.part()
 					.modelFile(isBoth?modelArmTwoWay:modelArm).rotationX(flipstate==EnumFlipState.DOWN?180:0).rotationY(yArmRot).addModel()
-					.condition(BlockPost.TYPE, EnumPostType.ARM)
-					.condition(BlockPost.FACING, dir)
-					.condition(BlockPost.FLIPSTATE, flipstate);
+					.condition(PostBlock.TYPE, EnumPostType.ARM)
+					.condition(PostBlock.FACING, dir)
+					.condition(PostBlock.FLIPSTATE, flipstate);
 				
 				if(isUp){
 					builder.part()
 						.modelFile(modelArmDouble).rotationY(yArmRot).addModel()
-						.condition(BlockPost.TYPE, EnumPostType.ARM_DOUBLE)
-						.condition(BlockPost.FACING, dir);
+						.condition(PostBlock.TYPE, EnumPostType.ARM_DOUBLE)
+						.condition(PostBlock.FACING, dir);
 				}
 			}
 		}
 		
 		builder.part()
 			.modelFile(modelEmpty).addModel()
-			.condition(BlockPost.TYPE, EnumPostType.EMPTY);
+			.condition(PostBlock.TYPE, EnumPostType.EMPTY);
 	}
 	
 	private int horizontalRotation(Direction dir, boolean xFlipped){
@@ -203,7 +203,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		return value;
 	}
 
-	private BlockModelBuilder getPostModel(BlockGenericPost block, String name){
+	private BlockModelBuilder getPostModel(GenericPostBlock block, String name){
 		ResourceLocation texture=modLoc("block/posts/post_"+block.getPostMaterial().name().toLowerCase());
 		
 		BlockModelBuilder b=this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
@@ -215,7 +215,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		return b;
 	}
 	
-	private String postModelPath(BlockGenericPost block, String name){
+	private String postModelPath(GenericPostBlock block, String name){
 		return block.getRegistryName().getPath()+"/"+name;
 	}
 	

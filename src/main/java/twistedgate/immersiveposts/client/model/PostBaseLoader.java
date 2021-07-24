@@ -26,7 +26,7 @@ import twistedgate.immersiveposts.client.model.PostBaseLoader.PostBaseModelRaw;
 
 public class PostBaseLoader implements IModelLoader<PostBaseModelRaw>{
 	
-	public static final ResourceLocation LOCATION=new ResourceLocation(IPOMod.ID, "postbase");
+	public static final ResourceLocation LOCATION = new ResourceLocation(IPOMod.ID, "postbase");
 	
 	@Override
 	public void onResourceManagerReload(IResourceManager resourceManager){

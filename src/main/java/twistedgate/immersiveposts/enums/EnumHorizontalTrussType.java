@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import net.minecraft.util.IStringSerializable;
 
-public enum EnumHorizontalPostType implements IStringSerializable{
+public enum EnumHorizontalTrussType implements IStringSerializable{
 	HORIZONTAL_A,
 	HORIZONTAL_B,
 	HORIZONTAL_C,

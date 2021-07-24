@@ -48,28 +48,28 @@ import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
 public class PostBaseModel extends IPOBakedModel{
 	
-	public static final Cache<Key, SpecialPostBaseModel> CACHE=CacheBuilder.newBuilder()
+	public static final Cache<Key, SpecialPostBaseModel> CACHE = CacheBuilder.newBuilder()
 			.expireAfterAccess(2, TimeUnit.MINUTES)
 			.maximumSize(100)
 			.build();
 	
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
-		BlockState hState=Blocks.DIRT.getDefaultState();
-		Int2IntFunction colorMul=i->0xffffffff;
-		Direction facing=Direction.NORTH;
+		BlockState hState = Blocks.DIRT.getDefaultState();
+		Int2IntFunction colorMul = i -> 0xffffffff;
+		Direction facing = Direction.NORTH;
 		
 		if(extraData.hasProperty(IPOModelData.POSTBASE)){
-			IPOModelData.PostBaseModelData data=extraData.getData(IPOModelData.POSTBASE);
-			hState=data.state;
-			colorMul=data.color;
-			facing=data.facing;
+			IPOModelData.PostBaseModelData data = extraData.getData(IPOModelData.POSTBASE);
+			hState = data.state;
+			colorMul = data.color;
+			facing = data.facing;
 		}
 		
-		Key key=new Key(hState, colorMul, facing);
-		SpecialPostBaseModel special=CACHE.getIfPresent(key);
-		if(special==null){
-			special=new SpecialPostBaseModel(key, colorMul);
+		Key key = new Key(hState, colorMul, facing);
+		SpecialPostBaseModel special = CACHE.getIfPresent(key);
+		if(special == null){
+			special = new SpecialPostBaseModel(key, colorMul);
 			CACHE.put(key, special);
 		}
 		
@@ -78,14 +78,14 @@ public class PostBaseModel extends IPOBakedModel{
 	
 	@Override
 	public IModelData getModelData(IBlockDisplayReader world, BlockPos pos, BlockState state, IModelData tileData){
-		List<IModelData> list=new ArrayList<>();
+		List<IModelData> list = new ArrayList<>();
 		list.add(tileData);
 		
-		TileEntity te=world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 		if(te instanceof PostBaseTileEntity){
-			PostBaseTileEntity base=(PostBaseTileEntity)te;
+			PostBaseTileEntity base = (PostBaseTileEntity) te;
 			
-			IPOModelData.PostBaseModelData data=new IPOModelData.PostBaseModelData(base.getCoverState(), base.getFacing(), i->i);
+			IPOModelData.PostBaseModelData data = new IPOModelData.PostBaseModelData(base.getCoverState(), base.getFacing(), i -> i);
 			
 			list.add(new SinglePropertyModelData<>(data, IPOModelData.POSTBASE));
 		}
@@ -119,36 +119,36 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	private static class SpecialPostBaseModel extends PostBaseModel{
-		private static final Random RANDOM=new Random();
+		private static final Random RANDOM = new Random();
 		
-		private static final Vector3d[] verts=new Vector3d[]{
+		private static final Vector3d[] verts = new Vector3d[]{
 				new Vector3d(0.25F, 1.001F, 0.25F), new Vector3d(0.25F, 1.001F, 0.75F),
 				new Vector3d(0.75F, 1.001F, 0.75F), new Vector3d(0.75F, 1.001F, 0.25F),
 		};
 		
-		private static final double[] uvs=new double[]{
+		private static final double[] uvs = new double[]{
 				8,0,
 				16,8
 		};
 		
-		private static final float[] color=new float[]{1.0F, 1.0F, 1.0F, 1.0F};
+		private static final float[] color = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
 		
-		List<List<BakedQuad>> quads=new ArrayList<>(6);
+		List<List<BakedQuad>> quads = new ArrayList<>(6);
 		public SpecialPostBaseModel(Key key, Int2IntFunction colorMul){
 			build(key, colorMul);
 		}
 		
 		private void build(Key key, Int2IntFunction colorMulBasic){
-			if(colorMulBasic==null){
-				ItemColors colors=Minecraft.getInstance().getItemColors();
-				ItemStack stack=new ItemStack(key.state.getBlock());
-				colorMulBasic=(i)->colors.getColor(stack, i);
+			if(colorMulBasic == null){
+				ItemColors colors = Minecraft.getInstance().getItemColors();
+				ItemStack stack = new ItemStack(key.state.getBlock());
+				colorMulBasic = (i) -> colors.getColor(stack, i);
 			}
 			
-			key.usedColorMultipliers=new Int2IntOpenHashMap();
-			final Int2IntFunction f=colorMulBasic;
-			Int2IntFunction colorMul=(i)->{
-				int v=f.get(i);
+			key.usedColorMultipliers = new Int2IntOpenHashMap();
+			final Int2IntFunction f = colorMulBasic;
+			Int2IntFunction colorMul = (i) -> {
+				int v = f.get(i);
 				key.usedColorMultipliers.put(i, v);
 				return v;
 			};
@@ -157,12 +157,12 @@ public class PostBaseModel extends IPOBakedModel{
 			IBakedModel model=Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(key.state);
 			
 			for(Direction side:Direction.values()){
-				List<BakedQuad> quads=model.getQuads(key.state, side, RANDOM, EmptyModelData.INSTANCE).stream()
+				List<BakedQuad> quads = model.getQuads(key.state, side, RANDOM, EmptyModelData.INSTANCE).stream()
 						.map(tintTransformer)
 						.collect(Collectors.toCollection(ArrayList::new));
 				
-				if(side==Direction.UP){
-					TextureAtlasSprite sprite=Minecraft.getInstance()
+				if(side == Direction.UP){
+					TextureAtlasSprite sprite = Minecraft.getInstance()
 						.getModelManager()
 						.getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
 						.getSprite(new ResourceLocation(IPOMod.ID, "block/postbase"));
@@ -177,7 +177,7 @@ public class PostBaseModel extends IPOBakedModel{
 		
 		@Override
 		public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
-			return this.quads.get(side == null ? (this.quads.size()-1) : side.getIndex());
+			return this.quads.get(side == null ? (this.quads.size() - 1) : side.getIndex());
 		}
 	}
 	
@@ -190,10 +190,10 @@ public class PostBaseModel extends IPOBakedModel{
 		final Int2IntFunction allColorMultipliers;
 		
 		public Key(BlockState state, Int2IntFunction colorMul, Direction facing){
-			this.state=state;
-			this.facing=facing;
-			this.allColorMultipliers=colorMul;
-			this.usedColorMultipliers=null;
+			this.state = state;
+			this.facing = facing;
+			this.allColorMultipliers = colorMul;
+			this.usedColorMultipliers = null;
 		}
 		
 		@Override
@@ -205,8 +205,8 @@ public class PostBaseModel extends IPOBakedModel{
 				return false;
 			}
 			
-			Key other=(Key)obj;
-			return this.state.equals(other.state) && this.facing==other.facing && sameColorMultipliersAs(other);
+			Key other = (Key) obj;
+			return this.state.equals(other.state) && this.facing == other.facing && sameColorMultipliersAs(other);
 		}
 		
 		private boolean sameColorMultipliersAs(Key that){

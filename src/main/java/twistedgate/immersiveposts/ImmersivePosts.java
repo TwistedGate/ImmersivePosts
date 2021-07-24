@@ -27,15 +27,15 @@ import twistedgate.immersiveposts.util.loot.IPOLootFunctions;
 @Mod(IPOMod.ID)
 public class ImmersivePosts{
 	
-	public static final ItemGroup creativeTab=new ItemGroup(IPOMod.ID){
+	public static final ItemGroup creativeTab = new ItemGroup(IPOMod.ID){
 		@Override
 		public ItemStack createIcon(){
-			return new ItemStack(IPOContent.Blocks.post_Base==null?Items.BARRIER:IPOContent.Blocks.post_Base);
+			return new ItemStack(IPOContent.Blocks.post_Base == null ? Items.BARRIER : IPOContent.Blocks.post_Base);
 		}
 	};
-	public static final Logger log=LogManager.getLogger(IPOMod.ID);
+	public static final Logger log = LogManager.getLogger(IPOMod.ID);
 	
-	public static CommonProxy proxy=DistExecutor.unsafeRunForDist(()->ClientProxy::new, ()->CommonProxy::new);
+	public static CommonProxy proxy = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
 	public ImmersivePosts(){
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, IPOConfig.ALL);

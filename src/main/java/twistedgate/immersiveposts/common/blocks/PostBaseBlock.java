@@ -61,7 +61,7 @@ import twistedgate.immersiveposts.enums.EnumPostType;
 /**
  * @author TwistedGate
  */
-public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
+public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 	private static AbstractBlock.Properties prop(){
 		Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
 		
@@ -78,7 +78,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 	public static final BooleanProperty WATERLOGGED=BlockStateProperties.WATERLOGGED;
 	public static final BooleanProperty HIDDEN=BooleanProperty.create("hidden");
 	
-	public BlockPostBase(){
+	public PostBaseBlock(){
 		super("postbase", prop());
 		
 		setDefaultState(getStateContainer().getBaseState()
@@ -181,8 +181,8 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					BlockState aboveState=worldIn.getBlockState(pos.offset(Direction.UP));
 					Block b=aboveState.getBlock();
 					
-					if(b instanceof BlockPost){
-						ItemStack tmp=((BlockPost)b).postMaterial.getItemStack();
+					if(b instanceof PostBlock){
+						ItemStack tmp=((PostBlock)b).postMaterial.getItemStack();
 						if(!held.isItemEqual(tmp)){
 							playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", tmp.getDisplayName()), true);
 							return ActionResultType.SUCCESS;
@@ -194,14 +194,14 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					BlockPos nPos=pos.add(0,y,0);
 					
 					BlockState nState=worldIn.getBlockState(nPos);
-					if(nState.getBlock() instanceof BlockPost){
-						EnumPostType type=nState.get(BlockPost.TYPE);
-						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && nState.get(BlockPost.FLIPSTATE)==EnumFlipState.DOWN){
+					if(nState.getBlock() instanceof PostBlock){
+						EnumPostType type=nState.get(PostBlock.TYPE);
+						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && nState.get(PostBlock.FLIPSTATE)==EnumFlipState.DOWN){
 							return ActionResultType.SUCCESS;
 						}else{
 							nState=worldIn.getBlockState(nPos.offset(Direction.UP));
-							if(nState.getBlock() instanceof BlockPost){
-								type=nState.get(BlockPost.TYPE);
+							if(nState.getBlock() instanceof PostBlock){
+								type=nState.get(PostBlock.TYPE);
 								if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
 									return ActionResultType.SUCCESS;
 								}
@@ -220,7 +220,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 						}
 						return ActionResultType.SUCCESS;
 						
-					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof BlockPost)){
+					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof PostBlock)){
 						return ActionResultType.SUCCESS;
 					}
 				}

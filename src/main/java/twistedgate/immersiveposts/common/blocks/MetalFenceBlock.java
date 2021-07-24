@@ -19,7 +19,7 @@ import twistedgate.immersiveposts.common.IPOContent;
 /**
  * @author TwistedGate
  */
-public class BlockMetalFence extends FenceBlock{
+public class MetalFenceBlock extends FenceBlock{
 	static final AbstractBlock.Properties DEFAULT_PROP=AbstractBlock.Properties.create(Material.IRON)
 			.hardnessAndResistance(3.0F, 15.0F)
 			.sound(SoundType.METAL)
@@ -28,7 +28,7 @@ public class BlockMetalFence extends FenceBlock{
 			.notSolid()
 			.setBlocksVision((s,r,p)->false);
 	
-	public BlockMetalFence(String materialName){
+	public MetalFenceBlock(String materialName){
 		super(DEFAULT_PROP);
 		setRegistryName(new ResourceLocation(IPOMod.ID, "fence_"+materialName));
 		

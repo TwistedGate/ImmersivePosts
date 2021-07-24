@@ -61,8 +61,8 @@ public class IPORecipes extends RecipeProvider{
 	
 	/** Creates both a recipe for fences and the stick needed */
 	private void fenceAndStickRecipe(FenceBlock fence, Item rod, ITag.INamedTag<Item> stickTag, ITag.INamedTag<Item> ingotTag){
-		String stickMat=getMaterialName(stickTag.getName()); // Stick Material
-		String ingotMat=getMaterialName(ingotTag.getName()); // Ingot Material
+		String stickMat = getMaterialName(stickTag.getName()); // Stick Material
+		String ingotMat = getMaterialName(ingotTag.getName()); // Ingot Material
 		
 		if(fence!=Fences.iron)
 			ShapedRecipeBuilder.shapedRecipe(rod, 4)
@@ -83,7 +83,7 @@ public class IPORecipes extends RecipeProvider{
 	}
 	
 	private String getMaterialName(ResourceLocation in){
-		return in.getPath().substring(in.getPath().indexOf('/')+1);
+		return in.getPath().substring(in.getPath().indexOf('/') + 1);
 	}
 	
 	private Consumer<IFinishedRecipe> involveConfig(Consumer<IFinishedRecipe> out, ICondition... conditions){
@@ -92,8 +92,8 @@ public class IPORecipes extends RecipeProvider{
 				
 				@Override
 				public void serialize(JsonObject json){
-					if(conditions.length>0) {
-						JsonArray conArray=new JsonArray();
+					if(conditions.length > 0){
+						JsonArray conArray = new JsonArray();
 						for(ICondition con:conditions)
 							conArray.add(CraftingHelper.serialize(con));
 						json.add("conditions", conArray);
