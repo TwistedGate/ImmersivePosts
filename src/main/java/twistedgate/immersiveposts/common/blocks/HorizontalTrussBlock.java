@@ -32,7 +32,6 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.enums.EnumHorizontalTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
