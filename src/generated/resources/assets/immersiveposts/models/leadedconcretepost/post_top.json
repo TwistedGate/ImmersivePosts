@@ -5,5 +5,6 @@
     "particle": "immersiveposts:block/posts/post_concrete_leaded"
   },
   "loader": "forge:obj",
-  "model": "immersiveposts:models/block/post/obj/post_top.obj"
+  "model": "immersiveposts:models/block/post/obj/post_top.obj",
+  "flip-v": true
 }

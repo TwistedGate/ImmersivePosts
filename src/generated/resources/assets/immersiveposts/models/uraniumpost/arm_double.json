@@ -5,5 +5,6 @@
     "particle": "immersiveposts:block/posts/post_uranium"
   },
   "loader": "forge:obj",
-  "model": "immersiveposts:models/block/post/obj/arm_double.obj"
+  "model": "immersiveposts:models/block/post/obj/arm_double.obj",
+  "flip-v": true
 }
