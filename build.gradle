@@ -66,6 +66,9 @@ minecraft {
 			property 'forge.logging.console.level', 'info'
 			property 'fml.earlyprogresswindow', 'false'
 			property 'mixin.env.disableRefMap', 'true'
+			
+			arg '-nogui'
+			
 			mods {
 				immersiveposts {
 					source sourceSets.main
