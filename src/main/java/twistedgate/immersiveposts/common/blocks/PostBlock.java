@@ -246,7 +246,11 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 								
 								boolean b = !nState.getBlock().isAir(nState, worldIn, nPos);
 								if(b && (nState.getBlock() instanceof PostBlock && nState.get(TYPE).id() <= 1)){
-									success = true;
+									if(this.getPostMaterial() == ((PostBlock)nState.getBlock()).getPostMaterial()){
+										success = true;
+									}else{
+										playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.same_truss_type"), true);
+									}
 									break;
 								}else if(b && nState.getBlock() != Blocks.WATER){
 									break;

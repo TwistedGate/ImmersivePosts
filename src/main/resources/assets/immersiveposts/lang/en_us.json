@@ -59,6 +59,7 @@
     "_comment": "################## Miscellaneous ##################",
 
     "immersiveposts.expectedlocal": "Expected: %s",
+    "immersiveposts.same_truss_type": "Both posts must be of the same material.",
 	
     "_comment": "################## IE-Manual ##################",
 	
