@@ -45,6 +45,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumHorizontalTrussType;
@@ -240,7 +241,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 							// Check first, do stuff later
 							boolean success = false;
 							int size = 0;
-							for(;size <= 8;size++){
+							for(;size <= IPOConfig.MAIN.maxTrussLength.get();size++){
 								BlockPos nPos = pos.offset(facing, size + 1);
 								BlockState nState = worldIn.getBlockState(nPos);
 								

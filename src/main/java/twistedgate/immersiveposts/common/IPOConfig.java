@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -40,26 +41,30 @@ public class IPOConfig{
 		public final BooleanValue enableConcrete;
 		public final BooleanValue enableConcreteLeaded;
 		
+		public final IntValue maxTrussLength;
+		
 		Posts(ForgeConfigSpec.Builder builder){
-			builder.comment(
-					"For the removal of unwanted post variants.",
-					"Simply set any of them to \"false\" to \"remove\", ez..",
-					"You will need to restart the game however if you change anything while the game is running!",
-					"" // "Spacer"
-					);
+			builder.comment("Maximum length of Horizontal Trusses", "Does not affect already existing Trusses when changed", "Default: 8");
+			maxTrussLength = builder.defineInRange("maxTrussLength", 8, 3, 128);
 			
-			enableIron			= builder.define("iron", true);
-			enableGold			= builder.define("gold", true);
-			enableCopper		= builder.define("copper", true);
-			enableLead			= builder.define("lead", true);
-			enableSilver		= builder.define("silver", true);
-			enableNickel		= builder.define("nickel", true);
-			enableConstantan	= builder.define("constantan", true);
-			enableElectrum		= builder.define("electrum", true);
-			enableUranium		= builder.define("uranium", true);
-			enableNether		= builder.define("nether", true);
-			enableConcrete		= builder.define("concrete", true);
-			enableConcreteLeaded= builder.define("concreteleaded", true);
+			builder.push("Post Types");
+			{
+				builder.comment("For the removal of unwanted post variants.", "Simply set any of them to \"false\" to \"remove\", ez..");
+				
+				enableIron			= builder.define("iron", true);
+				enableGold			= builder.define("gold", true);
+				enableCopper		= builder.define("copper", true);
+				enableLead			= builder.define("lead", true);
+				enableSilver		= builder.define("silver", true);
+				enableNickel		= builder.define("nickel", true);
+				enableConstantan	= builder.define("constantan", true);
+				enableElectrum		= builder.define("electrum", true);
+				enableUranium		= builder.define("uranium", true);
+				enableNether		= builder.define("nether", true);
+				enableConcrete		= builder.define("concrete", true);
+				enableConcreteLeaded= builder.define("concreteleaded", true);
+			}
+			builder.pop();
 		}
 		
 		public boolean isEnabled(ResourceLocation loc){
