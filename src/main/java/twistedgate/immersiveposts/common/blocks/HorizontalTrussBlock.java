@@ -141,16 +141,18 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
-		if(world.isRemote) return;
-		
-		// TODO If one of the "connecting" sides suddenly is air, break the whole thing
+		if(world.isRemote)
+			return;
 		
 		Direction facing = state.get(FACING);
 		
 		BlockPos posA = pos.offset(facing);
 		BlockPos posB = pos.offset(facing.getOpposite());
 		
-		if((world.isAirBlock(posA) || world.isAirBlock(posB)) || (world.getBlockState(posA).getBlock() == Blocks.WATER || world.getBlockState(posB).getBlock() == Blocks.WATER)){
+		BlockState stateA = world.getBlockState(posA);
+		BlockState stateB = world.getBlockState(posB);
+		
+		if((stateA.getBlock().isAir(stateA, world, posA) || stateB.getBlock().isAir(stateB, world, posB)) || (stateA.getBlock() == Blocks.WATER || stateB.getBlock() == Blocks.WATER)){
 			replaceSelf(state, world, pos);
 			return;
 		}
