@@ -210,7 +210,7 @@ public class BlockPostBase extends IPOBlockBase implements IWaterLoggable{
 					}
 					
 					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
-						BlockState fb=EnumPostMaterial.getPostStateFrom(held)
+						BlockState fb=EnumPostMaterial.getPostState(held)
 								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
 						
 						if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb.updatePostPlacement(null, null, worldIn, nPos, null))){

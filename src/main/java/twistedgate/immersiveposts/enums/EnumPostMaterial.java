@@ -146,39 +146,10 @@ public enum EnumPostMaterial implements IStringSerializable{
 		return prop;
 	}
 	
-	/**
-	 * @deprecated TODO Replace this with {@link #getPostState(ItemStack)}
-	 * 
-	 * @param stack
-	 * @return
-	 */
-	public static BlockState getPostStateFrom(ItemStack stack){
-		Block block=null;
-		switch(getFrom(stack)){
-			case ALUMINIUM:		 block=Posts.aluminium;break;
-			case CONSTANTAN:	 block=Posts.constantan;break;
-			case COPPER:		 block=Posts.copper;break;
-			case ELECTRUM:		 block=Posts.electrum;break;
-			case GOLD:			 block=Posts.gold;break;
-			case IRON:			 block=Posts.iron;break;
-			case LEAD:			 block=Posts.lead;break;
-			case NETHERBRICK:	 block=Posts.nether;break;
-			case NICKEL:		 block=Posts.nickel;break;
-			case SILVER:		 block=Posts.silver;break;
-			case STEEL:			 block=Posts.steel;break;
-			case URANIUM:		 block=Posts.uranium;break;
-			case WOOD:			 block=Posts.wood;break;
-			case CONCRETE:		 block=Posts.concrete;break;
-			case CONCRETE_LEADED:block=Posts.concrete_leaded;break;
-		}
-		
-		return block!=null?block.getDefaultState().with(BlockPost.TYPE, EnumPostType.POST_TOP):null;
-	}
-	
 	public static BlockState getPostState(ItemStack stack){
 		EnumPostMaterial mat = getFrom(stack);
-		if(mat != null && Posts.MAP.containsKey(mat)){
-			Block block = Posts.MAP.get(mat);
+		if(mat != null){
+			Block block = Posts.get(mat);
 			
 			return block.getDefaultState().with(BlockPost.TYPE, EnumPostType.POST_TOP);
 		}

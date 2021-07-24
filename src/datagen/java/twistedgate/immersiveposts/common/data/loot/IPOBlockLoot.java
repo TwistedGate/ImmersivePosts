@@ -17,6 +17,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
+import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.util.loot.BaseCoverDropLootEntry;
 import twistedgate.immersiveposts.util.loot.PostMaterialDropLootEntry;
 
@@ -39,7 +40,8 @@ public class IPOBlockLoot extends LootGenerator implements IDataProvider{
 		}
 		
 		// Posts
-		for(BlockPost b:IPOContent.Blocks.Posts.ALL){
+		for(EnumPostMaterial mat:EnumPostMaterial.values()){
+			BlockPost b = IPOContent.Blocks.Posts.get(mat);
 			register(b, createPoolBuilder().addEntry(PostMaterialDropLootEntry.builder()));
 		}
 		

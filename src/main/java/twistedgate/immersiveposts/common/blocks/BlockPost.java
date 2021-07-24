@@ -119,8 +119,7 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 		BlockState state=super.getStateForPlacement(context);
 		FluidState fs=context.getWorld().getFluidState(context.getPos());
 		
-		state=state.with(WATERLOGGED, fs.getFluid() == Fluids.WATER);
-		return state;
+		return state.with(WATERLOGGED, fs.getFluid() == Fluids.WATER);
 	}
 	
 	@Override
@@ -216,7 +215,7 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 					}
 					
 					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
-						BlockState fb=EnumPostMaterial.getPostStateFrom(held)
+						BlockState fb=EnumPostMaterial.getPostState(held)
 								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
 						
 						if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb)){
@@ -258,13 +257,10 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 							
 							// Size check is just a fail-safe
 							if(success && size > 1){
-								playerIn.sendStatusMessage(new StringTextComponent("Size: " + size).mergeStyle(TextFormatting.RED), true);
-								
-								// Do stuff now
 								for(int i = 0;i < size;i++){
 									BlockPos nPos = pos.offset(facing, i + 1);
 									BlockState nState = worldIn.getBlockState(nPos);
-									BlockState hState = IPOContent.Blocks.HorizontalPosts.MAP.get(getPostMaterial()).getDefaultState()
+									BlockState hState = IPOContent.Blocks.HorizontalPosts.get(getPostMaterial()).getDefaultState()
 											.with(HorizontalPostBlock.FACING, facing)
 											.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
 									
@@ -423,11 +419,6 @@ public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLog
 				}
 			}
 		}
-	}
-	
-	/** Replaces itself with Air or with Water if Waterlogged. (Convenience Method) */
-	private void replaceSelf(BlockState stateIn, World world, BlockPos pos){
-		world.setBlockState(pos, stateIn.get(WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
 	}
 	
 	private EnumFlipState getFlipState(IBlockReader world, BlockPos pos){

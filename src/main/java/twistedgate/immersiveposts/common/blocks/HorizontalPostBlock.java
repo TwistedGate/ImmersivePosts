@@ -78,8 +78,7 @@ public class HorizontalPostBlock extends BlockGenericPost implements IPostBlock,
 		BlockState state = super.getStateForPlacement(context);
 		FluidState fs = context.getWorld().getFluidState(context.getPos());
 		
-		state = state.with(WATERLOGGED, fs.getFluid() == Fluids.WATER);
-		return state;
+		return state.with(WATERLOGGED, fs.getFluid() == Fluids.WATER);
 	}
 	
 	@Override
@@ -152,7 +151,7 @@ public class HorizontalPostBlock extends BlockGenericPost implements IPostBlock,
 		BlockPos posB = pos.offset(facing.getOpposite());
 		
 		if((world.isAirBlock(posA) || world.isAirBlock(posB)) || (world.getBlockState(posA).getBlock() == Blocks.WATER || world.getBlockState(posB).getBlock() == Blocks.WATER)){
-			world.setBlockState(pos, state.get(WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
+			replaceSelf(state, world, pos);
 			return;
 		}
 	}

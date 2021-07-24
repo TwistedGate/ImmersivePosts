@@ -62,30 +62,20 @@ public class IPOContent{
 		}
 		
 		public static class Posts{
-			public static Map<EnumPostMaterial, BlockPost> MAP;
-			
 			/** Contains (or should) all Post Blocks added by IPO */
-			public static BlockPost[] ALL;
+			static Map<EnumPostMaterial, BlockPost> MAP;
 			
-			public static BlockPost wood;
-			public static BlockPost iron;
-			public static BlockPost gold;
-			public static BlockPost copper;
-			public static BlockPost lead;
-			public static BlockPost silver;
-			public static BlockPost nickel;
-			public static BlockPost constantan;
-			public static BlockPost electrum;
-			public static BlockPost uranium;
-			public static BlockPost nether;
-			public static BlockPost aluminium;
-			public static BlockPost steel;
-			public static BlockPost concrete;
-			public static BlockPost concrete_leaded;
+			public static BlockPost get(EnumPostMaterial material){
+				return MAP.get(material);
+			}
 		}
 		
 		public static class HorizontalPosts{
-			public static Map<EnumPostMaterial, HorizontalPostBlock> MAP;
+			static Map<EnumPostMaterial, HorizontalPostBlock> MAP;
+			
+			public static HorizontalPostBlock get(EnumPostMaterial material){
+				return MAP.get(material);
+			}
 		}
 	}
 	
@@ -121,32 +111,12 @@ public class IPOContent{
 		// =========================================================================
 		// Posts
 		
-		Posts.ALL = new BlockPost[]{
-			Posts.wood				= new BlockPost(EnumPostMaterial.WOOD),
-			Posts.iron				= new BlockPost(EnumPostMaterial.IRON),
-			Posts.gold				= new BlockPost(EnumPostMaterial.GOLD),
-			Posts.copper			= new BlockPost(EnumPostMaterial.COPPER),
-			Posts.lead				= new BlockPost(EnumPostMaterial.LEAD),
-			Posts.silver			= new BlockPost(EnumPostMaterial.SILVER),
-			Posts.nickel			= new BlockPost(EnumPostMaterial.NICKEL),
-			Posts.constantan		= new BlockPost(EnumPostMaterial.CONSTANTAN),
-			Posts.electrum			= new BlockPost(EnumPostMaterial.ELECTRUM),
-			Posts.uranium			= new BlockPost(EnumPostMaterial.URANIUM),
-			Posts.nether			= new BlockPost(EnumPostMaterial.NETHERBRICK),
-			Posts.aluminium			= new BlockPost(EnumPostMaterial.ALUMINIUM),
-			Posts.steel				= new BlockPost(EnumPostMaterial.STEEL),
-			Posts.concrete			= new BlockPost(EnumPostMaterial.CONCRETE),
-			Posts.concrete_leaded	= new BlockPost(EnumPostMaterial.CONCRETE_LEADED)
-		};
-		
-		// =========================================================================
-		
 		EnumPostMaterial[] values = EnumPostMaterial.values();
 		Map<EnumPostMaterial, BlockPost> posts = new HashMap<>();
 		Map<EnumPostMaterial, HorizontalPostBlock> h_posts = new HashMap<>();
 		
 		for(EnumPostMaterial mat:values){
-			//posts.put(mat, new BlockPost(mat)); // TODO Replacement for Post.ALL
+			posts.put(mat, new BlockPost(mat));
 			h_posts.put(mat, new HorizontalPostBlock(mat));
 		}
 		
