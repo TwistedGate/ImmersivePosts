@@ -146,6 +146,12 @@ public enum EnumPostMaterial implements IStringSerializable{
 		return prop;
 	}
 	
+	/**
+	 * @deprecated TODO Replace this with {@link #getPostState(ItemStack)}
+	 * 
+	 * @param stack
+	 * @return
+	 */
 	public static BlockState getPostStateFrom(ItemStack stack){
 		Block block=null;
 		switch(getFrom(stack)){
@@ -167,6 +173,17 @@ public enum EnumPostMaterial implements IStringSerializable{
 		}
 		
 		return block!=null?block.getDefaultState().with(BlockPost.TYPE, EnumPostType.POST_TOP):null;
+	}
+	
+	public static BlockState getPostState(ItemStack stack){
+		EnumPostMaterial mat = getFrom(stack);
+		if(mat != null && Posts.MAP.containsKey(mat)){
+			Block block = Posts.MAP.get(mat);
+			
+			return block.getDefaultState().with(BlockPost.TYPE, EnumPostType.POST_TOP);
+		}
+		
+		return null;
 	}
 	
 	public static EnumPostMaterial getFrom(ItemStack stack){

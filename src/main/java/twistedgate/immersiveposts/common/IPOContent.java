@@ -1,6 +1,9 @@
 package twistedgate.immersiveposts.common;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,10 +21,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
+import twistedgate.immersiveposts.common.IPOContent.Blocks.HorizontalPosts;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
 import twistedgate.immersiveposts.common.blocks.BlockMetalFence;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;
+import twistedgate.immersiveposts.common.blocks.HorizontalPostBlock;
 import twistedgate.immersiveposts.common.items.IPOItemBase;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
@@ -57,6 +62,8 @@ public class IPOContent{
 		}
 		
 		public static class Posts{
+			public static Map<EnumPostMaterial, BlockPost> MAP;
+			
 			/** Contains (or should) all Post Blocks added by IPO */
 			public static BlockPost[] ALL;
 			
@@ -75,6 +82,10 @@ public class IPOContent{
 			public static BlockPost steel;
 			public static BlockPost concrete;
 			public static BlockPost concrete_leaded;
+		}
+		
+		public static class HorizontalPosts{
+			public static Map<EnumPostMaterial, HorizontalPostBlock> MAP;
 		}
 	}
 	
@@ -106,6 +117,7 @@ public class IPOContent{
 			Fences.electrum		= new BlockMetalFence("electrum"),
 			Fences.uranium		= new BlockMetalFence("uranium")
 		};
+		
 		// =========================================================================
 		// Posts
 		
@@ -126,6 +138,20 @@ public class IPOContent{
 			Posts.concrete			= new BlockPost(EnumPostMaterial.CONCRETE),
 			Posts.concrete_leaded	= new BlockPost(EnumPostMaterial.CONCRETE_LEADED)
 		};
+		
+		// =========================================================================
+		
+		EnumPostMaterial[] values = EnumPostMaterial.values();
+		Map<EnumPostMaterial, BlockPost> posts = new HashMap<>();
+		Map<EnumPostMaterial, HorizontalPostBlock> h_posts = new HashMap<>();
+		
+		for(EnumPostMaterial mat:values){
+			//posts.put(mat, new BlockPost(mat)); // TODO Replacement for Post.ALL
+			h_posts.put(mat, new HorizontalPostBlock(mat));
+		}
+		
+		Posts.MAP = Collections.unmodifiableMap(posts);
+		HorizontalPosts.MAP = Collections.unmodifiableMap(h_posts);
 		
 		// =========================================================================
 		// Items

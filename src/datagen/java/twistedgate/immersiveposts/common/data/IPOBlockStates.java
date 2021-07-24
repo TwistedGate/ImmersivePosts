@@ -19,9 +19,12 @@ import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPOContent.Blocks;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
+import twistedgate.immersiveposts.common.blocks.BlockGenericPost;
 import twistedgate.immersiveposts.common.blocks.BlockPost;
 import twistedgate.immersiveposts.common.blocks.BlockPostBase;
+import twistedgate.immersiveposts.common.blocks.HorizontalPostBlock;
 import twistedgate.immersiveposts.enums.EnumFlipState;
+import twistedgate.immersiveposts.enums.EnumHorizontalPostType;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
 /**
@@ -55,7 +58,9 @@ public class IPOBlockStates extends BlockStateProvider{
 		// POSTS
 		for(Block block:IPOContent.BLOCKS){
 			if(block instanceof BlockPost){
-				postStateFor((BlockPost)block);
+				postStateFor((BlockPost) block);
+			}else if(block instanceof HorizontalPostBlock){
+				horizontalPostStateFor((HorizontalPostBlock) block);
 			}
 		}
 		
@@ -69,6 +74,50 @@ public class IPOBlockStates extends BlockStateProvider{
 		fenceBlock(Fences.constantan,	"fence/constantan",	ieLoc("block/metal/storage_constantan"));
 		fenceBlock(Fences.electrum,		"fence/electrum",	ieLoc("block/metal/storage_electrum"));
 		fenceBlock(Fences.uranium,		"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
+	}
+	
+	private void horizontalPostStateFor(HorizontalPostBlock block){
+		BlockModelBuilder modelHorizontalA	= getPostModel(block, "post_horizontal_a");
+		BlockModelBuilder modelHorizontalB	= getPostModel(block, "post_horizontal_b");
+		BlockModelBuilder modelHorizontalC	= getPostModel(block, "post_horizontal_c");
+		BlockModelBuilder modelHorizontalD	= getPostModel(block, "post_horizontal_d");
+		BlockModelBuilder modelPointTop		= getPostModel(block, "post_horizontal_point_top");
+		BlockModelBuilder modelPointBottom	= getPostModel(block, "post_horizontal_point_bottom");
+		
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+		
+		for(Direction dir:Direction.Plane.HORIZONTAL){
+			int yRot = horizontalRotation(dir, false);
+			
+			builder.part()
+				.modelFile(modelHorizontalA).rotationY(yRot).addModel()
+				.condition(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_A)
+				.condition(BlockPost.FACING, dir);
+			
+			builder.part()
+				.modelFile(modelHorizontalB).rotationY(yRot).addModel()
+				.condition(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_B)
+				.condition(BlockPost.FACING, dir);
+			
+			builder.part()
+				.modelFile(modelHorizontalC).rotationY(yRot).addModel()
+				.condition(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_C)
+				.condition(BlockPost.FACING, dir);
+			
+			builder.part()
+				.modelFile(modelHorizontalD).rotationY(yRot).addModel()
+				.condition(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_D)
+				.condition(BlockPost.FACING, dir);
+			
+		}
+		
+		builder.part()
+			.modelFile(modelPointTop).addModel()
+			.condition(HorizontalPostBlock.CONNECTOR_POINT_TOP, true);
+		
+		builder.part()
+			.modelFile(modelPointBottom).addModel()
+			.condition(HorizontalPostBlock.CONNECTOR_POINT_BOTTOM, true);
 	}
 	
 	private void postStateFor(BlockPost block){
@@ -154,7 +203,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		return value;
 	}
 
-	private BlockModelBuilder getPostModel(BlockPost block, String name){
+	private BlockModelBuilder getPostModel(BlockGenericPost block, String name){
 		ResourceLocation texture=modLoc("block/posts/post_"+block.getPostMaterial().name().toLowerCase());
 		
 		BlockModelBuilder b=this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
@@ -166,7 +215,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		return b;
 	}
 	
-	private String postModelPath(BlockPost block, String name){
+	private String postModelPath(BlockGenericPost block, String name){
 		return block.getRegistryName().getPath()+"/"+name;
 	}
 	

@@ -37,6 +37,8 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -45,7 +47,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.enums.EnumFlipState;
+import twistedgate.immersiveposts.enums.EnumHorizontalPostType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
@@ -53,8 +57,8 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  * All-in-one package. Containing everything into one neat class is the best.
  * @author TwistedGate
  */
-public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggable{
-	private static final RedstoneParticleData URAN_PARTICLE=new RedstoneParticleData(0.0F, 1.0F, 0.0F, 1.0F);
+public class BlockPost extends BlockGenericPost implements IPostBlock, IWaterLoggable{
+	public static final RedstoneParticleData URAN_PARTICLE=new RedstoneParticleData(0.0F, 1.0F, 0.0F, 1.0F);
 	
 	public static final VoxelShape POST_SHAPE=VoxelShapes.create(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
 	
@@ -76,10 +80,8 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 	
 	public static final EnumProperty<EnumFlipState> FLIPSTATE=EnumProperty.create("flipstate", EnumFlipState.class);
 	
-	protected final EnumPostMaterial postMaterial;
 	public BlockPost(EnumPostMaterial postMaterial){
-		super(postMaterial.getString(), postMaterial.getProperties());
-		this.postMaterial=postMaterial;
+		super(postMaterial, "");
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(WATERLOGGED, false)
@@ -99,10 +101,6 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 				WATERLOGGED, FACING, FLIPSTATE, TYPE,
 				LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
 				);
-	}
-	
-	public final EnumPostMaterial getPostMaterial(){
-		return this.postMaterial;
 	}
 	
 	@Override
@@ -233,59 +231,118 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 					}
 				}
 			}else if(Utils.isHammer(held)){
-				switch(state.get(TYPE)){
-					case POST:case POST_TOP:{
-						Direction facing=hit.getFace();
-						BlockState defaultState=getDefaultState().with(TYPE, EnumPostType.ARM);
-						switch(facing){
-							case NORTH:case EAST:case SOUTH:case WEST:{
-								BlockPos nPos=pos.offset(facing);
-								BlockState nState=worldIn.getBlockState(nPos);
+				if(playerIn.isSneaking()){
+					switch(state.get(TYPE)){
+						case POST:
+						case POST_TOP:{
+							Direction facing = hit.getFace();
+							if(!Direction.Plane.HORIZONTAL.test(facing)){
+								break;
+							}
+							
+							// Check first, do stuff later
+							boolean success = false;
+							int size = 0;
+							for(;size <= 8;size++){
+								BlockPos nPos = pos.offset(facing, size + 1);
+								BlockState nState = worldIn.getBlockState(nPos);
 								
-								if(nState.getBlock().isAir(nState, worldIn, nPos) || nState.getBlock()==Blocks.WATER){
-									defaultState=defaultState.with(FACING, facing)
-											.with(WATERLOGGED, nState.getBlock()==Blocks.WATER);
-									
-									worldIn.setBlockState(nPos, defaultState);
-									defaultState.neighborChanged(worldIn, nPos, this, null, false);
-								}else if(getBlockFrom(worldIn, nPos)==this){
-									switch(nState.get(TYPE)){
-										case ARM:{
-											worldIn.setBlockState(nPos, nState.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
-											return ActionResultType.SUCCESS;
-										}
-										case EMPTY:{
-											worldIn.setBlockState(nPos, nState.get(WATERLOGGED)?Blocks.WATER.getDefaultState():Blocks.AIR.getDefaultState());
-											return ActionResultType.SUCCESS;
-										}
-										default:break;
-									}
+								boolean b = !nState.getBlock().isAir(nState, worldIn, nPos);
+								if(b && (nState.getBlock() instanceof BlockPost && nState.get(TYPE).id()<=1)){
+									success = true;
+									break;
+								}else if(b && nState.getBlock() != Blocks.WATER){
+									break;
 								}
 							}
-							default:break;
+							
+							// Size check is just a fail-safe
+							if(success && size > 1){
+								playerIn.sendStatusMessage(new StringTextComponent("Size: " + size).mergeStyle(TextFormatting.RED), true);
+								
+								// Do stuff now
+								for(int i = 0;i < size;i++){
+									BlockPos nPos = pos.offset(facing, i + 1);
+									BlockState nState = worldIn.getBlockState(nPos);
+									BlockState hState = IPOContent.Blocks.HorizontalPosts.MAP.get(getPostMaterial()).getDefaultState()
+											.with(HorizontalPostBlock.FACING, facing)
+											.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
+									
+									if(i == 0){
+										// A (Start)
+										worldIn.setBlockState(nPos, hState.with(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_A));
+									}else if(i == (size - 1)){
+										// D (End)
+										worldIn.setBlockState(nPos, hState.with(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_D));
+									}else{
+										if(i % 2 == 0){
+											// C (Middle Evem)
+											worldIn.setBlockState(nPos, hState.with(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_C));
+										}else{
+											// B (Middle Odd)
+											worldIn.setBlockState(nPos, hState.with(HorizontalPostBlock.TYPE, EnumHorizontalPostType.HORIZONTAL_B));
+										}
+									}
+								}
+								
+								return ActionResultType.SUCCESS;
+							}
+							break;
 						}
-						return ActionResultType.SUCCESS;
+						default:
+							break;
 					}
-					case ARM:{
-						Direction bfacing=state.get(FACING);
-						BlockPos offset=pos.offset(bfacing);
-						if(worldIn.isAirBlock(offset) || worldIn.getBlockState(offset).getBlock() == Blocks.WATER){
-							worldIn.setBlockState(offset, state.with(TYPE, EnumPostType.ARM_DOUBLE).with(WATERLOGGED, worldIn.getBlockState(offset).getBlock() == Blocks.WATER));
-							worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.EMPTY));
+				}else{
+					switch(state.get(TYPE)){
+						case POST:case POST_TOP:{
+							Direction facing=hit.getFace();
+							BlockState defaultState=getDefaultState().with(TYPE, EnumPostType.ARM);
+							switch(facing){
+								case NORTH:case EAST:case SOUTH:case WEST:{
+									BlockPos nPos=pos.offset(facing);
+									BlockState nState=worldIn.getBlockState(nPos);
+									
+									if(nState.getBlock().isAir(nState, worldIn, nPos) || nState.getBlock()==Blocks.WATER){
+										defaultState=defaultState.with(FACING, facing)
+												.with(WATERLOGGED, nState.getBlock()==Blocks.WATER);
+										
+										worldIn.setBlockState(nPos, defaultState);
+										defaultState.neighborChanged(worldIn, nPos, this, null, false);
+									}else if(getBlockFrom(worldIn, nPos)==this){
+										switch(nState.get(TYPE)){
+											case ARM: case EMPTY:{
+												replaceSelf(nState, worldIn, nPos);
+												return ActionResultType.SUCCESS;
+											}
+											default:break;
+										}
+									}
+								}
+								default:break;
+							}
+							return ActionResultType.SUCCESS;
 						}
-						return ActionResultType.SUCCESS;
-					}
-					case ARM_DOUBLE:{
-						Direction bfacing=state.get(FACING);
-						worldIn.setBlockState(pos, state.get(WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
-						worldIn.setBlockState(pos.offset(bfacing.getOpposite()), state.with(TYPE, EnumPostType.ARM));
-						return ActionResultType.SUCCESS;
-					}
-					case EMPTY:{
-						Direction bfacing=state.get(FACING);
-						worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.ARM));
-						worldIn.setBlockState(pos.offset(bfacing), state.get(WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
-						return ActionResultType.SUCCESS;
+						case ARM:{
+							Direction bfacing=state.get(FACING);
+							BlockPos offset=pos.offset(bfacing);
+							if(worldIn.isAirBlock(offset) || worldIn.getBlockState(offset).getBlock() == Blocks.WATER){
+								worldIn.setBlockState(offset, state.with(TYPE, EnumPostType.ARM_DOUBLE).with(WATERLOGGED, worldIn.getBlockState(offset).getBlock() == Blocks.WATER));
+								worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.EMPTY));
+							}
+							return ActionResultType.SUCCESS;
+						}
+						case ARM_DOUBLE:{
+							Direction bfacing=state.get(FACING);
+							replaceSelf(state, worldIn, pos);
+							worldIn.setBlockState(pos.offset(bfacing.getOpposite()), state.with(TYPE, EnumPostType.ARM));
+							return ActionResultType.SUCCESS;
+						}
+						case EMPTY:{
+							Direction bfacing=state.get(FACING);
+							worldIn.setBlockState(pos, state.with(TYPE, EnumPostType.ARM));
+							replaceSelf(state, worldIn, pos.offset(bfacing));
+							return ActionResultType.SUCCESS;
+						}
 					}
 				}
 			}
@@ -498,7 +555,7 @@ public class BlockPost extends IPOBlockBase implements IPostBlock, IWaterLoggabl
 			return false;
 		
 		// Secondary, more indepth check
-		if(otherBlock.isAir(otherState, worldIn, nPos) || otherBlock instanceof FourWayBlock || otherBlock instanceof BlockPost)
+		if(otherBlock.isAir(otherState, worldIn, nPos) || otherBlock instanceof FourWayBlock || otherBlock instanceof BlockPost || otherBlock instanceof HorizontalPostBlock)
 			return false;
 		
 		if(facingIn==Direction.DOWN || facingIn==Direction.UP){
