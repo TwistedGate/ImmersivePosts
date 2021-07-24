@@ -15,4 +15,9 @@ Isnt that neat?<np>
 Like with the 1-Wide, if there isnt enough space it will not change.<np>
 <&usage6>The one 1-Wide Arm flips up-side-down if it detects any block below it, §oeven§r if there is already one above it.
 
-For §ostability§r reasons, the 2-Wide Arm however can §lnot§r flip up-side-down.
+For §ostability§r reasons, the 2-Wide Arm however can §lnot§r flip up-side-down.<np>
+<&usage7>§nPost Arm§r
+Placing non-solid blocks on the sides (Like connectors/relays) makes these cute little arms apear, making sure whatever you attached doesnt look like it's floating in the air.<np>
+<&usage8>§nHorizontal Truss§r
+Line up two posts with atleast 2 blocks of space.
+Sneak + Rightclick with the hammer on inner side of any of them.

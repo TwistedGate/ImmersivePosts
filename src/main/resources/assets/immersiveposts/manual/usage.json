@@ -62,5 +62,29 @@
 				"vSize": 64
 			}
 		]
+	},
+	"usage7":{
+		"type": "image",
+		"images":[
+			{
+				"location": "immersiveposts:textures/manual/usage/what.png",
+				"uMin": 0,
+				"vMin": 165,
+				"uSize": 91,
+				"vSize": 91
+			}
+		]
+	},
+	"usage8":{
+		"type": "image",
+		"images":[
+			{
+				"location": "immersiveposts:textures/manual/usage/what.png",
+				"uMin": 132,
+				"vMin": 173,
+				"uSize": 124,
+				"vSize": 83
+			}
+		]
 	}
 }
