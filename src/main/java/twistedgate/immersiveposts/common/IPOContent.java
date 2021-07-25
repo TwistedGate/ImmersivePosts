@@ -1,9 +1,7 @@
 package twistedgate.immersiveposts.common;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
 import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,12 +19,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
-import twistedgate.immersiveposts.common.IPOContent.Blocks.HorizontalPosts;
+import twistedgate.immersiveposts.common.IPOContent.Blocks.HorizontalTruss;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
-import twistedgate.immersiveposts.common.blocks.MetalFenceBlock;
-import twistedgate.immersiveposts.common.blocks.PostBlock;
-import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
+import twistedgate.immersiveposts.common.blocks.MetalFenceBlock;
+import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
+import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.common.items.IPOItemBase;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
@@ -36,10 +34,10 @@ import twistedgate.immersiveposts.enums.EnumPostMaterial;
  */
 @Mod.EventBusSubscriber(modid=IPOMod.ID, bus=Bus.MOD)
 public class IPOContent{
-	public static final Logger log=LogManager.getLogger(IPOMod.ID+"/Stuff");
+	public static final Logger log = LogManager.getLogger(IPOMod.ID + "/Stuff");
 	
-	public static final ArrayList<Block> BLOCKS=new ArrayList<>(0);
-	public static final ArrayList<Item> ITEMS=new ArrayList<>(0);
+	public static final ArrayList<Block> BLOCKS = new ArrayList<>(0);
+	public static final ArrayList<Item> ITEMS = new ArrayList<>(0);
 	
 	public static TileEntityType<PostBaseTileEntity> TE_POSTBASE;
 	
@@ -63,15 +61,15 @@ public class IPOContent{
 		
 		public static class Posts{
 			/** Contains (or should) all Post Blocks added by IPO */
-			static Map<EnumPostMaterial, PostBlock> MAP;
+			static EnumMap<EnumPostMaterial, PostBlock> MAP;
 			
 			public static PostBlock get(EnumPostMaterial material){
 				return MAP.get(material);
 			}
 		}
 		
-		public static class HorizontalPosts{
-			static Map<EnumPostMaterial, HorizontalTrussBlock> MAP;
+		public static class HorizontalTruss{
+			static EnumMap<EnumPostMaterial, HorizontalTrussBlock> MAP;
 			
 			public static HorizontalTrussBlock get(EnumPostMaterial material){
 				return MAP.get(material);
@@ -112,16 +110,16 @@ public class IPOContent{
 		// Posts
 		
 		EnumPostMaterial[] values = EnumPostMaterial.values();
-		Map<EnumPostMaterial, PostBlock> posts = new HashMap<>();
-		Map<EnumPostMaterial, HorizontalTrussBlock> h_posts = new HashMap<>();
+		EnumMap<EnumPostMaterial, PostBlock> posts = new EnumMap<>(EnumPostMaterial.class);
+		EnumMap<EnumPostMaterial, HorizontalTrussBlock> trusses = new EnumMap<>(EnumPostMaterial.class);
 		
 		for(EnumPostMaterial mat:values){
 			posts.put(mat, new PostBlock(mat));
-			h_posts.put(mat, new HorizontalTrussBlock(mat));
+			trusses.put(mat, new HorizontalTrussBlock(mat));
 		}
 		
-		Posts.MAP = Collections.unmodifiableMap(posts);
-		HorizontalPosts.MAP = Collections.unmodifiableMap(h_posts);
+		Posts.MAP = posts;
+		HorizontalTruss.MAP = trusses;
 		
 		// =========================================================================
 		// Items
@@ -141,7 +139,7 @@ public class IPOContent{
 		for(Block block:BLOCKS){
 			try{
 				event.getRegistry().register(block);
-			}catch(Throwable e) {
+			}catch(Throwable e){
 				log.error("Failed to register a block. ({})", block);
 				throw e;
 			}
@@ -153,7 +151,7 @@ public class IPOContent{
 		for(Item item:ITEMS){
 			try{
 				event.getRegistry().register(item);
-			}catch(Throwable e) {
+			}catch(Throwable e){
 				log.error("Failed to register an item. ({}, {})", item, item.getRegistryName());
 				throw e;
 			}
@@ -163,7 +161,7 @@ public class IPOContent{
 	@SubscribeEvent
 	public static void registerTileEntities(RegistryEvent.Register<TileEntityType<?>> event){
 		try{
-			event.getRegistry().register(TE_POSTBASE=create("postbase", PostBaseTileEntity::new, Blocks.post_Base));
+			event.getRegistry().register(TE_POSTBASE = create("postbase", PostBaseTileEntity::new, Blocks.post_Base));
 		}catch(Throwable e){
 			log.error("Failed to register postbase tileentity. {}", e.getMessage());
 			throw e;
@@ -171,7 +169,7 @@ public class IPOContent{
 	}
 	
 	private static <T extends TileEntity> TileEntityType<T> create(String name, Supplier<T> factory, Block... validBlocks){
-		TileEntityType<T> te=TileEntityType.Builder.create(factory, validBlocks).build(null);
+		TileEntityType<T> te = TileEntityType.Builder.create(factory, validBlocks).build(null);
 		te.setRegistryName(new ResourceLocation(IPOMod.ID, name));
 		return te;
 	}

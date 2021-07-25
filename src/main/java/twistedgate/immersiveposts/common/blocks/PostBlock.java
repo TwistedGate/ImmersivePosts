@@ -264,7 +264,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 								if(size == 1){
 									BlockPos nPos = pos.offset(facing);
 									BlockState nState = worldIn.getBlockState(nPos);
-									BlockState hState = IPOContent.Blocks.HorizontalPosts.get(getPostMaterial()).getDefaultState()
+									BlockState hState = IPOContent.Blocks.HorizontalTruss.get(getPostMaterial()).getDefaultState()
 											.with(HorizontalTrussBlock.FACING, facing)
 											.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
 									worldIn.setBlockState(nPos, hState);
@@ -272,7 +272,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 									for(int i = 0;i < size;i++){
 										BlockPos nPos = pos.offset(facing, i + 1);
 										BlockState nState = worldIn.getBlockState(nPos);
-										BlockState hState = IPOContent.Blocks.HorizontalPosts.get(getPostMaterial()).getDefaultState()
+										BlockState hState = IPOContent.Blocks.HorizontalTruss.get(getPostMaterial()).getDefaultState()
 												.with(HorizontalTrussBlock.FACING, facing)
 												.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
 										
