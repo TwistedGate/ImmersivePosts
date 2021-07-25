@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "texture": "immersiveposts:block/posts/post_concrete_leaded",
+    "particle": "immersiveposts:block/posts/post_concrete_leaded"
+  },
+  "loader": "forge:obj",
+  "model": "immersiveposts:models/block/post/obj/truss_multi_c.obj",
+  "flip-v": true
+}

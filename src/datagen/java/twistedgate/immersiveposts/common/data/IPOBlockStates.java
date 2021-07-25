@@ -24,7 +24,7 @@ import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.enums.EnumFlipState;
-import twistedgate.immersiveposts.enums.EnumHorizontalTrussType;
+import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
 /**
@@ -77,13 +77,14 @@ public class IPOBlockStates extends BlockStateProvider{
 	}
 	
 	private void horizontalPostStateFor(HorizontalTrussBlock block){
-		BlockModelBuilder modelHorizontalA		= getPostModel(block, "post_horizontal_a");
-		BlockModelBuilder modelHorizontalB		= getPostModel(block, "post_horizontal_b");
-		BlockModelBuilder modelHorizontalC		= getPostModel(block, "post_horizontal_c");
-		BlockModelBuilder modelHorizontalDEven	= getPostModel(block, "post_horizontal_d_even");
-		BlockModelBuilder modelHorizontalDOdd	= getPostModel(block, "post_horizontal_d_odd");
-		BlockModelBuilder modelPointTop			= getPostModel(block, "post_horizontal_point_top");
-		BlockModelBuilder modelPointBottom		= getPostModel(block, "post_horizontal_point_bottom");
+		BlockModelBuilder modelHTrussSingle	= getPostModel(block, "truss_single");
+		BlockModelBuilder modelHTrussA		= getPostModel(block, "truss_multi_a");
+		BlockModelBuilder modelHTrussB		= getPostModel(block, "truss_multi_b");
+		BlockModelBuilder modelHTrussC		= getPostModel(block, "truss_multi_c");
+		BlockModelBuilder modelHTrussD_even	= getPostModel(block, "truss_multi_d_even");
+		BlockModelBuilder modelHTrussD_odd	= getPostModel(block, "truss_multi_d_odd");
+		BlockModelBuilder modelPointTop		= getPostModel(block, "truss_point_top");
+		BlockModelBuilder modelPointBottom	= getPostModel(block, "truss_point_bottom");
 		
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
 		
@@ -91,28 +92,33 @@ public class IPOBlockStates extends BlockStateProvider{
 			int yRot = horizontalRotation(dir, false);
 			
 			builder.part()
-				.modelFile(modelHorizontalA).rotationY(yRot).addModel()
-				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_A)
+				.modelFile(modelHTrussSingle).rotationY(yRot).addModel()
+				.condition(HorizontalTrussBlock.TYPE, EnumHTrussType.SINGLE)
 				.condition(PostBlock.FACING, dir);
 			
 			builder.part()
-				.modelFile(modelHorizontalB).rotationY(yRot).addModel()
-				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_B)
+				.modelFile(modelHTrussA).rotationY(yRot).addModel()
+				.condition(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_A)
 				.condition(PostBlock.FACING, dir);
 			
 			builder.part()
-				.modelFile(modelHorizontalC).rotationY(yRot).addModel()
-				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_C)
+				.modelFile(modelHTrussB).rotationY(yRot).addModel()
+				.condition(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_B)
 				.condition(PostBlock.FACING, dir);
 			
 			builder.part()
-				.modelFile(modelHorizontalDEven).rotationY(yRot).addModel()
-				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D_EVEN)
+				.modelFile(modelHTrussC).rotationY(yRot).addModel()
+				.condition(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_C)
 				.condition(PostBlock.FACING, dir);
 			
 			builder.part()
-				.modelFile(modelHorizontalDOdd).rotationY(yRot).addModel()
-				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D_ODD)
+				.modelFile(modelHTrussD_even).rotationY(yRot).addModel()
+				.condition(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_D_EVEN)
+				.condition(PostBlock.FACING, dir);
+			
+			builder.part()
+				.modelFile(modelHTrussD_odd).rotationY(yRot).addModel()
+				.condition(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_D_ODD)
 				.condition(PostBlock.FACING, dir);
 			
 		}

@@ -32,7 +32,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twistedgate.immersiveposts.enums.EnumHorizontalTrussType;
+import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock, IWaterLoggable{
@@ -43,7 +43,7 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final EnumProperty<EnumHorizontalTrussType> TYPE = EnumProperty.create("type", EnumHorizontalTrussType.class);
+	public static final EnumProperty<EnumHTrussType> TYPE = EnumProperty.create("type", EnumHTrussType.class);
 	
 	public HorizontalTrussBlock(EnumPostMaterial postMaterial){
 		super(postMaterial, "_horizontal");
@@ -51,7 +51,7 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 		setDefaultState(getStateContainer().getBaseState()
 				.with(WATERLOGGED, false)
 				.with(FACING, Direction.NORTH)
-				.with(TYPE, EnumHorizontalTrussType.HORIZONTAL_A)
+				.with(TYPE, EnumHTrussType.SINGLE)
 				.with(CONNECTOR_POINT_TOP, false)
 				.with(CONNECTOR_POINT_BOTTOM, false)
 				);

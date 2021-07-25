@@ -2,196 +2,235 @@
   "multipart": [
     {
       "when": {
-        "type": "horizontal_a",
+        "type": "single",
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_a"
+        "model": "immersiveposts:goldpost_horizontal/truss_single"
       }
     },
     {
       "when": {
-        "type": "horizontal_b",
+        "type": "multi_a",
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_b"
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_a"
       }
     },
     {
       "when": {
-        "type": "horizontal_c",
+        "type": "multi_b",
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_c"
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_b"
       }
     },
     {
       "when": {
-        "type": "horizontal_d_even",
+        "type": "multi_c",
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_d_even"
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_c"
       }
     },
     {
       "when": {
-        "type": "horizontal_d_odd",
+        "type": "multi_d_even",
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_d_odd"
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_d_even"
       }
     },
     {
       "when": {
-        "type": "horizontal_a",
+        "type": "multi_d_odd",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_d_odd"
+      }
+    },
+    {
+      "when": {
+        "type": "single",
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_a",
+        "model": "immersiveposts:goldpost_horizontal/truss_single",
         "y": 90
       }
     },
     {
       "when": {
-        "type": "horizontal_b",
+        "type": "multi_a",
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_b",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_a",
         "y": 90
       }
     },
     {
       "when": {
-        "type": "horizontal_c",
+        "type": "multi_b",
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_c",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_b",
         "y": 90
       }
     },
     {
       "when": {
-        "type": "horizontal_d_even",
+        "type": "multi_c",
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_d_even",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_c",
         "y": 90
       }
     },
     {
       "when": {
-        "type": "horizontal_d_odd",
+        "type": "multi_d_even",
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_d_odd",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_d_even",
         "y": 90
       }
     },
     {
       "when": {
-        "type": "horizontal_a",
+        "type": "multi_d_odd",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_d_odd",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "type": "single",
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_a",
+        "model": "immersiveposts:goldpost_horizontal/truss_single",
         "y": 180
       }
     },
     {
       "when": {
-        "type": "horizontal_b",
+        "type": "multi_a",
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_b",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_a",
         "y": 180
       }
     },
     {
       "when": {
-        "type": "horizontal_c",
+        "type": "multi_b",
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_c",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_b",
         "y": 180
       }
     },
     {
       "when": {
-        "type": "horizontal_d_even",
+        "type": "multi_c",
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_d_even",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_c",
         "y": 180
       }
     },
     {
       "when": {
-        "type": "horizontal_d_odd",
+        "type": "multi_d_even",
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_d_odd",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_d_even",
         "y": 180
       }
     },
     {
       "when": {
-        "type": "horizontal_a",
+        "type": "multi_d_odd",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_d_odd",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "type": "single",
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_a",
+        "model": "immersiveposts:goldpost_horizontal/truss_single",
         "y": 270
       }
     },
     {
       "when": {
-        "type": "horizontal_b",
+        "type": "multi_a",
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_b",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_a",
         "y": 270
       }
     },
     {
       "when": {
-        "type": "horizontal_c",
+        "type": "multi_b",
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_c",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_b",
         "y": 270
       }
     },
     {
       "when": {
-        "type": "horizontal_d_even",
+        "type": "multi_c",
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_d_even",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_c",
         "y": 270
       }
     },
     {
       "when": {
-        "type": "horizontal_d_odd",
+        "type": "multi_d_even",
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_d_odd",
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_d_even",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "type": "multi_d_odd",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "immersiveposts:goldpost_horizontal/truss_multi_d_odd",
         "y": 270
       }
     },
@@ -200,7 +239,7 @@
         "connector_point_top": "true"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_point_top"
+        "model": "immersiveposts:goldpost_horizontal/truss_point_top"
       }
     },
     {
@@ -208,7 +247,7 @@
         "connector_point_bottom": "true"
       },
       "apply": {
-        "model": "immersiveposts:goldpost_horizontal/post_horizontal_point_bottom"
+        "model": "immersiveposts:goldpost_horizontal/truss_point_bottom"
       }
     }
   ]

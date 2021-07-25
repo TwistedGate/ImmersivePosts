@@ -48,7 +48,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.enums.EnumFlipState;
-import twistedgate.immersiveposts.enums.EnumHorizontalTrussType;
+import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
@@ -260,40 +260,49 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 							}
 							
 							// Size check is just a fail-safe
-							if(success && size > 1){
-								for(int i = 0;i < size;i++){
-									BlockPos nPos = pos.offset(facing, i + 1);
+							if(success && size >= 1){
+								if(size == 1){
+									BlockPos nPos = pos.offset(facing);
 									BlockState nState = worldIn.getBlockState(nPos);
 									BlockState hState = IPOContent.Blocks.HorizontalPosts.get(getPostMaterial()).getDefaultState()
 											.with(HorizontalTrussBlock.FACING, facing)
 											.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
-									
-									if(i == 0){
-										// A (Start)
-										worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_A));
-									}else if(i == (size - 1)){
-										if(i % 2 == 0){
-											// D (End, Odd)
-											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D_ODD));
+									worldIn.setBlockState(nPos, hState);
+								}else{
+									for(int i = 0;i < size;i++){
+										BlockPos nPos = pos.offset(facing, i + 1);
+										BlockState nState = worldIn.getBlockState(nPos);
+										BlockState hState = IPOContent.Blocks.HorizontalPosts.get(getPostMaterial()).getDefaultState()
+												.with(HorizontalTrussBlock.FACING, facing)
+												.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
+										
+										if(i == 0){
+											// A (Start)
+											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_A));
+										}else if(i == (size - 1)){
+											if(i % 2 == 0){
+												// D (End, Odd)
+												worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_D_ODD));
+											}else{
+												// D (End, Even)
+												worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_D_EVEN));
+											}
 										}else{
-											// D (End, Even)
-											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D_EVEN));
-										}
-									}else{
-										if(i % 2 == 0){
-											// C (Middle Even)
-											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_C));
-										}else{
-											// B (Middle Odd)
-											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_B));
+											if(i % 2 == 0){
+												// C (Middle Even)
+												worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_C));
+											}else{
+												// B (Middle Odd)
+												worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_B));
+											}
 										}
 									}
 								}
 								
 								return ActionResultType.SUCCESS;
-							}else if(size<2){
+							}else if(size == 0){
 								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.truss_minimumdistance"), true);
-							}else if(!success && size > 1){
+							}else if(!success && size >= 1){
 								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.truss_postnotfound"), true);
 							}
 							break;
