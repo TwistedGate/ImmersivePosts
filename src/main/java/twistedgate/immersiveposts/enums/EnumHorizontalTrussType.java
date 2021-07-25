@@ -8,7 +8,8 @@ public enum EnumHorizontalTrussType implements IStringSerializable{
 	HORIZONTAL_A,
 	HORIZONTAL_B,
 	HORIZONTAL_C,
-	HORIZONTAL_D
+	HORIZONTAL_D_EVEN,
+	HORIZONTAL_D_ODD
 	;
 	
 	public int id(){

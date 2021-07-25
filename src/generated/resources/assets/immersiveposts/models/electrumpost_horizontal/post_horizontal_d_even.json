@@ -5,6 +5,6 @@
     "particle": "immersiveposts:block/posts/post_electrum"
   },
   "loader": "forge:obj",
-  "model": "immersiveposts:models/block/post/obj/post_horizontal_d.obj",
+  "model": "immersiveposts:models/block/post/obj/post_horizontal_d_even.obj",
   "flip-v": true
 }

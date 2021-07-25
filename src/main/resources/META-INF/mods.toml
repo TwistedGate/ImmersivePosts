@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/TwistedGate/ImmersivePosts/issues"
 license="TwistedGate's License of Common Sense (A modified copy of \"Blu's License of Common Sense\")"
 
 [[mods]]
-	displayName="Immersive Posts"
+	displayName="Immersive Posts (DEV BUILD)"
 	modId="immersiveposts"
 	version="${version}"
 	logoFile="logo.png"

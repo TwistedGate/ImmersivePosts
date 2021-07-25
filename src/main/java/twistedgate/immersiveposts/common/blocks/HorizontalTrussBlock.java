@@ -87,16 +87,12 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 			world.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		
-		if(facing == Direction.UP){
-			boolean b = PostBlock.canConnect(world, pos, facing);
-			state = state.with(CONNECTOR_POINT_TOP, b);
-		}
-		if(facing == Direction.DOWN){
-			boolean b = PostBlock.canConnect(world, pos, facing);
-			state = state.with(CONNECTOR_POINT_BOTTOM, b);
-		}
+		boolean b0 = PostBlock.canConnect(world, pos, Direction.UP);
+		boolean b1 = PostBlock.canConnect(world, pos, Direction.DOWN) || world.getBlockState(pos.offset(Direction.DOWN)).getBlock() instanceof PostBlock;
 		
-		return state;
+		return state
+				.with(CONNECTOR_POINT_TOP, b0)
+				.with(CONNECTOR_POINT_BOTTOM, b1);
 	}
 	
 	@Override

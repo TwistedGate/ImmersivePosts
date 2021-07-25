@@ -129,9 +129,6 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 		
 		if(state.get(TYPE).id() > 1){
 			return state;
-			/*
-			 * canConnect is rather time consuming, so this is an attempt to speed this up.
-			 */
 		}
 		
 		boolean b0 = canConnect(world, pos, Direction.NORTH);
@@ -245,16 +242,20 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 								BlockPos nPos = pos.offset(facing, size + 1);
 								BlockState nState = worldIn.getBlockState(nPos);
 								
-								boolean b = !nState.getBlock().isAir(nState, worldIn, nPos);
-								if(b && (nState.getBlock() instanceof PostBlock && nState.get(TYPE).id() <= 1)){
-									if(this.getPostMaterial() == ((PostBlock)nState.getBlock()).getPostMaterial()){
+								if(!nState.getBlock().isAir(nState, worldIn, nPos)){
+									if(nState.getBlock() instanceof HorizontalTrussBlock){
+										return ActionResultType.FAIL;
+									}else if((nState.getBlock() instanceof PostBlock && nState.get(TYPE).id() <= 1)){
+										if(this.getPostMaterial() != ((PostBlock) nState.getBlock()).getPostMaterial()){
+											playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.truss_notsametype"), true);
+											return ActionResultType.FAIL;
+										}
+										
 										success = true;
-									}else{
-										playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.same_truss_type"), true);
+										break;
+									}else if(nState.getBlock() != Blocks.WATER){
+										break;
 									}
-									break;
-								}else if(b && nState.getBlock() != Blocks.WATER){
-									break;
 								}
 							}
 							
@@ -271,11 +272,16 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 										// A (Start)
 										worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_A));
 									}else if(i == (size - 1)){
-										// D (End)
-										worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D));
+										if(i % 2 == 0){
+											// D (End, Odd)
+											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D_ODD));
+										}else{
+											// D (End, Even)
+											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D_EVEN));
+										}
 									}else{
 										if(i % 2 == 0){
-											// C (Middle Evem)
+											// C (Middle Even)
 											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_C));
 										}else{
 											// B (Middle Odd)
@@ -285,6 +291,10 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 								}
 								
 								return ActionResultType.SUCCESS;
+							}else if(size<2){
+								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.truss_minimumdistance"), true);
+							}else if(!success && size > 1){
+								playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.truss_postnotfound"), true);
 							}
 							break;
 						}
@@ -295,7 +305,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 					switch(state.get(TYPE)){
 						case POST:case POST_TOP:{
 							Direction facing = hit.getFace();
-							BlockState defaultState =getDefaultState().with(TYPE, EnumPostType.ARM);
+							BlockState defaultState = getDefaultState().with(TYPE, EnumPostType.ARM);
 							switch(facing){
 								case NORTH:case EAST:case SOUTH:case WEST:{
 									BlockPos nPos = pos.offset(facing);

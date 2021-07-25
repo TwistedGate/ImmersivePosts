@@ -77,12 +77,13 @@ public class IPOBlockStates extends BlockStateProvider{
 	}
 	
 	private void horizontalPostStateFor(HorizontalTrussBlock block){
-		BlockModelBuilder modelHorizontalA	= getPostModel(block, "post_horizontal_a");
-		BlockModelBuilder modelHorizontalB	= getPostModel(block, "post_horizontal_b");
-		BlockModelBuilder modelHorizontalC	= getPostModel(block, "post_horizontal_c");
-		BlockModelBuilder modelHorizontalD	= getPostModel(block, "post_horizontal_d");
-		BlockModelBuilder modelPointTop		= getPostModel(block, "post_horizontal_point_top");
-		BlockModelBuilder modelPointBottom	= getPostModel(block, "post_horizontal_point_bottom");
+		BlockModelBuilder modelHorizontalA		= getPostModel(block, "post_horizontal_a");
+		BlockModelBuilder modelHorizontalB		= getPostModel(block, "post_horizontal_b");
+		BlockModelBuilder modelHorizontalC		= getPostModel(block, "post_horizontal_c");
+		BlockModelBuilder modelHorizontalDEven	= getPostModel(block, "post_horizontal_d_even");
+		BlockModelBuilder modelHorizontalDOdd	= getPostModel(block, "post_horizontal_d_odd");
+		BlockModelBuilder modelPointTop			= getPostModel(block, "post_horizontal_point_top");
+		BlockModelBuilder modelPointBottom		= getPostModel(block, "post_horizontal_point_bottom");
 		
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
 		
@@ -105,8 +106,13 @@ public class IPOBlockStates extends BlockStateProvider{
 				.condition(PostBlock.FACING, dir);
 			
 			builder.part()
-				.modelFile(modelHorizontalD).rotationY(yRot).addModel()
-				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D)
+				.modelFile(modelHorizontalDEven).rotationY(yRot).addModel()
+				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D_EVEN)
+				.condition(PostBlock.FACING, dir);
+			
+			builder.part()
+				.modelFile(modelHorizontalDOdd).rotationY(yRot).addModel()
+				.condition(HorizontalTrussBlock.TYPE, EnumHorizontalTrussType.HORIZONTAL_D_ODD)
 				.condition(PostBlock.FACING, dir);
 			
 		}

@@ -1,7 +1,7 @@
 # Blender v2.79 (sub 0) OBJ File: 'post_segments.blend'
 # www.blender.org
 mtllib post.mtl
-o post_horizontal_d
+o post_horizontal_d_even
 v 0.375000 0.875000 -0.374997
 v 0.375000 0.875000 0.625003
 v 0.375000 0.750000 0.625003

@@ -59,7 +59,9 @@
     "_comment": "################## Miscellaneous ##################",
 
     "immersiveposts.expectedlocal": "Expected: %s",
-    "immersiveposts.same_truss_type": "Both posts must be of the same material.",
+    "immersiveposts.truss_notsametype": "Truss: Both posts must be of the same material.",
+    "immersiveposts.truss_minimumdistance": "Truss: Posts must have at least 2 blocks of space between.",
+    "immersiveposts.truss_postnotfound": "Truss: Next post out of range or does not exist.",
 	
     "_comment": "################## IE-Manual ##################",
 	

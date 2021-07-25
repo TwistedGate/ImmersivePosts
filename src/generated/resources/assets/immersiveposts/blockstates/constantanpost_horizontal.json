@@ -29,11 +29,20 @@
     },
     {
       "when": {
-        "type": "horizontal_d",
+        "type": "horizontal_d_even",
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d"
+        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d_even"
+      }
+    },
+    {
+      "when": {
+        "type": "horizontal_d_odd",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d_odd"
       }
     },
     {
@@ -68,11 +77,21 @@
     },
     {
       "when": {
-        "type": "horizontal_d",
+        "type": "horizontal_d_even",
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d",
+        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d_even",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "type": "horizontal_d_odd",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d_odd",
         "y": 90
       }
     },
@@ -108,11 +127,21 @@
     },
     {
       "when": {
-        "type": "horizontal_d",
+        "type": "horizontal_d_even",
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d",
+        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d_even",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "type": "horizontal_d_odd",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d_odd",
         "y": 180
       }
     },
@@ -148,11 +177,21 @@
     },
     {
       "when": {
-        "type": "horizontal_d",
+        "type": "horizontal_d_even",
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d",
+        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d_even",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "type": "horizontal_d_odd",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "immersiveposts:constantanpost_horizontal/post_horizontal_d_odd",
         "y": 270
       }
     },
