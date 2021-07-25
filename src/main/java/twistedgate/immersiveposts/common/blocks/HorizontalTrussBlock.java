@@ -153,16 +153,19 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 		}
 	}
 	
+	static final VoxelShape NORTH_SOUTH = VoxelShapes.create(0.3125, 0.0, 0.0, 0.6875, 1.0, 1.0);
+	static final VoxelShape EAST_WEST = VoxelShapes.create(0.0, 0.0, 0.3125, 1.0, 1.0, 0.6875);
+	
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
 		Direction dir = state.get(FACING);
 		
 		switch(dir){
 			case NORTH: case SOUTH:{
-				return VoxelShapes.create(0.3125, 0.0, 0.0, 0.6875, 1.0, 1.0);
+				return NORTH_SOUTH;
 			}
 			case EAST: case WEST:{
-				return VoxelShapes.create(0.0, 0.0, 0.3125, 1.0, 1.0, 0.6875);
+				return EAST_WEST;
 			}
 			default:break;
 		}

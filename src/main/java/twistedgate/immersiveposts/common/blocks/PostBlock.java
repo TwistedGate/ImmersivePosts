@@ -277,25 +277,25 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 												.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
 										
 										if(i == 0){
-											// A (Start)
-											worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_A));
+											hState = hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_A);
 										}else if(i == (size - 1)){
 											if(i % 2 == 0){
-												// D (End, Odd)
-												worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_D_ODD));
+												hState = hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_D_ODD);
 											}else{
-												// D (End, Even)
-												worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_D_EVEN));
+												hState = hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_D_EVEN);
 											}
+											
+											hState = ((HorizontalTrussBlock) hState.getBlock()).updatePostPlacement(hState, null, null, worldIn, nPos, null);
+											
 										}else{
 											if(i % 2 == 0){
-												// C (Middle Even)
-												worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_C));
+												hState = hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_C);
 											}else{
-												// B (Middle Odd)
-												worldIn.setBlockState(nPos, hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_B));
+												hState = hState.with(HorizontalTrussBlock.TYPE, EnumHTrussType.MULTI_B);
 											}
 										}
+										
+										worldIn.setBlockState(nPos, hState);
 									}
 								}
 								

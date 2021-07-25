@@ -47,6 +47,10 @@ public class ClientProxy extends CommonProxy{
 	}
 	
 	public void setupManualPage(){
+		/*
+		 * TODO Give src/main/resources/assets/immersiveengineering/manual/autoload.json a shot
+		 */
+		
 		ManualInstance man = ManualHelper.getManual();
 		
 		InnerNode<ResourceLocation, ManualEntry> cat = man.getRoot().getOrCreateSubnode(modLoc("main"), 100);
