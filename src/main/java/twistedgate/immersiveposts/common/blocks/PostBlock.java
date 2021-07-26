@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import blusunrize.immersiveengineering.api.IPostBlock;
+import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.common.util.Utils;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectArrayMap;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
@@ -29,9 +30,11 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -45,6 +48,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.ForgeRegistries;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.enums.EnumFlipState;
@@ -562,6 +567,10 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 	}
 	
 	
+	static final RegistryObject<Block> IE_POST_TRANSFORMER = RegistryObject.of(new ResourceLocation(Lib.MODID, "post_transformer"), ForgeRegistries.BLOCKS);
+	static final RegistryObject<Block> IE_TRANSFORMER = RegistryObject.of(new ResourceLocation(Lib.MODID, "transformer"), ForgeRegistries.BLOCKS);
+	static final RegistryObject<Block> IE_TRANSFORMER_HV = RegistryObject.of(new ResourceLocation(Lib.MODID, "transformer_hv"), ForgeRegistries.BLOCKS);
+	
 	public static boolean canConnect(IBlockReader worldIn, BlockPos posIn, Direction facingIn){
 		BlockPos nPos = posIn.offset(facingIn);
 		
@@ -569,11 +578,15 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 		Block otherBlock = otherState.getBlock();
 		
 		// Go straight out if air, no questions asked.
-		if(otherBlock == Blocks.AIR)
+		if(otherBlock == Blocks.AIR || otherBlock.isAir(otherState, worldIn, nPos))
 			return false;
 		
-		// Secondary, more indepth check
-		if(otherBlock.isAir(otherState, worldIn, nPos) || otherBlock instanceof FourWayBlock || otherBlock instanceof PostBlock || otherBlock instanceof HorizontalTrussBlock)
+		// Secondary, general checks
+		if(otherBlock instanceof FourWayBlock || otherBlock instanceof PostBlock || otherBlock instanceof HorizontalTrussBlock)
+			return false;
+		
+		// Tertiary, block specific checks
+		if(otherBlock == IE_POST_TRANSFORMER.get() || otherBlock == IE_TRANSFORMER.get() || otherBlock == IE_TRANSFORMER_HV.get())
 			return false;
 		
 		if(facingIn == Direction.DOWN || facingIn == Direction.UP){
@@ -581,12 +594,14 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 			if(!shape.isEmpty()){
 				AxisAlignedBB box = shape.getBoundingBox();
 				switch(facingIn){
-					case UP:	return box.minY == 0.0;
+					case UP:
+						return box.minY == 0.0;
 					case DOWN:{
 						boolean bool = otherBlock instanceof PostBlock;
 						return !bool && box.maxY == 1.0;
 					}
-					default: break;
+					default:
+						break;
 				}
 				return false;
 			}
@@ -595,14 +610,33 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 		VoxelShape shape = otherState.getShape(worldIn, nPos);
 		if(!shape.isEmpty()){
 			AxisAlignedBB box = shape.getBoundingBox();
-			boolean b;
 			
+			if(facingIn == Direction.SOUTH || facingIn == Direction.NORTH){
+				AxisAlignedBB arm = LPARM_SOUTH_BOUNDS.getBoundingBox();
+				if((box.minX > 0.0 && box.maxX < 1.0) || (box.minY > 0.0 && box.maxY < 1.0)){
+					if((box.minX <= arm.minX && box.maxX >= arm.maxX) && (box.minY <= arm.minY && box.maxY >= arm.maxY)){
+						return true;
+					}
+				}
+				
+			}else if(facingIn == Direction.EAST || facingIn == Direction.WEST){
+				AxisAlignedBB arm = LPARM_EAST_BOUNDS.getBoundingBox();
+				if((box.minZ > 0.0 && box.maxZ < 1.0) || (box.minY > 0.0 && box.maxY < 1.0)){
+					if((box.minZ <= arm.minZ && box.maxZ >= arm.maxZ) && (box.minY <= arm.minY && box.maxY >= arm.maxY)){
+						return true;
+					}
+				}
+				
+			}
+			
+			boolean b;
 			switch(facingIn){
-				case NORTH: b = (box.maxZ == 1.0); break;
-				case SOUTH: b = (box.minZ == 0.0); break;
-				case WEST:  b = (box.maxX == 1.0); break;
-				case EAST:  b = (box.minX == 0.0); break;
-				default: b = false;
+				case NORTH:b = MathHelper.epsilonEquals(1.0D, box.maxZ); break; 
+				case SOUTH:b = MathHelper.epsilonEquals(0.0D, box.minZ); break;
+				case WEST: b = MathHelper.epsilonEquals(1.0D, box.maxX); break;
+				case EAST: b = MathHelper.epsilonEquals(0.0D, box.minX); break;
+				default:
+					b = false;
 			}
 			
 			if(b){
