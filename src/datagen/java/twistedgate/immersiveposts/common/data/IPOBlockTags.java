@@ -1,5 +1,6 @@
 package twistedgate.immersiveposts.common.data;
 
+import blusunrize.immersiveengineering.common.blocks.IEBlocks;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -14,6 +15,11 @@ public class IPOBlockTags extends BlockTagsProvider{
 	
 	@Override
 	protected void registerTags(){
+		getOrCreateBuilder(IPOTags.IGNORED_BY_POSTARM)
+			.add(IEBlocks.Connectors.postTransformer)
+			.add(IEBlocks.Connectors.transformer)
+			.add(IEBlocks.Connectors.transformerHV);
+		
 		getOrCreateBuilder(IPOTags.Fences.ALL)
 			.add(Fences.iron)
 			.add(Fences.gold)

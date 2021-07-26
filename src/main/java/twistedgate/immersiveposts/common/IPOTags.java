@@ -11,8 +11,11 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
+import twistedgate.immersiveposts.IPOMod;
 
 public class IPOTags{
+	public static final ITag.INamedTag<Block> IGNORED_BY_POSTARM = createBlockWrapper(new ResourceLocation(IPOMod.ID, "ignored_by_postarm"));
+	
 	public static class Ingots{
 		public static final ITag.INamedTag<Item> IRON = ingotTag("iron");
 		public static final ITag.INamedTag<Item> GOLD = ingotTag("gold");

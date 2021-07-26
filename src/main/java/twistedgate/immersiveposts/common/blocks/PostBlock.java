@@ -52,6 +52,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
+import twistedgate.immersiveposts.common.IPOTags;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
@@ -566,10 +567,9 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 		}
 	}
 	
-	
-	static final RegistryObject<Block> IE_POST_TRANSFORMER = RegistryObject.of(new ResourceLocation(Lib.MODID, "post_transformer"), ForgeRegistries.BLOCKS);
-	static final RegistryObject<Block> IE_TRANSFORMER = RegistryObject.of(new ResourceLocation(Lib.MODID, "transformer"), ForgeRegistries.BLOCKS);
-	static final RegistryObject<Block> IE_TRANSFORMER_HV = RegistryObject.of(new ResourceLocation(Lib.MODID, "transformer_hv"), ForgeRegistries.BLOCKS);
+//	static final RegistryObject<Block> IE_POST_TRANSFORMER = RegistryObject.of(new ResourceLocation(Lib.MODID, "post_transformer"), ForgeRegistries.BLOCKS);
+//	static final RegistryObject<Block> IE_TRANSFORMER = RegistryObject.of(new ResourceLocation(Lib.MODID, "transformer"), ForgeRegistries.BLOCKS);
+//	static final RegistryObject<Block> IE_TRANSFORMER_HV = RegistryObject.of(new ResourceLocation(Lib.MODID, "transformer_hv"), ForgeRegistries.BLOCKS);
 	
 	public static boolean canConnect(IBlockReader worldIn, BlockPos posIn, Direction facingIn){
 		BlockPos nPos = posIn.offset(facingIn);
@@ -586,7 +586,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 			return false;
 		
 		// Tertiary, block specific checks
-		if(otherBlock == IE_POST_TRANSFORMER.get() || otherBlock == IE_TRANSFORMER.get() || otherBlock == IE_TRANSFORMER_HV.get())
+		if(IPOTags.IGNORED_BY_POSTARM.contains(otherBlock))
 			return false;
 		
 		if(facingIn == Direction.DOWN || facingIn == Direction.UP){
