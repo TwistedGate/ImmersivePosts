@@ -46,7 +46,7 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	public static final EnumProperty<EnumHTrussType> TYPE = EnumProperty.create("type", EnumHTrussType.class);
 	
 	public HorizontalTrussBlock(EnumPostMaterial postMaterial){
-		super(postMaterial, "_horizontal");
+		super(postMaterial, "_truss");
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(WATERLOGGED, false)

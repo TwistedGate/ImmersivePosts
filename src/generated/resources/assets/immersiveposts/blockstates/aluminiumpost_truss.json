@@ -6,7 +6,7 @@
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_single"
+        "model": "immersiveposts:aluminiumpost_truss/truss_single"
       }
     },
     {
@@ -15,7 +15,7 @@
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_a"
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_a"
       }
     },
     {
@@ -24,7 +24,7 @@
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_b"
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_b"
       }
     },
     {
@@ -33,7 +33,7 @@
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_c"
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_c"
       }
     },
     {
@@ -42,7 +42,7 @@
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_d_even"
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_even"
       }
     },
     {
@@ -51,7 +51,7 @@
         "facing": "north"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_d_odd"
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_odd"
       }
     },
     {
@@ -60,7 +60,7 @@
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_single",
+        "model": "immersiveposts:aluminiumpost_truss/truss_single",
         "y": 90
       }
     },
@@ -70,7 +70,7 @@
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_a",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_a",
         "y": 90
       }
     },
@@ -80,7 +80,7 @@
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_b",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_b",
         "y": 90
       }
     },
@@ -90,7 +90,7 @@
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_c",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_c",
         "y": 90
       }
     },
@@ -100,7 +100,7 @@
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_d_even",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_even",
         "y": 90
       }
     },
@@ -110,7 +110,7 @@
         "facing": "east"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_d_odd",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_odd",
         "y": 90
       }
     },
@@ -120,7 +120,7 @@
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_single",
+        "model": "immersiveposts:aluminiumpost_truss/truss_single",
         "y": 180
       }
     },
@@ -130,7 +130,7 @@
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_a",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_a",
         "y": 180
       }
     },
@@ -140,7 +140,7 @@
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_b",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_b",
         "y": 180
       }
     },
@@ -150,7 +150,7 @@
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_c",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_c",
         "y": 180
       }
     },
@@ -160,7 +160,7 @@
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_d_even",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_even",
         "y": 180
       }
     },
@@ -170,7 +170,7 @@
         "facing": "south"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_d_odd",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_odd",
         "y": 180
       }
     },
@@ -180,7 +180,7 @@
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_single",
+        "model": "immersiveposts:aluminiumpost_truss/truss_single",
         "y": 270
       }
     },
@@ -190,7 +190,7 @@
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_a",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_a",
         "y": 270
       }
     },
@@ -200,7 +200,7 @@
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_b",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_b",
         "y": 270
       }
     },
@@ -210,7 +210,7 @@
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_c",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_c",
         "y": 270
       }
     },
@@ -220,7 +220,7 @@
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_d_even",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_even",
         "y": 270
       }
     },
@@ -230,7 +230,7 @@
         "facing": "west"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_multi_d_odd",
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_odd",
         "y": 270
       }
     },
@@ -239,7 +239,7 @@
         "connector_point_top": "true"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_point_top"
+        "model": "immersiveposts:aluminiumpost_truss/truss_point_top"
       }
     },
     {
@@ -247,7 +247,7 @@
         "connector_point_bottom": "true"
       },
       "apply": {
-        "model": "immersiveposts:netherpost_horizontal/truss_point_bottom"
+        "model": "immersiveposts:aluminiumpost_truss/truss_point_bottom"
       }
     }
   ]
