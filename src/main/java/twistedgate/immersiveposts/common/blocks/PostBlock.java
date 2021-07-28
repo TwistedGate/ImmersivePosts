@@ -585,48 +585,19 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 		if(IPOTags.IGNORED_BY_POSTARM.contains(otherBlock))
 			return false;
 		
-		if(facingIn == Direction.DOWN || facingIn == Direction.UP){
-			VoxelShape shape = otherState.getShape(worldIn, nPos);
-			if(!shape.isEmpty()){
-				AxisAlignedBB box = shape.getBoundingBox();
-				switch(facingIn){
-					case UP:
-						return box.minY == 0.0;
-					case DOWN:{
-						boolean bool = otherBlock instanceof PostBlock;
-						return !bool && box.maxY == 1.0;
-					}
-					default:
-						break;
-				}
-				return false;
-			}
-		}
-		
 		VoxelShape shape = otherState.getShape(worldIn, nPos);
 		if(!shape.isEmpty()){
 			AxisAlignedBB box = shape.getBoundingBox();
 			
-			if(facingIn == Direction.SOUTH || facingIn == Direction.NORTH){
-				AxisAlignedBB arm = LPARM_SOUTH_BOUNDS.getBoundingBox();
-				if((box.minX > 0.0 && box.maxX < 1.0) || (box.minY > 0.0 && box.maxY < 1.0)){
-					if((box.minX <= arm.minX && box.maxX >= arm.maxX) && (box.minY <= arm.minY && box.maxY >= arm.maxY)){
-						return true;
-					}
-				}
-				
-			}else if(facingIn == Direction.EAST || facingIn == Direction.WEST){
-				AxisAlignedBB arm = LPARM_EAST_BOUNDS.getBoundingBox();
-				if((box.minZ > 0.0 && box.maxZ < 1.0) || (box.minY > 0.0 && box.maxY < 1.0)){
-					if((box.minZ <= arm.minZ && box.maxZ >= arm.maxZ) && (box.minY <= arm.minY && box.maxY >= arm.maxY)){
-						return true;
-					}
-				}
-				
-			}
 			
 			boolean b;
 			switch(facingIn){
+				case UP:
+					return MathHelper.epsilonEquals(0.0D, box.minY);
+				case DOWN:{
+					boolean bool = otherBlock instanceof PostBlock;
+					return !bool && MathHelper.epsilonEquals(1.0D, box.maxY);
+				}
 				case NORTH:b = MathHelper.epsilonEquals(1.0D, box.maxZ); break; 
 				case SOUTH:b = MathHelper.epsilonEquals(0.0D, box.minZ); break;
 				case WEST: b = MathHelper.epsilonEquals(1.0D, box.maxX); break;
@@ -636,6 +607,24 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 			}
 			
 			if(b){
+				if(facingIn == Direction.SOUTH || facingIn == Direction.NORTH){
+					AxisAlignedBB arm = LPARM_SOUTH_BOUNDS.getBoundingBox();
+					if((box.minX > 0.0 && box.maxX < 1.0) || (box.minY > 0.0 && box.maxY < 1.0)){
+						if((box.minX <= arm.minX && box.maxX >= arm.maxX) && (box.minY <= arm.minY && box.maxY >= arm.maxY)){
+							return true;
+						}
+					}
+					
+				}else if(facingIn == Direction.EAST || facingIn == Direction.WEST){
+					AxisAlignedBB arm = LPARM_EAST_BOUNDS.getBoundingBox();
+					if((box.minZ > 0.0 && box.maxZ < 1.0) || (box.minY > 0.0 && box.maxY < 1.0)){
+						if((box.minZ <= arm.minZ && box.maxZ >= arm.maxZ) && (box.minY <= arm.minY && box.maxY >= arm.maxY)){
+							return true;
+						}
+					}
+					
+				}
+				
 				if(facingIn.getAxis() == Axis.Z && box.minX > 0.0 && box.maxX < 1.0) return true;
 				if(facingIn.getAxis() == Axis.X && box.minZ > 0.0 && box.maxZ < 1.0) return true;
 			}
