@@ -171,18 +171,26 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 				Direction facing = state.get(FACING);
 				
 				BlockState newState = state;
-				if(facing == Direction.NORTH || facing == Direction.SOUTH){
-					if(face == Direction.EAST){
-						newState = newState.with(PANEL_EAST, !newState.get(PANEL_EAST));
-					}else if(face == Direction.WEST){
-						newState = newState.with(PANEL_WEST, !newState.get(PANEL_WEST));
+				switch(facing){
+					case NORTH: case SOUTH:{
+						if(face == Direction.EAST){
+							newState = newState.with(PANEL_EAST, !newState.get(PANEL_EAST));
+							
+						}else if(face == Direction.WEST){
+							newState = newState.with(PANEL_WEST, !newState.get(PANEL_WEST));
+						}
+						break;
 					}
-				}else if(facing == Direction.EAST || facing == Direction.WEST){
-					if(face == Direction.NORTH){
-						newState = newState.with(PANEL_NORTH, !newState.get(PANEL_NORTH));
-					}else if(face == Direction.SOUTH){
-						newState = newState.with(PANEL_SOUTH, !newState.get(PANEL_SOUTH));
+					case EAST: case WEST:{
+						if(face == Direction.NORTH){
+							newState = newState.with(PANEL_NORTH, !newState.get(PANEL_NORTH));
+							
+						}else if(face == Direction.SOUTH){
+							newState = newState.with(PANEL_SOUTH, !newState.get(PANEL_SOUTH));
+						}
+						break;
 					}
+					default:break;
 				}
 				
 				if(!newState.equals(state)){
