@@ -82,7 +82,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 	public static final EnumProperty<EnumFlipState> FLIPSTATE=EnumProperty.create("flipstate", EnumFlipState.class);
 	
 	public PostBlock(EnumPostMaterial postMaterial){
-		super(postMaterial, "");
+		super(postMaterial);
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(WATERLOGGED, false)
@@ -102,6 +102,16 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 				WATERLOGGED, FACING, FLIPSTATE, TYPE,
 				LPARM_NORTH, LPARM_EAST, LPARM_SOUTH, LPARM_WEST
 				);
+	}
+	
+	@Override
+	public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos){
+		return 0;
+	}
+	
+	@Override
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos){
+		return 1.0F;
 	}
 	
 	@Override

@@ -249,6 +249,41 @@
       "apply": {
         "model": "immersiveposts:steelpost_truss/truss_point_bottom"
       }
+    },
+    {
+      "when": {
+        "panel_north": "true"
+      },
+      "apply": {
+        "model": "immersiveposts:steelpost_truss/truss_panel"
+      }
+    },
+    {
+      "when": {
+        "panel_south": "true"
+      },
+      "apply": {
+        "model": "immersiveposts:steelpost_truss/truss_panel",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "panel_east": "true"
+      },
+      "apply": {
+        "model": "immersiveposts:steelpost_truss/truss_panel",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "panel_west": "true"
+      },
+      "apply": {
+        "model": "immersiveposts:steelpost_truss/truss_panel",
+        "y": 270
+      }
     }
   ]
 }

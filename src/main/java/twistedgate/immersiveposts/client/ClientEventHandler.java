@@ -16,6 +16,7 @@ import net.minecraftforge.resource.VanillaResourceType;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseModel;
 import twistedgate.immersiveposts.common.IPOContent;
+import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 @EventBusSubscriber(modid = IPOMod.ID, value = {Dist.CLIENT}, bus = Bus.MOD)
 public class ClientEventHandler implements ISelectiveResourceReloadListener{
@@ -29,5 +30,13 @@ public class ClientEventHandler implements ISelectiveResourceReloadListener{
 	@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent event){
 		RenderTypeLookup.setRenderLayer(IPOContent.Blocks.post_Base, RenderType.getCutout());
+		
+		Predicate<RenderType> type = t -> {
+			return t == RenderType.getSolid() || t == RenderType.getCutout();
+		};
+		for(EnumPostMaterial mat:EnumPostMaterial.values()){
+			RenderTypeLookup.setRenderLayer(IPOContent.Blocks.Posts.get(mat), type);
+			RenderTypeLookup.setRenderLayer(IPOContent.Blocks.HorizontalTruss.get(mat), type);
+		}
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import blusunrize.immersiveengineering.api.IPostBlock;
+import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -20,9 +21,13 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -36,9 +41,13 @@ import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock, IWaterLoggable{
-	
 	public static final BooleanProperty CONNECTOR_POINT_TOP = BooleanProperty.create("connector_point_top");
 	public static final BooleanProperty CONNECTOR_POINT_BOTTOM = BooleanProperty.create("connector_point_bottom");
+	
+	public static final BooleanProperty PANEL_NORTH = BooleanProperty.create("panel_north");
+	public static final BooleanProperty PANEL_EAST = BooleanProperty.create("panel_east");
+	public static final BooleanProperty PANEL_SOUTH = BooleanProperty.create("panel_south");
+	public static final BooleanProperty PANEL_WEST = BooleanProperty.create("panel_west");
 	
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
@@ -54,12 +63,30 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 				.with(TYPE, EnumHTrussType.SINGLE)
 				.with(CONNECTOR_POINT_TOP, false)
 				.with(CONNECTOR_POINT_BOTTOM, false)
+				.with(PANEL_NORTH, false)
+				.with(PANEL_EAST, false)
+				.with(PANEL_SOUTH, false)
+				.with(PANEL_WEST, false)
 				);
 	}
 	
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder){
-		builder.add(WATERLOGGED, FACING, TYPE, CONNECTOR_POINT_TOP, CONNECTOR_POINT_BOTTOM);
+		builder.add(
+				WATERLOGGED, FACING, TYPE,
+				PANEL_NORTH, PANEL_EAST, PANEL_SOUTH, PANEL_WEST,
+				CONNECTOR_POINT_TOP, CONNECTOR_POINT_BOTTOM
+			);
+	}
+	
+	@Override
+	public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos){
+		return 0;
+	}
+	
+	@Override
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos){
+		return 1.0F;
 	}
 	
 	@Override
@@ -135,6 +162,44 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	}
 	
 	@Override
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
+		if(!worldIn.isRemote){
+			ItemStack held = playerIn.getHeldItemMainhand();
+			
+			if(Utils.isHammer(held)){
+				Direction face = hit.getFace();
+				Direction facing = state.get(FACING);
+				
+				BlockState newState = state;
+				if(facing == Direction.NORTH || facing == Direction.SOUTH){
+					if(face == Direction.EAST){
+						newState = newState.with(PANEL_EAST, !newState.get(PANEL_EAST));
+					}else if(face == Direction.WEST){
+						newState = newState.with(PANEL_WEST, !newState.get(PANEL_WEST));
+					}
+				}else if(facing == Direction.EAST || facing == Direction.WEST){
+					if(face == Direction.NORTH){
+						newState = newState.with(PANEL_NORTH, !newState.get(PANEL_NORTH));
+					}else if(face == Direction.SOUTH){
+						newState = newState.with(PANEL_SOUTH, !newState.get(PANEL_SOUTH));
+					}
+				}
+				
+				if(!newState.equals(state)){
+					worldIn.setBlockState(pos, newState);
+					return ActionResultType.SUCCESS;
+				}
+			}
+		}
+		
+		if(Utils.isHammer(playerIn.getHeldItemMainhand())){
+			return ActionResultType.SUCCESS;
+		}
+		
+		return ActionResultType.PASS;
+	}
+	
+	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
 		if(world.isRemote)
 			return;
@@ -160,16 +225,28 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
 		Direction dir = state.get(FACING);
 		
+		VoxelShape shape = null;
 		switch(dir){
 			case NORTH: case SOUTH:{
-				return NORTH_SOUTH;
+				shape = NORTH_SOUTH;
+				break;
 			}
 			case EAST: case WEST:{
-				return EAST_WEST;
+				shape = EAST_WEST;
+				break;
 			}
-			default:break;
+			default: break;
 		}
 		
-		return VoxelShapes.empty();
+		if(shape == null){
+			return VoxelShapes.empty();
+		}
+		
+		if(state.get(PANEL_NORTH))	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 1.0, 1.0, 0.5), IBooleanFunction.OR);
+		if(state.get(PANEL_EAST))	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.5, 0.0, 0.0, 1.0, 1.0, 1.0), IBooleanFunction.OR);
+		if(state.get(PANEL_SOUTH))	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.5, 1.0, 1.0, 1.0), IBooleanFunction.OR);
+		if(state.get(PANEL_WEST))	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 0.5, 1.0, 1.0), IBooleanFunction.OR);
+		
+		return shape;
 	}
 }

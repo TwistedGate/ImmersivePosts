@@ -11,6 +11,12 @@ import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 public class GenericPostBlock extends IPOBlockBase{
 	protected final EnumPostMaterial postMaterial;
+
+	public GenericPostBlock(EnumPostMaterial postMaterial){
+		super(postMaterial.getString(), postMaterial.getProperties());
+		this.postMaterial = postMaterial;
+	}
+	
 	public GenericPostBlock(EnumPostMaterial postMaterial, @Nonnull String name_post){
 		super(postMaterial.getString() + name_post, postMaterial.getProperties());
 		this.postMaterial = postMaterial;

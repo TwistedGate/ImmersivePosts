@@ -34,18 +34,18 @@ public class IPOBlockStates extends BlockStateProvider{
 	final ExistingFileHelper exFileHelper;
 	public IPOBlockStates(DataGenerator gen, ExistingFileHelper exFileHelper){
 		super(gen, IPOMod.ID, exFileHelper);
-		this.exFileHelper=exFileHelper;
+		this.exFileHelper = exFileHelper;
 	}
 	
 	@Override
 	protected void registerStatesAndModels(){
 		// POST BASE
-		ExistingModelFile postBase=new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper);
+		ExistingModelFile postBase = new ExistingModelFile(modLoc("block/postbase"), this.exFileHelper);
 		
-		ModelFile modelFile=this.models().getBuilder("postbase_covered")
+		ModelFile modelFile = this.models().getBuilder("postbase_covered")
 				.customLoader(SpecialModelBuilder.forLoader(PostBaseLoader.LOCATION)).end();
 		
-		VariantBlockStateBuilder variantBuilder=getVariantBuilder(Blocks.post_Base);
+		VariantBlockStateBuilder variantBuilder = getVariantBuilder(Blocks.post_Base);
 		
 		variantBuilder.partialState()
 			.with(PostBaseBlock.HIDDEN, false)
@@ -83,6 +83,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		BlockModelBuilder modelHTrussC		= getPostModel(block, "truss_multi_c");
 		BlockModelBuilder modelHTrussD_even	= getPostModel(block, "truss_multi_d_even");
 		BlockModelBuilder modelHTrussD_odd	= getPostModel(block, "truss_multi_d_odd");
+		BlockModelBuilder modelHTrussPanel	= getPostModel(block, "truss_panel");
 		BlockModelBuilder modelPointTop		= getPostModel(block, "truss_point_top");
 		BlockModelBuilder modelPointBottom	= getPostModel(block, "truss_point_bottom");
 		
@@ -130,16 +131,32 @@ public class IPOBlockStates extends BlockStateProvider{
 		builder.part()
 			.modelFile(modelPointBottom).addModel()
 			.condition(HorizontalTrussBlock.CONNECTOR_POINT_BOTTOM, true);
+		
+		builder.part()
+			.modelFile(modelHTrussPanel).rotationY(horizontalRotation(Direction.NORTH, false)).addModel()
+			.condition(HorizontalTrussBlock.PANEL_NORTH, true);
+		
+		builder.part()
+			.modelFile(modelHTrussPanel).rotationY(horizontalRotation(Direction.SOUTH, false)).addModel()
+			.condition(HorizontalTrussBlock.PANEL_SOUTH, true);
+		
+		builder.part()
+			.modelFile(modelHTrussPanel).rotationY(horizontalRotation(Direction.EAST, false)).addModel()
+			.condition(HorizontalTrussBlock.PANEL_EAST, true);
+		
+		builder.part()
+			.modelFile(modelHTrussPanel).rotationY(horizontalRotation(Direction.WEST, false)).addModel()
+			.condition(HorizontalTrussBlock.PANEL_WEST, true);
 	}
 	
 	private void postStateFor(PostBlock block){
-		BlockModelBuilder modelArm			=getPostModel(block, "arm");
-		BlockModelBuilder modelArmTwoWay	=getPostModel(block, "arm_twoway");
-		BlockModelBuilder modelArmDouble	=getPostModel(block, "arm_double");
-		BlockModelBuilder modelPost			=getPostModel(block, "post");
-		BlockModelBuilder modelPostTop		=getPostModel(block, "post_top");
-		BlockModelBuilder modelPostArm		=getPostModel(block, "post_arm");
-		ExistingModelFile modelEmpty		=new ExistingModelFile(modLoc("block/empty"), this.exFileHelper);
+		BlockModelBuilder modelArm			= getPostModel(block, "arm");
+		BlockModelBuilder modelArmTwoWay	= getPostModel(block, "arm_twoway");
+		BlockModelBuilder modelArmDouble	= getPostModel(block, "arm_double");
+		BlockModelBuilder modelPost			= getPostModel(block, "post");
+		BlockModelBuilder modelPostTop		= getPostModel(block, "post_top");
+		BlockModelBuilder modelPostArm		= getPostModel(block, "post_arm");
+		ExistingModelFile modelEmpty		= new ExistingModelFile(modLoc("block/empty"), this.exFileHelper);
 		
 		MultiPartBlockStateBuilder builder=getMultipartBuilder(block);
 		
@@ -164,15 +181,15 @@ public class IPOBlockStates extends BlockStateProvider{
 			.condition(PostBlock.LPARM_WEST, true);
 		
 		for(EnumFlipState flipstate:EnumFlipState.values()){
-			boolean isDown=(flipstate==EnumFlipState.DOWN);
-			boolean isUp=(flipstate==EnumFlipState.UP);
-			boolean isBoth=(flipstate==EnumFlipState.BOTH);
+			boolean isDown = (flipstate == EnumFlipState.DOWN);
+			boolean isUp = (flipstate == EnumFlipState.UP);
+			boolean isBoth = (flipstate == EnumFlipState.BOTH);
 			
 			for(Direction dir:Direction.Plane.HORIZONTAL){
-				int yArmRot=horizontalRotation(dir, isDown);
+				int yArmRot = horizontalRotation(dir, isDown);
 				
 				builder.part()
-					.modelFile(isBoth?modelArmTwoWay:modelArm).rotationX(flipstate==EnumFlipState.DOWN?180:0).rotationY(yArmRot).addModel()
+					.modelFile(isBoth ? modelArmTwoWay : modelArm).rotationX(flipstate == EnumFlipState.DOWN ? 180 : 0).rotationY(yArmRot).addModel()
 					.condition(PostBlock.TYPE, EnumPostType.ARM)
 					.condition(PostBlock.FACING, dir)
 					.condition(PostBlock.FLIPSTATE, flipstate);
@@ -196,19 +213,19 @@ public class IPOBlockStates extends BlockStateProvider{
 		
 		if(xFlipped){ // Should be true when X rotation is 180
 			switch(dir){
-				case WEST:	value=90; break;
-				case SOUTH:	value=0; break;
-				case EAST:	value=270; break;
+				case WEST:	value = 90; break;
+				case SOUTH:	value = 0; break;
+				case EAST:	value = 270; break;
 				case NORTH:
-				default:	value=180; break;
+				default:	value = 180; break;
 			}
 		}else{
 			switch(dir){
-				case WEST:	value=270; break;
-				case SOUTH:	value=180; break;
-				case EAST:	value=90; break;
+				case WEST:	value = 270; break;
+				case SOUTH:	value = 180; break;
+				case EAST:	value = 90; break;
 				case NORTH:
-				default:	value=0; break;
+				default:	value = 0; break;
 			}
 		}
 		
@@ -216,11 +233,11 @@ public class IPOBlockStates extends BlockStateProvider{
 	}
 
 	private BlockModelBuilder getPostModel(GenericPostBlock block, String name){
-		ResourceLocation texture=modLoc("block/posts/post_"+block.getPostMaterial().name().toLowerCase());
+		ResourceLocation texture = modLoc("block/posts/post_" + block.getPostMaterial().name().toLowerCase());
 		
-		BlockModelBuilder b=this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
+		BlockModelBuilder b = this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
 			.customLoader(OBJLoaderBuilder::begin).flipV(true)
-			.modelLocation(modLoc("models/block/post/obj/"+name+".obj")).end()
+			.modelLocation(modLoc("models/block/post/obj/" + name + ".obj")).end()
 			.texture("texture", texture)
 			.texture("particle", texture);
 		
@@ -228,7 +245,7 @@ public class IPOBlockStates extends BlockStateProvider{
 	}
 	
 	private String postModelPath(GenericPostBlock block, String name){
-		return block.getRegistryName().getPath()+"/"+name;
+		return block.getRegistryName().getPath() + "/" + name;
 	}
 	
 	private ResourceLocation ieLoc(String str){
