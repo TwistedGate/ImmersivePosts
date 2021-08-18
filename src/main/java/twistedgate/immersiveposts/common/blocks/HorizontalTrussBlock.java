@@ -229,32 +229,66 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	static final VoxelShape NORTH_SOUTH = VoxelShapes.create(0.3125, 0.0, 0.0, 0.6875, 1.0, 1.0);
 	static final VoxelShape EAST_WEST = VoxelShapes.create(0.0, 0.0, 0.3125, 1.0, 1.0, 0.6875);
 	
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-		Direction dir = state.get(FACING);
-		
+	private static int getCacheIndex(Direction.Axis axis, boolean panelNorth, boolean panelEast, boolean panelSouth, boolean panelWest){
+		int result = axis == Direction.Axis.X ? 1 : 0;
+		if(panelNorth) result |= 2;
+		if(panelEast) result |= 4;
+		if(panelSouth) result |= 8;
+		if(panelWest) result |= 16;
+		return result;
+	}
+	
+	private static final VoxelShape[] SHAPE_CACHE = new VoxelShape[32];
+	
+	static{
+		boolean[] bools = {false, true};
+		for(Direction.Axis axis:new Direction.Axis[]{Direction.Axis.X, Direction.Axis.Z}){
+			for(boolean north:bools){
+				for(boolean east:bools){
+					for(boolean south:bools){
+						for(boolean west:bools){
+							SHAPE_CACHE[getCacheIndex(axis, north, east, south, west)] = computeShape(axis, north, east, south, west);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private static VoxelShape computeShape(Direction.Axis axis, boolean panelNorth, boolean panelEast, boolean panelSouth, boolean panelWest){
 		VoxelShape shape = null;
-		switch(dir){
-			case NORTH: case SOUTH:{
+		switch(axis){
+			case Z:{
 				shape = NORTH_SOUTH;
 				break;
 			}
-			case EAST: case WEST:{
+			case X:{
 				shape = EAST_WEST;
 				break;
 			}
-			default: break;
+			default:
+				break;
 		}
 		
 		if(shape == null){
 			return VoxelShapes.empty();
 		}
 		
-		if(state.get(PANEL_NORTH))	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 1.0, 1.0, 0.5), IBooleanFunction.OR);
-		if(state.get(PANEL_EAST))	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.5, 0.0, 0.0, 1.0, 1.0, 1.0), IBooleanFunction.OR);
-		if(state.get(PANEL_SOUTH))	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.5, 1.0, 1.0, 1.0), IBooleanFunction.OR);
-		if(state.get(PANEL_WEST))	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 0.5, 1.0, 1.0), IBooleanFunction.OR);
+		if(panelNorth)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 1.0, 1.0, 0.5), IBooleanFunction.OR);
+		if(panelEast)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.5, 0.0, 0.0, 1.0, 1.0, 1.0), IBooleanFunction.OR);
+		if(panelSouth)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.5, 1.0, 1.0, 1.0), IBooleanFunction.OR);
+		if(panelEast)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 0.5, 1.0, 1.0), IBooleanFunction.OR);
 		
-		return shape;
+		return shape.simplify();
+	}
+	
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
+		Direction.Axis axis = state.get(FACING).getAxis();
+		if(axis != Direction.Axis.X && axis != Direction.Axis.Z){
+			return VoxelShapes.empty();
+		}else{
+			return SHAPE_CACHE[getCacheIndex(axis, state.get(PANEL_NORTH), state.get(PANEL_EAST), state.get(PANEL_SOUTH), state.get(PANEL_WEST))];
+		}
 	}
 }
