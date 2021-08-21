@@ -1,5 +1,7 @@
 package twistedgate.immersiveposts.client;
 
+import com.electronwill.nightconfig.core.Config;
+
 import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.lib.manual.ManualElementTable;
 import blusunrize.lib.manual.ManualEntry;
@@ -15,6 +17,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
+import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
 
 /**
@@ -43,6 +46,22 @@ public class ClientProxy extends CommonProxy{
 	
 	@Override
 	public void completed(){
+		ManualHelper.addConfigGetter(str -> {
+			switch(str){
+				case "max_truss_distance":{
+					return IPOConfig.MAIN.maxTrussLength.get();
+				}
+				default: break;
+			}
+			
+			// Last resort
+			Config cfg = IPOConfig.getRawConfig();
+			if(cfg.contains(str)){
+				return cfg.get(str);
+			}
+			return null;
+		});
+		
 		setupManualPage();
 	}
 	

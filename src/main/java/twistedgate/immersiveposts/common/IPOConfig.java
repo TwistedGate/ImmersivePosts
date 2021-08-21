@@ -1,8 +1,14 @@
 package twistedgate.immersiveposts.common;
 
+import java.lang.reflect.Field;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.electronwill.nightconfig.core.Config;
+import com.google.common.base.Preconditions;
+
+import blusunrize.immersiveengineering.common.config.IEServerConfig;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -25,6 +31,21 @@ public class IPOConfig{
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 		MAIN = new Posts(builder);
 		ALL = builder.build();
+	}
+	
+	private static Config rawConfig;
+	public static Config getRawConfig(){
+		if(rawConfig == null){
+			try{
+				Field childConfig = ForgeConfigSpec.class.getDeclaredField("childConfig");
+				childConfig.setAccessible(true);
+				rawConfig = (Config) childConfig.get(IEServerConfig.CONFIG_SPEC);
+				Preconditions.checkNotNull(rawConfig);
+			}catch(Exception x){
+				throw new RuntimeException(x);
+			}
+		}
+		return rawConfig;
 	}
 	
 	public static class Posts{
