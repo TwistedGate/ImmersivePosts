@@ -247,6 +247,14 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 								break;
 							}
 							
+							// Arm like Removal
+							BlockPos p = pos.offset(facing);
+							BlockState hstate = worldIn.getBlockState(p);
+							if(hstate.getBlock() instanceof HorizontalTrussBlock){
+								replaceSelf(hstate, worldIn, p);
+								return ActionResultType.SUCCESS;
+							}
+							
 							// Check first, do stuff later
 							boolean success = false;
 							int size = 0;
