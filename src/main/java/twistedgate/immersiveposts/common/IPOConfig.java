@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import com.electronwill.nightconfig.core.Config;
 import com.google.common.base.Preconditions;
 
-import blusunrize.immersiveengineering.common.config.IEServerConfig;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -39,7 +38,7 @@ public class IPOConfig{
 			try{
 				Field childConfig = ForgeConfigSpec.class.getDeclaredField("childConfig");
 				childConfig.setAccessible(true);
-				rawConfig = (Config) childConfig.get(IEServerConfig.CONFIG_SPEC);
+				rawConfig = (Config) childConfig.get(ALL);
 				Preconditions.checkNotNull(rawConfig);
 			}catch(Exception x){
 				throw new RuntimeException(x);

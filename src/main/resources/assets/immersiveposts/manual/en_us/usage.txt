@@ -19,5 +19,5 @@ For §ostability§r reasons, the 2-Wide Arm however can §lnot§r flip up-side-d
 <&usage7>§nPost Arm§r
 Placing non-solid blocks on the sides (Like connectors/relays) makes these cute little arms apear, making sure whatever you attached doesnt look like it's floating in the air.<np>
 <&usage8>§nHorizontal Truss§r
-Line up two posts with at least 1 block (up to <config;i;max_truss_distance>) of empty space in between.
+Line up two posts with at least 1 block (up to <config;i;maxTrussLength>) of empty space in between.
 Sneak + Right-click with the hammer on inner side of any of them. Do the same if you want to remove an already existing truss.
