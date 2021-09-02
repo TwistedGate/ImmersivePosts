@@ -1,46 +1,38 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/immersiveposts",
 	"promos":{
-		"1.16.5-latest": "4.1.1",
-		"1.16.5-recommended": "4.1.1",
-		
-		"1.16.3-latest": "3.0.0",
-		"1.16.3-recommended": "3.0.0",
-		
-		"1.15.2-latest": "2.2.0",
-		"1.15.2-recommended": "2.2.0",
-		
-		"1.14.4-latest": "1.2.0",
-		"1.14.4-recommended": "1.2.0",
-		
-		"1.12.2-latest": "0.2.1",
-		"1.12.2-recommended": "0.2.1"
+		"1.16.5-latest": "4.2.0", "1.16.5-recommended": "4.2.0",
+		"1.16.3-latest": "3.0.0", "1.16.3-recommended": "3.0.0",
+		"1.15.2-latest": "2.2.0", "1.15.2-recommended": "2.2.0",
+		"1.14.4-latest": "1.2.0", "1.14.4-recommended": "1.2.0",
+		"1.12.2-latest": "0.2.1", "1.12.2-recommended": "0.2.1"
 	},
 	"1.16.5": {
-		"4.1.1": "Minimum IE version: 1.16.5-5.0.2-137\n\n[A] Added FrannDzs to Credits. (Spanish Language)\n[F] NoSuchMethodError crash related to Utils.hashBlockstate",
-		"4.1.0": "Minimum Forge version: 1.16.5-36.1.0\n\nRequired update for to run with IEs breaking API changes with 1.16.5-5.0.0-135!",
-		"4.0.0": "Minimum Forge version: 1.16.5-36.0.0\nMinimum IE version: 1.16.5-4.2.2-132\n\n[A] Loot Tables for Posts, PostBase and Fences. (Parker8283 & TwistedGate)\n[A] Added Spanish (es_es) language. (FrannDzs)\n[F] Manual text not being resolved from lang file in \"Accepted Blocks\" index pages. (Parker8283)\n[F] Fences not dropping themselves when broken. (Parker8283)"
+		"4.2.0": "Forge version: 1.16.5-36.2.0\nIE version: 1.16.5-5.0.2-137\n\n[A] Added trusses to \"connect\" two posts together horizonaly.  (Check the How-To page in the Extendable Posts category)\n[C] Changed manual category name to \"Extendable Posts\" instead of mod name.\n[C] Textures got an overhaul.",
+		"4.1.1": "IE version: 1.16.5-5.0.2-137\n\n[A] Added FrannDzs to Credits. (Spanish Language)\n[F] NoSuchMethodError crash related to Utils.hashBlockstate",
+		"4.1.0": "Forge version: 1.16.5-36.1.0\n\nRequired update for to run with IEs breaking API changes with 1.16.5-5.0.0-135!",
+		"4.0.0": "Forge version: 1.16.5-36.0.0\nIE version: 1.16.5-4.2.2-132\n\n[A] Loot Tables for Posts, PostBase and Fences. (Parker8283 & TwistedGate)\n[A] Added Spanish (es_es) language. (FrannDzs)\n[F] Manual text not being resolved from lang file in \"Accepted Blocks\" index pages. (Parker8283)\n[F] Fences not dropping themselves when broken. (Parker8283)"
 	},
 	"1.16.3": {
-		"3.0.0": "Minimum Forge version: 1.16.3-34.0.7\nMinimum IE version: 1.16.3-4.0.1-121\n\n[A] Waterlogging for Posts, PostBase and Fences\n[A] Ability for the Base to use a block as cover\n"
+		"3.0.0": "Forge version: 1.16.3-34.0.7\nIE version: 1.16.3-4.0.1-121\n\n[A] Waterlogging for Posts, PostBase and Fences\n[A] Ability for the Base to use a block as cover\n"
 	},
 	"1.15.2":{
 		"2.2.0": "[A] Waterlogging for Posts, PostBase and Fences\n[A] Ability for the Base to use a block as cover\n",
 		"2.1.0": "[A] Config for removing unwanted posts. (Disables recipes and prevents them from being constructed in-world)\n[F] Ghost page between index tables in the manual.",
-		"2.0.0": "Minimum Forge version: 1.15.2-31.2.0\nMinimum IE version: 0.15-103\n\nInitial 1.15.2 Port"
+		"2.0.0": "Forge version: 1.15.2-31.2.0\nIE version: 0.15-103\n\nInitial 1.15.2 Port"
 	},
 	"1.14.4":{
 		"1.2.0": "[A] Config for removing unwanted posts. (Disables recipes and prevents them from being constructed in-world)\n[F] Ghost page between index tables in the manual.",
 		"1.1.0": "[C] 1-Block Arms can both Face Up & Down at the same time now.\n\nThis *may* break existing 1-Block Arms and will break 2-Block Arms thus a world-backup is recommended befor updating!",
-		"1.0.1": "Minimum IE Version: 0.14-95\n\n[F] Posts and Postbase being washed away by Fluids.\n[F] Lighting bug.\n[F] Postbase not dropping itself.",
+		"1.0.1": "IE Version: 0.14-95\n\n[F] Posts and Postbase being washed away by Fluids.\n[F] Lighting bug.\n[F] Postbase not dropping itself.",
 		"1.0.0-rev1_ie94": "Same as 1.0.0-rev1, just for IE 0.14-94. Since 95 was not officialy released at the time.",
-		"1.0.0-rev1": "Minimum IE version: 0.14-95\n\n[F] Forgot to add the Generated Data",
-		"1.0.0": "Minimum Forge version: 1.14.4-28.2.3\nFirst release for 1.14.4\n\n[R] Config for removing unwanted post types. (No point doing it)"
+		"1.0.0-rev1": "IE version: 0.14-95\n\n[F] Forgot to add the Generated Data",
+		"1.0.0": "Forge version: 1.14.4-28.2.3\nFirst release for 1.14.4\n\n[R] Config for removing unwanted post types. (No point doing it)"
 	},
 	"1.12.2":{
 		"0.2.1": "[F] 1-Block arms not connecting to bottom/top on server side.",
 		"0.2.0": "[C] 1-Block Arms can both Face Up & Down at the same time now.\n\nThis *will* break existing Arms (both 1-Block and 2-Block wide) thus a world-backup is recommended befor updating!",
-		"0.1.5": "Minimum Forge version: 1.12.2-14.23.5.2820\n\n[A] Config for removing unwanted posts types. [Use with Caution]",
+		"0.1.5": "Forge version: 1.12.2-14.23.5.2820\n\n[A] Config for removing unwanted posts types. [Use with Caution]",
 		"0.1.4": "[A] 2-Wide Arm for Posts.\n[A] Chinese Translation. (scikirbypoke)\n[C] Semantic Corrections in Russian Translation. (Shellyoung)\n[C] PostBase Recipe. Now using Cobblestone instead of Cobblestone-Walls.\n[C] Manual Entries. Being more readable and adding some nice images aswell.\n[F] Collision for Mini-Arms won't cause trouble anymore.",
 		"0.1.3": "Change of plan.\nWarning: Please backup your world!\n\n[A] Concrete and Leaded Concrete Post.\n[A] Ways to localize things.\n[A] Russian Localization. (Shellyoung)\n[F] Post directly above the Postbase thinking its also a postbase.\n[F] Possible typos.\n[C] Removed old Rod items and Re-added them using Metadata.\n[C] Index-Page is now twice as indexy.\n\nI may have forgotten some things, been a while.\nUse up all the rods you crafted (if any) or destroy/recycle them befor updating. Because they'll be gone and replaced by the new ones!\nSorry for being so chaotic with this. I should've done this at the start.",
 		"0.1.2": "[C] Optimized BlockStates to only include things that actualy matter.\n[F] Arms always facing down after reloading world.\n\n\n- Important notice befor updating, please read! -\nThis update, provided i didnt mess up again, will be the last one with the items having each a different ID!\n\nAfter this the items will only use one ID instead. So whenever that update comes, either use up all the rods\nyou crafted or destroy/recycle them befor updating. Because they'll be gone! (And backup your world, just incase)\nAnd re-apear with another ID. (Using metadata this time)\n\nI'll update to it just befor i move over to 1.13 (Once IE has it's first release for that.)\n\nIf you read all this, thank you for your time. I hereby release you from this mess. :D",
