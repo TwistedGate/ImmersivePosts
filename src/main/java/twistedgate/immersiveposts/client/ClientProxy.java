@@ -14,6 +14,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
@@ -44,14 +45,16 @@ public class ClientProxy extends CommonProxy{
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void completed(){
-		ManualHelper.addConfigGetter(str -> {
+		DeferredWorkQueue.runLater(() -> ManualHelper.addConfigGetter(str -> {
 			switch(str){
 				case "maxTrussLength":{
 					return IPOConfig.MAIN.maxTrussLength.get();
 				}
-				default: break;
+				default:
+					break;
 			}
 			
 			// Last resort
@@ -60,7 +63,8 @@ public class ClientProxy extends CommonProxy{
 				return cfg.get(str);
 			}
 			return null;
-		});
+		}));
+		
 		
 		setupManualPage();
 	}
