@@ -1,13 +1,14 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/immersiveposts",
 	"promos":{
-		"1.16.5-latest": "4.2.0", "1.16.5-recommended": "4.2.0",
+		"1.16.5-latest": "4.2.1", "1.16.5-recommended": "4.2.1",
 		"1.16.3-latest": "3.0.0", "1.16.3-recommended": "3.0.0",
 		"1.15.2-latest": "2.2.0", "1.15.2-recommended": "2.2.0",
 		"1.14.4-latest": "1.2.0", "1.14.4-recommended": "1.2.0",
 		"1.12.2-latest": "0.2.1", "1.12.2-recommended": "0.2.1"
 	},
 	"1.16.5": {
+		"4.2.1": "This is a very small update with hopes of fixing this manual thing.\n\n[F] Fixed manual not loading with ImmersivePetroleum installed.",
 		"4.2.0": "Forge version: 1.16.5-36.2.0\nIE version: 1.16.5-5.0.2-137\n\n[A] Added trusses to \"connect\" two posts together horizonaly.  (Check the How-To page in the Extendable Posts category)\n[C] Changed manual category name to \"Extendable Posts\" instead of mod name.\n[C] Textures got an overhaul.",
 		"4.1.1": "IE version: 1.16.5-5.0.2-137\n\n[A] Added FrannDzs to Credits. (Spanish Language)\n[F] NoSuchMethodError crash related to Utils.hashBlockstate",
 		"4.1.0": "Forge version: 1.16.5-36.1.0\n\nRequired update for to run with IEs breaking API changes with 1.16.5-5.0.0-135!",
