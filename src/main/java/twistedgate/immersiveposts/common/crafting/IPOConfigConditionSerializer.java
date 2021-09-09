@@ -1,5 +1,6 @@
 package twistedgate.immersiveposts.common.crafting;
 
+import com.electronwill.nightconfig.core.Config;
 import com.electronwill.nightconfig.core.UnmodifiableConfig;
 import com.google.gson.JsonObject;
 
@@ -52,6 +53,11 @@ public class IPOConfigConditionSerializer implements IConditionSerializer<IPOCon
 		public boolean test(){
 			UnmodifiableConfig cfg=IPOConfig.ALL.getValues();
 			Object cfgEntry=cfg.get(this.key);
+			
+			if(cfgEntry==null){
+				// this isnt the best way of doing it, but its better than nothing.
+				cfgEntry=((Config)cfg.get("Post Types")).get(this.key);
+			}
 			
 			if(cfgEntry instanceof ForgeConfigSpec.BooleanValue){
 				Boolean cfgValue=((BooleanValue)cfgEntry).get();
