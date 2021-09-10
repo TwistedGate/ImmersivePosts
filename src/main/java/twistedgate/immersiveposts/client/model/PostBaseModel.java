@@ -40,7 +40,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockDisplayReader;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 import twistedgate.immersiveposts.IPOMod;
@@ -108,9 +107,22 @@ public class PostBaseModel extends IPOBakedModel{
 		return false;
 	}
 	
+	static TextureAtlasSprite postbaseSprite;
+	
+	static TextureAtlasSprite getPostbaseSprite(){
+		if(postbaseSprite == null){
+			postbaseSprite = Minecraft.getInstance()
+				.getModelManager()
+				.getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
+				.getSprite(new ResourceLocation(IPOMod.ID, "block/postbase"));
+		}
+		
+		return postbaseSprite;
+	}
+	
 	@Override
 	public TextureAtlasSprite getParticleTexture(){
-		return ModelLoader.White.instance();
+		return getPostbaseSprite();
 	}
 	
 	@Override
@@ -162,11 +174,7 @@ public class PostBaseModel extends IPOBakedModel{
 						.collect(Collectors.toCollection(ArrayList::new));
 				
 				if(side == Direction.UP){
-					TextureAtlasSprite sprite = Minecraft.getInstance()
-						.getModelManager()
-						.getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
-						.getSprite(new ResourceLocation(IPOMod.ID, "block/postbase"));
-					
+					TextureAtlasSprite sprite = getPostbaseSprite();
 					quads.add(ModelUtils.createBakedQuad(DefaultVertexFormats.BLOCK, verts, side, sprite, uvs, color, false));
 				}
 				
@@ -198,15 +206,14 @@ public class PostBaseModel extends IPOBakedModel{
 		
 		@Override
 		public boolean equals(Object obj){
-			if(this == obj){
+			if(this==obj){
 				return true;
-			}
-			if(obj == null || this.getClass() != obj.getClass()){
-				return false;
+			}else if(obj!=null && obj instanceof Key){
+				Key other=(Key) obj;
+				return this.state.equals(other.state) && this.facing==other.facing && sameColorMultipliersAs(other);
 			}
 			
-			Key other = (Key) obj;
-			return this.state.equals(other.state) && this.facing == other.facing && sameColorMultipliersAs(other);
+			return false;
 		}
 		
 		private boolean sameColorMultipliersAs(Key that){
