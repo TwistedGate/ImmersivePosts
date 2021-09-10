@@ -55,6 +55,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	public void setFacing(Direction facing){
 		if(Direction.Plane.HORIZONTAL.test(facing)){
 			this.facing=facing;
+			markDirty();
 		}
 	}
 	
@@ -107,7 +108,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	}
 	
 	public boolean interact(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand){
-		ItemStack held=player.getHeldItemMainhand();
+		ItemStack held=player.getHeldItem(Hand.MAIN_HAND);
 		
 		if(held==ItemStack.EMPTY){
 			if(player.isSneaking() && !getStack().isEmpty()){
@@ -133,6 +134,9 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 					
 					if(!player.isCreative()){
 						held.shrink(1);
+						if(held.isEmpty()){
+							player.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+						}
 					}
 					
 					world.setBlockState(pos, state.with(PostBaseBlock.HIDDEN, true).with(PostBaseBlock.WATERLOGGED, false));
