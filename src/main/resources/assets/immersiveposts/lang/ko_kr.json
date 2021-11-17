@@ -1,0 +1,107 @@
+{
+    "_comment": "################## Blocks ##################",
+	
+    "block.immersiveposts.postbase": "확장가능한 전봇대",
+    "block.immersiveposts.woodpost": "목재 전봇대",
+    "block.immersiveposts.ironpost": "철 전봇대",
+    "block.immersiveposts.goldpost": "금 전봇대",
+    "block.immersiveposts.copperpost": "구리 전봇대",
+    "block.immersiveposts.leadpost": "납 전봇대",
+    "block.immersiveposts.silverpost": "은 전봇대",
+    "block.immersiveposts.nickelpost": "니켈 전봇대",
+    "block.immersiveposts.constantanpost": "콘스탄탄 전봇대",
+    "block.immersiveposts.electrumpost": "일렉트륨 전봇대",
+    "block.immersiveposts.uraniumpost": "우라늄 전봇대",
+    "block.immersiveposts.netherpost": "네더 벽돌 전봇대",
+    "block.immersiveposts.aluminiumpost": "알루미늄 전봇대",
+    "block.immersiveposts.steelpost": "강철 전봇대",
+    "block.immersiveposts.concretepost": "콘크리트 전봇대",
+    "block.immersiveposts.leadedconcretepost": "납 콘크리트 전봇대",
+    
+    "block.immersiveposts.woodpost_truss": "목재 트러스",
+    "block.immersiveposts.ironpost_truss": "철 트러스",
+    "block.immersiveposts.goldpost_truss": "금 트러스",
+    "block.immersiveposts.copperpost_truss": "구리 트러스",
+    "block.immersiveposts.leadpost_truss": "납 트러스",
+    "block.immersiveposts.silverpost_truss": "은 트러스",
+    "block.immersiveposts.nickelpost_truss": "니켈 트러스",
+    "block.immersiveposts.constantanpost_truss": "콘스탄탄 트러스",
+    "block.immersiveposts.electrumpost_truss": "일렉트륨 트러스",
+    "block.immersiveposts.uraniumpost_truss": "우라늄 트러스",
+    "block.immersiveposts.netherpost_truss": "네더 벽돌 트러스",
+    "block.immersiveposts.aluminiumpost_truss": "알루미늄 트러스",
+    "block.immersiveposts.steelpost_truss": "강철 트러스",
+    "block.immersiveposts.concretepost_truss": "콘크리트 트러스",
+    "block.immersiveposts.leadedconcretepost_truss": "납 콘크리트 트러스",
+	
+    "block.immersiveposts.fence_iron": "철 울타리",
+    "block.immersiveposts.fence_gold": "금 울타리",
+    "block.immersiveposts.fence_copper": "구리 울타리",
+    "block.immersiveposts.fence_lead": "납 울타리",
+    "block.immersiveposts.fence_silver": "은 울타리",
+    "block.immersiveposts.fence_nickel": "니켈 울타리",
+    "block.immersiveposts.fence_constantan": "콘스탄탄 울타리",
+    "block.immersiveposts.fence_electrum": "일렉트륨 울타리",
+    "block.immersiveposts.fence_uranium": "우라늄 울타리",
+	
+    "_comment": "################## Items ##################",
+	
+    "item.immersiveposts.stick_gold": "금 막대기",
+    "item.immersiveposts.stick_copper": "구리 막대기",
+    "item.immersiveposts.stick_lead": "납 막대기",
+    "item.immersiveposts.stick_silver": "은 막대기",
+    "item.immersiveposts.stick_nickel": "니켈 막대기",
+    "item.immersiveposts.stick_constantan": "콘스탄탄 막대기",
+    "item.immersiveposts.stick_electrum": "일렉트륨 막대기",
+    "item.immersiveposts.stick_uranium": "우라늄 막대기",
+	
+    "item.immersiveposts.metal_rods.stick_gold": "금 막대기",
+    "item.immersiveposts.metal_rods.stick_copper": "구리 막대기",
+    "item.immersiveposts.metal_rods.stick_lead": "납 막대기",
+    "item.immersiveposts.metal_rods.stick_silver": "은 막대기",
+    "item.immersiveposts.metal_rods.stick_nickel": "니켈 막대기",
+    "item.immersiveposts.metal_rods.stick_constantan": "콘스탄탄 막대기",
+    "item.immersiveposts.metal_rods.stick_electrum": "일렉트륨 막대기",
+    "item.immersiveposts.metal_rods.stick_uranium": "우라늄 막대기",
+	
+    "_comment": "################## Creative Tab ##################",
+	
+    "itemGroup.immersiveposts": "Immersive Posts",
+	
+    "_comment": "################## Postbase Tooltip(s) ##################",
+	
+    "tooltip.postbase": "[Shift]§6를 눌러 가능한 블럭 확인.",
+	
+    "_comment": "################## Miscellaneous ##################",
+
+    "immersiveposts.expectedlocal": "필요: %s",
+    "immersiveposts.truss_notsametype": "트러스: 양쪽 전봇대는 같은 재질이어야 합니다.",
+    "immersiveposts.truss_minimumdistance": "트러스: 전봇대는 사이에 최소 1블록의 공간이 있어야 합니다.",
+    "immersiveposts.truss_postnotfound": "트러스: 다음 전봇대가 범위 밖에 있거나 존재하지 않습니다.",
+	
+    "_comment": "################## IE-Manual ##################",
+	
+    "manual.immersiveposts.main": "확장가능한 전봇대",
+	
+    "_comment": "Index Pages Stuff",
+    "index.page_0_entry.1": "차례 1",
+    "index.page_0_entry.2": "차례 2",
+    "index.page_0_entry.3": "가공된 목재",
+    "index.page_0_entry.4": "네더 벽돌",
+    "index.page_0_entry.5": "철",
+    "index.page_0_entry.6": "금",
+    "index.page_0_entry.7": "구리",
+    "index.page_0_entry.8": "납",
+    "index.page_0_entry.9": "은",
+    "index.page_0_entry.10": "니켈",
+    "index.page_0_entry.11": "콘스탄탄",
+    "index.page_0_entry.12": "일렉트륨",
+    "index.page_0_entry.13": "우라늄",
+	
+    "index.page_1_entry.1": "알루미늄",
+    "index.page_1_entry.2": "강철",
+    "index.page_1_entry.3": "콘크리트",
+    "index.page_1_entry.4": "납 콘크리트",
+
+    "_comment": "Korean Translated by FreddyYJ_"
+}
