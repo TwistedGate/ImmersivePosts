@@ -7,26 +7,29 @@ import net.minecraft.block.Blocks;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twistedgate.immersiveposts.enums.EnumPostMaterial;
+import twistedgate.immersiveposts.api.posts.IPostMaterial;
 
 public class GenericPostBlock extends IPOBlockBase{
-	protected final EnumPostMaterial postMaterial;
-
-	public GenericPostBlock(EnumPostMaterial postMaterial){
-		super(postMaterial.getString(), postMaterial.getProperties());
-		this.postMaterial = postMaterial;
+	protected final IPostMaterial postMaterial;
+	
+	public GenericPostBlock(IPostMaterial material){
+		super(material.getBlockProperties());
+		this.postMaterial = material;
 	}
 	
-	public GenericPostBlock(EnumPostMaterial postMaterial, @Nonnull String name_post){
-		super(postMaterial.getString() + name_post, postMaterial.getProperties());
-		this.postMaterial = postMaterial;
+	public GenericPostBlock(IPostMaterial material, @Nonnull String name_post){
+		super(material.getBlockProperties());
+		this.postMaterial = material;
 	}
 	
-	public final EnumPostMaterial getPostMaterial(){
+	public final IPostMaterial getPostMaterial(){
 		return this.postMaterial;
 	}
 	
-	/** Replaces itself with Air or with Water if Waterlogged. (Convenience Method) */
+	/**
+	 * Replaces itself with Air or with Water if Waterlogged. (Convenience
+	 * Method)
+	 */
 	protected void replaceSelf(BlockState stateIn, World world, BlockPos pos){
 		if(stateIn.hasProperty(BlockStateProperties.WATERLOGGED)){
 			world.setBlockState(pos, stateIn.get(BlockStateProperties.WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());

@@ -15,6 +15,7 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.conditions.SurvivesExplosion;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.RegistryObject;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
@@ -35,8 +36,8 @@ public class IPOBlockLoot extends LootGenerator implements IDataProvider{
 	protected void registerTables(){
 		
 		// Fences
-		for(FenceBlock b:IPOContent.Blocks.Fences.ALL){
-			registerSelfDropping(b);
+		for(RegistryObject<FenceBlock> b:IPOContent.Blocks.Fences.ALL_FENCES){
+			registerSelfDropping(b.get());
 		}
 		
 		// Posts
@@ -45,7 +46,7 @@ public class IPOBlockLoot extends LootGenerator implements IDataProvider{
 			register(b, createPoolBuilder().addEntry(PostMaterialDropLootEntry.builder()));
 		}
 		
-		registerSelfDropping(IPOContent.Blocks.post_Base, createPoolBuilder().addEntry(BaseCoverDropLootEntry.builder()));
+		registerSelfDropping(IPOContent.Blocks.POST_BASE.get(), createPoolBuilder().addEntry(BaseCoverDropLootEntry.builder()));
 	}
 	
 	private void registerSelfDropping(Block b, LootPool.Builder... pool){

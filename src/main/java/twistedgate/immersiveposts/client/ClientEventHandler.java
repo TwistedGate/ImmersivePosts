@@ -29,7 +29,7 @@ public class ClientEventHandler implements ISelectiveResourceReloadListener{
 	
 	@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent event){
-		RenderTypeLookup.setRenderLayer(IPOContent.Blocks.post_Base, RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(IPOContent.Blocks.POST_BASE.get(), RenderType.getCutout());
 		
 		Predicate<RenderType> type = t -> {
 			return t == RenderType.getSolid() || t == RenderType.getCutout();

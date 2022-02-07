@@ -37,6 +37,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
@@ -54,8 +55,8 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 	public static final EnumProperty<EnumHTrussType> TYPE = EnumProperty.create("type", EnumHTrussType.class);
 	
-	public HorizontalTrussBlock(EnumPostMaterial postMaterial){
-		super(postMaterial, "_truss");
+	public HorizontalTrussBlock(IPostMaterial material){
+		super(material, "_truss");
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(WATERLOGGED, false)
@@ -135,7 +136,7 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand){
-		if(this.postMaterial == EnumPostMaterial.URANIUM){
+		if(getPostMaterial() == EnumPostMaterial.URANIUM){
 			if(rand.nextFloat() < 0.125F){
 				double x = pos.getX() + 0.375 + 0.25 * rand.nextDouble();
 				double y = pos.getY() + rand.nextDouble();
@@ -153,7 +154,7 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player){
-		return this.postMaterial.getItemStack();
+		return getPostMaterial().getItemStack();
 	}
 	
 	@Override

@@ -23,15 +23,15 @@ public class IPOItemModels extends ItemModelProvider {
 		getBuilder(IPOMod.ID + ":item/postbase")
 			.parent(new ExistingModelFile(modLoc("block/postbase"), this.existingFileHelper));
 		
-		fence(Fences.iron,		"fence/iron",		mcLoc("block/iron_block"));
-		fence(Fences.gold,		"fence/gold",		mcLoc("block/gold_block"));
-		fence(Fences.copper,	"fence/copper",		ieLoc("block/metal/storage_copper"));
-		fence(Fences.lead,		"fence/lead",		ieLoc("block/metal/storage_lead"));
-		fence(Fences.silver,	"fence/silver",		ieLoc("block/metal/storage_silver"));
-		fence(Fences.nickel,	"fence/nickel",		ieLoc("block/metal/storage_nickel"));
-		fence(Fences.constantan,"fence/constantan",	ieLoc("block/metal/storage_constantan"));
-		fence(Fences.electrum,	"fence/electrum",	ieLoc("block/metal/storage_electrum"));
-		fence(Fences.uranium,	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
+		fence(Fences.IRON.get(),		"fence/iron",		mcLoc("block/iron_block"));
+		fence(Fences.GOLD.get(),		"fence/gold",		mcLoc("block/gold_block"));
+		fence(Fences.COPPER.get(),		"fence/copper",		ieLoc("block/metal/storage_copper"));
+		fence(Fences.LEAD.get(),		"fence/lead",		ieLoc("block/metal/storage_lead"));
+		fence(Fences.SILVER.get(),		"fence/silver",		ieLoc("block/metal/storage_silver"));
+		fence(Fences.NICKEL.get(),		"fence/nickel",		ieLoc("block/metal/storage_nickel"));
+		fence(Fences.CONSTANTAN.get(),	"fence/constantan",	ieLoc("block/metal/storage_constantan"));
+		fence(Fences.ELECTRUM.get(),	"fence/electrum",	ieLoc("block/metal/storage_electrum"));
+		fence(Fences.URANIUM.get(),		"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 		
 		for(EnumPostMaterial m:EnumPostMaterial.values())
 			switch(m){

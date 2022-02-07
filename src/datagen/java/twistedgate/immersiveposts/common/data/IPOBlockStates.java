@@ -1,7 +1,6 @@
 package twistedgate.immersiveposts.common.data;
 
 import blusunrize.immersiveengineering.data.models.SpecialModelBuilder;
-import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -20,11 +19,12 @@ import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPOContent.Blocks;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.blocks.GenericPostBlock;
-import twistedgate.immersiveposts.common.blocks.PostBlock;
-import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
+import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
+import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
+import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
 /**
@@ -45,7 +45,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		ModelFile modelFile = this.models().getBuilder("postbase_covered")
 				.customLoader(SpecialModelBuilder.forLoader(PostBaseLoader.LOCATION)).end();
 		
-		VariantBlockStateBuilder variantBuilder = getVariantBuilder(Blocks.post_Base);
+		VariantBlockStateBuilder variantBuilder = getVariantBuilder(Blocks.POST_BASE.get());
 		
 		variantBuilder.partialState()
 			.with(PostBaseBlock.HIDDEN, false)
@@ -56,24 +56,21 @@ public class IPOBlockStates extends BlockStateProvider{
 			.setModels(new ConfiguredModel(modelFile));
 		
 		// POSTS
-		for(Block block:IPOContent.BLOCKS){
-			if(block instanceof PostBlock){
-				postStateFor((PostBlock) block);
-			}else if(block instanceof HorizontalTrussBlock){
-				horizontalPostStateFor((HorizontalTrussBlock) block);
-			}
+		for(EnumPostMaterial material:EnumPostMaterial.values()){
+			postStateFor(IPOContent.Blocks.Posts.get(material));
+			horizontalPostStateFor(IPOContent.Blocks.HorizontalTruss.get(material));
 		}
 		
 		// FENCES
-		fenceBlock(Fences.iron,			"fence/iron",		mcLoc("block/iron_block"));
-		fenceBlock(Fences.gold,			"fence/gold",		mcLoc("block/gold_block"));
-		fenceBlock(Fences.copper,		"fence/copper",		ieLoc("block/metal/storage_copper"));
-		fenceBlock(Fences.lead,			"fence/lead",		ieLoc("block/metal/storage_lead"));
-		fenceBlock(Fences.silver,		"fence/silver",		ieLoc("block/metal/storage_silver"));
-		fenceBlock(Fences.nickel,		"fence/nickel",		ieLoc("block/metal/storage_nickel"));
-		fenceBlock(Fences.constantan,	"fence/constantan",	ieLoc("block/metal/storage_constantan"));
-		fenceBlock(Fences.electrum,		"fence/electrum",	ieLoc("block/metal/storage_electrum"));
-		fenceBlock(Fences.uranium,		"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
+		fenceBlock(Fences.IRON.get(),		"fence/iron",		mcLoc("block/iron_block"));
+		fenceBlock(Fences.GOLD.get(),		"fence/gold",		mcLoc("block/gold_block"));
+		fenceBlock(Fences.COPPER.get(),		"fence/copper",		ieLoc("block/metal/storage_copper"));
+		fenceBlock(Fences.LEAD.get(),		"fence/lead",		ieLoc("block/metal/storage_lead"));
+		fenceBlock(Fences.SILVER.get(),		"fence/silver",		ieLoc("block/metal/storage_silver"));
+		fenceBlock(Fences.NICKEL.get(),		"fence/nickel",		ieLoc("block/metal/storage_nickel"));
+		fenceBlock(Fences.CONSTANTAN.get(),	"fence/constantan",	ieLoc("block/metal/storage_constantan"));
+		fenceBlock(Fences.ELECTRUM.get(),	"fence/electrum",	ieLoc("block/metal/storage_electrum"));
+		fenceBlock(Fences.URANIUM.get(),	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 	}
 	
 	private void horizontalPostStateFor(HorizontalTrussBlock block){
@@ -233,7 +230,7 @@ public class IPOBlockStates extends BlockStateProvider{
 	}
 
 	private BlockModelBuilder getPostModel(GenericPostBlock block, String name){
-		ResourceLocation texture = modLoc("block/posts/post_" + block.getPostMaterial().name().toLowerCase());
+		ResourceLocation texture = modLoc("block/posts/post_" + block.getPostMaterial().getName());
 		
 		BlockModelBuilder b = this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
 			.customLoader(OBJLoaderBuilder::begin).flipV(true)

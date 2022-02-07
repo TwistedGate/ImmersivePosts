@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.lwjgl.glfw.GLFW;
-
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,7 +13,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,10 +35,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -51,11 +46,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import twistedgate.immersiveposts.ImmersivePosts;
-import twistedgate.immersiveposts.common.IPOConfig;
+import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 import twistedgate.immersiveposts.enums.EnumFlipState;
-import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
 /**
@@ -65,7 +59,7 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 	private static AbstractBlock.Properties prop(){
 		Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
 		
-		AbstractBlock.Properties prop=AbstractBlock.Properties.create(BaseMaterial)
+		AbstractBlock.Properties prop = AbstractBlock.Properties.create(BaseMaterial)
 				.sound(SoundType.STONE)
 				.setRequiresTool()
 				.harvestTool(ToolType.PICKAXE)
@@ -75,18 +69,16 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 		return prop;
 	}
 	
-	public static final BooleanProperty WATERLOGGED=BlockStateProperties.WATERLOGGED;
-	public static final BooleanProperty HIDDEN=BooleanProperty.create("hidden");
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final BooleanProperty HIDDEN = BooleanProperty.create("hidden");
 	
 	public PostBaseBlock(){
-		super("postbase", prop());
+		super(prop());
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(HIDDEN, false)
 				.with(WATERLOGGED, false)
 		);
-		
-		IPOContent.ITEMS.add(new ItemPostBase(this, new Item.Properties().group(ImmersivePosts.creativeTab)));
 	}
 	
 	@Override
@@ -102,8 +94,8 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player){
 		if(player.isSneaking() && state.get(HIDDEN)){
-			ItemStack stack=((PostBaseTileEntity)world.getTileEntity(pos)).getStack();
-			if(stack!=ItemStack.EMPTY){
+			ItemStack stack = ((PostBaseTileEntity) world.getTileEntity(pos)).getStack();
+			if(stack != ItemStack.EMPTY){
 				return stack;
 			}
 		}
@@ -118,10 +110,10 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context){
-		BlockState state=super.getStateForPlacement(context);
-		FluidState fs=context.getWorld().getFluidState(context.getPos());
+		BlockState state = super.getStateForPlacement(context);
+		FluidState fs = context.getWorld().getFluidState(context.getPos());
 		
-		state=state.with(WATERLOGGED, fs.getFluid() == Fluids.WATER);
+		state = state.with(WATERLOGGED, fs.getFluid() == Fluids.WATER);
 		return state;
 	}
 	
@@ -133,7 +125,7 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 		return state;
 	}
 	
-	private static final VoxelShape BASE_SIZE=VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
+	private static final VoxelShape BASE_SIZE = VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 	@Override
 	public boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid){
 		return !state.get(HIDDEN) && IWaterLoggable.super.canContainFluid(world, pos, state, fluid);
@@ -166,23 +158,23 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 	
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
-		TileEntity te=worldIn.getTileEntity(pos);
+		TileEntity te = worldIn.getTileEntity(pos);
 		if(te instanceof PostBaseTileEntity){
-			if(((PostBaseTileEntity)te).interact(state, worldIn, pos, playerIn, handIn)){
+			if(((PostBaseTileEntity) te).interact(state, worldIn, pos, playerIn, handIn)){
 				return ActionResultType.SUCCESS;
 			}
 		}
 		
 		if(!worldIn.isRemote){
-			ItemStack held=playerIn.getHeldItemMainhand();
+			ItemStack held = playerIn.getHeldItemMainhand();
 			
-			if(EnumPostMaterial.isValidItem(held)){
+			if(IPostMaterial.isValidItem(held)){
 				if(!worldIn.isAirBlock(pos.offset(Direction.UP))){
-					BlockState aboveState=worldIn.getBlockState(pos.offset(Direction.UP));
-					Block b=aboveState.getBlock();
+					BlockState aboveState = worldIn.getBlockState(pos.offset(Direction.UP));
+					Block b = aboveState.getBlock();
 					
 					if(b instanceof PostBlock){
-						ItemStack tmp=((PostBlock)b).postMaterial.getItemStack();
+						ItemStack tmp = ((PostBlock) b).getPostMaterial().getItemStack();
 						if(!held.isItemEqual(tmp)){
 							playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", tmp.getDisplayName()), true);
 							return ActionResultType.SUCCESS;
@@ -190,30 +182,30 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 					}
 				}
 				
-				for(int y=1;y<=(worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ())-pos.getY());y++){
-					BlockPos nPos=pos.add(0,y,0);
+				for(int y = 1;y <= (worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ()) - pos.getY());y++){
+					BlockPos nPos = pos.add(0, y, 0);
 					
-					BlockState nState=worldIn.getBlockState(nPos);
+					BlockState nState = worldIn.getBlockState(nPos);
 					if(nState.getBlock() instanceof PostBlock){
-						EnumPostType type=nState.get(PostBlock.TYPE);
-						if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP) && nState.get(PostBlock.FLIPSTATE)==EnumFlipState.DOWN){
+						EnumPostType type = nState.get(PostBlock.TYPE);
+						if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP) && nState.get(PostBlock.FLIPSTATE) == EnumFlipState.DOWN){
 							return ActionResultType.SUCCESS;
 						}else{
-							nState=worldIn.getBlockState(nPos.offset(Direction.UP));
+							nState = worldIn.getBlockState(nPos.offset(Direction.UP));
 							if(nState.getBlock() instanceof PostBlock){
-								type=nState.get(PostBlock.TYPE);
-								if(!(type==EnumPostType.POST || type==EnumPostType.POST_TOP)){
+								type = nState.get(PostBlock.TYPE);
+								if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP)){
 									return ActionResultType.SUCCESS;
 								}
 							}
 						}
 					}
 					
-					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock()==Blocks.WATER){
-						BlockState fb=EnumPostMaterial.getPostState(held)
-								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock()==Blocks.WATER);
+					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock() == Blocks.WATER){
+						BlockState fb = IPostMaterial.getPostState(held)
+								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock() == Blocks.WATER);
 						
-						if(fb!=null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb.updatePostPlacement(null, null, worldIn, nPos, null))){
+						if(fb != null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb.updatePostPlacement(null, null, worldIn, nPos, null))){
 							if(!playerIn.isCreative()){
 								held.shrink(1);
 							}
@@ -227,8 +219,8 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 			}
 		}else{
 			// Client Stuff here
-			ItemStack held=playerIn.getHeldItemMainhand();
-			if(EnumPostMaterial.isValidItem(held)){
+			ItemStack held = playerIn.getHeldItemMainhand();
+			if(IPostMaterial.isValidItem(held)){
 				return ActionResultType.SUCCESS;
 			}
 		}
@@ -238,36 +230,21 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 	
 	
 	public static class ItemPostBase extends BlockItem{
-		public ItemPostBase(Block block, Properties properties){
-			super(block, properties);
-			setRegistryName(block.getRegistryName());
+		public ItemPostBase(Block block){
+			super(block, new Item.Properties().group(ImmersivePosts.creativeTab));
 		}
 		
 		@Override
 		@OnlyIn(Dist.CLIENT)
 		public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn){
-			if(isPressing(GLFW.GLFW_KEY_LEFT_SHIFT) || isPressing(GLFW.GLFW_KEY_RIGHT_SHIFT)){
-				for(EnumPostMaterial t:EnumPostMaterial.values()){
-					IFormattableTextComponent typeName=new StringTextComponent("");
-					typeName.appendSibling(t.getItemStack().getDisplayName());
-					
-					if(IPOConfig.MAIN.isEnabled(t))
-						typeName.mergeStyle(TextFormatting.GREEN);
-					else
-						typeName.mergeStyle(TextFormatting.RED, TextFormatting.STRIKETHROUGH);
-					
-					tooltip.add(new StringTextComponent("- ").appendSibling(typeName));
-				}
-			}else{
-				tooltip.add(new StringTextComponent(I18n.format("tooltip.postbase")));
-			}
+			tooltip.add(new StringTextComponent(I18n.format("tooltip.postbase")));
 		}
 		
+		// TODO REMOVE
 		/** Find the key that is being pressed while minecraft is in focus */
 		@OnlyIn(Dist.CLIENT)
 		private boolean isPressing(int key){
-			long window=Minecraft.getInstance().getMainWindow().getHandle();
-			return GLFW.glfwGetKey(window, key)==GLFW.GLFW_PRESS;
+			return false;
 		}
 	}
 }

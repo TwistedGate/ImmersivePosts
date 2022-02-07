@@ -21,14 +21,14 @@ public class IPOBlockTags extends BlockTagsProvider{
 			.add(IEBlocks.Connectors.transformerHV);
 		
 		getOrCreateBuilder(IPOTags.Fences.ALL)
-			.add(Fences.iron)
-			.add(Fences.gold)
-			.add(Fences.copper)
-			.add(Fences.lead)
-			.add(Fences.silver)
-			.add(Fences.nickel)
-			.add(Fences.constantan)
-			.add(Fences.electrum)
-			.add(Fences.uranium);
+			.add(Fences.IRON.get())
+			.add(Fences.GOLD.get())
+			.add(Fences.COPPER.get())
+			.add(Fences.LEAD.get())
+			.add(Fences.SILVER.get())
+			.add(Fences.NICKEL.get())
+			.add(Fences.CONSTANTAN.get())
+			.add(Fences.ELECTRUM.get())
+			.add(Fences.URANIUM.get());
 	}
 }

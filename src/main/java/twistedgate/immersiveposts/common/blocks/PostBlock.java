@@ -46,8 +46,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOConfig;
-import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPOTags;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
@@ -81,8 +81,8 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 	
 	public static final EnumProperty<EnumFlipState> FLIPSTATE=EnumProperty.create("flipstate", EnumFlipState.class);
 	
-	public PostBlock(EnumPostMaterial postMaterial){
-		super(postMaterial);
+	public PostBlock(IPostMaterial material){
+		super(material);
 		
 		setDefaultState(getStateContainer().getBaseState()
 				.with(WATERLOGGED, false)
@@ -167,7 +167,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand){
-		if(this.postMaterial == EnumPostMaterial.URANIUM){
+		if(getPostMaterial() == EnumPostMaterial.URANIUM){
 			if(stateIn.get(TYPE) != EnumPostType.ARM && rand.nextFloat() < 0.125F){
 				double x = pos.getX() + 0.375 + 0.25 * rand.nextDouble();
 				double y = pos.getY() + rand.nextDouble();
@@ -185,7 +185,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 	
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player){
-		return this.postMaterial.getItemStack();
+		return getPostMaterial().getItemStack();
 	}
 	
 	@Override
@@ -197,9 +197,9 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
 		if(!worldIn.isRemote){
 			ItemStack held = playerIn.getHeldItemMainhand();
-			if(EnumPostMaterial.isValidItem(held)){
-				if(!held.isItemEqual(this.postMaterial.getItemStack())){
-					playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", this.postMaterial.getItemStack().getDisplayName()), true);
+			if(IPostMaterial.isValidItem(held)){
+				if(!held.isItemEqual(getPostMaterial().getItemStack())){
+					playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", getPostMaterial().getItemStack().getDisplayName()), true);
 					return ActionResultType.SUCCESS;
 				}
 				
@@ -223,7 +223,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 					}
 					
 					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock() == Blocks.WATER){
-						BlockState fb=EnumPostMaterial.getPostState(held)
+						BlockState fb = IPostMaterial.getPostState(held)
 								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock() == Blocks.WATER);
 						
 						if(fb != null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb)){
@@ -284,7 +284,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 								if(size == 1){
 									BlockPos nPos = pos.offset(facing);
 									BlockState nState = worldIn.getBlockState(nPos);
-									BlockState hState = IPOContent.Blocks.HorizontalTruss.get(getPostMaterial()).getDefaultState()
+									BlockState hState = IPostMaterial.getTrussState(getPostMaterial())
 											.with(HorizontalTrussBlock.FACING, facing)
 											.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
 									worldIn.setBlockState(nPos, hState.updatePostPlacement(null, null, worldIn, nPos, null));
@@ -292,7 +292,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 									for(int i = 0;i < size;i++){
 										BlockPos nPos = pos.offset(facing, i + 1);
 										BlockState nState = worldIn.getBlockState(nPos);
-										BlockState hState = IPOContent.Blocks.HorizontalTruss.get(getPostMaterial()).getDefaultState()
+										BlockState hState = IPostMaterial.getTrussState(getPostMaterial())
 												.with(HorizontalTrussBlock.FACING, facing)
 												.with(WATERLOGGED, nState.getBlock() == Blocks.WATER);
 										
@@ -384,7 +384,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 			}
 		}
 		
-		if(Utils.isHammer(playerIn.getHeldItemMainhand()) || EnumPostMaterial.isValidItem(playerIn.getHeldItemMainhand())){
+		if(Utils.isHammer(playerIn.getHeldItemMainhand()) || IPostMaterial.isValidItem(playerIn.getHeldItemMainhand())){
 			return ActionResultType.SUCCESS;
 		}
 		
@@ -578,10 +578,6 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, IWaterLog
 			}
 		}
 	}
-	
-//	static final RegistryObject<Block> IE_POST_TRANSFORMER = RegistryObject.of(new ResourceLocation(Lib.MODID, "post_transformer"), ForgeRegistries.BLOCKS);
-//	static final RegistryObject<Block> IE_TRANSFORMER = RegistryObject.of(new ResourceLocation(Lib.MODID, "transformer"), ForgeRegistries.BLOCKS);
-//	static final RegistryObject<Block> IE_TRANSFORMER_HV = RegistryObject.of(new ResourceLocation(Lib.MODID, "transformer_hv"), ForgeRegistries.BLOCKS);
 	
 	public static boolean canConnect(IBlockReader worldIn, BlockPos posIn, Direction facingIn){
 		BlockPos nPos = posIn.offset(facingIn);

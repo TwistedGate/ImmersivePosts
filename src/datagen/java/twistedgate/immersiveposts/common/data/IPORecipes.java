@@ -38,7 +38,7 @@ public class IPORecipes extends RecipeProvider{
 	protected void registerRecipes(Consumer<IFinishedRecipe> out){
 		this.out=out;
 		
-		ShapedRecipeBuilder.shapedRecipe(twistedgate.immersiveposts.common.IPOContent.Blocks.post_Base, 6)
+		ShapedRecipeBuilder.shapedRecipe(twistedgate.immersiveposts.common.IPOContent.Blocks.POST_BASE.get(), 6)
 			.key('w', Tags.Items.COBBLESTONE)
 			.key('s', Blocks.STONE_BRICKS)
 			.patternLine("s s")
@@ -48,15 +48,15 @@ public class IPORecipes extends RecipeProvider{
 			.addCriterion("has_stone_bricks", hasItem(ItemTags.STONE_BRICKS))
 			.build(out);
 		
-		fenceAndStickRecipe(Fences.iron, null, IPOTags.Rods.IRON, IPOTags.Ingots.IRON);
-		fenceAndStickRecipe(Fences.gold, Items.rod_Gold, IPOTags.Rods.GOLD, IPOTags.Ingots.GOLD);
-		fenceAndStickRecipe(Fences.copper, Items.rod_Copper, IPOTags.Rods.COPPER, IPOTags.Ingots.COPPER);
-		fenceAndStickRecipe(Fences.lead, Items.rod_Lead, IPOTags.Rods.LEAD, IPOTags.Ingots.LEAD);
-		fenceAndStickRecipe(Fences.silver, Items.rod_Silver, IPOTags.Rods.SILVER, IPOTags.Ingots.SILVER);
-		fenceAndStickRecipe(Fences.nickel, Items.rod_Nickel, IPOTags.Rods.NICKEL, IPOTags.Ingots.NICKEL);
-		fenceAndStickRecipe(Fences.constantan, Items.rod_Constantan, IPOTags.Rods.CONSTANTAN, IPOTags.Ingots.CONSTANTAN);
-		fenceAndStickRecipe(Fences.electrum, Items.rod_Electrum, IPOTags.Rods.ELECTRUM, IPOTags.Ingots.ELECTRUM);
-		fenceAndStickRecipe(Fences.uranium, Items.rod_Uranium, IPOTags.Rods.URANIUM, IPOTags.Ingots.URANIUM);
+		fenceAndStickRecipe(Fences.IRON.get(), null, IPOTags.Rods.IRON, IPOTags.Ingots.IRON);
+		fenceAndStickRecipe(Fences.GOLD.get(), Items.ROD_GOLD.get(), IPOTags.Rods.GOLD, IPOTags.Ingots.GOLD);
+		fenceAndStickRecipe(Fences.COPPER.get(), Items.ROD_COPPER.get(), IPOTags.Rods.COPPER, IPOTags.Ingots.COPPER);
+		fenceAndStickRecipe(Fences.LEAD.get(), Items.ROD_LEAD.get(), IPOTags.Rods.LEAD, IPOTags.Ingots.LEAD);
+		fenceAndStickRecipe(Fences.SILVER.get(), Items.ROD_SILVER.get(), IPOTags.Rods.SILVER, IPOTags.Ingots.SILVER);
+		fenceAndStickRecipe(Fences.NICKEL.get(), Items.ROD_NICKEL.get(), IPOTags.Rods.NICKEL, IPOTags.Ingots.NICKEL);
+		fenceAndStickRecipe(Fences.CONSTANTAN.get(), Items.ROD_CONSTANTAN.get(), IPOTags.Rods.CONSTANTAN, IPOTags.Ingots.CONSTANTAN);
+		fenceAndStickRecipe(Fences.ELECTRUM.get(), Items.ROD_ELECTRUM.get(), IPOTags.Rods.ELECTRUM, IPOTags.Ingots.ELECTRUM);
+		fenceAndStickRecipe(Fences.URANIUM.get(), Items.ROD_URANIUM.get(), IPOTags.Rods.URANIUM, IPOTags.Ingots.URANIUM);
 	}
 	
 	/** Creates both a recipe for fences and the stick needed */
@@ -64,7 +64,7 @@ public class IPORecipes extends RecipeProvider{
 		String stickMat = getMaterialName(stickTag.getName()); // Stick Material
 		String ingotMat = getMaterialName(ingotTag.getName()); // Ingot Material
 		
-		if(fence!=Fences.iron)
+		if(fence!=Fences.IRON.get())
 			ShapedRecipeBuilder.shapedRecipe(rod, 4)
 				.patternLine("i")
 				.patternLine("i")

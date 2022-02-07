@@ -19,37 +19,37 @@ public class IPOItemTags extends ItemTagsProvider{
 	@Override
 	protected void registerTags(){
 		getOrCreateBuilder(IPOTags.Rods.ALL)
-			.add(Items.rod_Gold)
-			.add(Items.rod_Copper)
-			.add(Items.rod_Lead)
-			.add(Items.rod_Silver)
-			.add(Items.rod_Nickel)
-			.add(Items.rod_Constantan)
-			.add(Items.rod_Electrum)
-			.add(Items.rod_Uranium);
+			.add(Items.ROD_GOLD.get())
+			.add(Items.ROD_COPPER.get())
+			.add(Items.ROD_LEAD.get())
+			.add(Items.ROD_SILVER.get())
+			.add(Items.ROD_NICKEL.get())
+			.add(Items.ROD_CONSTANTAN.get())
+			.add(Items.ROD_ELECTRUM.get())
+			.add(Items.ROD_URANIUM.get());
 		
 		getOrCreateBuilder(IPOTags.Rods.GOLD)
-			.add(Items.rod_Gold);
+			.add(Items.ROD_GOLD.get());
 		
 		getOrCreateBuilder(IPOTags.Rods.COPPER)
-			.add(Items.rod_Copper);
+			.add(Items.ROD_COPPER.get());
 		
 		getOrCreateBuilder(IPOTags.Rods.LEAD)
-			.add(Items.rod_Lead);
+			.add(Items.ROD_LEAD.get());
 		
 		getOrCreateBuilder(IPOTags.Rods.SILVER)
-			.add(Items.rod_Silver);
+			.add(Items.ROD_SILVER.get());
 		
 		getOrCreateBuilder(IPOTags.Rods.NICKEL)
-			.add(Items.rod_Nickel);
+			.add(Items.ROD_NICKEL.get());
 		
 		getOrCreateBuilder(IPOTags.Rods.CONSTANTAN)
-			.add(Items.rod_Constantan);
+			.add(Items.ROD_CONSTANTAN.get());
 		
 		getOrCreateBuilder(IPOTags.Rods.ELECTRUM)
-			.add(Items.rod_Electrum);
+			.add(Items.ROD_ELECTRUM.get());
 		
 		getOrCreateBuilder(IPOTags.Rods.URANIUM)
-			.add(Items.rod_Uranium);
+			.add(Items.ROD_URANIUM.get());
 	}
 }

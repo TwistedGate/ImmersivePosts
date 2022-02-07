@@ -119,6 +119,5 @@ public class IPOConfig{
 	
 	@SubscribeEvent
 	public static void onConfigReload(ModConfigEvent ev){
-		
 	}
 }

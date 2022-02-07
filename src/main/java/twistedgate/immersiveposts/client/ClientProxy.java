@@ -33,7 +33,7 @@ public class ClientProxy extends CommonProxy{
 		ClientEventHandler handler = new ClientEventHandler();
 		((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(handler);
 		
-		Minecraft.getInstance().getBlockColors().register(new ColorHandler(), IPOContent.Blocks.post_Base);
+		Minecraft.getInstance().getBlockColors().register(new ColorHandler(), IPOContent.Blocks.POST_BASE.get());
 	}
 	
 	@Override

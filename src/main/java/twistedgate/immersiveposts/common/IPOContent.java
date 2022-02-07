@@ -2,25 +2,34 @@ package twistedgate.immersiveposts.common;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.ImmersivePosts;
+import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
-import twistedgate.immersiveposts.common.IPOContent.Blocks.HorizontalTruss;
-import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.common.blocks.MetalFenceBlock;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
@@ -32,136 +41,136 @@ import twistedgate.immersiveposts.enums.EnumPostMaterial;
 /**
  * @author TwistedGate
  */
-@Mod.EventBusSubscriber(modid=IPOMod.ID, bus=Bus.MOD)
+@Mod.EventBusSubscriber(modid = IPOMod.ID, bus = Bus.MOD)
 public class IPOContent{
 	public static final Logger log = LogManager.getLogger(IPOMod.ID + "/Stuff");
 	
-	public static final ArrayList<Block> BLOCKS = new ArrayList<>(0);
-	public static final ArrayList<Item> ITEMS = new ArrayList<>(0);
+	private static final DeferredRegister<Block> BLOCK_REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, IPOMod.ID);
+	private static final DeferredRegister<Item> ITEM_REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, IPOMod.ID);
+	
+	public static final void addRegistersToEventBus(IEventBus eventBus){
+		BLOCK_REGISTER.register(eventBus);
+		ITEM_REGISTER.register(eventBus);
+	}
+	
+	protected static final <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> constructor){
+		return BLOCK_REGISTER.register(name, constructor);
+	}
+	
+	protected static final RegistryObject<PostBlock> registerPostBlock(EnumPostMaterial material){
+		return BLOCK_REGISTER.register(material.getBlockName(), () -> new PostBlock(material));
+	}
+	
+	protected static final RegistryObject<HorizontalTrussBlock> registerTrussBlock(EnumPostMaterial material){
+		return BLOCK_REGISTER.register(material.getBlockName() + "_truss", () -> new HorizontalTrussBlock(material));
+	}
+	
+	protected static final RegistryObject<FenceBlock> registerMetalFence(String name){
+		name = "fence_" + name;
+		
+		RegistryObject<FenceBlock> block = BLOCK_REGISTER.register(name, MetalFenceBlock::new);
+		ITEM_REGISTER.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ImmersivePosts.creativeTab)));
+		Fences.ALL_FENCES.add(block);
+		return block;
+	}
+	
+	protected static final <T extends Item> RegistryObject<T> registerItem(String name, Supplier<T> constructor){
+		return ITEM_REGISTER.register(name, constructor);
+	}
 	
 	public static TileEntityType<PostBaseTileEntity> TE_POSTBASE;
 	
 	public static class Blocks{
-		public static PostBaseBlock post_Base;
+		public static final RegistryObject<PostBaseBlock> POST_BASE;
+		
+		static{
+			POST_BASE = registerBlock("postbase", PostBaseBlock::new);
+			registerItem("postbase", () -> new PostBaseBlock.ItemPostBase(POST_BASE.get()));
+		}
+		
+		private static void forceClassLoad(){
+		}
 		
 		public static class Fences{
-			/** Contains (or should) all Fence Blocks added by IPO */
-			public static FenceBlock[] ALL;
 			
-			public static FenceBlock iron;
-			public static FenceBlock gold;
-			public static FenceBlock copper;
-			public static FenceBlock lead;
-			public static FenceBlock silver;
-			public static FenceBlock nickel;
-			public static FenceBlock constantan;
-			public static FenceBlock electrum;
-			public static FenceBlock uranium;
+			/** Contains (or should) all Fence Blocks added by IPO */
+			public static final List<RegistryObject<FenceBlock>> ALL_FENCES = new ArrayList<>();
+			
+			public final static RegistryObject<FenceBlock> IRON = registerMetalFence("iron");
+			public final static RegistryObject<FenceBlock> GOLD = registerMetalFence("gold");
+			public final static RegistryObject<FenceBlock> COPPER = registerMetalFence("copper");
+			public final static RegistryObject<FenceBlock> LEAD = registerMetalFence("lead");
+			public final static RegistryObject<FenceBlock> SILVER = registerMetalFence("silver");
+			public final static RegistryObject<FenceBlock> NICKEL = registerMetalFence("nickel");
+			public final static RegistryObject<FenceBlock> CONSTANTAN = registerMetalFence("constantan");
+			public final static RegistryObject<FenceBlock> ELECTRUM = registerMetalFence("electrum");
+			public final static RegistryObject<FenceBlock> URANIUM = registerMetalFence("uranium");
+			
+			private static void forceClassLoad(){
+			}
 		}
 		
 		public static class Posts{
-			/** Contains (or should) all Post Blocks added by IPO */
-			static EnumMap<EnumPostMaterial, PostBlock> MAP;
+			/** Contains all Post Blocks added by IPO */
+			static final EnumMap<EnumPostMaterial, RegistryObject<PostBlock>> ALL = Util.make(new EnumMap<>(EnumPostMaterial.class), map -> {
+				for(EnumPostMaterial material:EnumPostMaterial.values()){
+					map.put(material, registerPostBlock(material));
+				}
+			});
 			
-			public static PostBlock get(EnumPostMaterial material){
-				return MAP.get(material);
+			public static PostBlock get(@Nonnull IPostMaterial material){
+				if(!ALL.containsKey(material)) return null;
+				return ALL.get(material).get();
+			}
+			
+			private static void forceClassLoad(){
 			}
 		}
 		
 		public static class HorizontalTruss{
-			static EnumMap<EnumPostMaterial, HorizontalTrussBlock> MAP;
+			/** Contains all Truss Blocks added by IPO */
+			static EnumMap<EnumPostMaterial, RegistryObject<HorizontalTrussBlock>> ALL = Util.make(new EnumMap<>(EnumPostMaterial.class), map -> {
+				for(EnumPostMaterial material:EnumPostMaterial.values()){
+					map.put(material, registerTrussBlock(material));
+				}
+			});
 			
-			public static HorizontalTrussBlock get(EnumPostMaterial material){
-				return MAP.get(material);
+			public static HorizontalTrussBlock get(@Nonnull IPostMaterial material){
+				if(!ALL.containsKey(material)) return null;
+				return ALL.get(material).get();
+			}
+			
+			private static void forceClassLoad(){
 			}
 		}
 	}
 	
 	public static class Items{
-		public static Item rod_Gold;
-		public static Item rod_Copper;
-		public static Item rod_Lead;
-		public static Item rod_Silver;
-		public static Item rod_Nickel;
-		public static Item rod_Constantan;
-		public static Item rod_Electrum;
-		public static Item rod_Uranium;
+		public final static RegistryObject<Item> ROD_GOLD = registerItem("stick_gold", IPOItemBase::new);
+		public final static RegistryObject<Item> ROD_COPPER = registerItem("stick_copper", IPOItemBase::new);
+		public final static RegistryObject<Item> ROD_LEAD = registerItem("stick_lead", IPOItemBase::new);
+		public final static RegistryObject<Item> ROD_SILVER = registerItem("stick_silver", IPOItemBase::new);
+		public final static RegistryObject<Item> ROD_NICKEL = registerItem("stick_nickel", IPOItemBase::new);
+		public final static RegistryObject<Item> ROD_CONSTANTAN = registerItem("stick_constantan", IPOItemBase::new);
+		public final static RegistryObject<Item> ROD_ELECTRUM = registerItem("stick_electrum", IPOItemBase::new);
+		public final static RegistryObject<Item> ROD_URANIUM = registerItem("stick_uranium", IPOItemBase::new);
+		
+		private static void forceClassLoad(){
+		}
 	}
 	
 	public static final void populate(){
-		Blocks.post_Base = new PostBaseBlock();
-		
-		// =========================================================================
-		// Fences
-		
-		Fences.ALL = new FenceBlock[]{
-			Fences.iron			= new MetalFenceBlock("iron"),
-			Fences.gold			= new MetalFenceBlock("gold"),
-			Fences.copper		= new MetalFenceBlock("copper"),
-			Fences.lead			= new MetalFenceBlock("lead"),
-			Fences.silver		= new MetalFenceBlock("silver"),
-			Fences.nickel		= new MetalFenceBlock("nickel"),
-			Fences.constantan	= new MetalFenceBlock("constantan"),
-			Fences.electrum		= new MetalFenceBlock("electrum"),
-			Fences.uranium		= new MetalFenceBlock("uranium")
-		};
-		
-		// =========================================================================
-		// Posts
-		
-		EnumPostMaterial[] values = EnumPostMaterial.values();
-		EnumMap<EnumPostMaterial, PostBlock> posts = new EnumMap<>(EnumPostMaterial.class);
-		EnumMap<EnumPostMaterial, HorizontalTrussBlock> trusses = new EnumMap<>(EnumPostMaterial.class);
-		
-		for(EnumPostMaterial mat:values){
-			posts.put(mat, new PostBlock(mat));
-			trusses.put(mat, new HorizontalTrussBlock(mat));
-		}
-		
-		Posts.MAP = posts;
-		HorizontalTruss.MAP = trusses;
-		
-		// =========================================================================
-		// Items
-		
-		Items.rod_Gold		= new IPOItemBase("stick_gold");
-		Items.rod_Copper	= new IPOItemBase("stick_copper");
-		Items.rod_Lead		= new IPOItemBase("stick_lead");
-		Items.rod_Silver	= new IPOItemBase("stick_silver");
-		Items.rod_Nickel	= new IPOItemBase("stick_nickel");
-		Items.rod_Constantan= new IPOItemBase("stick_constantan");
-		Items.rod_Electrum	= new IPOItemBase("stick_electrum");
-		Items.rod_Uranium	= new IPOItemBase("stick_uranium");
-	}
-	
-	@SubscribeEvent
-	public static void registerBlocks(RegistryEvent.Register<Block> event){
-		for(Block block:BLOCKS){
-			try{
-				event.getRegistry().register(block);
-			}catch(Throwable e){
-				log.error("Failed to register a block. ({})", block);
-				throw e;
-			}
-		}
-	}
-	
-	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event){
-		for(Item item:ITEMS){
-			try{
-				event.getRegistry().register(item);
-			}catch(Throwable e){
-				log.error("Failed to register an item. ({}, {})", item, item.getRegistryName());
-				throw e;
-			}
-		}
+		Blocks.forceClassLoad();
+		Blocks.Fences.forceClassLoad();
+		Blocks.Posts.forceClassLoad();
+		Blocks.HorizontalTruss.forceClassLoad();
+		Items.forceClassLoad();
 	}
 	
 	@SubscribeEvent
 	public static void registerTileEntities(RegistryEvent.Register<TileEntityType<?>> event){
 		try{
-			event.getRegistry().register(TE_POSTBASE = create("postbase", PostBaseTileEntity::new, Blocks.post_Base));
+			event.getRegistry().register(TE_POSTBASE = create("postbase", PostBaseTileEntity::new, Blocks.POST_BASE.get()));
 		}catch(Throwable e){
 			log.error("Failed to register postbase tileentity. {}", e.getMessage());
 			throw e;
