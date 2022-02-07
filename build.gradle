@@ -107,14 +107,11 @@ dependencies {
 }
 
 processResources {
-	from(sourceSets.main.resources.srcDirs) {
-		include 'META-INF/mods.toml'
-		expand 'version': project.version
-	}
-	
-	from(sourceSets.main.resources.srcDirs) {
-		exclude 'META-INF/mods.toml'
-	}
+	inputs.properties 'version': project.version
+
+	filesMatching("META-INF/mods.toml") {
+        expand 'version': project.version
+    }
 }
 
 jar {
