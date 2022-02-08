@@ -1,13 +1,14 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/immersiveposts",
 	"promos":{
-		"1.16.5-latest": "4.2.2", "1.16.5-recommended": "4.2.2",
+		"1.16.5-latest": "4.3.0-1", "1.16.5-recommended": "4.3.0-1",
 		"1.16.3-latest": "3.0.0", "1.16.3-recommended": "3.0.0",
 		"1.15.2-latest": "2.2.0", "1.15.2-recommended": "2.2.0",
 		"1.14.4-latest": "1.2.0", "1.14.4-recommended": "1.2.0",
 		"1.12.2-latest": "0.2.1", "1.12.2-recommended": "0.2.1"
 	},
 	"1.16.5": {
+		"4.3.0-1": "Compiled with\nForge version: 1.16.5-36.2.0\nIE version: 1.16.5-5.0.3-138\n\n[A] Added API to add custom Posts. (TwistedGate)\n[A] Added Korean Translation. (FreddyYJ)\n[F] ImmersivePosts actualy wanting the correct Forge and IE versions. (TwistedGate)\n[F] Fixed ImmersivePosts reporting the wrong version. (TwistedGate)\n\nWith ImmersivePosts having an API now the version scheme changed aswell!\nImmersivePosts-MinecraftVersion-ApiVersion-Release",
 		"4.2.2": "[F] Fixed hotbar slot not being usable to get the cover off of the postbase again after the stack turned into an empty stack.\n[F] Fixed \"Missing Texture\" particles on hidden postbase. (Switched to using the postbase texture as default)\n[F] Fixed \"Unknown key \"x\" Tried deleting all configs and it didn't solve it.\"",
 		"4.2.1": "This is a very small update with hopes of fixing this manual thing.\n\n[F] Fixed manual not loading with ImmersivePetroleum installed.",
 		"4.2.0": "Forge version: 1.16.5-36.2.0\nIE version: 1.16.5-5.0.2-137\n\n[A] Added trusses to \"connect\" two posts together horizonaly.  (Check the How-To page in the Extendable Posts category)\n[C] Changed manual category name to \"Extendable Posts\" instead of mod name.\n[C] Textures got an overhaul.",
