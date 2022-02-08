@@ -19,7 +19,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 version = "${version_immersiveposts}"
 group = "twistedgate.immersiveposts"
-archivesBaseName = "immersiveposts-${version_minecraft}"
+archivesBaseName = "ImmersivePosts-${version_minecraft}"
 
 repositories {
 	maven {	name = "BlameJared"; url = "https://maven.blamejared.com/" } // IE files
