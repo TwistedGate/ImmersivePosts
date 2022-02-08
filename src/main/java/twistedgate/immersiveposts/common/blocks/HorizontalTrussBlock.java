@@ -278,7 +278,7 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 		if(panelNorth)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 1.0, 1.0, 0.5), IBooleanFunction.OR);
 		if(panelEast)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.5, 0.0, 0.0, 1.0, 1.0, 1.0), IBooleanFunction.OR);
 		if(panelSouth)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.5, 1.0, 1.0, 1.0), IBooleanFunction.OR);
-		if(panelEast)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 0.5, 1.0, 1.0), IBooleanFunction.OR);
+		if(panelWest)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 0.5, 1.0, 1.0), IBooleanFunction.OR);
 		
 		return shape.simplify();
 	}
