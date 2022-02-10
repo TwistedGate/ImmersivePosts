@@ -5,30 +5,30 @@ import java.util.function.Consumer;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.LootPoolEntryType;
-import net.minecraft.loot.StandaloneLootEntry;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.loot.functions.ILootFunction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
 
-public class PostMaterialDropLootEntry extends StandaloneLootEntry{
+public class PostMaterialDropLootEntry extends LootPoolSingletonContainer{
 	public static final ResourceLocation ID = new ResourceLocation(IPOMod.ID, "post_material_drop");
 	
-	protected PostMaterialDropLootEntry(int weightIn, int qualityIn, ILootCondition[] conditionsIn, ILootFunction[] functionsIn){
+	protected PostMaterialDropLootEntry(int weightIn, int qualityIn, LootItemCondition[] conditionsIn, LootItemFunction[] functionsIn){
 		super(weightIn, qualityIn, conditionsIn, functionsIn);
 	}
 	
 	@Override
-	protected void func_216154_a(Consumer<ItemStack> stackConsumer, LootContext context){
-		if(context.has(LootParameters.BLOCK_STATE)){
-			BlockState state = context.get(LootParameters.BLOCK_STATE);
-			if(state.hasProperty(PostBlock.TYPE) && state.get(PostBlock.TYPE).id() < 2){
+	protected void createItemStack(Consumer<ItemStack> stackConsumer, LootContext context){
+		if(context.hasParam(LootContextParams.BLOCK_STATE)){
+			BlockState state = context.getParamOrNull(LootContextParams.BLOCK_STATE);
+			if(state.hasProperty(PostBlock.TYPE) && state.getValue(PostBlock.TYPE).id() < 2){
 				ItemStack stack = ((PostBlock) state.getBlock()).getPostMaterial().getItemStack();
 				stackConsumer.accept(stack);
 			}
@@ -36,17 +36,17 @@ public class PostMaterialDropLootEntry extends StandaloneLootEntry{
 	}
 	
 	@Override
-	public LootPoolEntryType func_230420_a_(){
+	public LootPoolEntryType getType(){
 		return IPOLootFunctions.postDrop;
 	}
 	
-	public static StandaloneLootEntry.Builder<?> builder(){
-		return builder(PostMaterialDropLootEntry::new);
+	public static LootPoolSingletonContainer.Builder<?> builder(){
+		return simpleBuilder(PostMaterialDropLootEntry::new);
 	}
 	
-	public static class Serializer extends StandaloneLootEntry.Serializer<PostMaterialDropLootEntry>{
+	public static class Serializer extends LootPoolSingletonContainer.Serializer<PostMaterialDropLootEntry>{
 		@Override
-		protected PostMaterialDropLootEntry deserialize(JsonObject object, JsonDeserializationContext context, int weight, int quality, ILootCondition[] conditions, ILootFunction[] functions){
+		protected PostMaterialDropLootEntry deserialize(JsonObject object, JsonDeserializationContext context, int weight, int quality, LootItemCondition[] conditions, LootItemFunction[] functions){
 			return new PostMaterialDropLootEntry(weight, quality, conditions, functions);
 		}
 	}

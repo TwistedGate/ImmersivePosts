@@ -4,60 +4,61 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class IPOTileEntityBase extends TileEntity{
-	public IPOTileEntityBase(TileEntityType<?> tileEntityTypeIn){
-		super(tileEntityTypeIn);
+public abstract class IPOTileEntityBase extends BlockEntity{
+	public IPOTileEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos pWorldPosition, BlockState pBlockState){
+		super(tileEntityTypeIn, pWorldPosition, pBlockState);
 	}
 	
 	@Nonnull
-	public World getWorldNonnull(){
-		return Objects.requireNonNull(super.getWorld());
+	public Level getWorldNonnull(){
+		return Objects.requireNonNull(super.getLevel());
 	}
 	
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket(){
-		return new SUpdateTileEntityPacket(this.pos, 3, getUpdateTag());
+	public ClientboundBlockEntityDataPacket getUpdatePacket(){
+		return ClientboundBlockEntityDataPacket.create(this, (be) -> be.getUpdateTag());
 	}
 	
 	@Override
-	public void handleUpdateTag(BlockState state, CompoundNBT tag){
-		read(state, tag);
+	public void handleUpdateTag(CompoundTag tag){
+		load(tag);
 	}
 	
 	@Override
-	public CompoundNBT getUpdateTag(){
-		CompoundNBT nbt=new CompoundNBT();
-		write(nbt);
+	public CompoundTag getUpdateTag(){
+		CompoundTag nbt=new CompoundTag();
+		save(nbt);
 		return nbt;
 	}
 	
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
-		read(getBlockState(), pkt.getNbtCompound());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt){
+		load(pkt.getTag());
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT compound){
-		super.write(compound);
+	public CompoundTag save(CompoundTag compound){
+		super.save(compound);
 		writeCustom(compound);
 		return compound;
 	}
 	
 	@Override
-	public void read(BlockState state, CompoundNBT compound){
-		super.read(state, compound);
-		readCustom(state, compound);
+	public void load(CompoundTag compound){
+		super.load(compound);
+		readCustom(compound);
 	}
 	
-	protected abstract CompoundNBT writeCustom(CompoundNBT compound);
+	protected abstract CompoundTag writeCustom(CompoundTag compound);
 	
-	protected abstract void readCustom(BlockState state, CompoundNBT compound);
+	protected abstract void readCustom(CompoundTag compound);
 }

@@ -1,28 +1,38 @@
 package twistedgate.immersiveposts.common.data.loot;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import blusunrize.immersiveengineering.data.loot.LootGenerator;
-import net.minecraft.block.Block;
-import net.minecraft.block.FenceBlock;
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IDataProvider;
-import net.minecraft.loot.ConstantRange;
-import net.minecraft.loot.ItemLootEntry;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.conditions.SurvivesExplosion;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.LootTable.Builder;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraftforge.registries.RegistryObject;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.util.loot.BaseCoverDropLootEntry;
 import twistedgate.immersiveposts.util.loot.PostMaterialDropLootEntry;
 
-public class IPOBlockLoot extends LootGenerator implements IDataProvider{
+public class IPOBlockLoot extends LootTableProvider{
 	public IPOBlockLoot(DataGenerator gen){
 		super(gen);
 	}
@@ -33,53 +43,66 @@ public class IPOBlockLoot extends LootGenerator implements IDataProvider{
 	}
 	
 	@Override
-	protected void registerTables(){
+	protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, Builder>>>, LootContextParamSet>> getTables(){
+		return ImmutableList.of(Pair.of(LootyLoot::new, LootContextParamSets.BLOCK));
+	}
+	
+	public class LootyLoot implements Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>{
+		private final Set<ResourceLocation> generatedTables = new HashSet<>();
+		private BiConsumer<ResourceLocation, LootTable.Builder> out;
 		
-		// Fences
-		for(RegistryObject<FenceBlock> b:IPOContent.Blocks.Fences.ALL_FENCES){
-			registerSelfDropping(b.get());
+		@Override
+		public void accept(BiConsumer<ResourceLocation, Builder> t){
+			this.out = t;
+			
+			// Fences
+			for(RegistryObject<FenceBlock> b:IPOContent.Blocks.Fences.ALL_FENCES){
+				registerSelfDropping(b.get());
+			}
+			
+			// Posts
+			for(EnumPostMaterial mat:EnumPostMaterial.values()){
+				PostBlock b = IPOContent.Blocks.Posts.get(mat);
+				register(b, createPoolBuilder().add(PostMaterialDropLootEntry.builder()));
+			}
+			
+			registerSelfDropping(IPOContent.Blocks.POST_BASE.get(), createPoolBuilder().add(BaseCoverDropLootEntry.builder()));
 		}
 		
-		// Posts
-		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			PostBlock b = IPOContent.Blocks.Posts.get(mat);
-			register(b, createPoolBuilder().addEntry(PostMaterialDropLootEntry.builder()));
+		private void registerSelfDropping(Block b, LootPool.Builder... pool){
+			LootPool.Builder[] withSelf = Arrays.copyOf(pool, pool.length + 1);
+			withSelf[withSelf.length - 1] = singleItem(b);
+			register(b, withSelf);
 		}
 		
-		registerSelfDropping(IPOContent.Blocks.POST_BASE.get(), createPoolBuilder().addEntry(BaseCoverDropLootEntry.builder()));
-	}
-	
-	private void registerSelfDropping(Block b, LootPool.Builder... pool){
-		LootPool.Builder[] withSelf = Arrays.copyOf(pool, pool.length + 1);
-		withSelf[withSelf.length - 1] = singleItem(b);
-		register(b, withSelf);
-	}
-	
-	private LootPool.Builder singleItem(IItemProvider in){
-		return createPoolBuilder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(in));
-	}
-	
-	private void register(Block b, LootPool.Builder... pools){
-		LootTable.Builder builder = LootTable.builder();
-		for(LootPool.Builder pool:pools)
-			builder.addLootPool(pool);
-		register(b, builder);
-	}
-	
-	private void register(Block b, LootTable.Builder table){
-		register(b.getRegistryName(), table);
-	}
-	
-	private void register(ResourceLocation name, LootTable.Builder table){
-		if(tables.put(toTableLoc(name), table.setParameterSet(LootParameterSets.BLOCK).build()) != null)
-			throw new IllegalStateException("Duplicate loot table " + name);
-	}
-	
-	private LootPool.Builder createPoolBuilder(){
-		return LootPool.builder().acceptCondition(SurvivesExplosion.builder());
-	}
-	
-	private ResourceLocation toTableLoc(ResourceLocation in){
-		return new ResourceLocation(in.getNamespace(), "blocks/" + in.getPath());
+		private LootPool.Builder singleItem(ItemLike in){
+			return createPoolBuilder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(in));
+		}
+		
+		private void register(Block b, LootPool.Builder... pools){
+			LootTable.Builder builder = LootTable.lootTable();
+			for(LootPool.Builder pool:pools)
+				builder.withPool(pool);
+			register(b, builder);
+		}
+		
+		private void register(Block b, LootTable.Builder table){
+			register(b.getRegistryName(), table);
+		}
+		
+		private void register(ResourceLocation name, LootTable.Builder table){
+			ResourceLocation loc = toTableLoc(name);
+			if(!generatedTables.add(loc))
+				throw new IllegalStateException("Duplicate loot table " + name);
+			out.accept(loc, table.setParamSet(LootContextParamSets.BLOCK));
+		}
+		
+		private LootPool.Builder createPoolBuilder(){
+			return LootPool.lootPool().when(ExplosionCondition.survivesExplosion());
+		}
+		
+		private ResourceLocation toTableLoc(ResourceLocation in){
+			return new ResourceLocation(in.getNamespace(), "blocks/" + in.getPath());
+		}
 	}
 }

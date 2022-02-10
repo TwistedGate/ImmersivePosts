@@ -4,47 +4,47 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.Heightmap.Type;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOContent;
@@ -55,16 +55,16 @@ import twistedgate.immersiveposts.enums.EnumPostType;
 /**
  * @author TwistedGate
  */
-public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
-	private static AbstractBlock.Properties prop(){
+public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBlock, EntityBlock{
+	private static BlockBehaviour.Properties prop(){
 		Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
 		
-		AbstractBlock.Properties prop = AbstractBlock.Properties.create(BaseMaterial)
+		BlockBehaviour.Properties prop = BlockBehaviour.Properties.of(BaseMaterial)
 				.sound(SoundType.STONE)
-				.setRequiresTool()
-				.harvestTool(ToolType.PICKAXE)
-				.hardnessAndResistance(5.0F, 3.0F)
-				.notSolid();
+				.requiresCorrectToolForDrops()
+				//.harvestTool(ToolType.PICKAXE)
+				.strength(5.0F, 3.0F)
+				.noOcclusion();
 		
 		return prop;
 	}
@@ -75,176 +75,174 @@ public class PostBaseBlock extends IPOBlockBase implements IWaterLoggable{
 	public PostBaseBlock(){
 		super(prop());
 		
-		setDefaultState(getStateContainer().getBaseState()
-				.with(HIDDEN, false)
-				.with(WATERLOGGED, false)
+		registerDefaultState(getStateDefinition().any()
+				.setValue(HIDDEN, false)
+				.setValue(WATERLOGGED, false)
 		);
 	}
 	
 	@Override
-	protected void fillStateContainer(net.minecraft.state.StateContainer.Builder<Block, BlockState> builder){
+	protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition.Builder<Block, BlockState> builder){
 		builder.add(HIDDEN, WATERLOGGED);
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos){
-		return !state.get(HIDDEN) ? !state.get(WATERLOGGED) : super.propagatesSkylightDown(state, reader, pos);
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos){
+		return !state.getValue(HIDDEN) ? !state.getValue(WATERLOGGED) : super.propagatesSkylightDown(state, reader, pos);
 	}
 	
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player){
-		if(player.isSneaking() && state.get(HIDDEN)){
-			ItemStack stack = ((PostBaseTileEntity) world.getTileEntity(pos)).getStack();
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player){
+		if(player.isShiftKeyDown() && state.getValue(HIDDEN)){
+			ItemStack stack = ((PostBaseTileEntity) world.getBlockEntity(pos)).getStack();
 			if(stack != ItemStack.EMPTY){
 				return stack;
 			}
 		}
-		return super.getPickBlock(state, target, world, pos, player);
+		return ItemStack.EMPTY;//super.getPickBlock(state, target, world, pos, player);
 	}
 	
 	@Override
 	public FluidState getFluidState(BlockState state){
-		return (!state.get(HIDDEN) && state.get(WATERLOGGED)) ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.getDefaultState();
+		return (!state.getValue(HIDDEN) && state.getValue(WATERLOGGED)) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
 	}
 	
 	@Override
 	@Nullable
-	public BlockState getStateForPlacement(BlockItemUseContext context){
+	public BlockState getStateForPlacement(BlockPlaceContext context){
 		BlockState state = super.getStateForPlacement(context);
-		FluidState fs = context.getWorld().getFluidState(context.getPos());
+		FluidState fs = context.getLevel().getFluidState(context.getClickedPos());
 		
-		state = state.with(WATERLOGGED, fs.getFluid() == Fluids.WATER);
+		state = state.setValue(WATERLOGGED, fs.getType() == Fluids.WATER);
 		return state;
 	}
 	
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos){
-		if(!state.get(HIDDEN) && state.get(WATERLOGGED)){
-			world.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos){
+		if(!state.getValue(HIDDEN) && state.getValue(WATERLOGGED)){
+			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
 		return state;
 	}
 	
-	private static final VoxelShape BASE_SIZE = VoxelShapes.create(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
+	private static final VoxelShape BASE_SIZE = Shapes.box(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 	@Override
-	public boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid){
-		return !state.get(HIDDEN) && IWaterLoggable.super.canContainFluid(world, pos, state, fluid);
+	public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid){
+		return !state.getValue(HIDDEN) && SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid);
+	}
+	
+//	@Override
+//	public boolean hasTileEntity(BlockState state){
+//		return true;
+//	}
+//	
+//	@Override
+//	public BlockEntity createTileEntity(BlockState state, BlockGetter world){
+//		return IPOContent.TE_POSTBASE.create();
+//	}
+	
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState){
+		return IPOContent.TE_POSTBASE.create(pPos, pState);
 	}
 	
 	@Override
-	public boolean hasTileEntity(BlockState state){
-		return true;
-	}
-	
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world){
-		return IPOContent.TE_POSTBASE.create();
-	}
-	
-	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context){
 		return this.getShape(state, worldIn, pos, context);
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-		return state.get(HIDDEN) ? VoxelShapes.fullCube() : BASE_SIZE;
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context){
+		return state.getValue(HIDDEN) ? Shapes.block() : BASE_SIZE;
 	}
 	
 	@Override
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side){
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side){
 		return false;
 	}
 	
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
-		TileEntity te = worldIn.getTileEntity(pos);
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit){
+		BlockEntity te = worldIn.getBlockEntity(pos);
 		if(te instanceof PostBaseTileEntity){
 			if(((PostBaseTileEntity) te).interact(state, worldIn, pos, playerIn, handIn)){
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 		}
 		
-		if(!worldIn.isRemote){
-			ItemStack held = playerIn.getHeldItemMainhand();
+		if(!worldIn.isClientSide){
+			ItemStack held = playerIn.getMainHandItem();
 			
 			if(IPostMaterial.isValidItem(held)){
-				if(!worldIn.isAirBlock(pos.offset(Direction.UP))){
-					BlockState aboveState = worldIn.getBlockState(pos.offset(Direction.UP));
+				if(!worldIn.isEmptyBlock(pos.relative(Direction.UP))){
+					BlockState aboveState = worldIn.getBlockState(pos.relative(Direction.UP));
 					Block b = aboveState.getBlock();
 					
 					if(b instanceof PostBlock){
 						ItemStack tmp = ((PostBlock) b).getPostMaterial().getItemStack();
-						if(!held.isItemEqual(tmp)){
-							playerIn.sendStatusMessage(new TranslationTextComponent("immersiveposts.expectedlocal", tmp.getDisplayName()), true);
-							return ActionResultType.SUCCESS;
+						if(!held.sameItem(tmp)){
+							playerIn.displayClientMessage(new TranslatableComponent("immersiveposts.expectedlocal", tmp.getHoverName()), true);
+							return InteractionResult.SUCCESS;
 						}
 					}
 				}
 				
-				for(int y = 1;y <= (worldIn.getHeight(Type.WORLD_SURFACE, pos.getX(), pos.getZ()) - pos.getY());y++){
-					BlockPos nPos = pos.add(0, y, 0);
+				for(int y = 1;y <= (worldIn.getHeight(Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - pos.getY());y++){
+					BlockPos nPos = pos.offset(0, y, 0);
 					
 					BlockState nState = worldIn.getBlockState(nPos);
 					if(nState.getBlock() instanceof PostBlock){
-						EnumPostType type = nState.get(PostBlock.TYPE);
-						if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP) && nState.get(PostBlock.FLIPSTATE) == EnumFlipState.DOWN){
-							return ActionResultType.SUCCESS;
+						EnumPostType type = nState.getValue(PostBlock.TYPE);
+						if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP) && nState.getValue(PostBlock.FLIPSTATE) == EnumFlipState.DOWN){
+							return InteractionResult.SUCCESS;
 						}else{
-							nState = worldIn.getBlockState(nPos.offset(Direction.UP));
+							nState = worldIn.getBlockState(nPos.relative(Direction.UP));
 							if(nState.getBlock() instanceof PostBlock){
-								type = nState.get(PostBlock.TYPE);
+								type = nState.getValue(PostBlock.TYPE);
 								if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP)){
-									return ActionResultType.SUCCESS;
+									return InteractionResult.SUCCESS;
 								}
 							}
 						}
 					}
 					
-					if(worldIn.isAirBlock(nPos) || worldIn.getBlockState(nPos).getBlock() == Blocks.WATER){
+					if(worldIn.isEmptyBlock(nPos) || worldIn.getBlockState(nPos).getBlock() == Blocks.WATER){
 						BlockState fb = IPostMaterial.getPostState(held)
-								.with(WATERLOGGED, worldIn.getBlockState(nPos).getBlock() == Blocks.WATER);
+								.setValue(WATERLOGGED, worldIn.getBlockState(nPos).getBlock() == Blocks.WATER);
 						
-						if(fb != null && !playerIn.getPosition().equals(nPos) && worldIn.setBlockState(nPos, fb.updatePostPlacement(null, null, worldIn, nPos, null))){
+						if(fb != null && !playerIn.blockPosition().equals(nPos) && worldIn.setBlockAndUpdate(nPos, fb.updateShape(null, null, worldIn, nPos, null))){
 							if(!playerIn.isCreative()){
 								held.shrink(1);
 							}
 						}
-						return ActionResultType.SUCCESS;
+						return InteractionResult.SUCCESS;
 						
 					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof PostBlock)){
-						return ActionResultType.SUCCESS;
+						return InteractionResult.SUCCESS;
 					}
 				}
 			}
 		}else{
 			// Client Stuff here
-			ItemStack held = playerIn.getHeldItemMainhand();
+			ItemStack held = playerIn.getMainHandItem();
 			if(IPostMaterial.isValidItem(held)){
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 		}
 		
-		return ActionResultType.FAIL;
+		return InteractionResult.FAIL;
 	}
 	
 	
 	public static class ItemPostBase extends BlockItem{
 		public ItemPostBase(Block block){
-			super(block, new Item.Properties().group(ImmersivePosts.creativeTab));
+			super(block, new Item.Properties().tab(ImmersivePosts.creativeTab));
 		}
 		
 		@Override
 		@OnlyIn(Dist.CLIENT)
-		public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn){
-			tooltip.add(new StringTextComponent(I18n.format("tooltip.postbase")));
-		}
-		
-		// TODO REMOVE
-		/** Find the key that is being pressed while minecraft is in focus */
-		@OnlyIn(Dist.CLIENT)
-		private boolean isPressing(int key){
-			return false;
+		public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn){
+			tooltip.add(new TextComponent(I18n.get("tooltip.postbase")));
 		}
 	}
 }

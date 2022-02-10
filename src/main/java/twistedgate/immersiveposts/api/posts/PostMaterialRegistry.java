@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.minecraft.block.Block;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
 

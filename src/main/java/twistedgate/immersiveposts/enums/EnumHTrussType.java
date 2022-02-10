@@ -2,14 +2,14 @@ package twistedgate.immersiveposts.enums;
 
 import java.util.Locale;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
 /**
  * Horizontal Truss
  * 
  * @author TwistedGate
  */
-public enum EnumHTrussType implements IStringSerializable{
+public enum EnumHTrussType implements StringRepresentable{
 	SINGLE,
 	MULTI_A,
 	MULTI_B,
@@ -23,7 +23,7 @@ public enum EnumHTrussType implements IStringSerializable{
 	}
 	
 	@Override
-	public String getString(){
+	public String getSerializedName(){
 		return toString();
 	}
 	

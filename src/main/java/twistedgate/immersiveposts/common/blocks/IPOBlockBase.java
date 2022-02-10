@@ -1,11 +1,11 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * @author TwistedGate
@@ -16,12 +16,12 @@ public class IPOBlockBase extends Block{
 	}
 	
 	@Override
-	public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction){
+	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction){
 		return state;
 	}
 	
 	/** convenience method */
-	public static Block getBlockFrom(IBlockReader world, BlockPos pos){
+	public static Block getBlockFrom(BlockGetter world, BlockPos pos){
 		if(world == null || pos == null)
 			return null;
 		

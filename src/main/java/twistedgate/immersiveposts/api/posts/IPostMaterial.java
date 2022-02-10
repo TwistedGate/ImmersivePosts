@@ -2,11 +2,11 @@ package twistedgate.immersiveposts.api.posts;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.AbstractBlock.Properties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.HorizontalTruss;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
@@ -50,7 +50,7 @@ public interface IPostMaterial{
 			block = PostMaterialRegistry.getPostFrom(material).get();
 		}
 		
-		return block.getDefaultState().with(PostBlock.TYPE, EnumPostType.POST_TOP);
+		return block.defaultBlockState().setValue(PostBlock.TYPE, EnumPostType.POST_TOP);
 	}
 	
 	public static BlockState getTrussState(@Nonnull ItemStack stack){
@@ -63,18 +63,18 @@ public interface IPostMaterial{
 			block = PostMaterialRegistry.getTrussFrom(material).get();
 		}
 		
-		return block.getDefaultState();
+		return block.defaultBlockState();
 	}
 	
 	public static IPostMaterial getPostMaterial(@Nonnull ItemStack stack){
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.isItemEqual(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)){
+			if(stack.sameItem(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)){
 				return mat;
 			}
 		}
 		
 		for(IPostMaterial mat:PostMaterialRegistry.MAP.keySet()){
-			if(stack.isItemEqual(mat.getItemStack())){
+			if(stack.sameItem(mat.getItemStack())){
 				return mat;
 			}
 		}
@@ -87,13 +87,13 @@ public interface IPostMaterial{
 			return false;
 		
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.isItemEqual(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)){
+			if(stack.sameItem(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)){
 				return true;
 			}
 		}
 		
 		for(IPostMaterial mat:PostMaterialRegistry.MAP.keySet()){
-			if(stack.isItemEqual(mat.getItemStack())){
+			if(stack.sameItem(mat.getItemStack())){
 				return true;
 			}
 		}

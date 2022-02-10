@@ -5,16 +5,16 @@ import com.electronwill.nightconfig.core.Config;
 import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.lib.manual.ManualElementTable;
 import blusunrize.lib.manual.ManualEntry;
+import blusunrize.lib.manual.ManualEntry.SpecialElementData;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.Tree.InnerNode;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.IReloadableResourceManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
@@ -31,7 +31,7 @@ public class ClientProxy extends CommonProxy{
 		super.setup();
 		
 		ClientEventHandler handler = new ClientEventHandler();
-		((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(handler);
+		((ReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(handler);
 		
 		Minecraft.getInstance().getBlockColors().register(new ColorHandler(), IPOContent.Blocks.POST_BASE.get());
 	}
@@ -45,10 +45,9 @@ public class ClientProxy extends CommonProxy{
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public void completed(){
-		DeferredWorkQueue.runLater(() -> ManualHelper.addConfigGetter(str -> {
+		ManualHelper.addConfigGetter(str -> {
 			switch(str){
 				case "maxTrussLength":{
 					return IPOConfig.MAIN.maxTrussLength.get();
@@ -63,8 +62,7 @@ public class ClientProxy extends CommonProxy{
 				return cfg.get(str);
 			}
 			return null;
-		}));
-		
+		});
 		
 		setupManualPage();
 	}
@@ -82,22 +80,22 @@ public class ClientProxy extends CommonProxy{
 		man.addEntry(cat, modLoc("usage"), 1);
 		
 		{
-			ITextComponent[][] index0 = new ITextComponent[13][2];
-			ITextComponent[][] index1 = new ITextComponent[4][2];
+			Component[][] index0 = new Component[13][2];
+			Component[][] index1 = new Component[4][2];
 			
 			int page = 1;
 			for(int i = 0;i < index0.length;i++){
-				index0[i][0] = new StringTextComponent(Integer.toString(page++));
-				index0[i][1] = new TranslationTextComponent("index.page_0_entry." + Integer.toString(i + 1));
+				index0[i][0] = new TextComponent(Integer.toString(page++));
+				index0[i][1] = new TranslatableComponent("index.page_0_entry." + Integer.toString(i + 1));
 			}
 			for(int i = 0;i < index1.length;i++){
-				index1[i][0] = new StringTextComponent(Integer.toString(page++));
-				index1[i][1] = new TranslationTextComponent("index.page_1_entry." + Integer.toString(i + 1));
+				index1[i][0] = new TextComponent(Integer.toString(page++));
+				index1[i][1] = new TranslatableComponent("index.page_1_entry." + Integer.toString(i + 1));
 			}
 			
 			ManualEntry.ManualEntryBuilder builder = new ManualEntry.ManualEntryBuilder(man);
-			builder.addSpecialElement("index0", 0, new ManualElementTable(man, index0, false));
-			builder.addSpecialElement("index1", 0, new ManualElementTable(man, index1, false));
+			builder.addSpecialElement(new SpecialElementData("index0", 0, new ManualElementTable(man, index0, false)));
+			builder.addSpecialElement(new SpecialElementData("index1", 0, new ManualElementTable(man, index1, false)));
 			builder.readFromFile(modLoc("posts"));
 			man.addEntry(cat, builder.create(), 2);
 		}

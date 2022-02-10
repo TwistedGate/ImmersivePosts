@@ -2,18 +2,17 @@ package twistedgate.immersiveposts.enums;
 
 import java.util.function.Supplier;
 
-import blusunrize.immersiveengineering.common.blocks.IEBlocks;
-import net.minecraft.block.AbstractBlock.Properties;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FenceBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ToolType;
+import blusunrize.immersiveengineering.common.register.IEBlocks;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.PushReaction;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.ExternalModContent;
@@ -39,9 +38,9 @@ public enum EnumPostMaterial implements IPostMaterial{
 	NICKEL("nickel", PostBlockProperties.METAL, Fences.NICKEL::get),
 	CONSTANTAN("constantan", PostBlockProperties.METAL, Fences.CONSTANTAN::get),
 	ELECTRUM("electrum", PostBlockProperties.METAL, Fences.ELECTRUM::get),
-	URANIUM("uranium", PostBlockProperties.metal().setLightLevel(s -> 8), Fences.URANIUM::get),
-	CONCRETE("concrete", PostBlockProperties.STONE, () -> IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concrete)),
-	CONCRETE_LEADED("leadedconcrete", PostBlockProperties.STONE, () -> IEBlocks.toSlab.get(IEBlocks.StoneDecoration.concreteLeaded))
+	URANIUM("uranium", PostBlockProperties.metal().lightLevel(s -> 8), Fences.URANIUM::get),
+	CONCRETE("concrete", PostBlockProperties.STONE, () -> IEBlocks.TO_SLAB.get(IEBlocks.StoneDecoration.CONCRETE.getId()).get()),
+	CONCRETE_LEADED("leadedconcrete", PostBlockProperties.STONE, () -> IEBlocks.TO_SLAB.get(IEBlocks.StoneDecoration.CONCRETE_LEADED.getId()).get())
 	;
 	
 	private boolean isFence;
@@ -124,33 +123,33 @@ public enum EnumPostMaterial implements IPostMaterial{
 		
 		private static final Material WOOD_LIKE = material(MaterialColor.WOOD, false, true, true, true, false, false, PushReaction.BLOCK);
 		private static final Material STONE_LIKE = material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
-		private static final Material METAL_LIKE = material(MaterialColor.IRON, false, true, true, true, false, false, PushReaction.BLOCK);
+		private static final Material METAL_LIKE = material(MaterialColor.METAL, false, true, true, true, false, false, PushReaction.BLOCK);
 		
-		public static final Properties WOOD = Properties.create(WOOD_LIKE)
+		public static final Properties WOOD = Properties.of(WOOD_LIKE)
 				.sound(SoundType.WOOD)
-				.harvestTool(ToolType.AXE)
-				.hardnessAndResistance(2.0F, 5.0F)
-				.notSolid()
-				.setBlocksVision((s, r, p) -> false);
+				//.harvestTool(ToolType.AXE)
+				.strength(2.0F, 5.0F)
+				.noOcclusion()
+				.isViewBlocking((s, r, p) -> false);
 		
-		public static final Properties STONE = Properties.create(STONE_LIKE)
+		public static final Properties STONE = Properties.of(STONE_LIKE)
 				.sound(SoundType.STONE)
-				.setRequiresTool()
-				.harvestTool(ToolType.PICKAXE)
-				.hardnessAndResistance(1.5F, 6.0F)
-				.notSolid()
-				.setBlocksVision((s, r, p) -> false);
+				.requiresCorrectToolForDrops()
+				//.harvestTool(ToolType.PICKAXE)
+				.strength(1.5F, 6.0F)
+				.noOcclusion()
+				.isViewBlocking((s, r, p) -> false);
 		
 		public static final Properties METAL = metal();
 		
 		private static Properties metal(){
-			return Properties.create(METAL_LIKE)
+			return Properties.of(METAL_LIKE)
 					.sound(SoundType.METAL)
-					.setRequiresTool()
-					.harvestTool(ToolType.PICKAXE)
-					.hardnessAndResistance(3.0F, 15.0F)
-					.notSolid()
-					.setBlocksVision((s, r, p) -> false);
+					.requiresCorrectToolForDrops()
+					//.harvestTool(ToolType.PICKAXE)
+					.strength(3.0F, 15.0F)
+					.noOcclusion()
+					.isViewBlocking((s, r, p) -> false);
 		}
 	}
 }

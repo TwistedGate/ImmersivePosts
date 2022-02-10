@@ -2,11 +2,11 @@ package twistedgate.immersiveposts.common.blocks;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 
 public class GenericPostBlock extends IPOBlockBase{
@@ -30,9 +30,9 @@ public class GenericPostBlock extends IPOBlockBase{
 	 * Replaces itself with Air or with Water if Waterlogged. (Convenience
 	 * Method)
 	 */
-	protected void replaceSelf(BlockState stateIn, World world, BlockPos pos){
+	protected void replaceSelf(BlockState stateIn, Level world, BlockPos pos){
 		if(stateIn.hasProperty(BlockStateProperties.WATERLOGGED)){
-			world.setBlockState(pos, stateIn.get(BlockStateProperties.WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
+			world.setBlockAndUpdate(pos, stateIn.getValue(BlockStateProperties.WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 		}
 	}
 }

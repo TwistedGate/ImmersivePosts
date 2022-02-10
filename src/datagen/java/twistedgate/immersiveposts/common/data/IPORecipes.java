@@ -5,17 +5,17 @@ import java.util.function.Consumer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FenceBlock;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.tags.ITag;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FenceBlock;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
@@ -29,24 +29,24 @@ import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer.I
  * @author TwistedGate
  */
 public class IPORecipes extends RecipeProvider{
-	private Consumer<IFinishedRecipe> out;
+	private Consumer<FinishedRecipe> out;
 	public IPORecipes(DataGenerator generatorIn){
 		super(generatorIn);
 	}
 	
 	@Override
-	protected void registerRecipes(Consumer<IFinishedRecipe> out){
-		this.out=out;
+	protected void buildCraftingRecipes(Consumer<FinishedRecipe> out){
+		this.out = out;
 		
-		ShapedRecipeBuilder.shapedRecipe(twistedgate.immersiveposts.common.IPOContent.Blocks.POST_BASE.get(), 6)
-			.key('w', Tags.Items.COBBLESTONE)
-			.key('s', Blocks.STONE_BRICKS)
-			.patternLine("s s")
-			.patternLine("sws")
-			.patternLine("sws")
-			.addCriterion("has_cobblestone", hasItem(Blocks.COBBLESTONE))
-			.addCriterion("has_stone_bricks", hasItem(ItemTags.STONE_BRICKS))
-			.build(out);
+		ShapedRecipeBuilder.shaped(twistedgate.immersiveposts.common.IPOContent.Blocks.POST_BASE.get(), 6)
+			.define('w', Tags.Items.COBBLESTONE)
+			.define('s', Blocks.STONE_BRICKS)
+			.pattern("s s")
+			.pattern("sws")
+			.pattern("sws")
+			.unlockedBy("has_cobblestone", has(Blocks.COBBLESTONE))
+			.unlockedBy("has_stone_bricks", has(ItemTags.STONE_BRICKS))
+			.save(out);
 		
 		fenceAndStickRecipe(Fences.IRON.get(), null, IPOTags.Rods.IRON, IPOTags.Ingots.IRON);
 		fenceAndStickRecipe(Fences.GOLD.get(), Items.ROD_GOLD.get(), IPOTags.Rods.GOLD, IPOTags.Ingots.GOLD);
@@ -60,38 +60,37 @@ public class IPORecipes extends RecipeProvider{
 	}
 	
 	/** Creates both a recipe for fences and the stick needed */
-	private void fenceAndStickRecipe(FenceBlock fence, Item rod, ITag.INamedTag<Item> stickTag, ITag.INamedTag<Item> ingotTag){
+	private void fenceAndStickRecipe(FenceBlock fence, Item rod, Tag.Named<Item> stickTag, Tag.Named<Item> ingotTag){
 		String stickMat = getMaterialName(stickTag.getName()); // Stick Material
 		String ingotMat = getMaterialName(ingotTag.getName()); // Ingot Material
 		
-		if(fence!=Fences.IRON.get())
-			ShapedRecipeBuilder.shapedRecipe(rod, 4)
-				.patternLine("i")
-				.patternLine("i")
-				.key('i', ingotTag)
-				.addCriterion("has_"+ingotMat+"_ingot", hasItem(ingotTag))
-				.build(involveConfig(this.out, new IPOConfigCondition(ingotMat, true)), new ResourceLocation(IPOMod.ID, "has_"+stickMat+"_rod"));
-		
-		ShapedRecipeBuilder.shapedRecipe(fence, 3)
-			.patternLine("isi")
-			.patternLine("isi")
-			.key('i', ingotTag)
-			.key('s', stickTag)
-			.addCriterion("has_"+stickMat+"_rod", hasItem(stickTag))
-			.addCriterion("has_"+ingotMat+"_ingot", hasItem(ingotTag))
-			.build(involveConfig(this.out, new IPOConfigCondition(ingotMat, true)));
+		if(fence != Fences.IRON.get()){
+			ShapedRecipeBuilder.shaped(rod, 4)
+				.pattern("i")
+				.pattern("i")
+				.define('i', ingotTag)
+				.unlockedBy("has_" + ingotMat + "_ingot", has(ingotTag))
+				.save(involveConfig(this.out, new IPOConfigCondition(ingotMat, true)), new ResourceLocation(IPOMod.ID, "has_" + stickMat + "_rod"));
+		}
+		ShapedRecipeBuilder.shaped(fence, 3)
+			.pattern("isi")
+			.pattern("isi")
+			.define('i', ingotTag)
+			.define('s', stickTag)
+			.unlockedBy("has_" + stickMat + "_rod", has(stickTag))
+			.unlockedBy("has_" + ingotMat + "_ingot", has(ingotTag))
+			.save(involveConfig(this.out, new IPOConfigCondition(ingotMat, true)));
 	}
 	
 	private String getMaterialName(ResourceLocation in){
 		return in.getPath().substring(in.getPath().indexOf('/') + 1);
 	}
 	
-	private Consumer<IFinishedRecipe> involveConfig(Consumer<IFinishedRecipe> out, ICondition... conditions){
+	private Consumer<FinishedRecipe> involveConfig(Consumer<FinishedRecipe> out, ICondition... conditions){
 		return recipe -> {
-			out.accept(new IFinishedRecipe(){
-				
+			out.accept(new FinishedRecipe(){
 				@Override
-				public void serialize(JsonObject json){
+				public void serializeRecipeData(JsonObject json){
 					if(conditions.length > 0){
 						JsonArray conArray = new JsonArray();
 						for(ICondition con:conditions)
@@ -99,27 +98,27 @@ public class IPORecipes extends RecipeProvider{
 						json.add("conditions", conArray);
 					}
 					
-					recipe.serialize(json);
+					recipe.serializeRecipeData(json);
 				}
 				
 				@Override
-				public IRecipeSerializer<?> getSerializer(){
-					return recipe.getSerializer();
+				public JsonObject serializeAdvancement(){
+					return recipe.serializeAdvancement();
 				}
 				
 				@Override
-				public ResourceLocation getID(){
-					return recipe.getID();
+				public RecipeSerializer<?> getType(){
+					return recipe.getType();
 				}
 				
 				@Override
-				public JsonObject getAdvancementJson(){
-					return recipe.getAdvancementJson();
+				public ResourceLocation getId(){
+					return recipe.getId();
 				}
 				
 				@Override
-				public ResourceLocation getAdvancementID(){
-					return recipe.getAdvancementID();
+				public ResourceLocation getAdvancementId(){
+					return recipe.getAdvancementId();
 				}
 			});
 		};

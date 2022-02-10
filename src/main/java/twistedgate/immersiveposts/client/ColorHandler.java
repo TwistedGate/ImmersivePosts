@@ -1,18 +1,18 @@
 package twistedgate.immersiveposts.client;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockDisplayReader;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
-public class ColorHandler implements IBlockColor{
+public class ColorHandler implements BlockColor{
 	@Override
-	public int getColor(BlockState state, IBlockDisplayReader world, BlockPos pos, int index){
+	public int getColor(BlockState state, BlockAndTintGetter world, BlockPos pos, int index){
 		if(index >= 0){
-			TileEntity te = world.getTileEntity(pos);
+			BlockEntity te = world.getBlockEntity(pos);
 			if(te instanceof PostBaseTileEntity && !((PostBaseTileEntity) te).getStack().isEmpty()){
 				PostBaseTileEntity base = (PostBaseTileEntity) te;
 				

@@ -6,42 +6,42 @@ import javax.annotation.Nullable;
 
 import blusunrize.immersiveengineering.api.IPostBlock;
 import blusunrize.immersiveengineering.common.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
-public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock, IWaterLoggable{
+public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock, SimpleWaterloggedBlock{
 	public static final BooleanProperty CONNECTOR_POINT_TOP = BooleanProperty.create("connector_point_top");
 	public static final BooleanProperty CONNECTOR_POINT_BOTTOM = BooleanProperty.create("connector_point_bottom");
 	
@@ -58,21 +58,21 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	public HorizontalTrussBlock(IPostMaterial material){
 		super(material, "_truss");
 		
-		setDefaultState(getStateContainer().getBaseState()
-				.with(WATERLOGGED, false)
-				.with(FACING, Direction.NORTH)
-				.with(TYPE, EnumHTrussType.SINGLE)
-				.with(CONNECTOR_POINT_TOP, false)
-				.with(CONNECTOR_POINT_BOTTOM, false)
-				.with(PANEL_NORTH, false)
-				.with(PANEL_EAST, false)
-				.with(PANEL_SOUTH, false)
-				.with(PANEL_WEST, false)
+		registerDefaultState(getStateDefinition().any()
+				.setValue(WATERLOGGED, false)
+				.setValue(FACING, Direction.NORTH)
+				.setValue(TYPE, EnumHTrussType.SINGLE)
+				.setValue(CONNECTOR_POINT_TOP, false)
+				.setValue(CONNECTOR_POINT_BOTTOM, false)
+				.setValue(PANEL_NORTH, false)
+				.setValue(PANEL_EAST, false)
+				.setValue(PANEL_SOUTH, false)
+				.setValue(PANEL_WEST, false)
 				);
 	}
 	
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder){
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder){
 		builder.add(
 				WATERLOGGED, FACING, TYPE,
 				PANEL_NORTH, PANEL_EAST, PANEL_SOUTH, PANEL_WEST,
@@ -81,61 +81,61 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	}
 	
 	@Override
-	public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos){
+	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos){
 		return 0;
 	}
 	
 	@Override
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos){
+	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos){
 		return 1.0F;
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos){
-		return !state.get(WATERLOGGED);
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos){
+		return !state.getValue(WATERLOGGED);
 	}
 	
 	@Override
 	public FluidState getFluidState(BlockState state){
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.getDefaultState();
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
 	}
 	
 	@Override
 	@Nullable
-	public BlockState getStateForPlacement(BlockItemUseContext context){
+	public BlockState getStateForPlacement(BlockPlaceContext context){
 		BlockState state = super.getStateForPlacement(context);
-		FluidState fs = context.getWorld().getFluidState(context.getPos());
+		FluidState fs = context.getLevel().getFluidState(context.getClickedPos());
 		
-		return state.with(WATERLOGGED, fs.getFluid() == Fluids.WATER);
+		return state.setValue(WATERLOGGED, fs.getType() == Fluids.WATER);
 	}
 	
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos){
-		if(state.get(WATERLOGGED)){
-			world.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos){
+		if(state.getValue(WATERLOGGED)){
+			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
 		
 		boolean b0 = PostBlock.canConnect(world, pos, Direction.UP);
-		boolean b1 = PostBlock.canConnect(world, pos, Direction.DOWN) || world.getBlockState(pos.offset(Direction.DOWN)).getBlock() instanceof PostBlock;
+		boolean b1 = PostBlock.canConnect(world, pos, Direction.DOWN) || world.getBlockState(pos.relative(Direction.DOWN)).getBlock() instanceof PostBlock;
 		
 		return state
-				.with(CONNECTOR_POINT_TOP, b0)
-				.with(CONNECTOR_POINT_BOTTOM, b1);
+				.setValue(CONNECTOR_POINT_TOP, b0)
+				.setValue(CONNECTOR_POINT_BOTTOM, b1);
 	}
 	
 	@Override
-	public boolean isLadder(BlockState state, IWorldReader world, BlockPos pos, LivingEntity entity){
+	public boolean isLadder(BlockState state, LevelReader world, BlockPos pos, LivingEntity entity){
 		return true;
 	}
 	
 	@Override
-	public boolean isFlammable(BlockState state, IBlockReader world, BlockPos pos, Direction face){
+	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face){
 		return false;
 	}
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand){
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand){
 		if(getPostMaterial() == EnumPostMaterial.URANIUM){
 			if(rand.nextFloat() < 0.125F){
 				double x = pos.getX() + 0.375 + 0.25 * rand.nextDouble();
@@ -148,46 +148,46 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side){
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side){
 		return false;
 	}
 	
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player){
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player){
 		return getPostMaterial().getItemStack();
 	}
 	
 	@Override
-	public boolean canConnectTransformer(IBlockReader world, BlockPos pos){
+	public boolean canConnectTransformer(BlockGetter world, BlockPos pos){
 		return true;
 	}
 	
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit){
-		if(!worldIn.isRemote){
-			ItemStack held = playerIn.getHeldItemMainhand();
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit){
+		if(!worldIn.isClientSide){
+			ItemStack held = playerIn.getMainHandItem();
 			
 			if(Utils.isHammer(held)){
-				Direction face = hit.getFace();
-				Direction facing = state.get(FACING);
+				Direction face = hit.getDirection();
+				Direction facing = state.getValue(FACING);
 				
 				BlockState newState = state;
 				switch(facing){
 					case NORTH: case SOUTH:{
 						if(face == Direction.EAST){
-							newState = newState.with(PANEL_EAST, !newState.get(PANEL_EAST));
+							newState = newState.setValue(PANEL_EAST, !newState.getValue(PANEL_EAST));
 							
 						}else if(face == Direction.WEST){
-							newState = newState.with(PANEL_WEST, !newState.get(PANEL_WEST));
+							newState = newState.setValue(PANEL_WEST, !newState.getValue(PANEL_WEST));
 						}
 						break;
 					}
 					case EAST: case WEST:{
 						if(face == Direction.NORTH){
-							newState = newState.with(PANEL_NORTH, !newState.get(PANEL_NORTH));
+							newState = newState.setValue(PANEL_NORTH, !newState.getValue(PANEL_NORTH));
 							
 						}else if(face == Direction.SOUTH){
-							newState = newState.with(PANEL_SOUTH, !newState.get(PANEL_SOUTH));
+							newState = newState.setValue(PANEL_SOUTH, !newState.getValue(PANEL_SOUTH));
 						}
 						break;
 					}
@@ -195,40 +195,40 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 				}
 				
 				if(!newState.equals(state)){
-					worldIn.setBlockState(pos, newState);
-					return ActionResultType.SUCCESS;
+					worldIn.setBlockAndUpdate(pos, newState);
+					return InteractionResult.SUCCESS;
 				}
 			}
 		}
 		
-		if(Utils.isHammer(playerIn.getHeldItemMainhand())){
-			return ActionResultType.SUCCESS;
+		if(Utils.isHammer(playerIn.getMainHandItem())){
+			return InteractionResult.SUCCESS;
 		}
 		
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 	
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
-		if(world.isRemote)
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
+		if(world.isClientSide)
 			return;
 		
-		Direction facing = state.get(FACING);
+		Direction facing = state.getValue(FACING);
 		
-		BlockPos posA = pos.offset(facing);
-		BlockPos posB = pos.offset(facing.getOpposite());
+		BlockPos posA = pos.relative(facing);
+		BlockPos posB = pos.relative(facing.getOpposite());
 		
 		BlockState stateA = world.getBlockState(posA);
 		BlockState stateB = world.getBlockState(posB);
 		
-		if((stateA.getBlock().isAir(stateA, world, posA) || stateB.getBlock().isAir(stateB, world, posB)) || (stateA.getBlock() == Blocks.WATER || stateB.getBlock() == Blocks.WATER)){
+		if((stateA.isAir() || stateB.isAir()) || (stateA.getBlock() == Blocks.WATER || stateB.getBlock() == Blocks.WATER)){
 			replaceSelf(state, world, pos);
 			return;
 		}
 	}
 	
-	static final VoxelShape NORTH_SOUTH = VoxelShapes.create(0.3125, 0.0, 0.0, 0.6875, 1.0, 1.0);
-	static final VoxelShape EAST_WEST = VoxelShapes.create(0.0, 0.0, 0.3125, 1.0, 1.0, 0.6875);
+	static final VoxelShape NORTH_SOUTH = Shapes.box(0.3125, 0.0, 0.0, 0.6875, 1.0, 1.0);
+	static final VoxelShape EAST_WEST = Shapes.box(0.0, 0.0, 0.3125, 1.0, 1.0, 0.6875);
 	
 	private static int getCacheIndex(Direction.Axis axis, boolean panelNorth, boolean panelEast, boolean panelSouth, boolean panelWest){
 		int result = axis == Direction.Axis.X ? 1 : 0;
@@ -272,24 +272,24 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 		}
 		
 		if(shape == null){
-			return VoxelShapes.empty();
+			return Shapes.empty();
 		}
 		
-		if(panelNorth)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 1.0, 1.0, 0.5), IBooleanFunction.OR);
-		if(panelEast)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.5, 0.0, 0.0, 1.0, 1.0, 1.0), IBooleanFunction.OR);
-		if(panelSouth)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.5, 1.0, 1.0, 1.0), IBooleanFunction.OR);
-		if(panelWest)	shape = VoxelShapes.combine(shape, VoxelShapes.create(0.0, 0.0, 0.0, 0.5, 1.0, 1.0), IBooleanFunction.OR);
+		if(panelNorth)	shape = Shapes.joinUnoptimized(shape, Shapes.box(0.0, 0.0, 0.0, 1.0, 1.0, 0.5), BooleanOp.OR);
+		if(panelEast)	shape = Shapes.joinUnoptimized(shape, Shapes.box(0.5, 0.0, 0.0, 1.0, 1.0, 1.0), BooleanOp.OR);
+		if(panelSouth)	shape = Shapes.joinUnoptimized(shape, Shapes.box(0.0, 0.0, 0.5, 1.0, 1.0, 1.0), BooleanOp.OR);
+		if(panelWest)	shape = Shapes.joinUnoptimized(shape, Shapes.box(0.0, 0.0, 0.0, 0.5, 1.0, 1.0), BooleanOp.OR);
 		
-		return shape.simplify();
+		return shape.optimize();
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context){
-		Direction.Axis axis = state.get(FACING).getAxis();
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context){
+		Direction.Axis axis = state.getValue(FACING).getAxis();
 		if(axis != Direction.Axis.X && axis != Direction.Axis.Z){
-			return VoxelShapes.empty();
+			return Shapes.empty();
 		}else{
-			return SHAPE_CACHE[getCacheIndex(axis, state.get(PANEL_NORTH), state.get(PANEL_EAST), state.get(PANEL_SOUTH), state.get(PANEL_WEST))];
+			return SHAPE_CACHE[getCacheIndex(axis, state.getValue(PANEL_NORTH), state.getValue(PANEL_EAST), state.getValue(PANEL_SOUTH), state.getValue(PANEL_WEST))];
 		}
 	}
 }

@@ -2,11 +2,11 @@ package twistedgate.immersiveposts.api.posts;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.AbstractBlock.Properties;
-import net.minecraft.block.Block;
-import net.minecraft.block.FenceBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 /**
  * This is an example implementation of {@link IPostMaterial} but can be used as

@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
+import com.mojang.math.Transformation;
 
 import blusunrize.immersiveengineering.api.utils.QuadTransformer;
 import blusunrize.immersiveengineering.api.utils.client.CombinedModelData;
@@ -22,24 +23,22 @@ import blusunrize.immersiveengineering.client.utils.ModelUtils;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemOverrideList;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.TransformationMatrix;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockDisplayReader;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 import twistedgate.immersiveposts.IPOMod;
@@ -54,7 +53,7 @@ public class PostBaseModel extends IPOBakedModel{
 	
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
-		BlockState hState = Blocks.DIRT.getDefaultState();
+		BlockState hState = Blocks.DIRT.defaultBlockState();
 		Int2IntFunction colorMul = i -> 0xffffffff;
 		Direction facing = Direction.NORTH;
 		
@@ -76,11 +75,11 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
-	public IModelData getModelData(IBlockDisplayReader world, BlockPos pos, BlockState state, IModelData tileData){
+	public IModelData getModelData(BlockAndTintGetter world, BlockPos pos, BlockState state, IModelData tileData){
 		List<IModelData> list = new ArrayList<>();
 		list.add(tileData);
 		
-		TileEntity te = world.getTileEntity(pos);
+		BlockEntity te = world.getBlockEntity(pos);
 		if(te instanceof PostBaseTileEntity){
 			PostBaseTileEntity base = (PostBaseTileEntity) te;
 			
@@ -93,7 +92,7 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
-	public boolean isAmbientOcclusion(){
+	public boolean useAmbientOcclusion(){
 		return true;
 	}
 	
@@ -103,7 +102,7 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
-	public boolean isBuiltInRenderer(){
+	public boolean isCustomRenderer(){
 		return false;
 	}
 	
@@ -113,7 +112,7 @@ public class PostBaseModel extends IPOBakedModel{
 		if(postbaseSprite == null){
 			postbaseSprite = Minecraft.getInstance()
 				.getModelManager()
-				.getAtlasTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
+				.getAtlas(InventoryMenu.BLOCK_ATLAS)
 				.getSprite(new ResourceLocation(IPOMod.ID, "block/postbase"));
 		}
 		
@@ -121,21 +120,21 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
-	public TextureAtlasSprite getParticleTexture(){
+	public TextureAtlasSprite getParticleIcon(){
 		return getPostbaseSprite();
 	}
 	
 	@Override
-	public ItemOverrideList getOverrides(){
-		return ItemOverrideList.EMPTY;
+	public ItemOverrides getOverrides(){
+		return ItemOverrides.EMPTY;
 	}
 	
 	private static class SpecialPostBaseModel extends PostBaseModel{
 		private static final Random RANDOM = new Random();
 		
-		private static final Vector3d[] verts = new Vector3d[]{
-				new Vector3d(0.25F, 1.001F, 0.25F), new Vector3d(0.25F, 1.001F, 0.75F),
-				new Vector3d(0.75F, 1.001F, 0.75F), new Vector3d(0.75F, 1.001F, 0.25F),
+		private static final Vec3[] verts = new Vec3[]{
+				new Vec3(0.25F, 1.001F, 0.25F), new Vec3(0.25F, 1.001F, 0.75F),
+				new Vec3(0.75F, 1.001F, 0.75F), new Vec3(0.75F, 1.001F, 0.25F),
 		};
 		
 		private static final double[] uvs = new double[]{
@@ -165,8 +164,8 @@ public class PostBaseModel extends IPOBakedModel{
 				return v;
 			};
 			
-			Function<BakedQuad, BakedQuad> tintTransformer=new QuadTransformer(TransformationMatrix.identity(), colorMul);
-			IBakedModel model=Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(key.state);
+			Function<BakedQuad, BakedQuad> tintTransformer=new QuadTransformer(Transformation.identity(), colorMul);
+			BakedModel model=Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(key.state);
 			
 			for(Direction side:Direction.values()){
 				List<BakedQuad> quads = model.getQuads(key.state, side, RANDOM, EmptyModelData.INSTANCE).stream()
@@ -175,7 +174,7 @@ public class PostBaseModel extends IPOBakedModel{
 				
 				if(side == Direction.UP){
 					TextureAtlasSprite sprite = getPostbaseSprite();
-					quads.add(ModelUtils.createBakedQuad(DefaultVertexFormats.BLOCK, verts, side, sprite, uvs, color, false));
+					quads.add(ModelUtils.createBakedQuad(verts, side, sprite, uvs, color, false));
 				}
 				
 				this.quads.add(quads);
@@ -185,7 +184,7 @@ public class PostBaseModel extends IPOBakedModel{
 		
 		@Override
 		public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
-			return this.quads.get(side == null ? (this.quads.size() - 1) : side.getIndex());
+			return this.quads.get(side == null ? (this.quads.size() - 1) : side.get3DDataValue());
 		}
 	}
 	

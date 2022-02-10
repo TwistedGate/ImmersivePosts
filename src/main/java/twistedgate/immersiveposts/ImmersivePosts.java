@@ -3,10 +3,10 @@ package twistedgate.immersiveposts;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -30,9 +30,9 @@ import twistedgate.immersiveposts.util.loot.IPOLootFunctions;
 @Mod(IPOMod.ID)
 public class ImmersivePosts{
 	
-	public static final ItemGroup creativeTab = new ItemGroup(IPOMod.ID){
+	public static final CreativeModeTab creativeTab = new CreativeModeTab(IPOMod.ID){
 		@Override
-		public ItemStack createIcon(){
+		public ItemStack makeIcon(){
 			Block block = IPOContent.Blocks.POST_BASE.get();
 			return new ItemStack(block == null ? Items.BARRIER : block);
 		}

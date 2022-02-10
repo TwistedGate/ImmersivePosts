@@ -1,19 +1,22 @@
-import net.minecraftforge.gradle.common.task.SignJar
+import net.minecraftforge.gradle.common.tasks.SignJar
 
 buildscript {
 	repositories {
 		maven { url = 'https://files.minecraftforge.net/maven' }
 		jcenter()
 		mavenCentral()
+		maven { url 'https://maven.parchmentmc.org' }
 	}
 	dependencies {
-		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+		classpath 'org.parchmentmc:librarian:1.+'
 	}
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '17'
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -44,7 +47,7 @@ sourceSets {
 }
 
 minecraft {
-	mappings channel: 'snapshot', version: "${version_fml_mappings}"
+	mappings channel: 'parchment', version: "${version_parchment}"
 	// accessTransformer = file('build/resources/main/META-INF/accesstransformer.cfg')
 	runs {
 		client {
@@ -101,9 +104,9 @@ minecraft {
 dependencies {
 	minecraft "net.minecraftforge:forge:${version_minecraft}-${version_forge}"
 	
-	compile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}")
+	implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}")
 	//compile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}:api")
-	datagenCompile fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}:datagen")
+	datagenImplementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${version_ie}:datagen")
 }
 
 processResources {
@@ -144,7 +147,10 @@ task signJar(type: SignJar, dependsOn: jar) {
 		outputFile = jar.archivePath
 	}
 }
-build.dependsOn signJar
+
+afterEvaluate {
+    signJar.dependsOn reobfJar
+}
 
 task datagenJar(type: Jar, dependsOn: datagenClasses) {
 	classifier = 'datagen'

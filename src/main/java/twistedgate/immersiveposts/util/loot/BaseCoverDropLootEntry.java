@@ -7,34 +7,34 @@ import javax.annotation.Nonnull;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.LootPoolEntryType;
-import net.minecraft.loot.StandaloneLootEntry;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.loot.functions.ILootFunction;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
-public class BaseCoverDropLootEntry extends StandaloneLootEntry{
+public class BaseCoverDropLootEntry extends LootPoolSingletonContainer{
 	public static final ResourceLocation ID = new ResourceLocation(IPOMod.ID, "base_cover_drop");
 	
-	protected BaseCoverDropLootEntry(int weightIn, int qualityIn, ILootCondition[] conditionsIn, ILootFunction[] functionsIn){
+	protected BaseCoverDropLootEntry(int weightIn, int qualityIn, LootItemCondition[] conditionsIn, LootItemFunction[] functionsIn){
 		super(weightIn, qualityIn, conditionsIn, functionsIn);
 	}
 	
 	@Override
-	protected void func_216154_a(Consumer<ItemStack> stackConsumer, LootContext context){
-		if(context.has(LootParameters.BLOCK_STATE) && context.has(LootParameters.BLOCK_ENTITY)){
-			BlockState state = context.get(LootParameters.BLOCK_STATE);
+	protected void createItemStack(Consumer<ItemStack> stackConsumer, LootContext context){
+		if(context.hasParam(LootContextParams.BLOCK_STATE) && context.hasParam(LootContextParams.BLOCK_ENTITY)){
+			BlockState state = context.getParamOrNull(LootContextParams.BLOCK_STATE);
 			
-			if(state.hasProperty(PostBaseBlock.HIDDEN) && state.get(PostBaseBlock.HIDDEN)){
-				TileEntity te = context.get(LootParameters.BLOCK_ENTITY);
+			if(state.hasProperty(PostBaseBlock.HIDDEN) && state.getValue(PostBaseBlock.HIDDEN)){
+				BlockEntity te = context.getParamOrNull(LootContextParams.BLOCK_ENTITY);
 				if(te instanceof PostBaseTileEntity){
 					ItemStack teStack = ((PostBaseTileEntity) te).getStack();
 					stackConsumer.accept(teStack);
@@ -44,18 +44,18 @@ public class BaseCoverDropLootEntry extends StandaloneLootEntry{
 	}
 	
 	@Override
-	public LootPoolEntryType func_230420_a_(){
+	public LootPoolEntryType getType(){
 		return IPOLootFunctions.baseCoverDrop;
 	}
 	
-	public static StandaloneLootEntry.Builder<?> builder(){
-		return builder(BaseCoverDropLootEntry::new);
+	public static LootPoolSingletonContainer.Builder<?> builder(){
+		return simpleBuilder(BaseCoverDropLootEntry::new);
 	}
 	
-	public static class Serializer extends StandaloneLootEntry.Serializer<BaseCoverDropLootEntry>{
+	public static class Serializer extends LootPoolSingletonContainer.Serializer<BaseCoverDropLootEntry>{
 		@Nonnull
 		@Override
-		protected BaseCoverDropLootEntry deserialize(JsonObject object, JsonDeserializationContext context, int weight, int quality, ILootCondition[] conditions, ILootFunction[] functions){
+		protected BaseCoverDropLootEntry deserialize(JsonObject object, JsonDeserializationContext context, int weight, int quality, LootItemCondition[] conditions, LootItemFunction[] functions){
 			return new BaseCoverDropLootEntry(weight, quality, conditions, functions);
 		}
 	}

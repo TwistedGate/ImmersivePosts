@@ -1,8 +1,8 @@
 package twistedgate.immersiveposts.client.model;
 
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelProperty;
 
 public class IPOModelData{

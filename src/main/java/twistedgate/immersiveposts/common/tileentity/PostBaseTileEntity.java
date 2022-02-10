@@ -4,25 +4,25 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraftforge.common.util.Lazy;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 
 public class PostBaseTileEntity extends IPOTileEntityBase{
-	protected static final Lazy<BlockState> EMPTY=Lazy.of(()->Blocks.AIR.getDefaultState());
+	protected static final Lazy<BlockState> EMPTY=Lazy.of(()->Blocks.AIR.defaultBlockState());
 	
 	@Nonnull
 	protected ItemStack stack=ItemStack.EMPTY;
@@ -31,8 +31,8 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	/** Horizontal Only */
 	protected Direction facing=Direction.NORTH;
 	
-	public PostBaseTileEntity(){
-		super(IPOContent.TE_POSTBASE);
+	public PostBaseTileEntity(BlockPos pWorldPosition, BlockState pBlockState){
+		super(IPOContent.TE_POSTBASE, pWorldPosition, pBlockState);
 	}
 	
 	@Nonnull
@@ -55,7 +55,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	public void setFacing(Direction facing){
 		if(Direction.Plane.HORIZONTAL.test(facing)){
 			this.facing=facing;
-			markDirty();
+			setChanged();
 		}
 	}
 	
@@ -74,59 +74,59 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 			this.stack=stack;
 		}
 		
-		boolean changed=!ItemStack.areItemStacksEqual(this.stack, last);
+		boolean changed=!ItemStack.matches(this.stack, last);
 		
 		updateLazy(changed);
 		
 		if(changed){
-			markDirty();
+			setChanged();
 		}
 		
 		return changed;
 	}
 	
 	@Override
-	protected CompoundNBT writeCustom(CompoundNBT compound){
-		compound.putString("facing", this.facing != null ? this.facing.getName2() : Direction.NORTH.getName2());
+	protected CompoundTag writeCustom(CompoundTag compound){
+		compound.putString("facing", this.facing != null ? this.facing.getName() : Direction.NORTH.getName());
 		compound.put("stack", this.stack.serializeNBT());
 		return compound;
 	}
 	
 	@Override
-	protected void readCustom(BlockState state, CompoundNBT compound){
+	protected void readCustom(CompoundTag compound){
 		this.facing=Direction.byName(compound.getString("facing"));
 		ItemStack last=this.stack;
-		this.stack=ItemStack.read(compound.getCompound("stack"));
+		this.stack=ItemStack.of(compound.getCompound("stack"));
 		
-		boolean changed=!ItemStack.areItemStacksEqual(this.stack, last);
+		boolean changed=!ItemStack.matches(this.stack, last);
 		
 		updateLazy(changed);
 		
-		if(changed && getWorld() != null){
-			getWorld().notifyBlockUpdate(this.pos, getBlockState(), getBlockState(), 3);
+		if(changed && getLevel() != null){
+			getLevel().sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), 3);
 		}
 	}
 	
-	public boolean interact(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand){
-		ItemStack held=player.getHeldItem(Hand.MAIN_HAND);
+	public boolean interact(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand){
+		ItemStack held=player.getItemInHand(InteractionHand.MAIN_HAND);
 		
 		if(held==ItemStack.EMPTY){
-			if(player.isSneaking() && !getStack().isEmpty()){
-				if(!world.isRemote){
+			if(player.isShiftKeyDown() && !getStack().isEmpty()){
+				if(!world.isClientSide){
 					setFacing(Direction.NORTH);
-					Block.spawnAsEntity(world, pos, getStack());
+					Block.popResource(world, pos, getStack());
 					setStack(ItemStack.EMPTY);
 					
-					world.setBlockState(pos, state.with(PostBaseBlock.HIDDEN, false));
+					world.setBlockAndUpdate(pos, state.setValue(PostBaseBlock.HIDDEN, false));
 				}
 				
 				return true;
 			}
 			
-		}else if(held.getItem() instanceof BlockItem && isUsableCover(Block.getBlockFromItem(held.getItem()), world, pos)){
+		}else if(held.getItem() instanceof BlockItem && isUsableCover(Block.byItem(held.getItem()), world, pos)){
 			if(getStack().isEmpty()){
-				if(!world.isRemote){
-					setFacing(player.getHorizontalFacing().getOpposite());
+				if(!world.isClientSide){
+					setFacing(player.getDirection().getOpposite());
 					
 					ItemStack copy=held.copy();
 					copy.setCount(1);
@@ -135,11 +135,11 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 					if(!player.isCreative()){
 						held.shrink(1);
 						if(held.isEmpty()){
-							player.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+							player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 						}
 					}
 					
-					world.setBlockState(pos, state.with(PostBaseBlock.HIDDEN, true).with(PostBaseBlock.WATERLOGGED, false));
+					world.setBlockAndUpdate(pos, state.setValue(PostBaseBlock.HIDDEN, true).setValue(PostBaseBlock.WATERLOGGED, false));
 				}
 				
 				return true;
@@ -150,9 +150,9 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	}
 	
 	/** Used to check wether the base can hide within a certain block */
-	private boolean isUsableCover(@Nonnull Block block, @Nonnull IBlockReader reader, @Nonnull BlockPos pos){
-		BlockState state=block.getDefaultState();
-		return block!=Blocks.AIR && state.isNormalCube(reader, pos) && state.isOpaqueCube(reader, pos);
+	private boolean isUsableCover(@Nonnull Block block, @Nonnull BlockGetter reader, @Nonnull BlockPos pos){
+		BlockState state=block.defaultBlockState();
+		return block!=Blocks.AIR && state.isRedstoneConductor(reader, pos) && state.isSolidRender(reader, pos);
 	}
 	
 	protected void updateLazy(boolean changed){
@@ -163,16 +163,16 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		}else{
 			this.coverstate=Lazy.of(()->{
 				if(this.stack.getItem() instanceof BlockItem){
-					BlockState state=((BlockItem)this.stack.getItem()).getBlock().getDefaultState();
+					BlockState state=((BlockItem)this.stack.getItem()).getBlock().defaultBlockState();
 					
 					Optional<DirectionProperty> prop=state.getProperties().stream()
 							.filter(p->p instanceof DirectionProperty && p.getName().equals("facing"))
 							.map(p->(DirectionProperty)p)
-							.filter(p->p.getAllowedValues().stream().allMatch(d->Direction.Plane.HORIZONTAL.test(d)))
+							.filter(p->p.getPossibleValues().stream().allMatch(d->Direction.Plane.HORIZONTAL.test(d)))
 							.findAny();
 					
 					if(prop.isPresent()){
-						state=state.with(prop.get(), this.facing);
+						state=state.setValue(prop.get(), this.facing);
 					}
 					
 					return state;

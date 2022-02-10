@@ -6,14 +6,14 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.util.Direction;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 
-public abstract class IPOBakedModel implements IBakedModel{
+public abstract class IPOBakedModel implements BakedModel{
 	
 	@Nonnull
 	@Override
@@ -25,7 +25,7 @@ public abstract class IPOBakedModel implements IBakedModel{
 	}
 	
 	@Override
-	public boolean isSideLit(){
+	public boolean usesBlockLight(){
 		return true;
 	}
 	

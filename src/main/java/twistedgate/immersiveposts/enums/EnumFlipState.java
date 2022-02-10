@@ -2,12 +2,12 @@ package twistedgate.immersiveposts.enums;
 
 import java.util.Locale;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
 /**
  * @author TwistedGate
  */
-public enum EnumFlipState implements IStringSerializable{
+public enum EnumFlipState implements StringRepresentable{
 	UP,
 	DOWN,
 	BOTH;
@@ -17,7 +17,7 @@ public enum EnumFlipState implements IStringSerializable{
 	}
 	
 	@Override
-	public String getString(){
+	public String getSerializedName(){
 		return toString();
 	}
 	

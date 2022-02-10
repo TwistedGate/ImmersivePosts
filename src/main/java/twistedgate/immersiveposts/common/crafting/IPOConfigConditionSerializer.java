@@ -4,8 +4,8 @@ import com.electronwill.nightconfig.core.Config;
 import com.electronwill.nightconfig.core.UnmodifiableConfig;
 import com.google.gson.JsonObject;
 
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.crafting.conditions.ICondition;
@@ -25,8 +25,8 @@ public class IPOConfigConditionSerializer implements IConditionSerializer<IPOCon
 	
 	@Override
 	public IPOConfigCondition read(JsonObject json){
-		String key=JSONUtils.getString(json, "key");
-		boolean value=JSONUtils.getBoolean(json, "value");
+		String key=GsonHelper.getAsString(json, "key");
+		boolean value=GsonHelper.getAsBoolean(json, "value");
 		
 		return new IPOConfigCondition(key, value);
 	}

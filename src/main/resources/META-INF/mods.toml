@@ -10,27 +10,35 @@ license="TwistedGate's License of Common Sense (A modified copy of \"Blu's Licen
 	logoFile="logo.png"
 	displayURL="https://minecraft.curseforge.com/projects/immersiveposts"
 	updateJSONURL="https://raw.githubusercontent.com/TwistedGate/ImmersivePosts/master/change.json"
-	credits="\nÂ§nInspired by ImmersiveIntegration's extendable posts.Â§r\n\nÂ§lÂ§2--- Translations ---Â§r\nRussian: Shellyoung\nChinese: scikirbypoke, kappa-maintainer\nSpanish: FrannDzs\nKorean : FreddyYj\n"
+	credits='''
+§nInspired by ImmersiveIntegration's extendable posts.§r
+
+§l§2--- Translations ---§r
+Russian: Shellyoung
+Chinese: scikirbypoke, kappa-maintainer
+Spanish: FrannDzs
+Korean : FreddyYj
+	'''
 	authors="TwistedGate"
 	description="Simply adds a way to have extendable posts. With a few post types to choose from."
 
 [[dependencies.immersiveposts]]
 	modId="immersiveengineering"
 	mandatory=true
-	versionRange="[1.16.5-5.0.3,)"
+	versionRange="[1.18.1-7.1.0,)"
 	ordering="BEFORE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="forge"
 	mandatory=true
-	versionRange="[36.2.0,)"
+	versionRange="[39.0.36,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="minecraft"
 	mandatory=true
-	versionRange="[1.16.5]"
+	versionRange="[1.18.1]"
 	ordering="NONE"
 	side="BOTH"
