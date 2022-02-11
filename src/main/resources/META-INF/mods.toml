@@ -6,19 +6,17 @@ license="TwistedGate's License of Common Sense (A modified copy of \"Blu's Licen
 [[mods]]
 	displayName="Immersive Posts"
 	modId="immersiveposts"
-	version="${version}"
+	version="${file.jarVersion}"
 	logoFile="logo.png"
 	displayURL="https://minecraft.curseforge.com/projects/immersiveposts"
 	updateJSONURL="https://raw.githubusercontent.com/TwistedGate/ImmersivePosts/master/change.json"
-	credits='''
-§nInspired by ImmersiveIntegration's extendable posts.§r
+	credits='''§nInspired by ImmersiveIntegration's extendable posts.§r
 
 §l§2--- Translations ---§r
 Russian: Shellyoung
 Chinese: scikirbypoke, kappa-maintainer
 Spanish: FrannDzs
-Korean : FreddyYj
-	'''
+Korean : FreddyYj'''
 	authors="TwistedGate"
 	description="Simply adds a way to have extendable posts. With a few post types to choose from."
 
