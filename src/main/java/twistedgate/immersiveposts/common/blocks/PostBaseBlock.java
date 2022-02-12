@@ -98,7 +98,7 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 				return stack;
 			}
 		}
-		return ItemStack.EMPTY;//super.getPickBlock(state, target, world, pos, player);
+		return super.getCloneItemStack(state, target, world, pos, player);
 	}
 	
 	@Override
