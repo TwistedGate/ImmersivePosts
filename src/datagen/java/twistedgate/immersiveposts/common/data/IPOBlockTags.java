@@ -73,15 +73,23 @@ public class IPOBlockTags extends BlockTagsProvider{
 	}
 	
 	private void setMiningLevel(Supplier<? extends Block> block, Tiers tier){
-		Named<Block> tag = switch(tier){
+		Named<Block> with = switch(tier){
 			case WOOD -> BlockTags.MINEABLE_WITH_AXE;
+			case STONE, GOLD, IRON, DIAMOND, NETHERITE -> BlockTags.MINEABLE_WITH_PICKAXE;
+			default -> throw new IllegalArgumentException("Unexpected value: " + tier);
+		};
+		tag(with).add(block.get());
+		
+		if(tier == Tiers.WOOD)
+			return;
+		
+		Named<Block> type = switch(tier){
 			case STONE -> BlockTags.NEEDS_STONE_TOOL;
-			case GOLD -> BlockTags.MINEABLE_WITH_PICKAXE;
-			case IRON -> BlockTags.NEEDS_IRON_TOOL;
+			case IRON, GOLD -> BlockTags.NEEDS_IRON_TOOL;
 			case DIAMOND, NETHERITE -> BlockTags.NEEDS_DIAMOND_TOOL;
-			default -> throw new IllegalArgumentException(tier + "? No..");
+			default -> throw new IllegalArgumentException("Unexpected value: " + tier);
 		};
 		
-		tag(tag).add(block.get());
+		tag(type).add(block.get());
 	}
 }

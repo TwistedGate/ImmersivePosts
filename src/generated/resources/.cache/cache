@@ -373,5 +373,6 @@ bb8302a1b3e3e792376a787a2b9a859d8f07dd16 data/immersiveposts/recipes/postbase.js
 0c03b0d2e933f33a68965b63af78ab6d20a808d1 data/immersiveposts/tags/blocks/ignored_by_postarm.json
 08b051ce85e05b7bb7aff7ffc77d2b41daec4e91 data/minecraft/tags/blocks/fences.json
 876cef0b3a07d4a0f953499205a667cc234a5459 data/minecraft/tags/blocks/mineable/axe.json
+e3a1555c39ca19b0e8aad6212c4deb795e28e2ae data/minecraft/tags/blocks/mineable/pickaxe.json
 3f942613d434920e4a2b566e41a2a62e6910ce83 data/minecraft/tags/blocks/needs_iron_tool.json
 29c2ac198243d2ca33a452db5a3a5da1c518d97e data/minecraft/tags/blocks/needs_stone_tool.json
