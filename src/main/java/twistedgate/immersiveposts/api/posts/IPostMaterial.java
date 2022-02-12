@@ -10,9 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.HorizontalTruss;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
-import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
-import twistedgate.immersiveposts.enums.EnumPostType;
 
 public interface IPostMaterial{
 	
@@ -40,23 +38,27 @@ public interface IPostMaterial{
 	/** Returns {@link Properties} for the Post-Block */
 	Properties getBlockProperties();
 	
+	/** Gets the default post blockstate of the given source-block itemstack */
 	public static BlockState getPostState(@Nonnull ItemStack stack){
 		return getPostState(getPostMaterial(stack));
 	}
 	
+	/** Gets the default post blockstate of the given material */
 	public static BlockState getPostState(IPostMaterial material){
 		Block block = Posts.get(material);
 		if(block == null && PostMaterialRegistry.MAP.containsKey(material)){
 			block = PostMaterialRegistry.getPostFrom(material).get();
 		}
 		
-		return block.defaultBlockState().setValue(PostBlock.TYPE, EnumPostType.POST_TOP);
+		return block.defaultBlockState();
 	}
 	
+	/** Gets the default truss blockstate of the given source-block itemstack */
 	public static BlockState getTrussState(@Nonnull ItemStack stack){
 		return getTrussState(getPostMaterial(stack));
 	}
 	
+	/** Gets the default truss blockstate of the given material */
 	public static BlockState getTrussState(@Nonnull IPostMaterial material){
 		Block block = HorizontalTruss.get(material);
 		if(block == null && PostMaterialRegistry.MAP.containsKey(material)){
@@ -66,6 +68,7 @@ public interface IPostMaterial{
 		return block.defaultBlockState();
 	}
 	
+	/** Gets the material of the given source-block itemstack */
 	public static IPostMaterial getPostMaterial(@Nonnull ItemStack stack){
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
 			if(stack.sameItem(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)){

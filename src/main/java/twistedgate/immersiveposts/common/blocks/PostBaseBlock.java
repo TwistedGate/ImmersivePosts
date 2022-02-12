@@ -62,7 +62,6 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 		BlockBehaviour.Properties prop = BlockBehaviour.Properties.of(BaseMaterial)
 				.sound(SoundType.STONE)
 				.requiresCorrectToolForDrops()
-				//.harvestTool(ToolType.PICKAXE)
 				.strength(5.0F, 3.0F)
 				.noOcclusion();
 		

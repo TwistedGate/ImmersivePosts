@@ -3,6 +3,7 @@ package twistedgate.immersiveposts.common.data.loot;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -19,6 +20,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.LootTables;
+import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
@@ -45,6 +48,13 @@ public class IPOBlockLoot extends LootTableProvider{
 	@Override
 	protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, Builder>>>, LootContextParamSet>> getTables(){
 		return ImmutableList.of(Pair.of(LootyLoot::new, LootContextParamSets.BLOCK));
+	}
+	
+	@Override
+	protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker){
+		map.forEach((id, table) -> {
+			LootTables.validate(validationtracker, id, table);
+		});
 	}
 	
 	public class LootyLoot implements Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>{

@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "texture": "immersiveposts:block/posts/post_concrete_leaded",
-    "particle": "immersiveposts:block/posts/post_concrete_leaded"
+    "texture": "immersiveposts:block/posts/post_leadedconcrete",
+    "particle": "immersiveposts:block/posts/post_leadedconcrete"
   },
   "loader": "forge:obj",
   "model": "immersiveposts:models/block/post/obj/truss_point_bottom.obj",

@@ -19,7 +19,6 @@ public class MetalFenceBlock extends FenceBlock{
 			.strength(3.0F, 15.0F)
 			.sound(SoundType.METAL)
 			.requiresCorrectToolForDrops()
-			//.harvestTool(ToolType.PICKAXE)
 			.noOcclusion()
 			.isViewBlocking((s, r, p) -> false);
 	
