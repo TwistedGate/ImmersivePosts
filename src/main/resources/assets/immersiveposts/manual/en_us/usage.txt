@@ -1,8 +1,7 @@
 How to Use
 
 <&usage1>You're going to need the hammer and a material of your choice.
-See <link;immersiveposts:posts;this;start> for a detailed list of things able to be used.
-Or simply hover your cursor over the base and hold shift (Works even in <link;immersiveposts:postbase;Here;start>!)<np>
+See <link;immersiveposts:posts;this;start> for a detailed list of things able to be used.<np>
 <&usage2>Then with your choosen material in hand rightclick the base with it and it should look like what's being shown in the image above.
 Note: It always has to be of the same type! A wooden post for example only accepts §oTreated Wood Fences§r nothing else!<np>
 <&usage3>From here you can also rightclick the post itself which makes it easier to see how high you've already made it.
