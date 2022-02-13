@@ -11,19 +11,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.Util;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.BlockEntityType.BlockEntitySupplier;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -36,13 +28,12 @@ import twistedgate.immersiveposts.common.blocks.MetalFenceBlock;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.common.items.IPOItemBase;
-import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
+import twistedgate.immersiveposts.common.tileentity.IPOTileTypes;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 /**
  * @author TwistedGate
  */
-@Mod.EventBusSubscriber(modid = IPOMod.ID, bus = Bus.MOD)
 public class IPOContent{
 	public static final Logger log = LogManager.getLogger(IPOMod.ID + "/Stuff");
 	
@@ -52,6 +43,7 @@ public class IPOContent{
 	public static final void addRegistersToEventBus(IEventBus eventBus){
 		BLOCK_REGISTER.register(eventBus);
 		ITEM_REGISTER.register(eventBus);
+		IPOTileTypes.REGISTER.register(eventBus);
 	}
 	
 	protected static final <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> constructor){
@@ -78,8 +70,6 @@ public class IPOContent{
 	protected static final <T extends Item> RegistryObject<T> registerItem(String name, Supplier<T> constructor){
 		return ITEM_REGISTER.register(name, constructor);
 	}
-	
-	public static BlockEntityType<PostBaseTileEntity> TE_POSTBASE;
 	
 	public static class Blocks{
 		public static final RegistryObject<PostBaseBlock> POST_BASE;
@@ -166,21 +156,5 @@ public class IPOContent{
 		Blocks.Posts.forceClassLoad();
 		Blocks.HorizontalTruss.forceClassLoad();
 		Items.forceClassLoad();
-	}
-	
-	@SubscribeEvent
-	public static void registerTileEntities(RegistryEvent.Register<BlockEntityType<?>> event){
-		try{
-			event.getRegistry().register(TE_POSTBASE = create("postbase", PostBaseTileEntity::new, Blocks.POST_BASE.get()));
-		}catch(Throwable e){
-			log.error("Failed to register postbase tileentity. {}", e.getMessage());
-			throw e;
-		}
-	}
-	
-	private static <T extends BlockEntity> BlockEntityType<T> create(String name, BlockEntitySupplier<T> factory, Block... validBlocks){
-		BlockEntityType<T> te = BlockEntityType.Builder.of(factory, validBlocks).build(null);
-		te.setRegistryName(new ResourceLocation(IPOMod.ID, name));
-		return te;
 	}
 }

@@ -14,10 +14,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class IPOTileEntityBase extends BlockEntity{
-	public IPOTileEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos pWorldPosition, BlockState pBlockState){
-		super(tileEntityTypeIn, pWorldPosition, pBlockState);
+	public IPOTileEntityBase(BlockEntityType<? extends BlockEntity> pType, BlockPos pWorldPosition, BlockState pBlockState){
+		super(pType, pWorldPosition, pBlockState);
 	}
-	
+
 	@Nonnull
 	public Level getWorldNonnull(){
 		return Objects.requireNonNull(super.getLevel());
@@ -35,7 +35,7 @@ public abstract class IPOTileEntityBase extends BlockEntity{
 	
 	@Override
 	public CompoundTag getUpdateTag(){
-		CompoundTag nbt=new CompoundTag();
+		CompoundTag nbt = new CompoundTag();
 		save(nbt);
 		return nbt;
 	}

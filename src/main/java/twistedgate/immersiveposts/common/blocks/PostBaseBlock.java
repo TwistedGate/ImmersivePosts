@@ -47,7 +47,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
-import twistedgate.immersiveposts.common.IPOContent;
+import twistedgate.immersiveposts.common.tileentity.IPOTileTypes;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostType;
@@ -130,19 +130,9 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 		return !state.getValue(HIDDEN) && SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid);
 	}
 	
-//	@Override
-//	public boolean hasTileEntity(BlockState state){
-//		return true;
-//	}
-//	
-//	@Override
-//	public BlockEntity createTileEntity(BlockState state, BlockGetter world){
-//		return IPOContent.TE_POSTBASE.create();
-//	}
-	
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState){
-		return IPOContent.TE_POSTBASE.create(pPos, pState);
+		return IPOTileTypes.POST_BASE.get().create(pPos, pState);
 	}
 	
 	@Override
