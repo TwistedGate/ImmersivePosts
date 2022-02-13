@@ -36,7 +36,7 @@ public abstract class IPOTileEntityBase extends BlockEntity{
 	@Override
 	public CompoundTag getUpdateTag(){
 		CompoundTag nbt = new CompoundTag();
-		save(nbt);
+		saveAdditional(nbt);
 		return nbt;
 	}
 	
@@ -46,10 +46,9 @@ public abstract class IPOTileEntityBase extends BlockEntity{
 	}
 	
 	@Override
-	public CompoundTag save(CompoundTag compound){
-		super.save(compound);
+	public void saveAdditional(CompoundTag compound){
+		super.saveAdditional(compound);
 		writeCustom(compound);
-		return compound;
 	}
 	
 	@Override
