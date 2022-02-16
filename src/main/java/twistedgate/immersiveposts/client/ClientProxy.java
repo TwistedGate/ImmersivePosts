@@ -3,15 +3,10 @@ package twistedgate.immersiveposts.client;
 import com.electronwill.nightconfig.core.Config;
 
 import blusunrize.immersiveengineering.api.ManualHelper;
-import blusunrize.lib.manual.ManualElementTable;
 import blusunrize.lib.manual.ManualEntry;
-import blusunrize.lib.manual.ManualEntry.SpecialElementData;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.Tree.InnerNode;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -78,27 +73,7 @@ public class ClientProxy extends CommonProxy{
 		
 		man.addEntry(cat, modLoc("postbase"), 0);
 		man.addEntry(cat, modLoc("usage"), 1);
-		
-		{
-			Component[][] index0 = new Component[13][2];
-			Component[][] index1 = new Component[4][2];
-			
-			int page = 1;
-			for(int i = 0;i < index0.length;i++){
-				index0[i][0] = new TextComponent(Integer.toString(page++));
-				index0[i][1] = new TranslatableComponent("index.page_0_entry." + Integer.toString(i + 1));
-			}
-			for(int i = 0;i < index1.length;i++){
-				index1[i][0] = new TextComponent(Integer.toString(page++));
-				index1[i][1] = new TranslatableComponent("index.page_1_entry." + Integer.toString(i + 1));
-			}
-			
-			ManualEntry.ManualEntryBuilder builder = new ManualEntry.ManualEntryBuilder(man);
-			builder.addSpecialElement(new SpecialElementData("index0", 0, new ManualElementTable(man, index0, false)));
-			builder.addSpecialElement(new SpecialElementData("index1", 0, new ManualElementTable(man, index1, false)));
-			builder.readFromFile(modLoc("posts"));
-			man.addEntry(cat, builder.create(), 2);
-		}
+		man.addEntry(cat, modLoc("posts"), 2);
 	}
 	
 	private ResourceLocation modLoc(String str){

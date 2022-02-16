@@ -1,98 +1,98 @@
 {
 	"nether":{
-		"type": "item_display",
+		"type": "crafting",
 		"item": "minecraft:nether_brick_fence"
 	},
 	"treated":{
-		"type": "item_display",
-		"items":[
+		"type": "crafting",
+		"recipes":[
 			{"item": "immersiveengineering:treated_fence"},
 			{"item": "immersiveengineering:stick_treated"}
 		]
 	},
-	"iron":{
-		"type": "item_display",
-		"items":[
-			{"item": "immersiveposts:fence_iron"},
-			{"item": "immersiveengineering:stick_iron"}
-		]
-	},
-	"gold":{
-		"type": "item_display",
-		"items":[
-			{"item": "immersiveposts:fence_gold"},
-			{"item": "immersiveposts:stick_gold"}
-		]
-	},
-	"copper":{
-		"type": "item_display",
-		"items":[
-			{"item": "immersiveposts:fence_copper"},
-			{"item": "immersiveposts:stick_copper"}
-		]
-	},
-	"lead":{
-		"type": "item_display",
-		"items":[
-			{"item": "immersiveposts:fence_lead"},
-			{"item": "immersiveposts:stick_lead"}
-		]
-	},
-	"silver":{
-		"type": "item_display",
-		"items":[
-			{"item": "immersiveposts:fence_silver"},
-			{"item": "immersiveposts:stick_silver"}
-		]
-	},
-	"nickel":{
-		"type": "item_display",
-		"items":[
-			{"item": "immersiveposts:fence_nickel"},
-			{"item": "immersiveposts:stick_nickel"}
-		]
-	},
-	"constantan":{
-		"type": "item_display",
-		"items":[
-			{"item": "immersiveposts:fence_constantan"},
-			{"item": "immersiveposts:stick_constantan"}
-		]
-	},
-	"electrum":{
-		"type": "item_display",
-		"items":[
-			{"item": "immersiveposts:fence_electrum"},
-			{"item": "immersiveposts:stick_electrum"}
-		]
-	},
-	"uranium":{
-		"type": "item_display",
-		"items":[
-			{"item": "immersiveposts:fence_uranium"},
-			{"item": "immersiveposts:stick_uranium"}
-		]
-	},
 	"aluminium":{
-		"type": "item_display",
-		"items":[
+		"type": "crafting",
+		"recipes":[
 			{"item": "immersiveengineering:alu_fence"},
 			{"item": "immersiveengineering:stick_aluminum"}
 		]
 	},
 	"steel":{
-		"type": "item_display",
-		"items":[
+		"type": "crafting",
+		"recipes":[
 			{"item": "immersiveengineering:steel_fence"},
 			{"item": "immersiveengineering:stick_steel"}
 		]
 	},
+	"iron":{
+		"type": "crafting",
+		"recipes":[
+			{"item": "immersiveposts:fence_iron"},
+			{"item": "immersiveengineering:stick_iron"}
+		]
+	},
+	"gold":{
+		"type": "crafting",
+		"recipes":[
+			{"item": "immersiveposts:fence_gold"},
+			{"item": "immersiveposts:stick_gold"}
+		]
+	},
+	"copper":{
+		"type": "crafting",
+		"recipes":[
+			{"item": "immersiveposts:fence_copper"},
+			{"item": "immersiveposts:stick_copper"}
+		]
+	},
+	"lead":{
+		"type": "crafting",
+		"recipes":[
+			{"item": "immersiveposts:fence_lead"},
+			{"item": "immersiveposts:stick_lead"}
+		]
+	},
+	"silver":{
+		"type": "crafting",
+		"recipes":[
+			{"item": "immersiveposts:fence_silver"},
+			{"item": "immersiveposts:stick_silver"}
+		]
+	},
+	"nickel":{
+		"type": "crafting",
+		"recipes":[
+			{"item": "immersiveposts:fence_nickel"},
+			{"item": "immersiveposts:stick_nickel"}
+		]
+	},
+	"constantan":{
+		"type": "crafting",
+		"recipes":[
+			{"item": "immersiveposts:fence_constantan"},
+			{"item": "immersiveposts:stick_constantan"}
+		]
+	},
+	"electrum":{
+		"type": "crafting",
+		"recipes":[
+			{"item": "immersiveposts:fence_electrum"},
+			{"item": "immersiveposts:stick_electrum"}
+		]
+	},
+	"uranium":{
+		"type": "crafting",
+		"recipes":[
+			{"item": "immersiveposts:fence_uranium"},
+			{"item": "immersiveposts:stick_uranium"}
+		]
+	},
 	"concrete":{
-		"type": "item_display",
+		"type": "crafting",
 		"item": "immersiveengineering:slab_concrete"
 	},
 	"leadedconcrete":{
-		"type": "item_display",
+		"type": "crafting",
 		"item": "immersiveengineering:slab_concrete_leaded"
 	}
 }
