@@ -6,5 +6,6 @@
   },
   "loader": "forge:obj",
   "model": "immersiveposts:models/block/post/obj/truss_multi_a.obj",
+  "detectCullableFaces": false,
   "flip-v": true
 }

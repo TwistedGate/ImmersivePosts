@@ -6,5 +6,6 @@
   },
   "loader": "forge:obj",
   "model": "immersiveposts:models/block/post/obj/arm_twoway.obj",
+  "detectCullableFaces": false,
   "flip-v": true
 }

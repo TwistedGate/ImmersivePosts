@@ -233,7 +233,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		ResourceLocation texture = modLoc("block/posts/post_" + block.getPostMaterial().getName());
 		
 		BlockModelBuilder b = this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
-			.customLoader(OBJLoaderBuilder::begin).flipV(true)
+			.customLoader(OBJLoaderBuilder::begin).detectCullableFaces(false).flipV(true)
 			.modelLocation(modLoc("models/block/post/obj/" + name + ".obj")).end()
 			.texture("texture", texture)
 			.texture("particle", texture);
