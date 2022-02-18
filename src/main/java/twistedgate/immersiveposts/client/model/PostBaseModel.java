@@ -164,8 +164,8 @@ public class PostBaseModel extends IPOBakedModel{
 				return v;
 			};
 			
-			Function<BakedQuad, BakedQuad> tintTransformer=new QuadTransformer(Transformation.identity(), colorMul);
-			BakedModel model=Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(key.state);
+			Function<BakedQuad, BakedQuad> tintTransformer = new QuadTransformer(Transformation.identity(), colorMul);
+			BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(key.state);
 			
 			for(Direction side:Direction.values()){
 				List<BakedQuad> quads = model.getQuads(key.state, side, RANDOM, EmptyModelData.INSTANCE).stream()
@@ -205,11 +205,11 @@ public class PostBaseModel extends IPOBakedModel{
 		
 		@Override
 		public boolean equals(Object obj){
-			if(this==obj){
+			if(this == obj){
 				return true;
-			}else if(obj!=null && obj instanceof Key){
-				Key other=(Key) obj;
-				return this.state.equals(other.state) && this.facing==other.facing && sameColorMultipliersAs(other);
+			}else if(obj != null && obj instanceof Key){
+				Key other = (Key) obj;
+				return this.state.equals(other.state) && this.facing == other.facing && sameColorMultipliersAs(other);
 			}
 			
 			return false;

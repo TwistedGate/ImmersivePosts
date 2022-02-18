@@ -61,27 +61,27 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  * @author TwistedGate
  */
 public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWaterloggedBlock{
-	public static final DustParticleOptions URAN_PARTICLE=new DustParticleOptions(new Vector3f(0.0F, 1.0F, 0.0F), 1.0F);
+	public static final DustParticleOptions URAN_PARTICLE = new DustParticleOptions(new Vector3f(0.0F, 1.0F, 0.0F), 1.0F);
 	
-	public static final VoxelShape POST_SHAPE=Shapes.box(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
+	public static final VoxelShape POST_SHAPE = Shapes.box(0.3125, 0.0, 0.3125, 0.6875, 1.0, 0.6875);
 	
-	public static final VoxelShape LPARM_NORTH_BOUNDS=Shapes.box(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125);
-	public static final VoxelShape LPARM_SOUTH_BOUNDS=Shapes.box(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0);
-	public static final VoxelShape LPARM_EAST_BOUNDS=Shapes.box(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875);
-	public static final VoxelShape LPARM_WEST_BOUNDS=Shapes.box(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875);
+	public static final VoxelShape LPARM_NORTH_BOUNDS = Shapes.box(0.3125, 0.25, 0.0, 0.6875, 0.75, 0.3125);
+	public static final VoxelShape LPARM_SOUTH_BOUNDS = Shapes.box(0.3125, 0.25, 0.6875, 0.6875, 0.75, 1.0);
+	public static final VoxelShape LPARM_EAST_BOUNDS = Shapes.box(0.6875, 0.25, 0.3125, 1.0, 0.75, 0.6875);
+	public static final VoxelShape LPARM_WEST_BOUNDS = Shapes.box(0.0, 0.25, 0.3125, 0.3125, 0.75, 0.6875);
 	
 	// LPARM = (Little-)Post Arm
-	public static final BooleanProperty LPARM_NORTH=BooleanProperty.create("parm_north");
-	public static final BooleanProperty LPARM_EAST=BooleanProperty.create("parm_east");
-	public static final BooleanProperty LPARM_SOUTH=BooleanProperty.create("parm_south");
-	public static final BooleanProperty LPARM_WEST=BooleanProperty.create("parm_west");
+	public static final BooleanProperty LPARM_NORTH = BooleanProperty.create("parm_north");
+	public static final BooleanProperty LPARM_EAST = BooleanProperty.create("parm_east");
+	public static final BooleanProperty LPARM_SOUTH = BooleanProperty.create("parm_south");
+	public static final BooleanProperty LPARM_WEST = BooleanProperty.create("parm_west");
 	
-	public static final BooleanProperty WATERLOGGED=BlockStateProperties.WATERLOGGED;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
-	public static final DirectionProperty FACING=DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final EnumProperty<EnumPostType> TYPE=EnumProperty.create("type", EnumPostType.class);
+	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+	public static final EnumProperty<EnumPostType> TYPE = EnumProperty.create("type", EnumPostType.class);
 	
-	public static final EnumProperty<EnumFlipState> FLIPSTATE=EnumProperty.create("flipstate", EnumFlipState.class);
+	public static final EnumProperty<EnumFlipState> FLIPSTATE = EnumProperty.create("flipstate", EnumFlipState.class);
 	
 	public PostBlock(IPostMaterial material){
 		super(material);
@@ -242,8 +242,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 			}else if(Utils.isHammer(held)){
 				if(playerIn.isShiftKeyDown()){
 					switch(state.getValue(TYPE)){
-						case POST:
-						case POST_TOP:{
+						case POST: case POST_TOP:{
 							Direction facing = hit.getDirection();
 							if(!Direction.Plane.HORIZONTAL.test(facing)){
 								break;
@@ -332,11 +331,11 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 					}
 				}else{
 					switch(state.getValue(TYPE)){
-						case POST:case POST_TOP:{
+						case POST: case POST_TOP:{
 							Direction facing = hit.getDirection();
 							BlockState defaultState = defaultBlockState().setValue(TYPE, EnumPostType.ARM);
 							switch(facing){
-								case NORTH:case EAST:case SOUTH:case WEST:{
+								case NORTH: case EAST: case SOUTH: case WEST:{
 									BlockPos nPos = pos.relative(facing);
 									BlockState nState = worldIn.getBlockState(nPos);
 									
@@ -352,11 +351,13 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 												replaceSelf(nState, worldIn, nPos);
 												return InteractionResult.SUCCESS;
 											}
-											default:break;
+											default:
+												break;
 										}
 									}
 								}
-								default:break;
+								default:
+									break;
 							}
 							return InteractionResult.SUCCESS;
 						}
@@ -474,15 +475,9 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 		boolean up = PostBlock.canConnect(world, pos, Direction.UP) && ((aboveBlock instanceof PostBlock) ? aboveState.getValue(TYPE) != EnumPostType.ARM : true);
 		boolean down = PostBlock.canConnect(world, pos, Direction.DOWN) && ((belowBlock instanceof PostBlock) ? belowState.getValue(TYPE) != EnumPostType.ARM : true);
 		
-		EnumFlipState flipState;
-		if(up && down)
-			flipState = EnumFlipState.BOTH;
-		else if(down)
-			flipState = EnumFlipState.DOWN;
-		else
-			flipState = EnumFlipState.UP;
-		
-		return flipState;
+		if(up && down) return EnumFlipState.BOTH;
+		else if(down) return EnumFlipState.DOWN;
+		else return EnumFlipState.UP;
 	}
 	
 	@Override
@@ -602,7 +597,6 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 		VoxelShape shape = otherState.getShape(worldIn, nPos);
 		if(!shape.isEmpty()){
 			AABB box = shape.bounds();
-			
 			
 			boolean b;
 			switch(facingIn){

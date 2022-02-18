@@ -7,9 +7,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.Util;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -35,8 +32,6 @@ import twistedgate.immersiveposts.enums.EnumPostMaterial;
  * @author TwistedGate
  */
 public class IPOContent{
-	public static final Logger log = LogManager.getLogger(IPOMod.ID + "/Stuff");
-	
 	private static final DeferredRegister<Block> BLOCK_REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, IPOMod.ID);
 	private static final DeferredRegister<Item> ITEM_REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, IPOMod.ID);
 	
@@ -110,7 +105,8 @@ public class IPOContent{
 			});
 			
 			public static PostBlock get(@Nonnull IPostMaterial material){
-				if(!ALL.containsKey(material)) return null;
+				if(!ALL.containsKey(material))
+					return null;
 				return ALL.get(material).get();
 			}
 			
@@ -127,7 +123,8 @@ public class IPOContent{
 			});
 			
 			public static HorizontalTrussBlock get(@Nonnull IPostMaterial material){
-				if(!ALL.containsKey(material)) return null;
+				if(!ALL.containsKey(material))
+					return null;
 				return ALL.get(material).get();
 			}
 			

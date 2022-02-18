@@ -17,7 +17,7 @@ public abstract class IPOTileEntityBase extends BlockEntity{
 	public IPOTileEntityBase(BlockEntityType<? extends BlockEntity> pType, BlockPos pWorldPosition, BlockState pBlockState){
 		super(pType, pWorldPosition, pBlockState);
 	}
-
+	
 	@Nonnull
 	public Level getWorldNonnull(){
 		return Objects.requireNonNull(super.getLevel());

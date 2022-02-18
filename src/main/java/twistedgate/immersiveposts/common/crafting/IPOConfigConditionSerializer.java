@@ -15,7 +15,7 @@ import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer.IPOConfigCondition;
 
 public class IPOConfigConditionSerializer implements IConditionSerializer<IPOConfigCondition>{
-	public static final ResourceLocation ID=new ResourceLocation(IPOMod.ID, "cfg");
+	public static final ResourceLocation ID = new ResourceLocation(IPOMod.ID, "cfg");
 	
 	@Override
 	public void write(JsonObject json, IPOConfigCondition condition){
@@ -25,8 +25,8 @@ public class IPOConfigConditionSerializer implements IConditionSerializer<IPOCon
 	
 	@Override
 	public IPOConfigCondition read(JsonObject json){
-		String key=GsonHelper.getAsString(json, "key");
-		boolean value=GsonHelper.getAsBoolean(json, "value");
+		String key = GsonHelper.getAsString(json, "key");
+		boolean value = GsonHelper.getAsBoolean(json, "value");
 		
 		return new IPOConfigCondition(key, value);
 	}
@@ -40,8 +40,8 @@ public class IPOConfigConditionSerializer implements IConditionSerializer<IPOCon
 		private final boolean value;
 		private final String key;
 		public IPOConfigCondition(String key, boolean value){
-			this.key=key;
-			this.value=value;
+			this.key = key;
+			this.value = value;
 		}
 		
 		@Override
@@ -51,17 +51,18 @@ public class IPOConfigConditionSerializer implements IConditionSerializer<IPOCon
 		
 		@Override
 		public boolean test(){
-			UnmodifiableConfig cfg=IPOConfig.ALL.getValues();
-			Object cfgEntry=cfg.get(this.key);
+			UnmodifiableConfig cfg = IPOConfig.ALL.getValues();
+			Object cfgEntry = cfg.get(this.key);
 			
-			if(cfgEntry==null){
-				// this isnt the best way of doing it, but its better than nothing.
-				cfgEntry=((Config)cfg.get("Post Types")).get(this.key);
+			if(cfgEntry == null){
+				// this isnt the best way of doing it, but its better than
+				// nothing.
+				cfgEntry = ((Config) cfg.get("Post Types")).get(this.key);
 			}
 			
 			if(cfgEntry instanceof ForgeConfigSpec.BooleanValue){
-				Boolean cfgValue=((BooleanValue)cfgEntry).get();
-				return cfgValue!=null && cfgValue==value;
+				Boolean cfgValue = ((BooleanValue) cfgEntry).get();
+				return cfgValue != null && cfgValue == value;
 			}
 			IPOConfig.log.error("[IPOConfigCondition]: Unknown key \"{}\"", this.key);
 			return false;

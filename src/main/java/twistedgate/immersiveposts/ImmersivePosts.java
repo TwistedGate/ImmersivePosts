@@ -53,7 +53,7 @@ public class ImmersivePosts{
 		
 		IPOContent.addRegistersToEventBus(bus);
 		
-		ExternalModContent.init();
+		ExternalModContent.forceClassLoad();
 		IPOContent.populate();
 		IPOLootFunctions.modConstruction();
 		

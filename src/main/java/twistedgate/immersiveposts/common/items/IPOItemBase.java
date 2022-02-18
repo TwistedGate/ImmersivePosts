@@ -15,13 +15,6 @@ public class IPOItemBase extends Item{
 		super(new Item.Properties().tab(ImmersivePosts.creativeTab));
 	}
 	
-//	public IPOItemBase(String name){
-//		super(new Item.Properties().group(ImmersivePosts.creativeTab));
-//		setRegistryName(new ResourceLocation(IPOMod.ID, name));
-//		
-//		IPOContent.ITEMS.add(this);
-//	}
-	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items){
 		if(this.allowdedIn(group) && IPOConfig.MAIN.isEnabled(getRegistryName())){
