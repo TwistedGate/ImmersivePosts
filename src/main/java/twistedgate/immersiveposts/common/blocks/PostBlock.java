@@ -591,7 +591,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 			return false;
 		
 		// Tertiary, block specific checks
-		if(IPOTags.IGNORED_BY_POSTARM.contains(otherBlock))
+		if(otherState.is(IPOTags.IGNORED_BY_POSTARM))
 			return false;
 		
 		VoxelShape shape = otherState.getShape(worldIn, nPos);

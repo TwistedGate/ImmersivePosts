@@ -22,7 +22,6 @@ import twistedgate.immersiveposts.common.ExternalModContent;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer;
-import twistedgate.immersiveposts.util.loot.IPOLootFunctions;
 
 /**
  * @author TwistedGate
@@ -55,8 +54,7 @@ public class ImmersivePosts{
 		
 		ExternalModContent.forceClassLoad();
 		IPOContent.populate();
-		IPOLootFunctions.modConstruction();
-		
+
 		proxy.construct();
 	}
 	

@@ -5,13 +5,15 @@ import java.util.function.Consumer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
@@ -60,9 +62,9 @@ public class IPORecipes extends RecipeProvider{
 	}
 	
 	/** Creates both a recipe for fences and the stick needed */
-	private void fenceAndStickRecipe(FenceBlock fence, Item rod, Tag.Named<Item> stickTag, Tag.Named<Item> ingotTag){
-		String stickMat = getMaterialName(stickTag.getName()); // Stick Material
-		String ingotMat = getMaterialName(ingotTag.getName()); // Ingot Material
+	private void fenceAndStickRecipe(FenceBlock fence, Item rod, TagKey<Item> stickTag, TagKey<Item> ingotTag){
+		String stickMat = getMaterialName(stickTag.location()); // Stick Material
+		String ingotMat = getMaterialName(ingotTag.location()); // Ingot Material
 		
 		if(fence != Fences.IRON.get()){
 			ShapedRecipeBuilder.shaped(rod, 4)
@@ -85,8 +87,13 @@ public class IPORecipes extends RecipeProvider{
 	private String getMaterialName(ResourceLocation in){
 		return in.getPath().substring(in.getPath().indexOf('/') + 1);
 	}
-	
-	private Consumer<FinishedRecipe> involveConfig(Consumer<FinishedRecipe> out, ICondition... conditions){
+
+    // Private in RecipeProvider
+    private static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tag) {
+        return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
+    }
+
+    private Consumer<FinishedRecipe> involveConfig(Consumer<FinishedRecipe> out, ICondition... conditions){
 		return recipe -> {
 			out.accept(new FinishedRecipe(){
 				@Override

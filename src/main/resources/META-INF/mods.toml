@@ -23,20 +23,20 @@ Korean : FreddyYj'''
 [[dependencies.immersiveposts]]
 	modId="immersiveengineering"
 	mandatory=true
-	versionRange="[1.18.1-7.1.0,)"
+	versionRange="[1.18.2-7.1.1,)"
 	ordering="BEFORE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="forge"
 	mandatory=true
-	versionRange="[39.0.36,)"
+	versionRange="[40.0.12,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="minecraft"
 	mandatory=true
-	versionRange="[1.18.1]"
+	versionRange="[1.18.2]"
 	ordering="NONE"
 	side="BOTH"
