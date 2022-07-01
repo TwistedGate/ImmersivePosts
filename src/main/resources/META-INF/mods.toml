@@ -23,7 +23,7 @@ Korean : FreddyYj'''
 [[dependencies.immersiveposts]]
 	modId="immersiveengineering"
 	mandatory=true
-	versionRange="[1.18.2-7.1.1,)"
+	versionRange="[1.18.2-8.0.0,)"
 	ordering="BEFORE"
 	side="BOTH"
 
