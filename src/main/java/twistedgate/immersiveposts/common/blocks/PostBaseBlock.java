@@ -8,8 +8,6 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -170,7 +168,7 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 					if(b instanceof PostBlock){
 						ItemStack tmp = ((PostBlock) b).getPostMaterial().getItemStack();
 						if(!held.sameItem(tmp)){
-							playerIn.displayClientMessage(new TranslatableComponent("immersiveposts.expectedlocal", tmp.getHoverName()), true);
+							playerIn.displayClientMessage(Component.translatable("immersiveposts.expectedlocal", tmp.getHoverName()), true);
 							return InteractionResult.SUCCESS;
 						}
 					}
@@ -231,7 +229,7 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 		@Override
 		@OnlyIn(Dist.CLIENT)
 		public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn){
-			tooltip.add(new TextComponent(I18n.get("tooltip.postbase")));
+			tooltip.add(Component.literal(I18n.get("tooltip.postbase")));
 		}
 	}
 }

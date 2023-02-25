@@ -12,6 +12,7 @@ import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.client.model.generators.loaders.OBJLoaderBuilder;
+import net.minecraftforge.client.model.generators.loaders.ObjModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
@@ -233,7 +234,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		ResourceLocation texture = modLoc("block/posts/post_" + block.getPostMaterial().getName());
 		
 		BlockModelBuilder b = this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
-			.customLoader(OBJLoaderBuilder::begin).detectCullableFaces(false).flipV(true)
+			.customLoader(ObjModelBuilder::begin).automaticCulling(false).flipV(true)
 			.modelLocation(modLoc("models/block/post/obj/" + name + ".obj")).end()
 			.texture("texture", texture)
 			.texture("particle", texture);

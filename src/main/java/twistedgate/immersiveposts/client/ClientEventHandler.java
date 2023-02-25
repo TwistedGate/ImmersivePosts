@@ -9,6 +9,7 @@ import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.Unit;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -42,5 +43,10 @@ public class ClientEventHandler extends SimplePreparableReloadListener<Unit>{
 			ItemBlockRenderTypes.setRenderLayer(IPOContent.Blocks.Posts.get(mat), type);
 			ItemBlockRenderTypes.setRenderLayer(IPOContent.Blocks.HorizontalTruss.get(mat), type);
 		}
+	}
+	
+	@SubscribeEvent
+	public static void colorReg(RegisterColorHandlersEvent.Block event){
+		event.register(new ColorHandler(), IPOContent.Blocks.POST_BASE.get());
 	}
 }

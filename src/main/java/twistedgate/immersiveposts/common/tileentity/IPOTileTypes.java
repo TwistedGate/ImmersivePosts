@@ -15,7 +15,7 @@ import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent;
 
 public class IPOTileTypes{
-	public static DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, IPOMod.ID);
+	public static DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, IPOMod.ID);
 	
 	public static final RegistryObject<BlockEntityType<PostBaseTileEntity>> POST_BASE = register("postbase", PostBaseTileEntity::new, IPOContent.Blocks.POST_BASE::get);
 	

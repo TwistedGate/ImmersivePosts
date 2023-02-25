@@ -1,7 +1,5 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import com.mojang.math.Vector3f;
@@ -14,8 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -168,7 +167,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand){
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand){
 		if(getPostMaterial() == EnumPostMaterial.URANIUM){
 			if(stateIn.getValue(TYPE) != EnumPostType.ARM && rand.nextFloat() < 0.125F){
 				double x = pos.getX() + 0.375 + 0.25 * rand.nextDouble();
@@ -201,7 +200,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 			ItemStack held = playerIn.getMainHandItem();
 			if(IPostMaterial.isValidItem(held)){
 				if(!held.sameItem(getPostMaterial().getItemStack())){
-					playerIn.displayClientMessage(new TranslatableComponent("immersiveposts.expectedlocal", getPostMaterial().getItemStack().getHoverName()), true);
+					playerIn.displayClientMessage(Component.translatable("immersiveposts.expectedlocal", getPostMaterial().getItemStack().getHoverName()), true);
 					return InteractionResult.SUCCESS;
 				}
 				
@@ -268,7 +267,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 										return InteractionResult.FAIL;
 									}else if((nState.getBlock() instanceof PostBlock && nState.getValue(TYPE).id() <= 1)){
 										if(this.getPostMaterial() != ((PostBlock) nState.getBlock()).getPostMaterial()){
-											playerIn.displayClientMessage(new TranslatableComponent("immersiveposts.truss_notsametype"), true);
+											playerIn.displayClientMessage(Component.translatable("immersiveposts.truss_notsametype"), true);
 											return InteractionResult.FAIL;
 										}
 										
@@ -320,9 +319,9 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 								
 								return InteractionResult.SUCCESS;
 							}else if(size == 0){
-								playerIn.displayClientMessage(new TranslatableComponent("immersiveposts.truss_minimumdistance"), true);
+								playerIn.displayClientMessage(Component.translatable("immersiveposts.truss_minimumdistance"), true);
 							}else if(!success && size >= 1){
-								playerIn.displayClientMessage(new TranslatableComponent("immersiveposts.truss_postnotfound"), true);
+								playerIn.displayClientMessage(Component.translatable("immersiveposts.truss_postnotfound"), true);
 							}
 							break;
 						}

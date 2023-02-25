@@ -14,7 +14,6 @@ import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.common.IPOConfig;
-import twistedgate.immersiveposts.common.IPOContent;
 
 /**
  * @author TwistedGate
@@ -28,7 +27,8 @@ public class ClientProxy extends CommonProxy{
 		ClientEventHandler handler = new ClientEventHandler();
 		((ReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(handler);
 		
-		Minecraft.getInstance().getBlockColors().register(new ColorHandler(), IPOContent.Blocks.POST_BASE.get());
+		// Moved to ClientEventHandler#colorReg(RegisterColorHandlersEvent.Block)
+		// Minecraft.getInstance().getBlockColors().register(new ColorHandler(), IPOContent.Blocks.POST_BASE.get());
 	}
 	
 	@Override

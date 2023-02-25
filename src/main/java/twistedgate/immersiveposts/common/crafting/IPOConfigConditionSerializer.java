@@ -50,7 +50,7 @@ public class IPOConfigConditionSerializer implements IConditionSerializer<IPOCon
 		}
 		
 		@Override
-		public boolean test(){
+		public boolean test(IContext context){
 			UnmodifiableConfig cfg = IPOConfig.ALL.getValues();
 			Object cfgEntry = cfg.get(this.key);
 			
