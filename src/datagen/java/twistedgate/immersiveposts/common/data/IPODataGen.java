@@ -5,10 +5,10 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.data.loot.IPOBlockLoot;
 
@@ -26,16 +26,16 @@ public class IPODataGen{
 		
 		if(event.includeServer()){
 			IPOBlockTags blocktags = new IPOBlockTags(generator, exhelper);
-			generator.addProvider(blocktags);
-			generator.addProvider(new IPOItemTags(generator, blocktags, exhelper));
-			generator.addProvider(new IPOBlockLoot(generator));
-			generator.addProvider(new IPORecipes(generator));
+			generator.addProvider(true, blocktags);
+			generator.addProvider(true, new IPOItemTags(generator, blocktags, exhelper));
+			generator.addProvider(true, new IPOBlockLoot(generator));
+			generator.addProvider(true, new IPORecipes(generator));
 			
 		}
 		
 		if(event.includeClient()){
-			generator.addProvider(new IPOBlockStates(generator, exhelper));
-			generator.addProvider(new IPOItemModels(generator, exhelper));
+			generator.addProvider(true, new IPOBlockStates(generator, exhelper));
+			generator.addProvider(true, new IPOItemModels(generator, exhelper));
 		}
 	}
 }

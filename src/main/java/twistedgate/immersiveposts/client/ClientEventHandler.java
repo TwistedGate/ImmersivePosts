@@ -34,6 +34,7 @@ public class ClientEventHandler extends SimplePreparableReloadListener<Unit>{
 	
 	@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent event){
+		// FIXME Do this once you get the PostBase Loader & Model going
 		ItemBlockRenderTypes.setRenderLayer(IPOContent.Blocks.POST_BASE.get(), RenderType.cutout());
 		
 		Predicate<RenderType> type = t -> {

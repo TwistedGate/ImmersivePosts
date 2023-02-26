@@ -47,7 +47,7 @@ public class IPORecipes extends RecipeProvider{
 			.pattern("sws")
 			.pattern("sws")
 			.unlockedBy("has_cobblestone", has(Blocks.COBBLESTONE))
-			.unlockedBy("has_stone_bricks", has(ItemTags.STONE_BRICKS))
+			.unlockedBy("has_stone_bricks", hasTag(ItemTags.STONE_BRICKS))
 			.save(out);
 		
 		fenceAndStickRecipe(Fences.IRON.get(), null, IPOTags.Rods.IRON, IPOTags.Ingots.IRON);
@@ -71,7 +71,7 @@ public class IPORecipes extends RecipeProvider{
 				.pattern("i")
 				.pattern("i")
 				.define('i', ingotTag)
-				.unlockedBy("has_" + ingotMat + "_ingot", has(ingotTag))
+				.unlockedBy("has_" + ingotMat + "_ingot", hasTag(ingotTag))
 				.save(involveConfig(this.out, new IPOConfigCondition(ingotMat, true)), new ResourceLocation(IPOMod.ID, "has_" + stickMat + "_rod"));
 		}
 		ShapedRecipeBuilder.shaped(fence, 3)
@@ -79,8 +79,8 @@ public class IPORecipes extends RecipeProvider{
 			.pattern("isi")
 			.define('i', ingotTag)
 			.define('s', stickTag)
-			.unlockedBy("has_" + stickMat + "_rod", has(stickTag))
-			.unlockedBy("has_" + ingotMat + "_ingot", has(ingotTag))
+			.unlockedBy("has_" + stickMat + "_rod", hasTag(stickTag))
+			.unlockedBy("has_" + ingotMat + "_ingot", hasTag(ingotTag))
 			.save(involveConfig(this.out, new IPOConfigCondition(ingotMat, true)));
 	}
 	
@@ -89,7 +89,7 @@ public class IPORecipes extends RecipeProvider{
 	}
 
     // Private in RecipeProvider
-    private static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tag) {
+    private static InventoryChangeTrigger.TriggerInstance hasTag(TagKey<Item> tag) {
         return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
     }
 

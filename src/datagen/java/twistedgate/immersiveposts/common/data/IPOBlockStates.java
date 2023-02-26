@@ -11,9 +11,9 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
-import net.minecraftforge.client.model.generators.loaders.OBJLoaderBuilder;
 import net.minecraftforge.client.model.generators.loaders.ObjModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.IPOContent;
@@ -58,8 +58,8 @@ public class IPOBlockStates extends BlockStateProvider{
 		
 		// POSTS
 		for(EnumPostMaterial material:EnumPostMaterial.values()){
-			postStateFor(IPOContent.Blocks.Posts.get(material));
-			horizontalPostStateFor(IPOContent.Blocks.HorizontalTruss.get(material));
+			postStateFor(IPOContent.Blocks.Posts.getRegObject(material));
+			horizontalPostStateFor(IPOContent.Blocks.HorizontalTruss.getRegObject(material));
 		}
 		
 		// FENCES
@@ -74,7 +74,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		fenceBlock(Fences.URANIUM.get(),	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 	}
 	
-	private void horizontalPostStateFor(HorizontalTrussBlock block){
+	private void horizontalPostStateFor(RegistryObject<HorizontalTrussBlock> block){
 		BlockModelBuilder modelHTrussSingle	= getPostModel(block, "truss_single");
 		BlockModelBuilder modelHTrussA		= getPostModel(block, "truss_multi_a");
 		BlockModelBuilder modelHTrussB		= getPostModel(block, "truss_multi_b");
@@ -85,7 +85,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		BlockModelBuilder modelPointTop		= getPostModel(block, "truss_point_top");
 		BlockModelBuilder modelPointBottom	= getPostModel(block, "truss_point_bottom");
 		
-		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
 		
 		for(Direction dir:Direction.Plane.HORIZONTAL){
 			int yRot = horizontalRotation(dir, false);
@@ -147,7 +147,7 @@ public class IPOBlockStates extends BlockStateProvider{
 			.condition(HorizontalTrussBlock.PANEL_WEST, true);
 	}
 	
-	private void postStateFor(PostBlock block){
+	private void postStateFor(RegistryObject<PostBlock> block){
 		BlockModelBuilder modelArm			= getPostModel(block, "arm");
 		BlockModelBuilder modelArmTwoWay	= getPostModel(block, "arm_twoway");
 		BlockModelBuilder modelArmDouble	= getPostModel(block, "arm_double");
@@ -156,7 +156,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		BlockModelBuilder modelPostArm		= getPostModel(block, "post_arm");
 		ExistingModelFile modelEmpty		= new ExistingModelFile(modLoc("block/empty"), this.exFileHelper);
 		
-		MultiPartBlockStateBuilder builder=getMultipartBuilder(block);
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
 		
 		builder.part()
 			.modelFile(modelPost).addModel()
@@ -230,8 +230,8 @@ public class IPOBlockStates extends BlockStateProvider{
 		return value;
 	}
 
-	private BlockModelBuilder getPostModel(GenericPostBlock block, String name){
-		ResourceLocation texture = modLoc("block/posts/post_" + block.getPostMaterial().getName());
+	private <P extends GenericPostBlock> BlockModelBuilder getPostModel(RegistryObject<P> block, String name){
+		ResourceLocation texture = modLoc("block/posts/post_" + block.get().getPostMaterial().getName());
 		
 		BlockModelBuilder b = this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
 			.customLoader(ObjModelBuilder::begin).automaticCulling(false).flipV(true)
@@ -242,8 +242,8 @@ public class IPOBlockStates extends BlockStateProvider{
 		return b;
 	}
 	
-	private String postModelPath(GenericPostBlock block, String name){
-		return block.getRegistryName().getPath() + "/" + name;
+	private <P extends GenericPostBlock> String postModelPath(RegistryObject<P> block, String name){
+		return block.getId().getPath() + "/" + name;
 	}
 	
 	private ResourceLocation ieLoc(String str){

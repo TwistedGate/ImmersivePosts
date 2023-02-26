@@ -9,9 +9,7 @@ import blusunrize.lib.manual.Tree.InnerNode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.common.IPOConfig;
 
@@ -36,7 +34,8 @@ public class ClientProxy extends CommonProxy{
 		super.construct();
 		
 		if(Minecraft.getInstance() != null){
-			ModelLoaderRegistry.registerLoader(PostBaseLoader.LOCATION, new PostBaseLoader());
+			// FIXME
+			//ModelLoaderRegistry.registerLoader(PostBaseLoader.LOCATION, new PostBaseLoader());
 		}
 	}
 	

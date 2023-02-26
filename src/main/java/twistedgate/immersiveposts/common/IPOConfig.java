@@ -9,6 +9,8 @@ import com.electronwill.nightconfig.core.Config;
 import com.google.common.base.Preconditions;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
@@ -87,6 +89,14 @@ public class IPOConfig{
 			builder.pop();
 		}
 		
+		public boolean isEnabled(Item item){
+			return IPOContent.containsBlockOrItem(null, item);
+		}
+		
+		public boolean isEnabled(Block block){
+			return IPOContent.containsBlockOrItem(block, null);
+		}
+		
 		public boolean isEnabled(ResourceLocation loc){
 			try{
 				String name = loc.getPath().substring(loc.getPath().indexOf('_') + 1).toUpperCase();
@@ -96,8 +106,10 @@ public class IPOConfig{
 			}
 		}
 		
+		// -----------------------------------------------------------------------------------------------
+		
 		public boolean isEnabled(EnumPostMaterial material){
-			if(material==null) return true;
+			if(material == null) return true;
 			
 			switch(material){
 				case CONCRETE:			return enableConcrete.get();

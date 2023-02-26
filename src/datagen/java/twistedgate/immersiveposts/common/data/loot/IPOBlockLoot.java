@@ -20,9 +20,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
-import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -67,21 +67,23 @@ public class IPOBlockLoot extends LootTableProvider{
 			
 			// Fences
 			for(RegistryObject<FenceBlock> b:IPOContent.Blocks.Fences.ALL_FENCES){
-				registerSelfDropping(b.get());
+				registerSelfDropping(b);
 			}
 			
 			// Posts
 			for(EnumPostMaterial mat:EnumPostMaterial.values()){
-				PostBlock b = IPOContent.Blocks.Posts.get(mat);
+				RegistryObject<PostBlock> b = IPOContent.Blocks.Posts.getRegObject(mat);
 				register(b, createPoolBuilder().add(PostMaterialDropLootEntry.builder()));
 			}
 			
-			registerSelfDropping(IPOContent.Blocks.POST_BASE.get(), createPoolBuilder().add(BaseCoverDropLootEntry.builder()));
+			
+			
+			registerSelfDropping(IPOContent.Blocks.POST_BASE, createPoolBuilder().add(BaseCoverDropLootEntry.builder()));
 		}
 		
-		private void registerSelfDropping(Block b, LootPool.Builder... pool){
+		private <B extends Block> void registerSelfDropping(RegistryObject<B> b, LootPool.Builder... pool){
 			LootPool.Builder[] withSelf = Arrays.copyOf(pool, pool.length + 1);
-			withSelf[withSelf.length - 1] = singleItem(b);
+			withSelf[withSelf.length - 1] = singleItem(b.get());
 			register(b, withSelf);
 		}
 		
@@ -89,15 +91,15 @@ public class IPOBlockLoot extends LootTableProvider{
 			return createPoolBuilder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(in));
 		}
 		
-		private void register(Block b, LootPool.Builder... pools){
+		private <B extends Block> void register(RegistryObject<B> b, LootPool.Builder... pools){
 			LootTable.Builder builder = LootTable.lootTable();
 			for(LootPool.Builder pool:pools)
 				builder.withPool(pool);
 			register(b, builder);
 		}
 		
-		private void register(Block b, LootTable.Builder table){
-			register(b.getRegistryName(), table);
+		private <B extends Block> void register(RegistryObject<B> b, LootTable.Builder table){
+			register(b.getId(), table);
 		}
 		
 		private void register(ResourceLocation name, LootTable.Builder table){

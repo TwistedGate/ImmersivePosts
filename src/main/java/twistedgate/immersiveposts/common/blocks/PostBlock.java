@@ -194,6 +194,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 		return world.getBlockState(pos).getValue(TYPE).id() < 2;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit){
 		if(!worldIn.isClientSide){

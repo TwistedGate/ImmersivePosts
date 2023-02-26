@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.Util;
 import net.minecraft.world.item.BlockItem;
@@ -38,7 +39,17 @@ public class IPOContent{
 	public static final void addRegistersToEventBus(IEventBus eventBus){
 		BLOCK_REGISTER.register(eventBus);
 		ITEM_REGISTER.register(eventBus);
-		IPOTileTypes.REGISTER.register(eventBus);
+		IPOTileTypes.registerToEventBus(eventBus);
+	}
+	
+	public static final boolean containsBlockOrItem(@Nullable final Block block, @Nullable final Item item){
+		if(block != null){
+			return BLOCK_REGISTER.getEntries().stream().anyMatch(r -> r.get() == block);
+		}
+		if(item != null){
+			return ITEM_REGISTER.getEntries().stream().anyMatch(r -> r.get() == item);
+		}
+		return false;
 	}
 	
 	protected static final <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> constructor){
@@ -46,18 +57,18 @@ public class IPOContent{
 	}
 	
 	protected static final RegistryObject<PostBlock> registerPostBlock(EnumPostMaterial material){
-		return BLOCK_REGISTER.register(material.getBlockName(), () -> new PostBlock(material));
+		return registerBlock(material.getBlockName(), () -> new PostBlock(material));
 	}
 	
 	protected static final RegistryObject<HorizontalTrussBlock> registerTrussBlock(EnumPostMaterial material){
-		return BLOCK_REGISTER.register(material.getBlockName() + "_truss", () -> new HorizontalTrussBlock(material));
+		return registerBlock(material.getBlockName() + "_truss", () -> new HorizontalTrussBlock(material));
 	}
 	
-	protected static final RegistryObject<FenceBlock> registerMetalFence(String name){
-		name = "fence_" + name;
+	protected static final RegistryObject<FenceBlock> registerMetalFence(String materialName){
+		materialName = "fence_" + materialName;
 		
-		RegistryObject<FenceBlock> block = BLOCK_REGISTER.register(name, MetalFenceBlock::new);
-		ITEM_REGISTER.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(ImmersivePosts.creativeTab)));
+		RegistryObject<FenceBlock> block = BLOCK_REGISTER.register(materialName, MetalFenceBlock::new);
+		ITEM_REGISTER.register(materialName, () -> new BlockItem(block.get(), new Item.Properties().tab(ImmersivePosts.creativeTab)));
 		Fences.ALL_FENCES.add(block);
 		return block;
 	}
@@ -110,6 +121,12 @@ public class IPOContent{
 				return ALL.get(material).get();
 			}
 			
+			public static RegistryObject<PostBlock> getRegObject(@Nonnull IPostMaterial material){
+				if(!ALL.containsKey(material))
+					return null;
+				return ALL.get(material);
+			}
+			
 			private static void forceClassLoad(){
 			}
 		}
@@ -126,6 +143,12 @@ public class IPOContent{
 				if(!ALL.containsKey(material))
 					return null;
 				return ALL.get(material).get();
+			}
+			
+			public static RegistryObject<HorizontalTrussBlock> getRegObject(@Nonnull IPostMaterial material){
+				if(!ALL.containsKey(material))
+					return null;
+				return ALL.get(material);
 			}
 			
 			private static void forceClassLoad(){

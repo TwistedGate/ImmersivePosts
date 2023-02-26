@@ -17,8 +17,7 @@ public class IPOItemBase extends Item{
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items){
-		
-		if(this.allowedIn(group) && IPOConfig.MAIN.isEnabled(getRegistryName())){
+		if(this.allowedIn(group) && IPOConfig.MAIN.isEnabled(this)){
 			items.add(new ItemStack(this));
 		}
 	}
