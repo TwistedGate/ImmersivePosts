@@ -7,15 +7,17 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import twistedgate.immersiveposts.client.ClientEventHandler;
 import twistedgate.immersiveposts.client.ClientProxy;
 import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.common.ExternalModContent;
@@ -45,8 +47,9 @@ public class ImmersivePosts{
 		
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		
-		bus.addListener(this::setup);
 		bus.addListener(this::loadComplete);
+		
+		MinecraftForge.EVENT_BUS.addListener(this::addReloadListeners);
 		
 		CraftingHelper.register(new IPOConfigConditionSerializer());
 		
@@ -54,15 +57,12 @@ public class ImmersivePosts{
 		
 		ExternalModContent.forceClassLoad();
 		IPOContent.populate();
-
-		proxy.construct();
 	}
-	
-	public void setup(FMLCommonSetupEvent event){
-		proxy.setup();
-	}
-	
 	public void loadComplete(FMLLoadCompleteEvent event){
 		proxy.completed();
+	}
+	
+	public void addReloadListeners(AddReloadListenerEvent event){
+		event.addListener(new ClientEventHandler());
 	}
 }

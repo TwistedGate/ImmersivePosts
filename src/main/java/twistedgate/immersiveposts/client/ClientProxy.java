@@ -6,9 +6,7 @@ import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.lib.manual.ManualEntry;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.Tree.InnerNode;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.common.IPOConfig;
@@ -17,23 +15,6 @@ import twistedgate.immersiveposts.common.IPOConfig;
  * @author TwistedGate
  */
 public class ClientProxy extends CommonProxy{
-	
-	@Override
-	public void setup(){
-		super.setup();
-		
-		ClientEventHandler handler = new ClientEventHandler();
-		((ReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(handler);
-		
-		// Moved to ClientEventHandler#colorReg(RegisterColorHandlersEvent.Block)
-		// Minecraft.getInstance().getBlockColors().register(new ColorHandler(), IPOContent.Blocks.POST_BASE.get());
-	}
-	
-	@Override
-	public void construct(){
-		super.construct();
-	}
-	
 	@Override
 	public void completed(){
 		ManualHelper.addConfigGetter(str -> {

@@ -13,9 +13,7 @@ public class ColorHandler implements BlockColor{
 	public int getColor(BlockState state, BlockAndTintGetter world, BlockPos pos, int index){
 		if(index >= 0){
 			BlockEntity te = world.getBlockEntity(pos);
-			if(te instanceof PostBaseTileEntity && !((PostBaseTileEntity) te).getStack().isEmpty()){
-				PostBaseTileEntity base = (PostBaseTileEntity) te;
-				
+			if(te instanceof PostBaseTileEntity base && !base.getStack().isEmpty()){
 				int color = Minecraft.getInstance().getBlockColors().getColor(base.getCoverState(), world, pos, index);
 				return color;
 			}

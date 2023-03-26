@@ -29,8 +29,8 @@ public class ClientEventHandler extends SimplePreparableReloadListener<Unit>{
 	}
 	
 	@SubscribeEvent
-	public static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders ev){
-		ev.register(PostBaseLoader.LOCATION.getPath(), new PostBaseLoader());
+	public static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event){
+		event.register(PostBaseLoader.LOCATION.getPath(), new PostBaseLoader());
 	}
 	
 	@SubscribeEvent
