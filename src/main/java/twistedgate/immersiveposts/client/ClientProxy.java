@@ -32,11 +32,6 @@ public class ClientProxy extends CommonProxy{
 	@Override
 	public void construct(){
 		super.construct();
-		
-		if(Minecraft.getInstance() != null){
-			// FIXME
-			//ModelLoaderRegistry.registerLoader(PostBaseLoader.LOCATION, new PostBaseLoader());
-		}
 	}
 	
 	@Override

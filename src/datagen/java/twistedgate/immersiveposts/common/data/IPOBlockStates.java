@@ -237,7 +237,7 @@ public class IPOBlockStates extends BlockStateProvider{
 			.customLoader(ObjModelBuilder::begin).automaticCulling(false).flipV(true)
 			.modelLocation(modLoc("models/block/post/obj/" + name + ".obj")).end()
 			.texture("texture", texture)
-			.texture("particle", texture);
+			.texture("particle", texture).renderType("cutout");
 		
 		return b;
 	}
