@@ -3,7 +3,6 @@ package twistedgate.immersiveposts.client.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -14,17 +13,14 @@ import javax.annotation.Nullable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
-import com.mojang.math.Transformation;
 
-import blusunrize.immersiveengineering.api.utils.QuadTransformer;
-import blusunrize.immersiveengineering.api.utils.client.CombinedModelData;
-import blusunrize.immersiveengineering.api.utils.client.SinglePropertyModelData;
 import blusunrize.immersiveengineering.client.utils.ModelUtils;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -32,6 +28,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -39,8 +36,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
@@ -50,15 +46,15 @@ public class PostBaseModel extends IPOBakedModel{
 			.expireAfterAccess(2, TimeUnit.MINUTES)
 			.maximumSize(100)
 			.build();
-	
+
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType layer){
 		BlockState hState = Blocks.DIRT.defaultBlockState();
 		Int2IntFunction colorMul = i -> 0xffffffff;
 		Direction facing = Direction.NORTH;
 		
-		if(extraData.hasProperty(IPOModelData.POSTBASE)){
-			IPOModelData.PostBaseModelData data = extraData.getData(IPOModelData.POSTBASE);
+		if(extraData.has(IPOModelData.POSTBASE)){
+			IPOModelData.PostBaseModelData data = extraData.get(IPOModelData.POSTBASE);
 			hState = data.state;
 			colorMul = data.color;
 			facing = data.facing;
@@ -75,20 +71,18 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
-	public IModelData getModelData(BlockAndTintGetter world, BlockPos pos, BlockState state, IModelData tileData){
-		List<IModelData> list = new ArrayList<>();
-		list.add(tileData);
+	public ModelData getModelData(@Nonnull BlockAndTintGetter world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull ModelData tileData){
+		ModelData.Builder mData = super.getModelData(world, pos, state, tileData).derive();
+		
+		//mData.with(null, tileData); // TODO Is this needed still?
 		
 		BlockEntity te = world.getBlockEntity(pos);
-		if(te instanceof PostBaseTileEntity){
-			PostBaseTileEntity base = (PostBaseTileEntity) te;
-			
+		if(te instanceof PostBaseTileEntity base){
 			IPOModelData.PostBaseModelData data = new IPOModelData.PostBaseModelData(base.getCoverState(), base.getFacing(), i -> i);
-			
-			list.add(new SinglePropertyModelData<>(data, IPOModelData.POSTBASE));
+			mData.with(IPOModelData.POSTBASE, data);
 		}
 		
-		return CombinedModelData.combine(list.toArray(new IModelData[0]));
+		return mData.build();
 	}
 	
 	@Override
@@ -130,7 +124,7 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	private static class SpecialPostBaseModel extends PostBaseModel{
-		private static final Random RANDOM = new Random();
+		private static final RandomSource RANDOM = RandomSource.create();
 		
 		private static final Vec3[] verts = new Vec3[]{
 				new Vec3(0.25F, 1.001F, 0.25F), new Vec3(0.25F, 1.001F, 0.75F),
@@ -164,11 +158,14 @@ public class PostBaseModel extends IPOBakedModel{
 				return v;
 			};
 			
-			Function<BakedQuad, BakedQuad> tintTransformer = new QuadTransformer(Transformation.identity(), colorMul);
+			// FIXME ! This is only temporary!!
+			Function<BakedQuad, BakedQuad> tintTransformer = t -> t;
+//			Function<BakedQuad, BakedQuad> tintTransformer = new QuadTransformer(Transformation.identity(), colorMul);
+			
 			BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(key.state);
 			
 			for(Direction side:Direction.values()){
-				List<BakedQuad> quads = model.getQuads(key.state, side, RANDOM, EmptyModelData.INSTANCE).stream()
+				List<BakedQuad> quads = model.getQuads(key.state, side, RANDOM, ModelData.EMPTY, (RenderType) null).stream()
 						.map(tintTransformer)
 						.collect(Collectors.toCollection(ArrayList::new));
 				
@@ -183,7 +180,7 @@ public class PostBaseModel extends IPOBakedModel{
 		}
 		
 		@Override
-		public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData){
+		public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nullable RandomSource rand, @Nullable ModelData extraData, RenderType layer){
 			return this.quads.get(side == null ? (this.quads.size() - 1) : side.get3DDataValue());
 		}
 	}
@@ -207,8 +204,7 @@ public class PostBaseModel extends IPOBakedModel{
 		public boolean equals(Object obj){
 			if(this == obj){
 				return true;
-			}else if(obj != null && obj instanceof Key){
-				Key other = (Key) obj;
+			}else if(obj != null && obj instanceof Key other){
 				return this.state.equals(other.state) && this.facing == other.facing && sameColorMultipliersAs(other);
 			}
 			
