@@ -1,11 +1,12 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {
-    "texture": "immersiveposts:block/posts/post_copper",
-    "particle": "immersiveposts:block/posts/post_copper"
-  },
+  "automatic_culling": false,
+  "flip_v": true,
   "loader": "forge:obj",
   "model": "immersiveposts:models/block/post/obj/arm.obj",
-  "detectCullableFaces": false,
-  "flip-v": true
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "immersiveposts:block/posts/post_copper",
+    "texture": "immersiveposts:block/posts/post_copper"
+  }
 }

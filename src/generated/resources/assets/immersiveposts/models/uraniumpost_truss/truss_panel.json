@@ -1,11 +1,12 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {
-    "texture": "immersiveposts:block/posts/post_uranium",
-    "particle": "immersiveposts:block/posts/post_uranium"
-  },
+  "automatic_culling": false,
+  "flip_v": true,
   "loader": "forge:obj",
   "model": "immersiveposts:models/block/post/obj/truss_panel.obj",
-  "detectCullableFaces": false,
-  "flip-v": true
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "immersiveposts:block/posts/post_uranium",
+    "texture": "immersiveposts:block/posts/post_uranium"
+  }
 }

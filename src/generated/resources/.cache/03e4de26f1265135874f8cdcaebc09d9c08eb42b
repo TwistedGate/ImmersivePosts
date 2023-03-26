@@ -1,0 +1,10 @@
+// 1.19.2	2023-03-26T17:27:53.0746701	Tags for minecraft:item
+b5972f0f13ac6f2df8f621d61d8c63f78b69de44 data/forge/tags/items/rods/all_metal.json
+24fb9145ec9f8b98780ce608ce2abcd6dd9470d4 data/forge/tags/items/rods/constantan.json
+898d0f9dad5e8977907b26379af531e65dd22a5b data/forge/tags/items/rods/copper.json
+9d87024e256315eaf3d6f9f03d9d7714cbea72e8 data/forge/tags/items/rods/electrum.json
+a7b3098d5c8f49e4b3010841a7b69c5d4dfd04f7 data/forge/tags/items/rods/gold.json
+41617465fe418ddb04be00479f663fd03dad7d77 data/forge/tags/items/rods/lead.json
+f1e4584ef77cd02588a21df36795aaeaaced7535 data/forge/tags/items/rods/nickel.json
+34bd05de57fef8f388ecd4ab9c39aafe9343630b data/forge/tags/items/rods/silver.json
+6f9fa797ec4e6b6169a57bed5c2c898257be98ef data/forge/tags/items/rods/uranium.json

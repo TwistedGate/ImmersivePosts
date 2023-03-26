@@ -2,22 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "conditions": [
     {
+      "type": "immersiveposts:cfg",
       "key": "uranium",
-      "value": true,
-      "type": "immersiveposts:cfg"
+      "value": true
     }
-  ],
-  "pattern": [
-    "i",
-    "i"
   ],
   "key": {
     "i": {
       "tag": "forge:ingots/uranium"
     }
   },
+  "pattern": [
+    "i",
+    "i"
+  ],
   "result": {
-    "item": "immersiveposts:stick_uranium",
-    "count": 4
+    "count": 4,
+    "item": "immersiveposts:stick_uranium"
   }
 }

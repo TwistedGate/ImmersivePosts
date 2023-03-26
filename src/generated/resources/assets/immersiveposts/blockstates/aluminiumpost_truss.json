@@ -1,288 +1,288 @@
 {
   "multipart": [
     {
-      "when": {
-        "type": "single",
-        "facing": "north"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_single"
+      },
+      "when": {
+        "type": "single",
+        "facing": "north"
       }
     },
     {
-      "when": {
-        "type": "multi_a",
-        "facing": "north"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_a"
+      },
+      "when": {
+        "type": "multi_a",
+        "facing": "north"
       }
     },
     {
-      "when": {
-        "type": "multi_b",
-        "facing": "north"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_b"
+      },
+      "when": {
+        "type": "multi_b",
+        "facing": "north"
       }
     },
     {
-      "when": {
-        "type": "multi_c",
-        "facing": "north"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_c"
+      },
+      "when": {
+        "type": "multi_c",
+        "facing": "north"
       }
     },
     {
-      "when": {
-        "type": "multi_d_even",
-        "facing": "north"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_even"
+      },
+      "when": {
+        "type": "multi_d_even",
+        "facing": "north"
       }
     },
     {
+      "apply": {
+        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_odd"
+      },
       "when": {
         "type": "multi_d_odd",
         "facing": "north"
-      },
-      "apply": {
-        "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_odd"
       }
     },
     {
-      "when": {
-        "type": "single",
-        "facing": "east"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_single",
         "y": 90
+      },
+      "when": {
+        "type": "single",
+        "facing": "east"
       }
     },
     {
-      "when": {
-        "type": "multi_a",
-        "facing": "east"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_a",
         "y": 90
+      },
+      "when": {
+        "type": "multi_a",
+        "facing": "east"
       }
     },
     {
-      "when": {
-        "type": "multi_b",
-        "facing": "east"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_b",
         "y": 90
+      },
+      "when": {
+        "type": "multi_b",
+        "facing": "east"
       }
     },
     {
-      "when": {
-        "type": "multi_c",
-        "facing": "east"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_c",
         "y": 90
+      },
+      "when": {
+        "type": "multi_c",
+        "facing": "east"
       }
     },
     {
-      "when": {
-        "type": "multi_d_even",
-        "facing": "east"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_even",
         "y": 90
+      },
+      "when": {
+        "type": "multi_d_even",
+        "facing": "east"
       }
     },
     {
-      "when": {
-        "type": "multi_d_odd",
-        "facing": "east"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_odd",
         "y": 90
+      },
+      "when": {
+        "type": "multi_d_odd",
+        "facing": "east"
       }
     },
     {
-      "when": {
-        "type": "single",
-        "facing": "south"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_single",
         "y": 180
+      },
+      "when": {
+        "type": "single",
+        "facing": "south"
       }
     },
     {
-      "when": {
-        "type": "multi_a",
-        "facing": "south"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_a",
         "y": 180
+      },
+      "when": {
+        "type": "multi_a",
+        "facing": "south"
       }
     },
     {
-      "when": {
-        "type": "multi_b",
-        "facing": "south"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_b",
         "y": 180
+      },
+      "when": {
+        "type": "multi_b",
+        "facing": "south"
       }
     },
     {
-      "when": {
-        "type": "multi_c",
-        "facing": "south"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_c",
         "y": 180
+      },
+      "when": {
+        "type": "multi_c",
+        "facing": "south"
       }
     },
     {
-      "when": {
-        "type": "multi_d_even",
-        "facing": "south"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_even",
         "y": 180
+      },
+      "when": {
+        "type": "multi_d_even",
+        "facing": "south"
       }
     },
     {
-      "when": {
-        "type": "multi_d_odd",
-        "facing": "south"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_odd",
         "y": 180
+      },
+      "when": {
+        "type": "multi_d_odd",
+        "facing": "south"
       }
     },
     {
-      "when": {
-        "type": "single",
-        "facing": "west"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_single",
         "y": 270
+      },
+      "when": {
+        "type": "single",
+        "facing": "west"
       }
     },
     {
-      "when": {
-        "type": "multi_a",
-        "facing": "west"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_a",
         "y": 270
+      },
+      "when": {
+        "type": "multi_a",
+        "facing": "west"
       }
     },
     {
-      "when": {
-        "type": "multi_b",
-        "facing": "west"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_b",
         "y": 270
+      },
+      "when": {
+        "type": "multi_b",
+        "facing": "west"
       }
     },
     {
-      "when": {
-        "type": "multi_c",
-        "facing": "west"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_c",
         "y": 270
+      },
+      "when": {
+        "type": "multi_c",
+        "facing": "west"
       }
     },
     {
-      "when": {
-        "type": "multi_d_even",
-        "facing": "west"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_even",
         "y": 270
+      },
+      "when": {
+        "type": "multi_d_even",
+        "facing": "west"
       }
     },
     {
-      "when": {
-        "type": "multi_d_odd",
-        "facing": "west"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_multi_d_odd",
         "y": 270
+      },
+      "when": {
+        "type": "multi_d_odd",
+        "facing": "west"
       }
     },
     {
-      "when": {
-        "connector_point_top": "true"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_point_top"
+      },
+      "when": {
+        "connector_point_top": "true"
       }
     },
     {
-      "when": {
-        "connector_point_bottom": "true"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_point_bottom"
+      },
+      "when": {
+        "connector_point_bottom": "true"
       }
     },
     {
-      "when": {
-        "panel_north": "true"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_panel"
+      },
+      "when": {
+        "panel_north": "true"
       }
     },
     {
-      "when": {
-        "panel_south": "true"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_panel",
         "y": 180
+      },
+      "when": {
+        "panel_south": "true"
       }
     },
     {
-      "when": {
-        "panel_east": "true"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_panel",
         "y": 90
+      },
+      "when": {
+        "panel_east": "true"
       }
     },
     {
-      "when": {
-        "panel_west": "true"
-      },
       "apply": {
         "model": "immersiveposts:aluminiumpost_truss/truss_panel",
         "y": 270
+      },
+      "when": {
+        "panel_west": "true"
       }
     }
   ]

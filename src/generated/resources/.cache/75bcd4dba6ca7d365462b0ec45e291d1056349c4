@@ -1,0 +1,7 @@
+// 1.19.2	2023-03-26T17:27:53.0776001	Tags for minecraft:block
+fbdecb02480f7bc9a3a1b15eb33c7467eb3e381f data/immersiveposts/tags/blocks/ignored_by_postarm.json
+1c4addb660339baf3bd1a4bd647d03e2e33143c9 data/minecraft/tags/blocks/fences.json
+990fc9bf37392f300450bf9037e15ec5fd11b093 data/minecraft/tags/blocks/mineable/axe.json
+2606b96cb3ab7cf42bc7ca7d32cea9e0ef18e77a data/minecraft/tags/blocks/mineable/pickaxe.json
+e6a760d9d4c5ebdb1e8b592d5de9646182f436c8 data/minecraft/tags/blocks/needs_iron_tool.json
+6c3665d577f5fc4fc971f369c536d55ee5ebee51 data/minecraft/tags/blocks/needs_stone_tool.json

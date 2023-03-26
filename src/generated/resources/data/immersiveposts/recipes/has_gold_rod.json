@@ -2,22 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "conditions": [
     {
+      "type": "immersiveposts:cfg",
       "key": "gold",
-      "value": true,
-      "type": "immersiveposts:cfg"
+      "value": true
     }
-  ],
-  "pattern": [
-    "i",
-    "i"
   ],
   "key": {
     "i": {
       "tag": "forge:ingots/gold"
     }
   },
+  "pattern": [
+    "i",
+    "i"
+  ],
   "result": {
-    "item": "immersiveposts:stick_gold",
-    "count": 4
+    "count": 4,
+    "item": "immersiveposts:stick_gold"
   }
 }

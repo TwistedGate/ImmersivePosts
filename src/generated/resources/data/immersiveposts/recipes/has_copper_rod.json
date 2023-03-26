@@ -2,22 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "conditions": [
     {
+      "type": "immersiveposts:cfg",
       "key": "copper",
-      "value": true,
-      "type": "immersiveposts:cfg"
+      "value": true
     }
-  ],
-  "pattern": [
-    "i",
-    "i"
   ],
   "key": {
     "i": {
       "tag": "forge:ingots/copper"
     }
   },
+  "pattern": [
+    "i",
+    "i"
+  ],
   "result": {
-    "item": "immersiveposts:stick_copper",
-    "count": 4
+    "count": 4,
+    "item": "immersiveposts:stick_copper"
   }
 }
