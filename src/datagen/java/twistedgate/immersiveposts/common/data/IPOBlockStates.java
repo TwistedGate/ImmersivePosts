@@ -74,6 +74,65 @@ public class IPOBlockStates extends BlockStateProvider{
 		fenceBlock(Fences.URANIUM.get(),	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 	}
 	
+	private void postStateFor(RegistryObject<PostBlock> block){
+		BlockModelBuilder modelArm			= getPostModel(block, "arm");
+		BlockModelBuilder modelArmTwoWay	= getPostModel(block, "arm_twoway");
+		BlockModelBuilder modelArmDouble	= getPostModel(block, "arm_double");
+		BlockModelBuilder modelPost			= getPostModel(block, "post");
+		BlockModelBuilder modelPostTop		= getPostModel(block, "post_top");
+		BlockModelBuilder modelPostArm		= getPostModel(block, "post_arm");
+		ExistingModelFile modelEmpty		= new ExistingModelFile(modLoc("block/empty"), this.exFileHelper);
+		
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
+		
+		builder.part()
+			.modelFile(modelPost).addModel()
+			.condition(PostBlock.TYPE, EnumPostType.POST);
+		
+		builder.part()
+			.modelFile(modelPostTop).addModel()
+			.condition(PostBlock.TYPE, EnumPostType.POST_TOP);
+		
+		builder.part().modelFile(modelPostArm).rotationY(0).addModel()
+			.condition(PostBlock.LPARM_NORTH, true);
+		
+		builder.part().modelFile(modelPostArm).rotationY(90).addModel()
+			.condition(PostBlock.LPARM_EAST, true);
+		
+		builder.part().modelFile(modelPostArm).rotationY(180).addModel()
+			.condition(PostBlock.LPARM_SOUTH, true);
+		
+		builder.part().modelFile(modelPostArm).rotationY(270).addModel()
+			.condition(PostBlock.LPARM_WEST, true);
+		
+		for(EnumFlipState flipstate:EnumFlipState.values()){
+			boolean isDown = (flipstate == EnumFlipState.DOWN);
+			boolean isUp = (flipstate == EnumFlipState.UP);
+			boolean isBoth = (flipstate == EnumFlipState.BOTH);
+			
+			for(Direction dir:Direction.Plane.HORIZONTAL){
+				int yArmRot = horizontalRotation(dir, isDown);
+				
+				builder.part()
+					.modelFile(isBoth ? modelArmTwoWay : modelArm).rotationX(flipstate == EnumFlipState.DOWN ? 180 : 0).rotationY(yArmRot).addModel()
+					.condition(PostBlock.TYPE, EnumPostType.ARM)
+					.condition(PostBlock.FACING, dir)
+					.condition(PostBlock.FLIPSTATE, flipstate);
+				
+				if(isUp){
+					builder.part()
+						.modelFile(modelArmDouble).rotationY(yArmRot).addModel()
+						.condition(PostBlock.TYPE, EnumPostType.ARM_DOUBLE)
+						.condition(PostBlock.FACING, dir);
+				}
+			}
+		}
+		
+		builder.part()
+			.modelFile(modelEmpty).addModel()
+			.condition(PostBlock.TYPE, EnumPostType.EMPTY);
+	}
+	
 	private void horizontalPostStateFor(RegistryObject<HorizontalTrussBlock> block){
 		BlockModelBuilder modelHTrussSingle	= getPostModel(block, "truss_single");
 		BlockModelBuilder modelHTrussA		= getPostModel(block, "truss_multi_a");
@@ -145,65 +204,6 @@ public class IPOBlockStates extends BlockStateProvider{
 		builder.part()
 			.modelFile(modelHTrussPanel).rotationY(horizontalRotation(Direction.WEST, false)).addModel()
 			.condition(HorizontalTrussBlock.PANEL_WEST, true);
-	}
-	
-	private void postStateFor(RegistryObject<PostBlock> block){
-		BlockModelBuilder modelArm			= getPostModel(block, "arm");
-		BlockModelBuilder modelArmTwoWay	= getPostModel(block, "arm_twoway");
-		BlockModelBuilder modelArmDouble	= getPostModel(block, "arm_double");
-		BlockModelBuilder modelPost			= getPostModel(block, "post");
-		BlockModelBuilder modelPostTop		= getPostModel(block, "post_top");
-		BlockModelBuilder modelPostArm		= getPostModel(block, "post_arm");
-		ExistingModelFile modelEmpty		= new ExistingModelFile(modLoc("block/empty"), this.exFileHelper);
-		
-		MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
-		
-		builder.part()
-			.modelFile(modelPost).addModel()
-			.condition(PostBlock.TYPE, EnumPostType.POST);
-		
-		builder.part()
-			.modelFile(modelPostTop).addModel()
-			.condition(PostBlock.TYPE, EnumPostType.POST_TOP);
-		
-		builder.part().modelFile(modelPostArm).rotationY(0).addModel()
-			.condition(PostBlock.LPARM_NORTH, true);
-		
-		builder.part().modelFile(modelPostArm).rotationY(90).addModel()
-			.condition(PostBlock.LPARM_EAST, true);
-		
-		builder.part().modelFile(modelPostArm).rotationY(180).addModel()
-			.condition(PostBlock.LPARM_SOUTH, true);
-		
-		builder.part().modelFile(modelPostArm).rotationY(270).addModel()
-			.condition(PostBlock.LPARM_WEST, true);
-		
-		for(EnumFlipState flipstate:EnumFlipState.values()){
-			boolean isDown = (flipstate == EnumFlipState.DOWN);
-			boolean isUp = (flipstate == EnumFlipState.UP);
-			boolean isBoth = (flipstate == EnumFlipState.BOTH);
-			
-			for(Direction dir:Direction.Plane.HORIZONTAL){
-				int yArmRot = horizontalRotation(dir, isDown);
-				
-				builder.part()
-					.modelFile(isBoth ? modelArmTwoWay : modelArm).rotationX(flipstate == EnumFlipState.DOWN ? 180 : 0).rotationY(yArmRot).addModel()
-					.condition(PostBlock.TYPE, EnumPostType.ARM)
-					.condition(PostBlock.FACING, dir)
-					.condition(PostBlock.FLIPSTATE, flipstate);
-				
-				if(isUp){
-					builder.part()
-						.modelFile(modelArmDouble).rotationY(yArmRot).addModel()
-						.condition(PostBlock.TYPE, EnumPostType.ARM_DOUBLE)
-						.condition(PostBlock.FACING, dir);
-				}
-			}
-		}
-		
-		builder.part()
-			.modelFile(modelEmpty).addModel()
-			.condition(PostBlock.TYPE, EnumPostType.EMPTY);
 	}
 	
 	private int horizontalRotation(Direction dir, boolean xFlipped){
