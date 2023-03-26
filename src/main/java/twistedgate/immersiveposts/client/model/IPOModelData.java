@@ -11,6 +11,7 @@ public class IPOModelData{
 	public static class PostBaseModelData{
 		public final BlockState state;
 		public final Direction facing;
+		@Deprecated
 		public final Int2IntFunction color;
 		public PostBaseModelData(BlockState state, Direction facing, Int2IntFunction color){
 			this.state = state;

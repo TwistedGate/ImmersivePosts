@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,11 +15,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 
 import blusunrize.immersiveengineering.client.utils.ModelUtils;
-import it.unimi.dsi.fastutil.ints.Int2IntFunction;
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -32,7 +26,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -53,20 +46,18 @@ public class PostBaseModel extends IPOBakedModel{
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType layer){
 		BlockState hState = Blocks.DIRT.defaultBlockState();
-		Int2IntFunction colorMul = i -> 0xffffffff;
 		Direction facing = Direction.NORTH;
 		
 		if(extraData.has(IPOModelData.POSTBASE)){
 			IPOModelData.PostBaseModelData data = extraData.get(IPOModelData.POSTBASE);
 			hState = data.state;
-			colorMul = data.color;
 			facing = data.facing;
 		}
 		
-		Key key = new Key(hState, colorMul, facing);
+		Key key = new Key(hState, facing);
 		SpecialPostBaseModel special = CACHE.getIfPresent(key);
 		if(special == null){
-			special = new SpecialPostBaseModel(key, colorMul);
+			special = new SpecialPostBaseModel(key);
 			CACHE.put(key, special);
 		}
 		
@@ -76,8 +67,6 @@ public class PostBaseModel extends IPOBakedModel{
 	@Override
 	public ModelData getModelData(@Nonnull BlockAndTintGetter world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull ModelData tileData){
 		ModelData.Builder mData = super.getModelData(world, pos, state, tileData).derive();
-		
-		//mData.with(null, tileData); // TODO Is this needed still?
 		
 		BlockEntity te = world.getBlockEntity(pos);
 		if(te instanceof PostBaseTileEntity base){
@@ -148,35 +137,14 @@ public class PostBaseModel extends IPOBakedModel{
 		private static final float[] color = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
 		
 		List<List<BakedQuad>> quads = new ArrayList<>(6);
-		public SpecialPostBaseModel(Key key, Int2IntFunction colorMul){
-			build(key, colorMul);
+		public SpecialPostBaseModel(Key key){
+			build(key);
 		}
 		
-		private void build(Key key, Int2IntFunction colorMulBasic){
-			if(colorMulBasic == null){
-				ItemColors colors = Minecraft.getInstance().getItemColors();
-				ItemStack stack = new ItemStack(key.state.getBlock());
-				colorMulBasic = (i) -> colors.getColor(stack, i);
-			}
-			
-			key.usedColorMultipliers = new Int2IntOpenHashMap();
-			final Int2IntFunction f = colorMulBasic;
-			Int2IntFunction colorMul = (i) -> {
-				int v = f.get(i);
-				key.usedColorMultipliers.put(i, v);
-				return v;
-			};
-			
-			// FIXME ! This is only temporary!!
-			Function<BakedQuad, BakedQuad> tintTransformer = t -> t;
-//			Function<BakedQuad, BakedQuad> tintTransformer = new QuadTransformer(Transformation.identity(), colorMul);
-			
+		private void build(Key key){
 			BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(key.state);
-			
 			for(Direction side:Direction.values()){
-				List<BakedQuad> quads = model.getQuads(key.state, side, RANDOM, ModelData.EMPTY, (RenderType) null).stream()
-						.map(tintTransformer)
-						.collect(Collectors.toCollection(ArrayList::new));
+				List<BakedQuad> quads = model.getQuads(key.state, side, RANDOM, ModelData.EMPTY, (RenderType) null);
 				
 				if(side == Direction.UP){
 					TextureAtlasSprite sprite = getPostbaseSprite();
@@ -197,16 +165,10 @@ public class PostBaseModel extends IPOBakedModel{
 	private static class Key{
 		final BlockState state;
 		final Direction facing;
-		@Nullable
-		Int2IntMap usedColorMultipliers;
-		@Nullable
-		final Int2IntFunction allColorMultipliers;
 		
-		public Key(BlockState state, Int2IntFunction colorMul, Direction facing){
+		public Key(BlockState state, Direction facing){
 			this.state = state;
 			this.facing = facing;
-			this.allColorMultipliers = colorMul;
-			this.usedColorMultipliers = null;
 		}
 		
 		@Override
@@ -214,27 +176,10 @@ public class PostBaseModel extends IPOBakedModel{
 			if(this == obj){
 				return true;
 			}else if(obj != null && obj instanceof Key other){
-				return this.state.equals(other.state) && this.facing == other.facing && sameColorMultipliersAs(other);
+				return this.state.equals(other.state) && this.facing == other.facing;
 			}
 			
 			return false;
-		}
-		
-		private boolean sameColorMultipliersAs(Key that){
-			if(that.usedColorMultipliers != null && this.usedColorMultipliers != null)
-				return this.usedColorMultipliers.equals(that.usedColorMultipliers);
-			else if(that.usedColorMultipliers != null && this.allColorMultipliers != null){
-				for(int i:that.usedColorMultipliers.keySet()){
-					if(this.allColorMultipliers.get(i) != that.usedColorMultipliers.get(i)){
-						return false;
-					}
-				}
-				return true;
-			}else if(that.allColorMultipliers != null && this.usedColorMultipliers != null){
-				return that.sameColorMultipliersAs(this);
-			}else{
-				throw new IllegalStateException("Can't compare PostBaseModel. Key's that use functions!");
-			}
 		}
 		
 		@Override
