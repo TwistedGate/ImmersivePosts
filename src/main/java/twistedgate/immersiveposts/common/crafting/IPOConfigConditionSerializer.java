@@ -51,12 +51,13 @@ public class IPOConfigConditionSerializer implements IConditionSerializer<IPOCon
 		
 		@Override
 		public boolean test(IContext context){
+			if(!IPOConfig.ALL.isLoaded()) return false;
+			
 			UnmodifiableConfig cfg = IPOConfig.ALL.getValues();
 			Object cfgEntry = cfg.get(this.key);
 			
 			if(cfgEntry == null){
-				// this isnt the best way of doing it, but its better than
-				// nothing.
+				// this isnt the best way of doing it, but its better than nothing.
 				cfgEntry = ((Config) cfg.get("Post Types")).get(this.key);
 			}
 			
