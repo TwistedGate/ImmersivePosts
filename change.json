@@ -1,6 +1,8 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/immersiveposts",
 	"promos":{
+		"1.19.3-latest": "4.3.0-5", "1.19.3-recommended": "4.3.0-5",
+		"1.19.2-latest": "4.3.0-4", "1.19.2-recommended": "4.3.0-4",
 		"1.18.2-latest": "4.3.0-3", "1.18.2-recommended": "4.3.0-3",
 		"1.18.1-latest": "4.3.0-2", "1.18.1-recommended": "4.3.0-2",
 		"1.16.5-latest": "4.3.0-1", "1.16.5-recommended": "4.3.0-1",
@@ -8,6 +10,12 @@
 		"1.15.2-latest": "2.2.0", "1.15.2-recommended": "2.2.0",
 		"1.14.4-latest": "1.2.0", "1.14.4-recommended": "1.2.0",
 		"1.12.2-latest": "0.2.1", "1.12.2-recommended": "0.2.1"
+	},
+	"1.19.3":{
+		"4.3.0-5": "Compiled with\n\nForge version: 1.19.3-44.1.5\nIE version: 1.19.3-9.3.0-163\n\nnInitial 1.19.3 Port. (TwistedGate)"
+	},
+	"1.19.2":{
+		"4.3.0-4": "Compiled with\n\nForge version: 1.19.2-43.2.0\nIE version: 1.19.2-9.1.2-159\n\nnInitial 1.19.2 Port. (TwistedGate)"
 	},
 	"1.18.2": {
 		"4.3.0-3": "Compiled with\nForge version: 1.18.2-40.0.12\nIE version: 1.18.2-8.0.0-146\n\nInitial 1.18.2 Port (malte0811)"
