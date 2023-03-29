@@ -18,10 +18,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraftforge.common.util.Lazy;
+import twistedgate.immersiveposts.common.IPOTileTypes;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 
 public class PostBaseTileEntity extends IPOTileEntityBase{
-	protected static final Lazy<BlockState> EMPTY = Lazy.of(() -> Blocks.AIR.defaultBlockState());
+	protected static final Lazy<BlockState> EMPTY = Lazy.of(Blocks.AIR::defaultBlockState);
 	
 	@Nonnull
 	protected ItemStack stack = ItemStack.EMPTY;

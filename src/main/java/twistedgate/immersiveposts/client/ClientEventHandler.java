@@ -11,7 +11,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import twistedgate.immersiveposts.IPOMod;
-import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.client.model.PostBaseModel;
 import twistedgate.immersiveposts.common.IPOContent;
 
@@ -30,7 +29,7 @@ public class ClientEventHandler extends SimplePreparableReloadListener<Unit>{
 	
 	@SubscribeEvent
 	public static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event){
-		event.register(PostBaseLoader.LOCATION.getPath(), new PostBaseLoader());
+		event.register(PostBaseModel.Loader.LOCATION.getPath(), new PostBaseModel.Loader());
 	}
 	
 	@SubscribeEvent

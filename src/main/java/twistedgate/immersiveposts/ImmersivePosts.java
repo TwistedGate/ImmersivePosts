@@ -23,6 +23,7 @@ import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.common.ExternalModContent;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
+import twistedgate.immersiveposts.common.IPORegistries;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer;
 
 /**
@@ -53,11 +54,12 @@ public class ImmersivePosts{
 		
 		CraftingHelper.register(new IPOConfigConditionSerializer());
 		
-		IPOContent.addRegistersToEventBus(bus);
+		IPORegistries.addRegistersToEventBus(bus);
 		
 		ExternalModContent.forceClassLoad();
-		IPOContent.populate();
+		IPOContent.modConstruction();
 	}
+	
 	public void loadComplete(FMLLoadCompleteEvent event){
 		proxy.completed();
 	}

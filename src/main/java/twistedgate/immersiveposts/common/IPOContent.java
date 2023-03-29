@@ -1,10 +1,12 @@
 package twistedgate.immersiveposts.common;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Supplier;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -13,47 +15,32 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
-import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.common.blocks.MetalFenceBlock;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.common.items.IPOItemBase;
-import twistedgate.immersiveposts.common.tileentity.IPOTileTypes;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 /**
  * @author TwistedGate
  */
 public class IPOContent{
-	private static final DeferredRegister<Block> BLOCK_REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, IPOMod.ID);
-	private static final DeferredRegister<Item> ITEM_REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, IPOMod.ID);
-	
-	public static final void addRegistersToEventBus(IEventBus eventBus){
-		BLOCK_REGISTER.register(eventBus);
-		ITEM_REGISTER.register(eventBus);
-		IPOTileTypes.registerToEventBus(eventBus);
-	}
-	
 	public static final boolean containsBlockOrItem(@Nullable final Block block, @Nullable final Item item){
 		if(block != null){
-			return BLOCK_REGISTER.getEntries().stream().anyMatch(r -> r.get() == block);
+			return IPORegistries.BLOCK_REGISTER.getEntries().stream().anyMatch(r -> r.get() == block);
 		}
 		if(item != null){
-			return ITEM_REGISTER.getEntries().stream().anyMatch(r -> r.get() == item);
+			return IPORegistries.ITEM_REGISTER.getEntries().stream().anyMatch(r -> r.get() == item);
 		}
 		return false;
 	}
 	
 	protected static final <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> constructor){
-		return BLOCK_REGISTER.register(name, constructor);
+		return IPORegistries.BLOCK_REGISTER.register(name, constructor);
 	}
 	
 	protected static final RegistryObject<PostBlock> registerPostBlock(EnumPostMaterial material){
@@ -67,14 +54,13 @@ public class IPOContent{
 	protected static final RegistryObject<FenceBlock> registerMetalFence(String materialName){
 		materialName = "fence_" + materialName;
 		
-		RegistryObject<FenceBlock> block = BLOCK_REGISTER.register(materialName, MetalFenceBlock::new);
-		ITEM_REGISTER.register(materialName, () -> new BlockItem(block.get(), new Item.Properties().tab(ImmersivePosts.creativeTab)));
-		Fences.ALL_FENCES.add(block);
+		RegistryObject<FenceBlock> block = IPORegistries.BLOCK_REGISTER.register(materialName, MetalFenceBlock::new);
+		IPORegistries.ITEM_REGISTER.register(materialName, () -> new BlockItem(block.get(), new Item.Properties().tab(ImmersivePosts.creativeTab)));
 		return block;
 	}
 	
 	protected static final <T extends Item> RegistryObject<T> registerItem(String name, Supplier<T> constructor){
-		return ITEM_REGISTER.register(name, constructor);
+		return IPORegistries.ITEM_REGISTER.register(name, constructor);
 	}
 	
 	public static class Blocks{
@@ -86,22 +72,43 @@ public class IPOContent{
 		}
 		
 		private static void forceClassLoad(){
+			Blocks.Posts.forceClassLoad();
+			Blocks.HorizontalTruss.forceClassLoad();
+			Blocks.Fences.forceClassLoad();
+			
+			Items.forceClassLoad();
 		}
 		
 		public static class Fences{
 			
-			/** Contains (or should) all Fence Blocks added by IPO */
-			public static final List<RegistryObject<FenceBlock>> ALL_FENCES = new ArrayList<>();
+			/** Unmodifiable List of all Fence Blocks added by IPO */
+			public static final List<RegistryObject<FenceBlock>> ALL_FENCES;
 			
-			public final static RegistryObject<FenceBlock> IRON = registerMetalFence("iron");
-			public final static RegistryObject<FenceBlock> GOLD = registerMetalFence("gold");
-			public final static RegistryObject<FenceBlock> COPPER = registerMetalFence("copper");
-			public final static RegistryObject<FenceBlock> LEAD = registerMetalFence("lead");
-			public final static RegistryObject<FenceBlock> SILVER = registerMetalFence("silver");
-			public final static RegistryObject<FenceBlock> NICKEL = registerMetalFence("nickel");
-			public final static RegistryObject<FenceBlock> CONSTANTAN = registerMetalFence("constantan");
-			public final static RegistryObject<FenceBlock> ELECTRUM = registerMetalFence("electrum");
-			public final static RegistryObject<FenceBlock> URANIUM = registerMetalFence("uranium");
+			public final static RegistryObject<FenceBlock> IRON;
+			public final static RegistryObject<FenceBlock> GOLD;
+			public final static RegistryObject<FenceBlock> COPPER;
+			public final static RegistryObject<FenceBlock> LEAD;
+			public final static RegistryObject<FenceBlock> SILVER;
+			public final static RegistryObject<FenceBlock> NICKEL;
+			public final static RegistryObject<FenceBlock> CONSTANTAN;
+			public final static RegistryObject<FenceBlock> ELECTRUM;
+			public final static RegistryObject<FenceBlock> URANIUM;
+			
+			static{
+				List<RegistryObject<FenceBlock>> list = new ArrayList<>();
+				
+				list.add(IRON = registerMetalFence("iron"));
+				list.add(GOLD = registerMetalFence("gold"));
+				list.add(COPPER = registerMetalFence("copper"));
+				list.add(LEAD = registerMetalFence("lead"));
+				list.add(SILVER = registerMetalFence("silver"));
+				list.add(NICKEL = registerMetalFence("nickel"));
+				list.add(CONSTANTAN = registerMetalFence("constantan"));
+				list.add(ELECTRUM = registerMetalFence("electrum"));
+				list.add(URANIUM = registerMetalFence("uranium"));
+				
+				ALL_FENCES = Collections.unmodifiableList(list);
+			}
 			
 			private static void forceClassLoad(){
 			}
@@ -115,12 +122,14 @@ public class IPOContent{
 				}
 			});
 			
+			@CheckForNull
 			public static PostBlock get(@Nonnull IPostMaterial material){
 				if(!ALL.containsKey(material))
 					return null;
 				return ALL.get(material).get();
 			}
 			
+			@CheckForNull
 			public static RegistryObject<PostBlock> getRegObject(@Nonnull IPostMaterial material){
 				if(!ALL.containsKey(material))
 					return null;
@@ -157,24 +166,33 @@ public class IPOContent{
 	}
 	
 	public static class Items{
-		public final static RegistryObject<Item> ROD_GOLD = registerItem("stick_gold", IPOItemBase::new);
-		public final static RegistryObject<Item> ROD_COPPER = registerItem("stick_copper", IPOItemBase::new);
-		public final static RegistryObject<Item> ROD_LEAD = registerItem("stick_lead", IPOItemBase::new);
-		public final static RegistryObject<Item> ROD_SILVER = registerItem("stick_silver", IPOItemBase::new);
-		public final static RegistryObject<Item> ROD_NICKEL = registerItem("stick_nickel", IPOItemBase::new);
-		public final static RegistryObject<Item> ROD_CONSTANTAN = registerItem("stick_constantan", IPOItemBase::new);
-		public final static RegistryObject<Item> ROD_ELECTRUM = registerItem("stick_electrum", IPOItemBase::new);
-		public final static RegistryObject<Item> ROD_URANIUM = registerItem("stick_uranium", IPOItemBase::new);
+		public final static RegistryObject<Item> ROD_GOLD;
+		public final static RegistryObject<Item> ROD_COPPER;
+		public final static RegistryObject<Item> ROD_LEAD;
+		public final static RegistryObject<Item> ROD_SILVER;
+		public final static RegistryObject<Item> ROD_NICKEL;
+		public final static RegistryObject<Item> ROD_CONSTANTAN;
+		public final static RegistryObject<Item> ROD_ELECTRUM;
+		public final static RegistryObject<Item> ROD_URANIUM;
+		
+		static{
+			ROD_GOLD = registerItem("stick_gold", IPOItemBase::new);
+			ROD_COPPER = registerItem("stick_copper", IPOItemBase::new);
+			ROD_LEAD = registerItem("stick_lead", IPOItemBase::new);
+			ROD_SILVER = registerItem("stick_silver", IPOItemBase::new);
+			ROD_NICKEL = registerItem("stick_nickel", IPOItemBase::new);
+			ROD_CONSTANTAN = registerItem("stick_constantan", IPOItemBase::new);
+			ROD_ELECTRUM = registerItem("stick_electrum", IPOItemBase::new);
+			ROD_URANIUM = registerItem("stick_uranium", IPOItemBase::new);
+		}
 		
 		private static void forceClassLoad(){
 		}
 	}
 	
-	public static final void populate(){
+	public static final void modConstruction(){
 		Blocks.forceClassLoad();
-		Blocks.Fences.forceClassLoad();
-		Blocks.Posts.forceClassLoad();
-		Blocks.HorizontalTruss.forceClassLoad();
-		Items.forceClassLoad();
+		
+		IPOTileTypes.forceClassLoad();
 	}
 }

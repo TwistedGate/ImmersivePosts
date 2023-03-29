@@ -1,9 +1,12 @@
 package twistedgate.immersiveposts.client.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,6 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.mojang.datafixers.util.Pair;
 
 import blusunrize.immersiveengineering.client.utils.ModelUtils;
 import net.minecraft.client.Minecraft;
@@ -21,6 +28,10 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -28,12 +39,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
+import net.minecraftforge.client.model.geometry.IGeometryLoader;
+import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.client.model.PostBaseModel.Loader.PostBaseModelRaw;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
 public class PostBaseModel extends IPOBakedModel{
@@ -42,7 +56,7 @@ public class PostBaseModel extends IPOBakedModel{
 			.expireAfterAccess(2, TimeUnit.MINUTES)
 			.maximumSize(100)
 			.build();
-
+	
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType layer){
 		BlockState hState = Blocks.DIRT.defaultBlockState();
@@ -68,9 +82,8 @@ public class PostBaseModel extends IPOBakedModel{
 	public ModelData getModelData(@Nonnull BlockAndTintGetter world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull ModelData tileData){
 		ModelData.Builder mData = super.getModelData(world, pos, state, tileData).derive();
 		
-		BlockEntity te = world.getBlockEntity(pos);
-		if(te instanceof PostBaseTileEntity base){
-			IPOModelData.PostBaseModelData data = new IPOModelData.PostBaseModelData(base.getCoverState(), base.getFacing(), i -> i);
+		if(world.getBlockEntity(pos) instanceof PostBaseTileEntity base){
+			IPOModelData.PostBaseModelData data = new IPOModelData.PostBaseModelData(base);
 			mData.with(IPOModelData.POSTBASE, data);
 		}
 		
@@ -121,6 +134,30 @@ public class PostBaseModel extends IPOBakedModel{
 		return ItemOverrides.EMPTY;
 	}
 	
+	// ########################################################################################################
+	
+	public static class Loader implements IGeometryLoader<PostBaseModelRaw>{
+		public static final ResourceLocation LOCATION = new ResourceLocation(IPOMod.ID, "postbase");
+		
+		@Override
+		public PostBaseModelRaw read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException{
+			return new PostBaseModelRaw();
+		}
+		
+		public static class PostBaseModelRaw implements IUnbakedGeometry<PostBaseModelRaw>{
+			@Override
+			public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation){
+				return new PostBaseModel();
+			}
+			
+			@Override
+			public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors){
+				return ImmutableList.of();
+			}
+		}
+		
+	}
+	
 	private static class SpecialPostBaseModel extends PostBaseModel{
 		private static final RandomSource RANDOM = RandomSource.create();
 		
@@ -144,7 +181,9 @@ public class PostBaseModel extends IPOBakedModel{
 		private void build(Key key){
 			BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(key.state);
 			for(Direction side:Direction.values()){
-				List<BakedQuad> quads = model.getQuads(key.state, side, RANDOM, ModelData.EMPTY, (RenderType) null);
+				List<BakedQuad> quads = new ArrayList<>();
+				
+				quads.addAll(model.getQuads(key.state, side, RANDOM, ModelData.EMPTY, (RenderType) null));
 				
 				if(side == Direction.UP){
 					TextureAtlasSprite sprite = getPostbaseSprite();
