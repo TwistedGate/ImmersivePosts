@@ -1,6 +1,6 @@
 package twistedgate.immersiveposts.common.data;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -14,8 +14,8 @@ import twistedgate.immersiveposts.enums.EnumPostMaterial;
  * @author TwistedGate
  */
 public class IPOItemModels extends ItemModelProvider {
-	public IPOItemModels(DataGenerator gen, ExistingFileHelper exHelper){
-		super(gen, IPOMod.ID, exHelper);
+	public IPOItemModels(PackOutput output, ExistingFileHelper exFileHelper){
+		super(output, IPOMod.ID, exFileHelper);
 	}
 	
 	@Override

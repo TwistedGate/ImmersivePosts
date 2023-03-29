@@ -2,7 +2,7 @@ package twistedgate.immersiveposts.common.blocks;
 
 import javax.annotation.Nullable;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 
 import blusunrize.immersiveengineering.api.IPostBlock;
 import blusunrize.immersiveengineering.common.util.Utils;

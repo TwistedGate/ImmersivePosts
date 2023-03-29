@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -14,11 +13,10 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
 
 public class PostMaterialDropLootEntry extends LootPoolSingletonContainer{
-	public static final ResourceLocation ID = new ResourceLocation(IPOMod.ID, "post_material_drop");
+	public static final String ID = "post_material_drop";
 	
 	protected PostMaterialDropLootEntry(int weightIn, int qualityIn, LootItemCondition[] conditionsIn, LootItemFunction[] functionsIn){
 		super(weightIn, qualityIn, conditionsIn, functionsIn);
@@ -37,7 +35,7 @@ public class PostMaterialDropLootEntry extends LootPoolSingletonContainer{
 	
 	@Override
 	public LootPoolEntryType getType(){
-		return IPOLootFunctions.postDrop;
+		return IPOLootFunctions.POST_DROP.get();
 	}
 	
 	public static LootPoolSingletonContainer.Builder<?> builder(){

@@ -7,8 +7,9 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.IPOContent.Items;
 import twistedgate.immersiveposts.common.IPOTags;
@@ -32,15 +34,15 @@ import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer.I
  */
 public class IPORecipes extends RecipeProvider{
 	private Consumer<FinishedRecipe> out;
-	public IPORecipes(DataGenerator generatorIn){
-		super(generatorIn);
+	public IPORecipes(PackOutput output){
+		super(output);
 	}
 	
 	@Override
-	protected void buildCraftingRecipes(Consumer<FinishedRecipe> out){
+	protected void buildRecipes(Consumer<FinishedRecipe> out){
 		this.out = out;
 		
-		ShapedRecipeBuilder.shaped(twistedgate.immersiveposts.common.IPOContent.Blocks.POST_BASE.get(), 6)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, IPOContent.Blocks.POST_BASE.get(), 6)
 			.define('w', Tags.Items.COBBLESTONE)
 			.define('s', Blocks.STONE_BRICKS)
 			.pattern("s s")
@@ -67,14 +69,14 @@ public class IPORecipes extends RecipeProvider{
 		String ingotMat = getMaterialName(ingotTag.location()); // Ingot Material
 		
 		if(fence != Fences.IRON.get()){
-			ShapedRecipeBuilder.shaped(rod, 4)
+			ShapedRecipeBuilder.shaped(RecipeCategory.MISC, rod, 4)
 				.pattern("i")
 				.pattern("i")
 				.define('i', ingotTag)
 				.unlockedBy("has_" + ingotMat + "_ingot", hasTag(ingotTag))
 				.save(involveConfig(this.out, new IPOConfigCondition(ingotMat, true)), new ResourceLocation(IPOMod.ID, "has_" + stickMat + "_rod"));
 		}
-		ShapedRecipeBuilder.shaped(fence, 3)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, fence, 3)
 			.pattern("isi")
 			.pattern("isi")
 			.define('i', ingotTag)

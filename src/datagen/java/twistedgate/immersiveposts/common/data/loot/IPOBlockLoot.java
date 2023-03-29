@@ -6,14 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -24,7 +22,6 @@ import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -36,20 +33,14 @@ import twistedgate.immersiveposts.util.loot.BaseCoverDropLootEntry;
 import twistedgate.immersiveposts.util.loot.PostMaterialDropLootEntry;
 
 public class IPOBlockLoot extends LootTableProvider{
-	public IPOBlockLoot(DataGenerator gen){
-		super(gen);
+	public IPOBlockLoot(PackOutput output){
+		super(output, Set.of(), List.of());
 	}
 	
 	@Override
-	public String getName(){
-		return "IPOLootTables";
+	public List<SubProviderEntry> getTables(){
+		return ImmutableList.of(new SubProviderEntry(LootyLoot::new, LootContextParamSets.BLOCK));
 	}
-	
-	@Override
-	protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, Builder>>>, LootContextParamSet>> getTables(){
-		return ImmutableList.of(Pair.of(LootyLoot::new, LootContextParamSets.BLOCK));
-	}
-	
 	@Override
 	protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker){
 		map.forEach((id, table) -> {
@@ -57,13 +48,13 @@ public class IPOBlockLoot extends LootTableProvider{
 		});
 	}
 	
-	public class LootyLoot implements Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>{
+	public class LootyLoot implements LootTableSubProvider{
 		private final Set<ResourceLocation> generatedTables = new HashSet<>();
 		private BiConsumer<ResourceLocation, LootTable.Builder> out;
 		
 		@Override
-		public void accept(BiConsumer<ResourceLocation, Builder> t){
-			this.out = t;
+		public void generate(BiConsumer<ResourceLocation, Builder> out){
+			this.out = out;
 			
 			// Fences
 			for(RegistryObject<FenceBlock> b:IPOContent.Blocks.Fences.ALL_FENCES){

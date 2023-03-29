@@ -11,18 +11,17 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.Util;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraftforge.registries.RegistryObject;
-import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.common.blocks.MetalFenceBlock;
+import twistedgate.immersiveposts.common.blocks.MetalFenceBlock.FenceItemBlock;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
-import twistedgate.immersiveposts.common.items.IPOItemBase;
+import twistedgate.immersiveposts.common.items.IPOItem;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 /**
@@ -55,7 +54,7 @@ public class IPOContent{
 		materialName = "fence_" + materialName;
 		
 		RegistryObject<FenceBlock> block = IPORegistries.BLOCK_REGISTER.register(materialName, MetalFenceBlock::new);
-		IPORegistries.ITEM_REGISTER.register(materialName, () -> new BlockItem(block.get(), new Item.Properties().tab(ImmersivePosts.creativeTab)));
+		IPORegistries.ITEM_REGISTER.register(materialName, () -> new FenceItemBlock(block.get()));
 		return block;
 	}
 	
@@ -68,7 +67,7 @@ public class IPOContent{
 		
 		static{
 			POST_BASE = registerBlock("postbase", PostBaseBlock::new);
-			registerItem("postbase", () -> new PostBaseBlock.ItemPostBase(POST_BASE.get()));
+			registerItem("postbase", () -> new PostBaseBlock.PostBaseBlockItem(POST_BASE.get()));
 		}
 		
 		private static void forceClassLoad(){
@@ -176,14 +175,14 @@ public class IPOContent{
 		public final static RegistryObject<Item> ROD_URANIUM;
 		
 		static{
-			ROD_GOLD = registerItem("stick_gold", IPOItemBase::new);
-			ROD_COPPER = registerItem("stick_copper", IPOItemBase::new);
-			ROD_LEAD = registerItem("stick_lead", IPOItemBase::new);
-			ROD_SILVER = registerItem("stick_silver", IPOItemBase::new);
-			ROD_NICKEL = registerItem("stick_nickel", IPOItemBase::new);
-			ROD_CONSTANTAN = registerItem("stick_constantan", IPOItemBase::new);
-			ROD_ELECTRUM = registerItem("stick_electrum", IPOItemBase::new);
-			ROD_URANIUM = registerItem("stick_uranium", IPOItemBase::new);
+			ROD_GOLD = registerItem("stick_gold", IPOItem::new);
+			ROD_COPPER = registerItem("stick_copper", IPOItem::new);
+			ROD_LEAD = registerItem("stick_lead", IPOItem::new);
+			ROD_SILVER = registerItem("stick_silver", IPOItem::new);
+			ROD_NICKEL = registerItem("stick_nickel", IPOItem::new);
+			ROD_CONSTANTAN = registerItem("stick_constantan", IPOItem::new);
+			ROD_ELECTRUM = registerItem("stick_electrum", IPOItem::new);
+			ROD_URANIUM = registerItem("stick_uranium", IPOItem::new);
 		}
 		
 		private static void forceClassLoad(){

@@ -4,9 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -25,6 +22,7 @@ import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPORegistries;
 import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer;
+import twistedgate.immersiveposts.util.loot.IPOLootFunctions;
 
 /**
  * @author TwistedGate
@@ -32,13 +30,9 @@ import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer;
 @Mod(IPOMod.ID)
 public class ImmersivePosts{
 	
-	public static final CreativeModeTab creativeTab = new CreativeModeTab(IPOMod.ID){
-		@Override
-		public ItemStack makeIcon(){
-			Block block = IPOContent.Blocks.POST_BASE.get();
-			return new ItemStack(block == null ? Items.BARRIER : block);
-		}
-	};
+	@Deprecated(forRemoval = true)
+	public static final CreativeModeTab creativeTab = null;
+	
 	public static final Logger log = LogManager.getLogger(IPOMod.ID);
 	
 	public static CommonProxy proxy = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
@@ -55,6 +49,7 @@ public class ImmersivePosts{
 		CraftingHelper.register(new IPOConfigConditionSerializer());
 		
 		IPORegistries.addRegistersToEventBus(bus);
+		IPOLootFunctions.addRegistersToEventBus(bus);
 		
 		ExternalModContent.forceClassLoad();
 		IPOContent.modConstruction();

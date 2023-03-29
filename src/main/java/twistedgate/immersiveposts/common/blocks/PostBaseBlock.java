@@ -11,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -43,9 +42,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOTileTypes;
+import twistedgate.immersiveposts.common.items.IPOBlockItem;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostType;
@@ -220,10 +219,9 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 		return InteractionResult.FAIL;
 	}
 	
-	
-	public static class ItemPostBase extends BlockItem{
-		public ItemPostBase(Block block){
-			super(block, new Item.Properties().tab(ImmersivePosts.creativeTab));
+	public static class PostBaseBlockItem extends IPOBlockItem{
+		public PostBaseBlockItem(Block block){
+			super(block, new Item.Properties());
 		}
 		
 		@Override

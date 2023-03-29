@@ -1,15 +1,19 @@
 package twistedgate.immersiveposts.common.data;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
+import org.jetbrains.annotations.Nullable;
+
 import blusunrize.immersiveengineering.common.register.IEBlocks;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import twistedgate.immersiveposts.IPOMod;
@@ -18,18 +22,14 @@ import twistedgate.immersiveposts.common.IPOTags;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 public class IPOBlockTags extends BlockTagsProvider{
-	public IPOBlockTags(DataGenerator dataGen, ExistingFileHelper exFileHelper) {
-		super(dataGen, IPOMod.ID, exFileHelper);
-	}
 	
+	public IPOBlockTags(PackOutput output, CompletableFuture<Provider> lookupProvider, @Nullable ExistingFileHelper exFileHelper){
+		super(output, lookupProvider, IPOMod.ID, exFileHelper);
+	}
+
 	@Override
-	protected void addTags(){
+	protected void addTags(Provider provider){
 		miningLevels();
-		
-		tag(IPOTags.IGNORED_BY_POSTARM)
-			.add(IEBlocks.Connectors.POST_TRANSFORMER.get())
-			.add(IEBlocks.Connectors.TRANSFORMER.get())
-			.add(IEBlocks.Connectors.TRANSFORMER_HV.get());
 		
 		tag(IPOTags.Fences.ALL)
 			.add(Blocks.Fences.IRON.get())
@@ -41,6 +41,11 @@ public class IPOBlockTags extends BlockTagsProvider{
 			.add(Blocks.Fences.CONSTANTAN.get())
 			.add(Blocks.Fences.ELECTRUM.get())
 			.add(Blocks.Fences.URANIUM.get());
+		
+		tag(IPOTags.IGNORED_BY_POSTARM)
+			.add(IEBlocks.Connectors.POST_TRANSFORMER.get())
+			.add(IEBlocks.Connectors.TRANSFORMER.get())
+			.add(IEBlocks.Connectors.TRANSFORMER_HV.get());
 	}
 	
 	private void miningLevels(){
