@@ -5,8 +5,6 @@ import java.util.function.Consumer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -87,12 +85,7 @@ public class IPORecipes extends RecipeProvider{
 	private String getMaterialName(ResourceLocation in){
 		return in.getPath().substring(in.getPath().indexOf('/') + 1);
 	}
-
-    // Private in RecipeProvider
-    private static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tag) {
-        return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
-    }
-
+	
     private Consumer<FinishedRecipe> involveConfig(Consumer<FinishedRecipe> out, ICondition... conditions){
 		return recipe -> {
 			out.accept(new FinishedRecipe(){
