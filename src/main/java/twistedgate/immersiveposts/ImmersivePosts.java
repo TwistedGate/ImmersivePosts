@@ -15,6 +15,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import twistedgate.immersiveposts.client.ClientEventHandler;
@@ -47,10 +48,8 @@ public class ImmersivePosts{
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, IPOConfig.ALL);
 		
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		
+		bus.addListener(this::clientSetup);
 		bus.addListener(this::loadComplete);
-		
-		MinecraftForge.EVENT_BUS.addListener(this::addReloadListeners);
 		
 		CraftingHelper.register(new IPOConfigConditionSerializer());
 		
@@ -58,6 +57,10 @@ public class ImmersivePosts{
 		
 		ExternalModContent.forceClassLoad();
 		IPOContent.modConstruction();
+	}
+	
+	public void clientSetup(FMLClientSetupEvent event){
+		MinecraftForge.EVENT_BUS.addListener(this::addReloadListeners);
 	}
 	
 	public void loadComplete(FMLLoadCompleteEvent event){
