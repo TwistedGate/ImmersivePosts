@@ -1,16 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-<<<<<<< HEAD
   "category": "misc",
-  "conditions": [
-    {
-      "type": "immersiveposts:cfg",
-      "key": "gold",
-      "value": true
-    }
-  ],
-=======
->>>>>>> b6f2ac9 (Fixes recipes not loading)
   "key": {
     "i": {
       "tag": "forge:ingots/gold"
