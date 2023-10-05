@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
-import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.HorizontalTruss;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
@@ -71,7 +70,7 @@ public interface IPostMaterial{
 	/** Gets the material of the given source-block itemstack */
 	public static IPostMaterial getPostMaterial(@Nonnull ItemStack stack){
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.sameItem(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)){
+			if(stack.sameItem(mat.getItemStack())){
 				return mat;
 			}
 		}
@@ -90,7 +89,7 @@ public interface IPostMaterial{
 			return false;
 		
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.sameItem(mat.getItemStack()) && IPOConfig.MAIN.isEnabled(mat)){
+			if(stack.sameItem(mat.getItemStack())){
 				return true;
 			}
 		}

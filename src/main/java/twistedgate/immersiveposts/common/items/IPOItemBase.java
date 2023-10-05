@@ -5,7 +5,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import twistedgate.immersiveposts.ImmersivePosts;
-import twistedgate.immersiveposts.common.IPOConfig;
 
 /**
  * @author TwistedGate
@@ -17,7 +16,7 @@ public class IPOItemBase extends Item{
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items){
-		if(this.allowedIn(group) && IPOConfig.MAIN.isEnabled(this)){
+		if(this.allowedIn(group)){
 			items.add(new ItemStack(this));
 		}
 	}

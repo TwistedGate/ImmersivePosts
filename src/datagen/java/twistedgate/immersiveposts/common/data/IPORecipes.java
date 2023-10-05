@@ -2,9 +2,6 @@ package twistedgate.immersiveposts.common.data;
 
 import java.util.function.Consumer;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
@@ -15,17 +12,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.conditions.ICondition;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.IPOContent.Items;
 import twistedgate.immersiveposts.common.IPOTags;
-import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer.IPOConfigCondition;
 
 /**
  * @author TwistedGate
@@ -72,7 +65,7 @@ public class IPORecipes extends RecipeProvider{
 				.pattern("i")
 				.define('i', ingotTag)
 				.unlockedBy("has_" + ingotMat + "_ingot", hasTag(ingotTag))
-				.save(involveConfig(this.out, new IPOConfigCondition(ingotMat, true)), new ResourceLocation(IPOMod.ID, "has_" + stickMat + "_rod"));
+				.save(this.out, new ResourceLocation(IPOMod.ID, "has_" + stickMat + "_rod"));
 		}
 		ShapedRecipeBuilder.shaped(fence, 3)
 			.pattern("isi")
@@ -81,53 +74,15 @@ public class IPORecipes extends RecipeProvider{
 			.define('s', stickTag)
 			.unlockedBy("has_" + stickMat + "_rod", hasTag(stickTag))
 			.unlockedBy("has_" + ingotMat + "_ingot", hasTag(ingotTag))
-			.save(involveConfig(this.out, new IPOConfigCondition(ingotMat, true)));
+			.save(this.out);
 	}
 	
 	private String getMaterialName(ResourceLocation in){
 		return in.getPath().substring(in.getPath().indexOf('/') + 1);
 	}
-
-    // Private in RecipeProvider
-    private static InventoryChangeTrigger.TriggerInstance hasTag(TagKey<Item> tag) {
-        return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
-    }
-
-    private Consumer<FinishedRecipe> involveConfig(Consumer<FinishedRecipe> out, ICondition... conditions){
-		return recipe -> {
-			out.accept(new FinishedRecipe(){
-				@Override
-				public void serializeRecipeData(JsonObject json){
-					if(conditions.length > 0){
-						JsonArray conArray = new JsonArray();
-						for(ICondition con:conditions)
-							conArray.add(CraftingHelper.serialize(con));
-						json.add("conditions", conArray);
-					}
-					
-					recipe.serializeRecipeData(json);
-				}
-				
-				@Override
-				public JsonObject serializeAdvancement(){
-					return recipe.serializeAdvancement();
-				}
-				
-				@Override
-				public RecipeSerializer<?> getType(){
-					return recipe.getType();
-				}
-				
-				@Override
-				public ResourceLocation getId(){
-					return recipe.getId();
-				}
-				
-				@Override
-				public ResourceLocation getAdvancementId(){
-					return recipe.getAdvancementId();
-				}
-			});
-		};
+	
+	// Private in RecipeProvider
+	private static InventoryChangeTrigger.TriggerInstance hasTag(TagKey<Item> tag) {
+		return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
 	}
 }

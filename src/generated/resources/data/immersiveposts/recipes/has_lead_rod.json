@@ -1,12 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "conditions": [
-    {
-      "type": "immersiveposts:cfg",
-      "key": "lead",
-      "value": true
-    }
-  ],
   "key": {
     "i": {
       "tag": "forge:ingots/lead"

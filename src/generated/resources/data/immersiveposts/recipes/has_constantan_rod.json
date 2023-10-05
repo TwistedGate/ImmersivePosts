@@ -1,12 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "conditions": [
-    {
-      "type": "immersiveposts:cfg",
-      "key": "constantan",
-      "value": true
-    }
-  ],
   "key": {
     "i": {
       "tag": "forge:ingots/constantan"

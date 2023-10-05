@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
-import twistedgate.immersiveposts.common.IPOConfig;
 
 /**
  * @author TwistedGate
@@ -26,8 +25,6 @@ public class MetalFenceBlock extends FenceBlock{
 	
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items){
-		if(IPOConfig.MAIN.isEnabled(this)){
-			items.add(new ItemStack(this));
-		}
+		items.add(new ItemStack(this));
 	}
 }
