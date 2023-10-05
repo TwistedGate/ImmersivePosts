@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+<<<<<<< HEAD
   "category": "building",
   "conditions": [
     {
@@ -8,6 +9,8 @@
       "value": true
     }
   ],
+=======
+>>>>>>> b6f2ac9 (Fixes recipes not loading)
   "key": {
     "i": {
       "tag": "forge:ingots/lead"

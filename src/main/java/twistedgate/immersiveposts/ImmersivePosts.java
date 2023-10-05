@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -22,7 +21,6 @@ import twistedgate.immersiveposts.common.ExternalModContent;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPORegistries;
-import twistedgate.immersiveposts.common.crafting.IPOConfigConditionSerializer;
 import twistedgate.immersiveposts.util.loot.IPOLootFunctions;
 
 /**
@@ -44,8 +42,6 @@ public class ImmersivePosts{
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::loadComplete);
-		
-		CraftingHelper.register(new IPOConfigConditionSerializer());
 		
 		IPORegistries.addRegistersToEventBus(bus);
 		IPOLootFunctions.addRegistersToEventBus(bus);
