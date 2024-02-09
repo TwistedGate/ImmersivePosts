@@ -1,7 +1,5 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -13,11 +11,6 @@ public class GenericPostBlock extends IPOBlockBase{
 	protected final IPostMaterial postMaterial;
 	
 	public GenericPostBlock(IPostMaterial material){
-		super(material.getBlockProperties());
-		this.postMaterial = material;
-	}
-	
-	public GenericPostBlock(IPostMaterial material, @Nonnull String name_post){
 		super(material.getBlockProperties());
 		this.postMaterial = material;
 	}

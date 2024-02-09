@@ -20,16 +20,14 @@ public class PostMaterialRegistry{
 	static final Map<IPostMaterial, Pair<RegistryObject<? extends Block>, RegistryObject<? extends Block>>> MAP = new HashMap<>();
 	
 	/**
-	 * Registers your PostMaterial and creates all that is nessesary for your
+	 * Registers your PostMaterial and creates all that is necessary for your
 	 * shiny new post be noticed/recognized as such by ImmersivePosts.<br>
 	 * <br>
 	 * This has to be called before trying to use
 	 * {@link PostMaterialRegistry#getPostFrom(IPostMaterial)} or
 	 * {@link PostMaterialRegistry#getTrussFrom(IPostMaterial)} IF you wish to
 	 * use these for <i>something</i>.
-	 * 
-	 * @param register
-	 * @param material
+	 *
 	 */
 	public static void register(DeferredRegister<Block> register, IPostMaterial material){
 		if(MAP.containsKey(material)){
@@ -43,19 +41,17 @@ public class PostMaterialRegistry{
 	}
 	
 	/**
-	 * @param material
 	 * @return RegistryObject reference to the Post block of <i>material</i>.
 	 */
-	public static final RegistryObject<? extends Block> getPostFrom(IPostMaterial material){
+	public static RegistryObject<? extends Block> getPostFrom(IPostMaterial material){
 		Pair<RegistryObject<? extends Block>, RegistryObject<? extends Block>> pair = MAP.get(material);
 		return pair != null ? pair.getLeft() : null;
 	}
 	
 	/**
-	 * @param material
 	 * @return RegistryObject reference to the Truss block of <i>material</i>.
 	 */
-	public static final RegistryObject<? extends Block> getTrussFrom(IPostMaterial material){
+	public static RegistryObject<? extends Block> getTrussFrom(IPostMaterial material){
 		Pair<RegistryObject<? extends Block>, RegistryObject<? extends Block>> pair = MAP.get(material);
 		return pair != null ? pair.getRight() : null;
 	}

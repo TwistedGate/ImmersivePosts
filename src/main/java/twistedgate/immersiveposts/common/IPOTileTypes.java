@@ -17,9 +17,10 @@ public class IPOTileTypes{
 	static{
 		POST_BASE = register("postbase", PostBaseTileEntity::new, IPOContent.Blocks.POST_BASE::get);
 	}
-	
+
+	@SuppressWarnings("all")
 	private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntitySupplier<T> factory, Supplier<Block> valid){
-		return IPORegistries.TILE_REGISTER.register(name, () -> new BlockEntityType<T>(factory, ImmutableSet.of(valid.get()), null));
+		return IPORegistries.TILE_REGISTER.register(name, () -> new BlockEntityType<>(factory, ImmutableSet.of(valid.get()), null));
 	}
 	
 	protected static void forceClassLoad(){

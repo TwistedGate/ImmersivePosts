@@ -4,6 +4,9 @@ package twistedgate.immersiveposts;
  * Class holding informations about Immersive Posts
  * @author TwistedGate
  */
+
+//Useless variables? Consider deleting them!
+@SuppressWarnings("all")
 public class IPOMod{
 	public static final String ID			= "immersiveposts";
 	public static final String NAME			= "Immersive Posts";

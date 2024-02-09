@@ -14,6 +14,7 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import org.jetbrains.annotations.NotNull;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
 
@@ -25,10 +26,10 @@ public class PostMaterialDropLootEntry extends LootPoolSingletonContainer{
 	}
 	
 	@Override
-	protected void createItemStack(Consumer<ItemStack> stackConsumer, LootContext context){
+	protected void createItemStack(@NotNull Consumer<ItemStack> stackConsumer, LootContext context){
 		if(context.hasParam(LootContextParams.BLOCK_STATE)){
 			BlockState state = context.getParamOrNull(LootContextParams.BLOCK_STATE);
-			if(state.hasProperty(PostBlock.TYPE) && state.getValue(PostBlock.TYPE).id() < 2){
+			if(state != null && state.hasProperty(PostBlock.TYPE) && state.getValue(PostBlock.TYPE).id() < 2){
 				ItemStack stack = ((PostBlock) state.getBlock()).getPostMaterial().getItemStack();
 				stackConsumer.accept(stack);
 			}
@@ -36,7 +37,7 @@ public class PostMaterialDropLootEntry extends LootPoolSingletonContainer{
 	}
 	
 	@Override
-	public LootPoolEntryType getType(){
+	public @NotNull LootPoolEntryType getType(){
 		return IPOLootFunctions.postDrop;
 	}
 	
@@ -46,7 +47,7 @@ public class PostMaterialDropLootEntry extends LootPoolSingletonContainer{
 	
 	public static class Serializer extends LootPoolSingletonContainer.Serializer<PostMaterialDropLootEntry>{
 		@Override
-		protected PostMaterialDropLootEntry deserialize(JsonObject object, JsonDeserializationContext context, int weight, int quality, LootItemCondition[] conditions, LootItemFunction[] functions){
+		protected @NotNull PostMaterialDropLootEntry deserialize(@NotNull JsonObject object, @NotNull JsonDeserializationContext context, int weight, int quality, LootItemCondition @NotNull [] conditions, LootItemFunction @NotNull [] functions){
 			return new PostMaterialDropLootEntry(weight, quality, conditions, functions);
 		}
 	}

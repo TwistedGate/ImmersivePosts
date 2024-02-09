@@ -11,7 +11,8 @@ license="TwistedGate's License of Common Sense (A modified copy of \"Blu's Licen
 	displayURL="https://minecraft.curseforge.com/projects/immersiveposts"
 	updateJSONURL="https://raw.githubusercontent.com/TwistedGate/ImmersivePosts/master/change.json"
 	credits='''§nInspired by ImmersiveIntegration's extendable posts.§r
-
+§l§6--- 1.20 Port ---§r
+LiukRast :)
 §l§2--- Translations ---§r
 Russian: Shellyoung
 Chinese: scikirbypoke, kappa-maintainer
@@ -23,20 +24,20 @@ Korean : FreddyYj'''
 [[dependencies.immersiveposts]]
 	modId="immersiveengineering"
 	mandatory=true
-	versionRange="[1.19.2-9.1.2-159,)"
+	versionRange="[1.20.1-9.4.0-166.40,)"
 	ordering="BEFORE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="forge"
 	mandatory=true
-	versionRange="[43.2.0,)"
+	versionRange="[47.2.19,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="minecraft"
 	mandatory=true
-	versionRange="[1.19.2]"
+	versionRange="[1.20.1]"
 	ordering="NONE"
 	side="BOTH"

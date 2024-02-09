@@ -3,10 +3,6 @@ package twistedgate.immersiveposts;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,28 +15,20 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import twistedgate.immersiveposts.client.ClientEventHandler;
 import twistedgate.immersiveposts.client.ClientProxy;
-import twistedgate.immersiveposts.common.CommonProxy;
-import twistedgate.immersiveposts.common.ExternalModContent;
-import twistedgate.immersiveposts.common.IPOConfig;
-import twistedgate.immersiveposts.common.IPOContent;
-import twistedgate.immersiveposts.common.IPORegistries;
+import twistedgate.immersiveposts.common.*;
 
 /**
  * @author TwistedGate
  */
 @Mod(IPOMod.ID)
 public class ImmersivePosts{
-	
-	public static final CreativeModeTab creativeTab = new CreativeModeTab(IPOMod.ID){
-		@Override
-		public ItemStack makeIcon(){
-			Block block = IPOContent.Blocks.POST_BASE.get();
-			return new ItemStack(block == null ? Items.BARRIER : block);
-		}
-	};
-	public static final Logger log = LogManager.getLogger(IPOMod.ID);
-	
-	public static CommonProxy proxy = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+
+	//Never used? Consider deleting it!
+	@SuppressWarnings("all")
+	public static final Logger LOGGER = LogManager.getLogger(IPOMod.ID);
+
+	//When possible, please make static variables final
+	public static final CommonProxy PROXY = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
 	public ImmersivePosts(){
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, IPOConfig.ALL);
@@ -53,6 +41,7 @@ public class ImmersivePosts{
 		
 		ExternalModContent.forceClassLoad();
 		IPOContent.modConstruction();
+		IPOModTab.register(bus);
 	}
 	
 	public void clientSetup(FMLClientSetupEvent event){
@@ -60,7 +49,7 @@ public class ImmersivePosts{
 	}
 	
 	public void loadComplete(FMLLoadCompleteEvent event){
-		proxy.completed();
+		PROXY.completed();
 	}
 	
 	public void addReloadListeners(AddReloadListenerEvent event){

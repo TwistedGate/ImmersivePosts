@@ -1,22 +1,11 @@
 package twistedgate.immersiveposts.common;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.function.Supplier;
-
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.Util;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraftforge.registries.RegistryObject;
-import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.common.blocks.MetalFenceBlock;
@@ -25,11 +14,22 @@ import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.common.items.IPOItemBase;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.function.Supplier;
+
 /**
  * @author TwistedGate
  */
 public class IPOContent{
-	public static final boolean containsBlockOrItem(@Nullable final Block block, @Nullable final Item item){
+	//Useless method? Consider deleting it!
+	@SuppressWarnings("all")
+	public static boolean containsBlockOrItem(@Nullable final Block block, @Nullable final Item item){
 		if(block != null){
 			return IPORegistries.BLOCK_REGISTER.getEntries().stream().anyMatch(r -> r.get() == block);
 		}
@@ -39,30 +39,34 @@ public class IPOContent{
 		return false;
 	}
 	
-	protected static final <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> constructor){
+	protected static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> constructor){
 		return IPORegistries.BLOCK_REGISTER.register(name, constructor);
 	}
 	
-	protected static final RegistryObject<PostBlock> registerPostBlock(EnumPostMaterial material){
+	protected static RegistryObject<PostBlock> registerPostBlock(EnumPostMaterial material){
 		return registerBlock(material.getBlockName(), () -> new PostBlock(material));
 	}
 	
-	protected static final RegistryObject<HorizontalTrussBlock> registerTrussBlock(EnumPostMaterial material){
+	protected static RegistryObject<HorizontalTrussBlock> registerTrussBlock(EnumPostMaterial material){
 		return registerBlock(material.getBlockName() + "_truss", () -> new HorizontalTrussBlock(material));
 	}
 	
-	protected static final RegistryObject<FenceBlock> registerMetalFence(String materialName){
+	protected static RegistryObject<FenceBlock> registerMetalFence(String materialName){
 		materialName = "fence_" + materialName;
 		
 		RegistryObject<FenceBlock> block = IPORegistries.BLOCK_REGISTER.register(materialName, MetalFenceBlock::new);
-		IPORegistries.ITEM_REGISTER.register(materialName, () -> new BlockItem(block.get(), new Item.Properties().tab(ImmersivePosts.creativeTab)));
+		IPORegistries.ITEM_REGISTER.register(materialName, () -> new BlockItem(block.get(), new Item.Properties()));
 		return block;
 	}
 	
-	protected static final <T extends Item> RegistryObject<T> registerItem(String name, Supplier<T> constructor){
+	protected static <T extends Item> RegistryObject<T> registerItem(String name, Supplier<T> constructor){
 		return IPORegistries.ITEM_REGISTER.register(name, constructor);
 	}
-	
+
+
+	//TODO: DELETE THIS CLASS AS SOON AS POSSIBLE!
+	// WHY YOU ARE MAKING STATIC CLASSES FOR NOTHING!
+	// PLEASE AVOID DOING THAT, IS ANNOYING AND MAKES YOUR CLASS UNREADABLE!
 	public static class Blocks{
 		public static final RegistryObject<PostBaseBlock> POST_BASE;
 		
@@ -121,14 +125,16 @@ public class IPOContent{
 					map.put(material, registerPostBlock(material));
 				}
 			});
-			
+
+			@SuppressWarnings("all")
 			@CheckForNull
 			public static PostBlock get(@Nonnull IPostMaterial material){
 				if(!ALL.containsKey(material))
 					return null;
 				return ALL.get(material).get();
 			}
-			
+
+			@SuppressWarnings("all")
 			@CheckForNull
 			public static RegistryObject<PostBlock> getRegObject(@Nonnull IPostMaterial material){
 				if(!ALL.containsKey(material))
@@ -147,13 +153,15 @@ public class IPOContent{
 					map.put(material, registerTrussBlock(material));
 				}
 			});
-			
+
+			@SuppressWarnings("all")
 			public static HorizontalTrussBlock get(@Nonnull IPostMaterial material){
 				if(!ALL.containsKey(material))
 					return null;
 				return ALL.get(material).get();
 			}
-			
+
+			@SuppressWarnings("all")
 			public static RegistryObject<HorizontalTrussBlock> getRegObject(@Nonnull IPostMaterial material){
 				if(!ALL.containsKey(material))
 					return null;
@@ -190,7 +198,7 @@ public class IPOContent{
 		}
 	}
 	
-	public static final void modConstruction(){
+	public static void modConstruction(){
 		Blocks.forceClassLoad();
 		
 		IPOTileTypes.forceClassLoad();

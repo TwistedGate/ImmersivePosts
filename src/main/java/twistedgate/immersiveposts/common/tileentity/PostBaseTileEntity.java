@@ -27,7 +27,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	@Nonnull
 	protected ItemStack stack = ItemStack.EMPTY;
 	@Nonnull
-	protected Lazy<BlockState> coverstate = EMPTY;
+	protected Lazy<BlockState> coverState = EMPTY;
 	/** Horizontal Only */
 	protected Direction facing = Direction.NORTH;
 	
@@ -45,7 +45,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		if(this.stack.isEmpty()){
 			return EMPTY.get();
 		}
-		return this.coverstate.get();
+		return this.coverState.get();
 	}
 	
 	public Direction getFacing(){
@@ -60,12 +60,11 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	}
 	
 	/**
-	 * Set's the stack to be used for the cover. Automaticly causes a blockupdate to itself.
-	 * 
-	 * @param stack The stack to be used, requires the item to be a instance of {@link BlockItem}.
-	 * @return true if it changed, false otherwise
+	 * Set's the stack to be used for the cover. Automatically causes a block update to itself.
+	 *
+	 * @param stack The stack to be used, requires the item to be an instance of {@link BlockItem}.
 	 */
-	public boolean setStack(ItemStack stack){
+	public void setStack(ItemStack stack){
 		ItemStack last = this.stack;
 		if(stack == null || stack.isEmpty()){
 			this.stack = ItemStack.EMPTY;
@@ -81,16 +80,14 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		if(changed){
 			setChanged();
 		}
-		
-		return changed;
+
 	}
 	
 	@Override
-	protected CompoundTag writeCustom(CompoundTag compound){
+	protected void writeCustom(CompoundTag compound){
 		compound.putString("facing", this.facing != null ? this.facing.getName() : Direction.NORTH.getName());
 		compound.put("stack", this.stack.serializeNBT());
-		return compound;
-	}
+    }
 	
 	@Override
 	protected void readCustom(CompoundTag compound){
@@ -107,7 +104,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		}
 	}
 	
-	public boolean interact(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand){
+	public boolean interact(BlockState state, Level world, BlockPos pos, Player player){
 		ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
 		
 		if(held == ItemStack.EMPTY){
@@ -149,7 +146,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		return false;
 	}
 	
-	/** Used to check wether the base can hide within a certain block */
+	/** Used to check whether the base can hide within a certain block */
 	private boolean isUsableCover(@Nonnull Block block, @Nonnull BlockGetter reader, @Nonnull BlockPos pos){
 		BlockState state = block.defaultBlockState();
 		return block != Blocks.AIR && state.isRedstoneConductor(reader, pos) && state.isSolidRender(reader, pos);
@@ -159,17 +156,17 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		if(!changed)
 			return;
 		
-		if(this.stack == null || this.stack.isEmpty()){
-			this.coverstate = EMPTY;
+		if(this.stack.isEmpty()){
+			this.coverState = EMPTY;
 		}else{
-			this.coverstate = Lazy.of(() -> {
+			this.coverState = Lazy.of(() -> {
 				if(this.stack.getItem() instanceof BlockItem){
 					BlockState state = ((BlockItem) this.stack.getItem()).getBlock().defaultBlockState();
 					
 					Optional<DirectionProperty> prop = state.getProperties().stream()
 							.filter(p -> p instanceof DirectionProperty && p.getName().equals("facing"))
 							.map(p -> (DirectionProperty) p)
-							.filter(p -> p.getPossibleValues().stream().allMatch(d -> Direction.Plane.HORIZONTAL.test(d)))
+							.filter(p -> p.getPossibleValues().stream().allMatch(Direction.Plane.HORIZONTAL))
 							.findAny();
 					
 					if(prop.isPresent()){

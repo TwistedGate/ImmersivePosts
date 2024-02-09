@@ -11,6 +11,6 @@ public class ExternalModContent{
 	public static RegistryObject<Block> IE_ALUMINIUM_FENCE = RegistryObject.create(new ResourceLocation(Lib.MODID, "alu_fence"), ForgeRegistries.BLOCKS);
 	public static RegistryObject<Block> IE_STEEL_FENCE = RegistryObject.create(new ResourceLocation(Lib.MODID, "steel_fence"), ForgeRegistries.BLOCKS);
 	
-	public static final void forceClassLoad(){
+	public static void forceClassLoad(){
 	}
 }

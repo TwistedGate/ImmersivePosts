@@ -1,7 +1,5 @@
 package twistedgate.immersiveposts.api.posts;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -11,9 +9,11 @@ import twistedgate.immersiveposts.common.IPOContent.Blocks.HorizontalTruss;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
+import javax.annotation.Nonnull;
+
 public interface IPostMaterial{
 	
-	/** Source-block itemstack */
+	/** Source-block itemStack */
 	ItemStack getItemStack();
 	
 	/** Returns the texture location for this material type */
@@ -37,13 +37,14 @@ public interface IPostMaterial{
 	/** Returns {@link Properties} for the Post-Block */
 	Properties getBlockProperties();
 	
-	/** Gets the default post blockstate of the given source-block itemstack */
-	public static BlockState getPostState(@Nonnull ItemStack stack){
+	/** Gets the default post blockstate of the given source-block itemStack */
+	static BlockState getPostState(@Nonnull ItemStack stack){
 		return getPostState(getPostMaterial(stack));
 	}
 	
 	/** Gets the default post blockstate of the given material */
-	public static BlockState getPostState(IPostMaterial material){
+	@SuppressWarnings("all")
+	static BlockState getPostState(IPostMaterial material){
 		Block block = Posts.get(material);
 		if(block == null && PostMaterialRegistry.MAP.containsKey(material)){
 			block = PostMaterialRegistry.getPostFrom(material).get();
@@ -53,30 +54,33 @@ public interface IPostMaterial{
 	}
 	
 	/** Gets the default truss blockstate of the given source-block itemstack */
-	public static BlockState getTrussState(@Nonnull ItemStack stack){
+	//Useless? Consider removing it!
+	@SuppressWarnings("all")
+	static BlockState getTrussState(@Nonnull ItemStack stack){
 		return getTrussState(getPostMaterial(stack));
 	}
 	
 	/** Gets the default truss blockstate of the given material */
-	public static BlockState getTrussState(@Nonnull IPostMaterial material){
+	@SuppressWarnings("all")
+	static BlockState getTrussState(@Nonnull IPostMaterial material){
 		Block block = HorizontalTruss.get(material);
 		if(block == null && PostMaterialRegistry.MAP.containsKey(material)){
 			block = PostMaterialRegistry.getTrussFrom(material).get();
 		}
-		
+
 		return block.defaultBlockState();
 	}
 	
-	/** Gets the material of the given source-block itemstack */
-	public static IPostMaterial getPostMaterial(@Nonnull ItemStack stack){
+	/** Gets the material of the given source-block itemStack */
+	static IPostMaterial getPostMaterial(@Nonnull ItemStack stack){
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.sameItem(mat.getItemStack())){
+			if(stack.is(mat.getItemStack().getItem())){
 				return mat;
 			}
 		}
 		
 		for(IPostMaterial mat:PostMaterialRegistry.MAP.keySet()){
-			if(stack.sameItem(mat.getItemStack())){
+			if(stack.is(mat.getItemStack().getItem())){
 				return mat;
 			}
 		}
@@ -84,18 +88,18 @@ public interface IPostMaterial{
 		return null;
 	}
 	
-	public static boolean isValidItem(ItemStack stack){
+	static boolean isValidItem(ItemStack stack){
 		if(stack == null || stack.isEmpty())
 			return false;
 		
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.sameItem(mat.getItemStack())){
+			if(stack.is(mat.getItemStack().getItem())){
 				return true;
 			}
 		}
 		
 		for(IPostMaterial mat:PostMaterialRegistry.MAP.keySet()){
-			if(stack.sameItem(mat.getItemStack())){
+			if(stack.is(mat.getItemStack().getItem())){
 				return true;
 			}
 		}
