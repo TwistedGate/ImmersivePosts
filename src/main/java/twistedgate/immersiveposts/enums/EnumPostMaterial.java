@@ -10,9 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.material.MapColor;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.ExternalModContent;
@@ -24,9 +22,9 @@ import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 public enum EnumPostMaterial implements IPostMaterial{
 	
 	// Default
-	WOOD("wood", PostBlockProperties.WOOD, ExternalModContent.IE_TREATED_FENCE::get),
-	ALUMINIUM("aluminium", PostBlockProperties.METAL, ExternalModContent.IE_ALUMINIUM_FENCE::get),
-	STEEL("steel", PostBlockProperties.METAL, ExternalModContent.IE_STEEL_FENCE::get),
+	WOOD("wood", PostBlockProperties.WOOD, ExternalModContent.IE_TREATED_FENCE),
+	ALUMINIUM("aluminium", PostBlockProperties.METAL, ExternalModContent.IE_ALUMINIUM_FENCE),
+	STEEL("steel", PostBlockProperties.METAL, ExternalModContent.IE_STEEL_FENCE),
 	
 	// Custom
 	NETHERBRICK("nether", PostBlockProperties.STONE, Blocks.NETHER_BRICK_FENCE),
@@ -44,28 +42,24 @@ public enum EnumPostMaterial implements IPostMaterial{
 	;
 	
 	private boolean isFence;
-	private String name;
+	private final String name;
 	private Block sourceBlock;
 	private Supplier<Block> sourceBlockSupplier;
-	private Properties properties;
+	private final Properties properties;
 	private ResourceLocation texture;
-	
-	private EnumPostMaterial(String name, Properties properties, Block sourceBlock){
-		this(name, properties, null, sourceBlock);
-	}
-	
-	private EnumPostMaterial(String name, Properties properties, Supplier<Block> sourceBlockSupplier){
+
+	EnumPostMaterial(String name, Properties properties, Supplier<Block> sourceBlockSupplier){
 		this(name, properties, null, sourceBlockSupplier);
 	}
-	
-	private EnumPostMaterial(String name, Properties properties, ResourceLocation texture, Block sourceBlock){
+
+	EnumPostMaterial(String name, Properties properties, Block sourceBlock){
 		this.name = name;
 		this.properties = properties;
 		this.sourceBlock = sourceBlock;
 		this.isFence = (sourceBlock instanceof FenceBlock);
 	}
 	
-	private EnumPostMaterial(String name, Properties properties, ResourceLocation texture, Supplier<Block> sourceBlockSupplier){
+	EnumPostMaterial(String name, Properties properties, ResourceLocation texture, Supplier<Block> sourceBlockSupplier){
 		this.name = name;
 		this.properties = properties;
 		this.texture = texture;
@@ -116,34 +110,28 @@ public enum EnumPostMaterial implements IPostMaterial{
 	}
 	
 	public static class PostBlockProperties{
-		/** Sources are not being read properly for some reason, so this is just so i know what the hell is what */
-		private static Material material(MaterialColor color, boolean isLiquid, boolean isSolid, boolean blocksMovement, boolean isOpaque, boolean flammable, boolean replaceable, PushReaction pushReaction){
-			return new Material(color, isLiquid, isSolid, blocksMovement, isOpaque, flammable, replaceable, pushReaction);
-		}
-		
-		private static final Material WOOD_LIKE = material(MaterialColor.WOOD, false, true, true, true, false, false, PushReaction.BLOCK);
-		private static final Material STONE_LIKE = material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
-		private static final Material METAL_LIKE = material(MaterialColor.METAL, false, true, true, true, false, false, PushReaction.BLOCK);
-		
-		public static final Properties WOOD = Properties.of(WOOD_LIKE)
+		public static final Properties WOOD = Properties.of()
+				.mapColor(MapColor.WOOD)
 				.sound(SoundType.WOOD)
 				//.harvestTool(ToolType.AXE)
 				.strength(2.0F, 5.0F)
 				.noOcclusion()
 				.isViewBlocking((s, r, p) -> false);
-		
-		public static final Properties STONE = Properties.of(STONE_LIKE)
+
+		public static final Properties STONE = Properties.of()
+				.mapColor(MapColor.STONE)
 				.sound(SoundType.STONE)
 				.requiresCorrectToolForDrops()
 				//.harvestTool(ToolType.PICKAXE)
 				.strength(1.5F, 6.0F)
 				.noOcclusion()
 				.isViewBlocking((s, r, p) -> false);
-		
+
 		public static final Properties METAL = metal();
 		
 		private static Properties metal(){
-			return Properties.of(METAL_LIKE)
+			return Properties.of()
+					.mapColor(MapColor.METAL)
 					.sound(SoundType.METAL)
 					.requiresCorrectToolForDrops()
 					//.harvestTool(ToolType.PICKAXE)

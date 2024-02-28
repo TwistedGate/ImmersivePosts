@@ -6,16 +6,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
 public class ColorHandler implements BlockColor{
 	@Override
-	public int getColor(BlockState state, BlockAndTintGetter world, BlockPos pos, int index){
+	public int getColor(@NotNull BlockState state, BlockAndTintGetter world, BlockPos pos, int index){
 		if(index >= 0){
 			BlockEntity te = world.getBlockEntity(pos);
 			if(te instanceof PostBaseTileEntity base && !base.getStack().isEmpty()){
-				int color = Minecraft.getInstance().getBlockColors().getColor(base.getCoverState(), world, pos, index);
-				return color;
+				return Minecraft.getInstance().getBlockColors().getColor(base.getCoverState(), world, pos, index);
 			}
 		}
 		

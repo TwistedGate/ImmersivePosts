@@ -1,6 +1,6 @@
 package twistedgate.immersiveposts.common;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -21,7 +21,7 @@ public class IPOTags{
 		public static final TagKey<Item> ELECTRUM = ingotTag("electrum");
 		public static final TagKey<Item> URANIUM = ingotTag("uranium");
 		
-		private static final TagKey<Item> ingotTag(String name){
+		private static TagKey<Item> ingotTag(String name){
 			return createItemWrapper(new ResourceLocation("forge", "ingots/" + name));
 		}
 	}
@@ -39,7 +39,7 @@ public class IPOTags{
 		public static final TagKey<Item> ELECTRUM = rodTag("electrum");
 		public static final TagKey<Item> URANIUM = rodTag("uranium");
 		
-		private static final TagKey<Item> rodTag(String name){
+		private static TagKey<Item> rodTag(String name){
 			return createItemWrapper(new ResourceLocation("forge", "rods/" + name));
 		}
 	}
@@ -49,10 +49,10 @@ public class IPOTags{
 	}
 	
 	private static TagKey<Item> createItemWrapper(ResourceLocation name){
-        return TagKey.create(Registry.ITEM_REGISTRY, name);
+        return TagKey.create(Registries.ITEM, name);
 	}
 	
 	private static TagKey<Block> createBlockWrapper(ResourceLocation name){
-		return TagKey.create(Registry.BLOCK_REGISTRY, name);
+		return TagKey.create(Registries.BLOCK, name);
 	}
 }

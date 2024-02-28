@@ -18,6 +18,7 @@ import twistedgate.immersiveposts.IPOMod;
 
 @EventBusSubscriber(modid = IPOMod.ID, bus = Bus.MOD)
 public class IPOConfig{
+	@SuppressWarnings("all")
 	public static final Logger log = LogManager.getLogger(IPOMod.ID + "/Config");
 	
 	public static final ForgeConfigSpec ALL;

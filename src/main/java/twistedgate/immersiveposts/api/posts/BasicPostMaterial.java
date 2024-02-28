@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 /**
  * This is an example implementation of {@link IPostMaterial} but can be used as
  * normal.<br>
- * While basic it has the minimum required functionality to create custom posts!<br>
+ * While basic, it has the minimum required functionality to create custom posts!<br>
  * Even then, the rest (Models, Textures, Manual entries and so on) has to be handled by you!
  * 
  * @author TwistedGate
@@ -19,14 +19,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 public class BasicPostMaterial implements IPostMaterial{
 	
 	private boolean isFence;
-	private String name;
+	private final String name;
 	private Block sourceBlock;
-	private Supplier<Block> sourceBlockSupplier;
-	private Properties properties;
-	private ResourceLocation texture;
+	private final Supplier<Block> sourceBlockSupplier;
+	private final Properties properties;
+	private final ResourceLocation texture;
 	
 	/**
-	 * @param materialName
 	 * @param postBlockProperties is the Block Properties of the
 	 *        Post/Truss-Block
 	 * @param postBlockTexture is the Texture used for the Post/Truss-Block
@@ -40,7 +39,8 @@ public class BasicPostMaterial implements IPostMaterial{
 		this.texture = postBlockTexture;
 		this.sourceBlockSupplier = sourceBlockSupplier;
 	}
-	
+
+	//What's even the point on making this method if it's always the same?
 	@Override
 	public ItemStack getItemStack(){
 		Block block = getSourceBlock();

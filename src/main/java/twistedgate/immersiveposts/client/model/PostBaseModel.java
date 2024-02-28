@@ -1,27 +1,12 @@
 package twistedgate.immersiveposts.client.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.jetbrains.annotations.NotNull;
-
+import blusunrize.immersiveengineering.client.utils.ModelUtils;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mojang.datafixers.util.Pair;
-
-import blusunrize.immersiveengineering.client.utils.ModelUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -29,9 +14,8 @@ import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -46,9 +30,17 @@ import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
+import org.jetbrains.annotations.NotNull;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseModel.Loader.PostBaseModelRaw;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 public class PostBaseModel extends IPOBakedModel{
 	
@@ -58,14 +50,16 @@ public class PostBaseModel extends IPOBakedModel{
 			.build();
 	
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType layer){
+	public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType layer){
 		BlockState hState = Blocks.DIRT.defaultBlockState();
 		Direction facing = Direction.NORTH;
 		
 		if(extraData.has(IPOModelData.POSTBASE)){
 			IPOModelData.PostBaseModelData data = extraData.get(IPOModelData.POSTBASE);
-			hState = data.state;
-			facing = data.facing;
+			if(data != null) {
+				hState = data.state;
+				facing = data.facing;
+			}
 		}
 		
 		Key key = new Key(hState, facing);
@@ -79,7 +73,7 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
-	public ModelData getModelData(@Nonnull BlockAndTintGetter world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull ModelData tileData){
+	public @NotNull ModelData getModelData(@Nonnull BlockAndTintGetter world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull ModelData tileData){
 		ModelData.Builder mData = super.getModelData(world, pos, state, tileData).derive();
 		
 		if(world.getBlockEntity(pos) instanceof PostBaseTileEntity base){
@@ -92,7 +86,7 @@ public class PostBaseModel extends IPOBakedModel{
 	
 	private static final ChunkRenderTypeSet RENDER_TYPE = ChunkRenderTypeSet.of(RenderType.cutout());
 	@Override
-	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data){
+	public @NotNull ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data){
 		return RENDER_TYPE;
 	}
 	
@@ -125,12 +119,12 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
-	public TextureAtlasSprite getParticleIcon(){
+	public @NotNull TextureAtlasSprite getParticleIcon(){
 		return getPostbaseSprite();
 	}
 	
 	@Override
-	public ItemOverrides getOverrides(){
+	public @NotNull ItemOverrides getOverrides(){
 		return ItemOverrides.EMPTY;
 	}
 	
@@ -145,14 +139,10 @@ public class PostBaseModel extends IPOBakedModel{
 		}
 		
 		public static class PostBaseModelRaw implements IUnbakedGeometry<PostBaseModelRaw>{
+
 			@Override
-			public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation){
+			public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
 				return new PostBaseModel();
-			}
-			
-			@Override
-			public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors){
-				return ImmutableList.of();
 			}
 		}
 		
@@ -161,7 +151,7 @@ public class PostBaseModel extends IPOBakedModel{
 	private static class SpecialPostBaseModel extends PostBaseModel{
 		private static final RandomSource RANDOM = RandomSource.create();
 		
-		private static final Vec3[] verts = new Vec3[]{
+		private static final Vec3[] vertices = new Vec3[]{
 				new Vec3(0.25F, 1.001F, 0.25F), new Vec3(0.25F, 1.001F, 0.75F),
 				new Vec3(0.75F, 1.001F, 0.75F), new Vec3(0.75F, 1.001F, 0.25F),
 		};
@@ -181,13 +171,12 @@ public class PostBaseModel extends IPOBakedModel{
 		private void build(Key key){
 			BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(key.state);
 			for(Direction side:Direction.values()){
-				List<BakedQuad> quads = new ArrayList<>();
-				
-				quads.addAll(model.getQuads(key.state, side, RANDOM, ModelData.EMPTY, (RenderType) null));
+
+				List<BakedQuad> quads = new ArrayList<>(model.getQuads(key.state, side, RANDOM, ModelData.EMPTY, null));
 				
 				if(side == Direction.UP){
 					TextureAtlasSprite sprite = getPostbaseSprite();
-					quads.add(ModelUtils.createBakedQuad(verts, side, sprite, uvs, color, false));
+					quads.add(ModelUtils.createBakedQuad(vertices, side, sprite, uvs, color, false));
 				}
 				
 				this.quads.add(quads);
@@ -196,34 +185,23 @@ public class PostBaseModel extends IPOBakedModel{
 		}
 		
 		@Override
-		public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nullable RandomSource rand, @Nullable ModelData extraData, RenderType layer){
+		public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nullable RandomSource rand, @Nullable ModelData extraData, RenderType layer){
 			return this.quads.get(side == null ? (this.quads.size() - 1) : side.get3DDataValue());
 		}
 	}
-	
-	private static class Key{
-		final BlockState state;
-		final Direction facing;
-		
-		public Key(BlockState state, Direction facing){
-			this.state = state;
-			this.facing = facing;
-		}
-		
+
+	private record Key(BlockState state, Direction facing) {
+
 		@Override
-		public boolean equals(Object obj){
-			if(this == obj){
-				return true;
-			}else if(obj != null && obj instanceof Key other){
-				return this.state.equals(other.state) && this.facing == other.facing;
-			}
-			
+			public boolean equals(Object obj) {
+				if (this == obj) {
+					return true;
+				} else if (obj instanceof Key other) {
+					return this.state.equals(other.state) && this.facing == other.facing;
+				}
+
 			return false;
-		}
-		
-		@Override
-		public int hashCode(){
-			return 31 * this.state.hashCode() + Objects.hash(this.facing);
-		}
+			}
+
 	}
 }

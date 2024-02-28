@@ -36,6 +36,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
@@ -55,7 +56,7 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	public static final EnumProperty<EnumHTrussType> TYPE = EnumProperty.create("type", EnumHTrussType.class);
 	
 	public HorizontalTrussBlock(IPostMaterial material){
-		super(material, "_truss");
+		super(material);
 		
 		registerDefaultState(getStateDefinition().any()
 				.setValue(WATERLOGGED, false)
@@ -78,38 +79,42 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 				CONNECTOR_POINT_TOP, CONNECTOR_POINT_BOTTOM
 			);
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos){
+	public int getLightBlock(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos){
 		return 0;
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos){
+	public float getShadeBrightness(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos){
 		return 1.0F;
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos){
+	public boolean propagatesSkylightDown(BlockState state, @NotNull BlockGetter reader, @NotNull BlockPos pos){
 		return !state.getValue(WATERLOGGED);
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public FluidState getFluidState(BlockState state){
+	public @NotNull FluidState getFluidState(BlockState state){
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
 	}
 	
 	@Override
 	@Nullable
-	public BlockState getStateForPlacement(BlockPlaceContext context){
+	public BlockState getStateForPlacement(@NotNull BlockPlaceContext context){
 		BlockState state = super.getStateForPlacement(context);
 		FluidState fs = context.getLevel().getFluidState(context.getClickedPos());
 		
-		return state.setValue(WATERLOGGED, fs.getType() == Fluids.WATER);
+		return state == null ? null : state.setValue(WATERLOGGED, fs.getType() == Fluids.WATER);
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos){
+	public @NotNull BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor world, @NotNull BlockPos pos, @NotNull BlockPos facingPos){
 		if(state.getValue(WATERLOGGED)){
 			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
@@ -134,7 +139,7 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand){
+	public void animateTick(@NotNull BlockState stateIn, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull RandomSource rand){
 		if(getPostMaterial() == EnumPostMaterial.URANIUM){
 			if(rand.nextFloat() < 0.125F){
 				double x = pos.getX() + 0.375 + 0.25 * rand.nextDouble();
@@ -144,10 +149,11 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 			}
 		}
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side){
+	public boolean skipRendering(@NotNull BlockState state, @NotNull BlockState adjacentBlockState, @NotNull Direction side){
 		return false;
 	}
 	
@@ -160,9 +166,10 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	public boolean canConnectTransformer(BlockGetter world, BlockPos pos){
 		return true;
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit){
+	public @NotNull InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player playerIn, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit){
 		if(!worldIn.isClientSide){
 			ItemStack held = playerIn.getMainHandItem();
 			
@@ -171,26 +178,25 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 				Direction facing = state.getValue(FACING);
 				
 				BlockState newState = state;
-				switch(facing){
-					case NORTH: case SOUTH:{
-						if(face == Direction.EAST){
+				switch (facing) {
+					case NORTH, SOUTH -> {
+						if (face == Direction.EAST) {
 							newState = newState.setValue(PANEL_EAST, !newState.getValue(PANEL_EAST));
-							
-						}else if(face == Direction.WEST){
+
+						} else if (face == Direction.WEST) {
 							newState = newState.setValue(PANEL_WEST, !newState.getValue(PANEL_WEST));
 						}
-						break;
 					}
-					case EAST: case WEST:{
-						if(face == Direction.NORTH){
+					case EAST, WEST -> {
+						if (face == Direction.NORTH) {
 							newState = newState.setValue(PANEL_NORTH, !newState.getValue(PANEL_NORTH));
-							
-						}else if(face == Direction.SOUTH){
+
+						} else if (face == Direction.SOUTH) {
 							newState = newState.setValue(PANEL_SOUTH, !newState.getValue(PANEL_SOUTH));
 						}
-						break;
 					}
-					default:break;
+					default -> {
+					}
 				}
 				
 				if(!newState.equals(state)){
@@ -206,9 +212,10 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 		
 		return InteractionResult.PASS;
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving){
+	public void neighborChanged(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Block block, @NotNull BlockPos fromPos, boolean isMoving){
 		if(world.isClientSide)
 			return;
 		
@@ -222,7 +229,6 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 		
 		if((stateA.isAir() || stateB.isAir()) || (stateA.getBlock() == Blocks.WATER || stateB.getBlock() == Blocks.WATER)){
 			replaceSelf(state, world, pos);
-			return;
 		}
 	}
 	
@@ -241,12 +247,12 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	private static final VoxelShape[] SHAPE_CACHE = new VoxelShape[32];
 	
 	static{
-		boolean[] bools = {false, true};
+		boolean[] booleans = {false, true};
 		for(Direction.Axis axis:new Direction.Axis[]{Direction.Axis.X, Direction.Axis.Z}){
-			for(boolean north:bools){
-				for(boolean east:bools){
-					for(boolean south:bools){
-						for(boolean west:bools){
+			for(boolean north:booleans){
+				for(boolean east:booleans){
+					for(boolean south:booleans){
+						for(boolean west:booleans){
 							SHAPE_CACHE[getCacheIndex(axis, north, east, south, west)] = computeShape(axis, north, east, south, west);
 						}
 					}
@@ -257,17 +263,9 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 	
 	private static VoxelShape computeShape(Direction.Axis axis, boolean panelNorth, boolean panelEast, boolean panelSouth, boolean panelWest){
 		VoxelShape shape = null;
-		switch(axis){
-			case Z:{
-				shape = NORTH_SOUTH;
-				break;
-			}
-			case X:{
-				shape = EAST_WEST;
-				break;
-			}
-			default:
-				break;
+		switch (axis) {
+			case Z -> shape = NORTH_SOUTH;
+			case X -> shape = EAST_WEST;
 		}
 		
 		if(shape == null){
@@ -281,9 +279,10 @@ public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock
 		
 		return shape.optimize();
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context){
+	public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context){
 		Direction.Axis axis = state.getValue(FACING).getAxis();
 		if(axis != Direction.Axis.X && axis != Direction.Axis.Z){
 			return Shapes.empty();

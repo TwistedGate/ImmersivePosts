@@ -11,6 +11,7 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import org.jetbrains.annotations.NotNull;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseModel;
 import twistedgate.immersiveposts.common.IPOContent;
@@ -20,12 +21,12 @@ import twistedgate.immersiveposts.common.IPOContent;
 public class ClientEventHandler extends SimplePreparableReloadListener<Unit>{
 	
 	@Override
-	protected Unit prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler){
+	protected @NotNull Unit prepare(@NotNull ResourceManager manager, @NotNull ProfilerFiller profiler){
 		return Unit.INSTANCE;
 	}
 	
 	@Override
-	protected void apply(Unit pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler){
+	protected void apply(@NotNull Unit pObject, @NotNull ResourceManager manager, @NotNull ProfilerFiller profiler){
 		PostBaseModel.CACHE.invalidateAll();
 	}
 	

@@ -3,6 +3,7 @@ package twistedgate.immersiveposts.enums;
 import java.util.Locale;
 
 import net.minecraft.util.StringRepresentable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author TwistedGate
@@ -17,7 +18,7 @@ public enum EnumFlipState implements StringRepresentable{
 	}
 	
 	@Override
-	public String getSerializedName(){
+	public @NotNull String getSerializedName(){
 		return toString();
 	}
 	

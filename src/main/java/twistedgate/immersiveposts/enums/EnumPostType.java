@@ -3,11 +3,12 @@ package twistedgate.immersiveposts.enums;
 import java.util.Locale;
 
 import net.minecraft.util.StringRepresentable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author TwistedGate
  */
-public enum EnumPostType implements StringRepresentable{
+public enum EnumPostType implements StringRepresentable {
 	POST,
 	POST_TOP,
 	ARM, // Includes the two-way arm
@@ -20,7 +21,7 @@ public enum EnumPostType implements StringRepresentable{
 	}
 	
 	@Override
-	public String getSerializedName(){
+	public @NotNull String getSerializedName(){
 		return toString();
 	}
 	

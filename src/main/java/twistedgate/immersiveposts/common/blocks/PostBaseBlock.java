@@ -1,9 +1,5 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,11 +15,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,9 +25,6 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -43,27 +32,27 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twistedgate.immersiveposts.ImmersivePosts;
+import org.jetbrains.annotations.NotNull;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOTileTypes;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 /**
  * @author TwistedGate
  */
 public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBlock, EntityBlock{
 	private static BlockBehaviour.Properties prop(){
-		Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
-		
-		BlockBehaviour.Properties prop = BlockBehaviour.Properties.of(BaseMaterial)
+
+		return Properties.of()
 				.sound(SoundType.STONE)
 				.requiresCorrectToolForDrops()
 				.strength(5.0F, 3.0F)
 				.noOcclusion();
-		
-		return prop;
 	}
 	
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -84,38 +73,43 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos){
+	public boolean propagatesSkylightDown(BlockState state, @NotNull BlockGetter reader, @NotNull BlockPos pos){
 		return !state.getValue(HIDDEN) ? !state.getValue(WATERLOGGED) : super.propagatesSkylightDown(state, reader, pos);
 	}
 	
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player){
 		if(player.isShiftKeyDown() && state.getValue(HIDDEN)){
-			ItemStack stack = ((PostBaseTileEntity) world.getBlockEntity(pos)).getStack();
+			final var entity = ((PostBaseTileEntity) world.getBlockEntity(pos));
+			// You are never sure that block entity is already present in world at that moment
+			if(entity == null) return super.getCloneItemStack(state, target, world, pos, player);
+			ItemStack stack = entity.getStack();
 			if(stack != ItemStack.EMPTY){
 				return stack;
 			}
 		}
 		return super.getCloneItemStack(state, target, world, pos, player);
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public FluidState getFluidState(BlockState state){
+	public @NotNull FluidState getFluidState(BlockState state){
 		return (!state.getValue(HIDDEN) && state.getValue(WATERLOGGED)) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
 	}
 	
 	@Override
 	@Nullable
-	public BlockState getStateForPlacement(BlockPlaceContext context){
+	public BlockState getStateForPlacement(@NotNull BlockPlaceContext context){
 		BlockState state = super.getStateForPlacement(context);
 		FluidState fs = context.getLevel().getFluidState(context.getClickedPos());
-		
+		if(state == null) return null;
 		state = state.setValue(WATERLOGGED, fs.getType() == Fluids.WATER);
 		return state;
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos){
+	public @NotNull BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor world, @NotNull BlockPos pos, @NotNull BlockPos facingPos){
 		if(!state.getValue(HIDDEN) && state.getValue(WATERLOGGED)){
 			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
@@ -124,35 +118,39 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 	
 	private static final VoxelShape BASE_SIZE = Shapes.box(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 	@Override
-	public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid){
+	public boolean canPlaceLiquid(@NotNull BlockGetter world, @NotNull BlockPos pos, BlockState state, @NotNull Fluid fluid){
 		return !state.getValue(HIDDEN) && SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid);
 	}
 	
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState){
-		return IPOTileTypes.POST_BASE.get().create(pPos, pState);
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state){
+		return IPOTileTypes.POST_BASE.get().create(pos, state);
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context){
+	public @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context){
 		return this.getShape(state, worldIn, pos, context);
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context){
+	public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context){
 		return state.getValue(HIDDEN) ? Shapes.block() : BASE_SIZE;
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side){
+	public boolean skipRendering(@NotNull BlockState state, @NotNull BlockState adjacentBlockState, @NotNull Direction side){
 		return false;
 	}
-	
+
+	@SuppressWarnings("all")
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit){
+	public @NotNull InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player playerIn, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit){
 		BlockEntity te = worldIn.getBlockEntity(pos);
 		if(te instanceof PostBaseTileEntity){
-			if(((PostBaseTileEntity) te).interact(state, worldIn, pos, playerIn, handIn)){
+			if(((PostBaseTileEntity) te).interact(state, worldIn, pos, playerIn)){
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -167,7 +165,7 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 					
 					if(b instanceof PostBlock){
 						ItemStack tmp = ((PostBlock) b).getPostMaterial().getItemStack();
-						if(!held.sameItem(tmp)){
+						if(!held.is(tmp.getItem())){
 							playerIn.displayClientMessage(Component.translatable("immersiveposts.expectedlocal", tmp.getHoverName()), true);
 							return InteractionResult.SUCCESS;
 						}
@@ -196,8 +194,8 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 					if(worldIn.isEmptyBlock(nPos) || worldIn.getBlockState(nPos).getBlock() == Blocks.WATER){
 						BlockState fb = IPostMaterial.getPostState(held)
 								.setValue(WATERLOGGED, worldIn.getBlockState(nPos).getBlock() == Blocks.WATER);
-						
-						if(fb != null && !playerIn.blockPosition().equals(nPos) && worldIn.setBlockAndUpdate(nPos, fb.updateShape(null, null, worldIn, nPos, null))){
+
+						if(!playerIn.blockPosition().equals(nPos) && worldIn.setBlockAndUpdate(nPos, fb.updateShape(null, null, worldIn, nPos, null))){
 							if(!playerIn.isCreative()){
 								held.shrink(1);
 							}
@@ -221,14 +219,14 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 	}
 	
 	
-	public static class ItemPostBase extends BlockItem{
+	public static class ItemPostBase extends BlockItem {
 		public ItemPostBase(Block block){
-			super(block, new Item.Properties().tab(ImmersivePosts.creativeTab));
+			super(block, new Item.Properties());
 		}
 		
 		@Override
 		@OnlyIn(Dist.CLIENT)
-		public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn){
+		public void appendHoverText(@NotNull ItemStack stack, Level worldIn, List<Component> tooltip, @NotNull TooltipFlag flagIn){
 			tooltip.add(Component.literal(I18n.get("tooltip.postbase")));
 		}
 	}
