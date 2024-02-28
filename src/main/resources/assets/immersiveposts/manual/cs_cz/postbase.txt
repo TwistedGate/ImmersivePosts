@@ -1,0 +1,9 @@
+Prodloužitelné sloupy
+Nebe je limit.
+<&postbase>Použita jako základ pro sloupy vlastní velikosti.
+(Viz <link;immersiveposts:usage;§1Použití§r;start> aby jsi věděl jak je použít.)
+
+Základnu sloupu lze jednoduše skrýt držením bloku ve tvé ruce, pravým kliknutím a bude zamaskována jako daný blok.<np>
+Sneak + rightclick removes the cover.
+
+Základna pouze přímá pevné nebo neprůhledné bloky.
