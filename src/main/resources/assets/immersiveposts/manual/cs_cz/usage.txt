@@ -1,0 +1,22 @@
+Jak použít sloupy
+
+<&usage1>Budeš potřebovat kladivo a materiál tvého výběru.
+Viz <link;immersiveposts:posts;toto;start> pro detailní seznam použitelných bloků.<np>
+<&usage2>Pak klikni pravým tlačítkem s tvým vybraným materiálem na základnu and mělo by to vypadat, jako co je ukázáno nahoře.
+Poznámka: Musí to vždy být ze stejného typu! Jako příklad: Dřevený sloupy přijmají pouze §oPlot z ošetřeného dřeva§r a nic jiného!<np>
+<&usage3>Odtuk také můžeš kliknout pravým tlačítkem na sloup což umožnuje ukázat jak jsi postavil svůj sloup vysoký.
+
+Není to úžasné?<np>
+<&usage4>Teď, aby jsme dosáhli 1 blok širokou ruku prostě klikneš pravým tlačítkem se svým kladivem na tvé určené straně a výšce. Pro odstranění klikni pravým tlačítkem na stranu kde je ruka. (Nebo ji rozbij sekerou)
+§nPoznámka: Neobjeví se, je-li v cestě blok.§r<np>
+<&usage5>Pravé kliknutí na ruku je promění na 2-bloky širokou, atd.
+
+Jako u 1-blok široké, nic se nezmění pokud je místo plné.<np>
+<&usage6>1-blok široká ruka se otočí pokud je pod ní blok, §oI když§r je už pod ní jeden.
+
+Kvůli důvodům §ostability§r, 2-bloky široká ruka se nemůže otočit<np>
+<&usage7>§nSloupová ruka§r
+Položení nepevných bloků na straně (Jako spojovače/relé) způsobí že se objeví, což vypadá lépe že se bloky nevznáší.<np>
+<&usage8>§nVodorovný nosník§r
+Spoj dva sloupy s alespoň jedním blokem (až na <config;i;maxTrussLength>) prázdného místa mezi nimi.
+Skrč se + klikni pravým tlačítkem s kladivem na vnitřní straně jakéhokoliv z nich. Udělej to stejné pokud chceš odstranit nosník.

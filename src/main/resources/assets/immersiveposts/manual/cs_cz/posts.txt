@@ -1,0 +1,34 @@
+Přijatelné bloky
+Hm, co si vybrat..
+ 1-2 Indexové stránky
+ 3 <link;immersiveposts:posts;§1Ošetřené dřevo§r;treated>
+ 4 <link;immersiveposts:posts;§1Hliník§r;aluminium>
+ 5 <link;immersiveposts:posts;§1Ocel§r;steel>
+ 6 <link;immersiveposts:posts;§1Netheritové cihly§r;nether>
+ 7 <link;immersiveposts:posts;§1Železo§r;iron>
+ 8 <link;immersiveposts:posts;§1Zlato§r;gold>
+ 9 <link;immersiveposts:posts;§1Měď§r;copper>
+10 <link;immersiveposts:posts;§1Olovo§r;lead>
+11 <link;immersiveposts:posts;§1Stříbro§r;silver>
+12 <link;immersiveposts:posts;§1Nikl§r;nickel>
+13 <link;immersiveposts:posts;§1Konstantan§r;constantan>
+14 <link;immersiveposts:posts;§1Elektrum§r;electrum>
+15 <link;immersiveposts:posts;§1Uran§r;uranium>
+16 <link;immersiveposts:posts;§1Beton§r;concrete>
+17 <link;immersiveposts:posts;§1Olovnatý beton§r;leadedconcrete><np>
+<&treated>Z ošetřeného dřeva.<np>
+<&aluminium>Hliníkový.<np>
+<&steel>Ocelový.<np>
+<&nether>Netherito-cihlový.<np>
+<&iron>Železný.<np>
+<&gold>Zlatý.<np>
+<&copper>Měděný.<np>
+<&lead>Olovnatý.<np>
+<&silver>Stříbrný.<np>
+<&nickel>Niklový.<np>
+<&constantan>Konstantanový.<np>
+<&electrum>Elektrový.<np>
+<&uranium>Uranový.
+Vyzařuje trochu světla, ale je silné jako ruditová louč?<np>
+<&concrete>Betonový.<np>
+<&leadedconcrete>Olovnato-betonový.
