@@ -1,0 +1,85 @@
+{
+    "_comment": "################## Blocks ##################",
+	
+    "block.immersiveposts.postbase": "Prodloužitelný sloup",
+    "block.immersiveposts.woodpost": "Dřevený sloup",
+    "block.immersiveposts.ironpost": "Železný sloup",
+    "block.immersiveposts.goldpost": "Zlatý sloup",
+    "block.immersiveposts.copperpost": "Měděný sloup",
+    "block.immersiveposts.leadpost": "Olověný sloup",
+    "block.immersiveposts.silverpost": "Stříbrný sloup",
+    "block.immersiveposts.nickelpost": "Niklový sloup",
+    "block.immersiveposts.constantanpost": "Kpnstantanový sloup",
+    "block.immersiveposts.electrumpost": "Elektrový sloup",
+    "block.immersiveposts.uraniumpost": "Uranový sloup",
+    "block.immersiveposts.netherpost": "Netherito-cihlový sloup",
+    "block.immersiveposts.aluminiumpost": "Hliníkový sloup",
+    "block.immersiveposts.steelpost": "Ocelový sloup",
+    "block.immersiveposts.concretepost": "Betonový sloup",
+    "block.immersiveposts.leadedconcretepost": "Olovnato-betonový sloup",
+    
+    "block.immersiveposts.woodpost_truss": "Dřevný nosník",
+    "block.immersiveposts.ironpost_truss": "Železný nosník",
+    "block.immersiveposts.goldpost_truss": "Zlatý nosník",
+    "block.immersiveposts.copperpost_truss": "Měděný nosník",
+    "block.immersiveposts.leadpost_truss": "Olověný nosník",
+    "block.immersiveposts.silverpost_truss": "Stříbrný nosník",
+    "block.immersiveposts.nickelpost_truss": "Niklový nosník",
+    "block.immersiveposts.constantanpost_truss": "Konstantanový nosník",
+    "block.immersiveposts.electrumpost_truss": "Elektrový nosník",
+    "block.immersiveposts.uraniumpost_truss": "Uranový nosník",
+    "block.immersiveposts.netherpost_truss": "Netherito-cihlový nosník",
+    "block.immersiveposts.aluminiumpost_truss": "Hliníkový nosník",
+    "block.immersiveposts.steelpost_truss": "Ocelový nosník",
+    "block.immersiveposts.concretepost_truss": "Betonový nosník",
+    "block.immersiveposts.leadedconcretepost_truss": "Olovnato-betonový nosník",
+	
+    "block.immersiveposts.fence_iron": "Železný plot",
+    "block.immersiveposts.fence_gold": "Zlatý plot",
+    "block.immersiveposts.fence_copper": "Měděný plot",
+    "block.immersiveposts.fence_lead": "Olověný plot",
+    "block.immersiveposts.fence_silver": "Stříbrný plot",
+    "block.immersiveposts.fence_nickel": "Niklový plot",
+    "block.immersiveposts.fence_constantan": "Konstantanový plot",
+    "block.immersiveposts.fence_electrum": "Elektrový plot",
+    "block.immersiveposts.fence_uranium": "Uranový plot",
+	
+    "_comment": "################## Items ##################",
+	
+    "item.immersiveposts.stick_gold": "Zlatá tyč",
+    "item.immersiveposts.stick_copper": "Měděná tyč",
+    "item.immersiveposts.stick_lead": "Olověná tyč",
+    "item.immersiveposts.stick_silver": "Stříbrná tyč",
+    "item.immersiveposts.stick_nickel": "Niklová tyč",
+    "item.immersiveposts.stick_constantan": "Konstantanová tyč",
+    "item.immersiveposts.stick_electrum": "Elektrová tyč",
+    "item.immersiveposts.stick_uranium": "Uranová tyč",
+	
+    "item.immersiveposts.metal_rods.stick_gold": "Zlatá tyč",
+    "item.immersiveposts.metal_rods.stick_copper": "Měděná tyč",
+    "item.immersiveposts.metal_rods.stick_lead": "Olověná tyč",
+    "item.immersiveposts.metal_rods.stick_silver": "Stříbrná tyč",
+    "item.immersiveposts.metal_rods.stick_nickel": "Niklová tyč",
+    "item.immersiveposts.metal_rods.stick_constantan": "Konstantanová tyč",
+    "item.immersiveposts.metal_rods.stick_electrum": "Elektrová tyč",
+    "item.immersiveposts.metal_rods.stick_uranium": "Uranová tyč",
+	
+    "_comment": "################## Creative Tab ##################",
+	
+    "itemGroup.immersiveposts": "Immersive Posts",
+	
+    "_comment": "################## Postbase Tooltip(s) ##################",
+	
+    "tooltip.postbase": "§6Viz manuál pro přijatelné bloky.",
+	
+    "_comment": "################## Miscellaneous ##################",
+
+    "immersiveposts.expectedlocal": "Očekáváno: %s",
+    "immersiveposts.truss_notsametype": "Nosník: Oba sloupy musí být ze stejného materiálu.",
+    "immersiveposts.truss_minimumdistance": "Nosník: Mezi sloupy musí být mezera alespoň jeden blok.",
+    "immersiveposts.truss_postnotfound": "Nosník: Následující sloup je mimo dosah, nebo neexistuje.",
+	
+    "_comment": "################## IE-Manual ##################",
+	
+    "manual.immersiveposts.main": "Prodloužitelné sloupy"
+}
