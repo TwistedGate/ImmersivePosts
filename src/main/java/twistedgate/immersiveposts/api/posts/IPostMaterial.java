@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 
 public interface IPostMaterial{
 	
-	/** Source-block itemstack */
+	/** Source-block ItemStack */
 	ItemStack getItemStack();
 	
 	/** Returns the texture location for this material type */
@@ -37,13 +37,13 @@ public interface IPostMaterial{
 	/** Returns {@link Properties} for the Post-Block */
 	Properties getBlockProperties();
 	
-	/** Gets the default post blockstate of the given source-block itemstack */
-	public static BlockState getPostState(@Nonnull ItemStack stack){
+	/** Gets the default post BlockState of the given source-block ItemStack */
+	static BlockState getPostState(@Nonnull ItemStack stack){
 		return getPostState(getPostMaterial(stack));
 	}
 	
-	/** Gets the default post blockstate of the given material */
-	public static BlockState getPostState(IPostMaterial material){
+	/** Gets the default post BlockState of the given material */
+	static BlockState getPostState(IPostMaterial material){
 		Block block = Posts.get(material);
 		if(block == null && PostMaterialRegistry.MAP.containsKey(material)){
 			block = PostMaterialRegistry.getPostFrom(material).get();
@@ -52,13 +52,13 @@ public interface IPostMaterial{
 		return block.defaultBlockState();
 	}
 	
-	/** Gets the default truss blockstate of the given source-block itemstack */
-	public static BlockState getTrussState(@Nonnull ItemStack stack){
+	/** Gets the default truss BlockState of the given source-block ItemStack */
+	static BlockState getTrussState(@Nonnull ItemStack stack){
 		return getTrussState(getPostMaterial(stack));
 	}
 	
-	/** Gets the default truss blockstate of the given material */
-	public static BlockState getTrussState(@Nonnull IPostMaterial material){
+	/** Gets the default truss BlockState of the given material */
+	static BlockState getTrussState(@Nonnull IPostMaterial material){
 		Block block = HorizontalTruss.get(material);
 		if(block == null && PostMaterialRegistry.MAP.containsKey(material)){
 			block = PostMaterialRegistry.getTrussFrom(material).get();
@@ -67,16 +67,16 @@ public interface IPostMaterial{
 		return block.defaultBlockState();
 	}
 	
-	/** Gets the material of the given source-block itemstack */
-	public static IPostMaterial getPostMaterial(@Nonnull ItemStack stack){
+	/** Gets the material of the given source-block ItemStack */
+	static IPostMaterial getPostMaterial(@Nonnull ItemStack stack){
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.is(mat.getItemStack().getItem())){
+			if(ItemStack.isSameItem(stack, mat.getItemStack())){
 				return mat;
 			}
 		}
 		
 		for(IPostMaterial mat:PostMaterialRegistry.MAP.keySet()){
-			if(stack.is(mat.getItemStack().getItem())){
+			if(ItemStack.isSameItem(stack, mat.getItemStack())){
 				return mat;
 			}
 		}
@@ -84,18 +84,18 @@ public interface IPostMaterial{
 		return null;
 	}
 	
-	public static boolean isValidItem(ItemStack stack){
+	static boolean isValidItem(ItemStack stack){
 		if(stack == null || stack.isEmpty())
 			return false;
 		
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.is(mat.getItemStack().getItem())){
+			if(ItemStack.isSameItem(stack, mat.getItemStack())){
 				return true;
 			}
 		}
 		
 		for(IPostMaterial mat:PostMaterialRegistry.MAP.keySet()){
-			if(stack.is(mat.getItemStack().getItem())){
+			if(ItemStack.isSameItem(stack, mat.getItemStack())){
 				return true;
 			}
 		}

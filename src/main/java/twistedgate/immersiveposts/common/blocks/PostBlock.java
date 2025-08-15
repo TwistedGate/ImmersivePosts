@@ -239,7 +239,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 					}
 				}
 			}else if(Utils.isHammer(held)){
-				if(playerIn.isShiftKeyDown()){
+				if(playerIn.isCrouching()){
 					switch(state.getValue(TYPE)){
 						case POST: case POST_TOP:{
 							Direction facing = hit.getDirection();
@@ -416,19 +416,17 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 		BlockState aboveState = world.getBlockState(pos.relative(Direction.UP));
 		Block aboveBlock = aboveState.getBlock();
 		switch(thisType){
-			case POST:{
+			case POST -> {
 				if(!(aboveBlock instanceof PostBlock)){
 					world.setBlockAndUpdate(pos, stateIn.setValue(TYPE, EnumPostType.POST_TOP));
 				}
-				return;
 			}
-			case POST_TOP:{
+			case POST_TOP -> {
 				if((aboveBlock instanceof PostBlock) && aboveState.getValue(TYPE) == EnumPostType.POST_TOP){
 					world.setBlockAndUpdate(pos, stateIn.setValue(TYPE, EnumPostType.POST));
 				}
-				return;
 			}
-			case ARM:{
+			case ARM -> {
 				Direction f = stateIn.getValue(FACING).getOpposite();
 				BlockState state = world.getBlockState(pos.relative(f));
 				
@@ -437,19 +435,15 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 				}else{
 					world.setBlockAndUpdate(pos, stateIn.setValue(FLIPSTATE, getFlipState(world, pos)));
 				}
-				
-				return;
 			}
-			case ARM_DOUBLE:{
+			case ARM_DOUBLE -> {
 				Direction f = stateIn.getValue(FACING).getOpposite();
 				BlockState state = world.getBlockState(pos.relative(f));
 				if(state != null && !(state.getBlock() instanceof PostBlock)){
 					replaceSelf(stateIn, world, pos);
 				}
-				
-				return;
 			}
-			case EMPTY:{
+			case EMPTY -> {
 				BlockState state = world.getBlockState(pos.relative(stateIn.getValue(FACING).getOpposite()));
 				if(state != null && !(state.getBlock() instanceof PostBlock)){
 					replaceSelf(stateIn, world, pos);
@@ -592,6 +586,9 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 		// Tertiary, block specific checks
 		if(otherState.is(IPOTags.IGNORED_BY_POSTARM))
 			return false;
+		
+		if(facingIn == Direction.DOWN && (otherBlock == Blocks.LANTERN || otherBlock == Blocks.SOUL_LANTERN))
+			return true;
 		
 		VoxelShape shape = otherState.getShape(worldIn, nPos);
 		if(!shape.isEmpty()){

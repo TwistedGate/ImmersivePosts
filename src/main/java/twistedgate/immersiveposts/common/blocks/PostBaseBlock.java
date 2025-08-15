@@ -143,69 +143,69 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit){
 		BlockEntity te = worldIn.getBlockEntity(pos);
-		if(te instanceof PostBaseTileEntity){
-			if(((PostBaseTileEntity) te).interact(state, worldIn, pos, playerIn, handIn)){
+		if(te instanceof PostBaseTileEntity baseTe){
+			if(baseTe.interact(state, worldIn, pos, playerIn, handIn)){
 				return InteractionResult.SUCCESS;
 			}
 		}
 		
-		if(!worldIn.isClientSide){
+		if(worldIn.isClientSide){ // Client Stuff here
 			ItemStack held = playerIn.getMainHandItem();
-			
 			if(IPostMaterial.isValidItem(held)){
-				if(!worldIn.isEmptyBlock(pos.relative(Direction.UP))){
-					BlockState aboveState = worldIn.getBlockState(pos.relative(Direction.UP));
-					Block b = aboveState.getBlock();
-					
-					if(b instanceof PostBlock){
-						ItemStack tmp = ((PostBlock) b).getPostMaterial().getItemStack();
-						if(!held.is(tmp.getItem())){
-							playerIn.displayClientMessage(Component.translatable("immersiveposts.expectedlocal", tmp.getHoverName()), true);
-							return InteractionResult.SUCCESS;
-						}
-					}
-				}
+				return InteractionResult.SUCCESS;
+			}
+			
+			return InteractionResult.FAIL;
+		}
+		
+		ItemStack held = playerIn.getMainHandItem();
+		if(IPostMaterial.isValidItem(held)){
+			if(!worldIn.isEmptyBlock(pos.relative(Direction.UP))){
+				BlockState aboveState = worldIn.getBlockState(pos.relative(Direction.UP));
+				Block b = aboveState.getBlock();
 				
-				for(int y = 1;y <= (worldIn.getHeight(Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - pos.getY());y++){
-					BlockPos nPos = pos.offset(0, y, 0);
-					
-					BlockState nState = worldIn.getBlockState(nPos);
-					if(nState.getBlock() instanceof PostBlock){
-						EnumPostType type = nState.getValue(PostBlock.TYPE);
-						if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP) && nState.getValue(PostBlock.FLIPSTATE) == EnumFlipState.DOWN){
-							return InteractionResult.SUCCESS;
-						}else{
-							nState = worldIn.getBlockState(nPos.relative(Direction.UP));
-							if(nState.getBlock() instanceof PostBlock){
-								type = nState.getValue(PostBlock.TYPE);
-								if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP)){
-									return InteractionResult.SUCCESS;
-								}
-							}
-						}
-					}
-					
-					if(worldIn.isEmptyBlock(nPos) || worldIn.getBlockState(nPos).getBlock() == Blocks.WATER){
-						BlockState fb = IPostMaterial.getPostState(held)
-								.setValue(WATERLOGGED, worldIn.getBlockState(nPos).getBlock() == Blocks.WATER);
-						
-						if(fb != null && !playerIn.blockPosition().equals(nPos) && worldIn.setBlockAndUpdate(nPos, fb.updateShape(null, null, worldIn, nPos, null))){
-							if(!playerIn.isCreative()){
-								held.shrink(1);
-							}
-						}
-						return InteractionResult.SUCCESS;
-						
-					}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof PostBlock)){
+				if(b instanceof PostBlock){
+					ItemStack tmp = ((PostBlock) b).getPostMaterial().getItemStack();
+					if(!held.is(tmp.getItem())){
+						playerIn.displayClientMessage(Component.translatable("immersiveposts.expectedlocal", tmp.getHoverName()), true);
 						return InteractionResult.SUCCESS;
 					}
 				}
 			}
-		}else{
-			// Client Stuff here
-			ItemStack held = playerIn.getMainHandItem();
-			if(IPostMaterial.isValidItem(held)){
-				return InteractionResult.SUCCESS;
+			
+			for(int y = 1;y <= (worldIn.getHeight(Types.WORLD_SURFACE, pos.getX(), pos.getZ()) - pos.getY());y++){
+				BlockPos nPos = pos.offset(0, y, 0);
+				
+				BlockState nState = worldIn.getBlockState(nPos);
+				if(nState.getBlock() instanceof PostBlock){
+					EnumPostType type = nState.getValue(PostBlock.TYPE);
+					if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP) && nState.getValue(PostBlock.FLIPSTATE) == EnumFlipState.DOWN){
+						return InteractionResult.SUCCESS;
+					}else{
+						nState = worldIn.getBlockState(nPos.relative(Direction.UP));
+						if(nState.getBlock() instanceof PostBlock){
+							type = nState.getValue(PostBlock.TYPE);
+							if(!(type == EnumPostType.POST || type == EnumPostType.POST_TOP)){
+								return InteractionResult.SUCCESS;
+							}
+						}
+					}
+				}
+				
+				if(worldIn.isEmptyBlock(nPos) || worldIn.getBlockState(nPos).getBlock() == Blocks.WATER){
+					BlockState fb = IPostMaterial.getPostState(held)
+							.setValue(WATERLOGGED, worldIn.getBlockState(nPos).getBlock() == Blocks.WATER);
+					
+					if(fb != null && !playerIn.blockPosition().equals(nPos) && worldIn.setBlockAndUpdate(nPos, fb.updateShape(null, null, worldIn, nPos, null))){
+						if(!playerIn.isCreative()){
+							held.shrink(1);
+						}
+					}
+					return InteractionResult.SUCCESS;
+					
+				}else if(!(worldIn.getBlockState(nPos).getBlock() instanceof PostBlock)){
+					return InteractionResult.SUCCESS;
+				}
 			}
 		}
 		

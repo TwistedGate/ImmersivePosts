@@ -24,7 +24,7 @@ public abstract class IPOTileEntityBase extends BlockEntity{
 	
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket(){
-		return ClientboundBlockEntityDataPacket.create(this, (be) -> be.getUpdateTag());
+		return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
 	}
 	
 	@Override

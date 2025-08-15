@@ -17,12 +17,8 @@ public class ClientProxy extends CommonProxy{
 	@Override
 	public void completed(){
 		ManualHelper.addConfigGetter(str -> {
-			switch(str){
-				case "maxTrussLength":{
-					return IPOConfig.MAIN.maxTrussLength.get();
-				}
-				default:
-					break;
+			if(str.equals("maxTrussLength")){
+				return IPOConfig.MAIN.maxTrussLength.get();
 			}
 			
 			// Last resort

@@ -11,6 +11,7 @@ public class IPOModelData{
 	public static class PostBaseModelData{
 		public final BlockState state;
 		public final Direction facing;
+		
 		public PostBaseModelData(PostBaseTileEntity te){
 			this.state = te.getCoverState();
 			this.facing = te.getFacing();

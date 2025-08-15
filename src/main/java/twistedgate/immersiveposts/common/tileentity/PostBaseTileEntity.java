@@ -59,9 +59,9 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	}
 	
 	/**
-	 * Set's the stack to be used for the cover. Automaticly causes a blockupdate to itself.
+	 * Set's the stack to be used for the cover. Automatically causes a block update to itself.
 	 * 
-	 * @param stack The stack to be used, requires the item to be a instance of {@link BlockItem}.
+	 * @param stack The stack to be used, requires the item to be an instance of {@link BlockItem}.
 	 * @return true if it changed, false otherwise
 	 */
 	public boolean setStack(ItemStack stack){
@@ -158,7 +158,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		if(!changed)
 			return;
 		
-		if(this.stack == null || this.stack.isEmpty()){
+		if(this.stack.isEmpty()){
 			this.coverstate = EMPTY;
 		}else{
 			this.coverstate = Lazy.of(() -> {
@@ -168,7 +168,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 					Optional<DirectionProperty> prop = state.getProperties().stream()
 							.filter(p -> p instanceof DirectionProperty && p.getName().equals("facing"))
 							.map(p -> (DirectionProperty) p)
-							.filter(p -> p.getPossibleValues().stream().allMatch(d -> Direction.Plane.HORIZONTAL.test(d)))
+							.filter(p -> p.getPossibleValues().stream().allMatch(Direction.Plane.HORIZONTAL))
 							.findAny();
 					
 					if(prop.isPresent()){

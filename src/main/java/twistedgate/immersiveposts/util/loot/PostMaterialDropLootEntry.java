@@ -23,6 +23,9 @@ public class PostMaterialDropLootEntry extends LootPoolSingletonContainer{
 	protected void createItemStack(Consumer<ItemStack> stackConsumer, LootContext context){
 		if(context.hasParam(LootContextParams.BLOCK_STATE)){
 			BlockState state = context.getParamOrNull(LootContextParams.BLOCK_STATE);
+			if(state == null)
+				return;
+			
 			if(state.hasProperty(PostBlock.TYPE) && state.getValue(PostBlock.TYPE).id() < 2){
 				ItemStack stack = ((PostBlock) state.getBlock()).getPostMaterial().getItemStack();
 				stackConsumer.accept(stack);

@@ -50,6 +50,7 @@ public class PostBaseModel extends IPOBakedModel{
 			.maximumSize(100)
 			.build();
 	
+	@Nonnull
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType layer){
 		BlockState hState = Blocks.DIRT.defaultBlockState();
@@ -72,6 +73,7 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
+	@Nonnull
 	public ModelData getModelData(@Nonnull BlockAndTintGetter world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull ModelData tileData){
 		ModelData.Builder mData = super.getModelData(world, pos, state, tileData).derive();
 		
@@ -85,6 +87,7 @@ public class PostBaseModel extends IPOBakedModel{
 	
 	private static final ChunkRenderTypeSet RENDER_TYPE = ChunkRenderTypeSet.of(RenderType.cutout());
 	@Override
+	@Nonnull
 	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data){
 		return RENDER_TYPE;
 	}
@@ -118,11 +121,13 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	@Override
+	@Nonnull
 	public TextureAtlasSprite getParticleIcon(){
 		return getPostbaseSprite();
 	}
 	
 	@Override
+	@Nonnull
 	public ItemOverrides getOverrides(){
 		return ItemOverrides.EMPTY;
 	}
@@ -169,9 +174,8 @@ public class PostBaseModel extends IPOBakedModel{
 		private void build(Key key){
 			BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(key.state);
 			for(Direction side:Direction.values()){
-				List<BakedQuad> quads = new ArrayList<>();
 				
-				quads.addAll(model.getQuads(key.state, side, RANDOM, ModelData.EMPTY, (RenderType) null));
+				List<BakedQuad> quads = new ArrayList<>(model.getQuads(key.state, side, RANDOM, ModelData.EMPTY, null));
 				
 				if(side == Direction.UP){
 					TextureAtlasSprite sprite = getPostbaseSprite();
@@ -183,35 +187,28 @@ public class PostBaseModel extends IPOBakedModel{
 			this.quads.add(ImmutableList.of());
 		}
 		
+		@Nonnull
 		@Override
 		public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nullable RandomSource rand, @Nullable ModelData extraData, RenderType layer){
 			return this.quads.get(side == null ? (this.quads.size() - 1) : side.get3DDataValue());
 		}
 	}
 	
-	private static class Key{
-		final BlockState state;
-		final Direction facing;
-		
-		public Key(BlockState state, Direction facing){
-			this.state = state;
-			this.facing = facing;
-		}
-		
+	private record Key(BlockState state, Direction facing){
 		@Override
 		public boolean equals(Object obj){
-			if(this == obj){
+			if(this == obj)
 				return true;
-			}else if(obj != null && obj instanceof Key other){
-				return this.state.equals(other.state) && this.facing == other.facing;
-			}
 			
-			return false;
+			if(!(obj instanceof Key other))
+				return false;
+			
+			return Objects.equals(this.state, other.state) && this.facing == other.facing;
 		}
 		
 		@Override
 		public int hashCode(){
-			return 31 * this.state.hashCode() + Objects.hash(this.facing);
+			return Objects.hash(this.state, this.facing);
 		}
 	}
 }

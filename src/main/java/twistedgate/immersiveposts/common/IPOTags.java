@@ -22,7 +22,7 @@ public class IPOTags{
 		public static final TagKey<Item> ELECTRUM = ingotTag("electrum");
 		public static final TagKey<Item> URANIUM = ingotTag("uranium");
 		
-		private static final TagKey<Item> ingotTag(String name){
+		private static TagKey<Item> ingotTag(String name){
 			return createItemWrapper(new ResourceLocation("forge", "ingots/" + name));
 		}
 	}
@@ -40,7 +40,7 @@ public class IPOTags{
 		public static final TagKey<Item> ELECTRUM = rodTag("electrum");
 		public static final TagKey<Item> URANIUM = rodTag("uranium");
 		
-		private static final TagKey<Item> rodTag(String name){
+		private static TagKey<Item> rodTag(String name){
 			return createItemWrapper(new ResourceLocation("forge", "rods/" + name));
 		}
 	}

@@ -17,11 +17,6 @@ public class GenericPostBlock extends IPOBlockBase{
 		this.postMaterial = material;
 	}
 	
-	public GenericPostBlock(IPostMaterial material, @Nonnull String name_post){
-		super(material.getBlockProperties());
-		this.postMaterial = material;
-	}
-	
 	public final IPostMaterial getPostMaterial(){
 		return this.postMaterial;
 	}

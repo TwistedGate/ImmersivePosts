@@ -47,7 +47,7 @@ public class IPOConfig{
 		
 		Posts(ForgeConfigSpec.Builder builder){
 			builder.comment("Maximum length of Horizontal Trusses", "Does not affect already existing Trusses when changed", "Default: 8");
-			maxTrussLength = builder.defineInRange("maxTrussLength", 8, 3, 128);
+			this.maxTrussLength = builder.defineInRange("maxTrussLength", 8, 3, 128);
 		}
 	}
 	

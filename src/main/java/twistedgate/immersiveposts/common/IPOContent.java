@@ -27,7 +27,7 @@ import java.util.function.Supplier;
  * @author TwistedGate
  */
 public class IPOContent{
-	public static final boolean containsBlockOrItem(@Nullable final Block block, @Nullable final Item item){
+	public static boolean containsBlockOrItem(@Nullable final Block block, @Nullable final Item item){
 		if(block != null){
 			return IPORegistries.BLOCK_REGISTER.getEntries().stream().anyMatch(r -> r.get() == block);
 		}
@@ -37,19 +37,19 @@ public class IPOContent{
 		return false;
 	}
 	
-	protected static final <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> constructor){
+	protected static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> constructor){
 		return IPORegistries.BLOCK_REGISTER.register(name, constructor);
 	}
 	
-	protected static final RegistryObject<PostBlock> registerPostBlock(EnumPostMaterial material){
+	protected static RegistryObject<PostBlock> registerPostBlock(EnumPostMaterial material){
 		return registerBlock(material.getBlockName(), () -> new PostBlock(material));
 	}
 	
-	protected static final RegistryObject<HorizontalTrussBlock> registerTrussBlock(EnumPostMaterial material){
+	protected static RegistryObject<HorizontalTrussBlock> registerTrussBlock(EnumPostMaterial material){
 		return registerBlock(material.getBlockName() + "_truss", () -> new HorizontalTrussBlock(material));
 	}
 	
-	protected static final RegistryObject<FenceBlock> registerMetalFence(String materialName){
+	protected static RegistryObject<FenceBlock> registerMetalFence(String materialName){
 		materialName = "fence_" + materialName;
 		
 		RegistryObject<FenceBlock> block = IPORegistries.BLOCK_REGISTER.register(materialName, MetalFenceBlock::new);
@@ -57,7 +57,7 @@ public class IPOContent{
 		return block;
 	}
 	
-	protected static final <T extends Item> RegistryObject<T> registerItem(String name, Supplier<T> constructor){
+	protected static <T extends Item> RegistryObject<T> registerItem(String name, Supplier<T> constructor){
 		return IPORegistries.ITEM_REGISTER.register(name, constructor);
 	}
 	

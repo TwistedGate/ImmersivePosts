@@ -19,7 +19,7 @@ public class PostMaterialRegistry{
 	static final Map<IPostMaterial, Pair<RegistryObject<? extends Block>, RegistryObject<? extends Block>>> MAP = new HashMap<>();
 	
 	/**
-	 * Registers your PostMaterial and creates all that is nessesary for your
+	 * Registers your PostMaterial and creates all that is necessary for your
 	 * shiny new post be noticed/recognized as such by ImmersivePosts.<br>
 	 * <br>
 	 * This has to be called before trying to use

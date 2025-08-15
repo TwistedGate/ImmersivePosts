@@ -15,17 +15,20 @@ import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseModel;
 import twistedgate.immersiveposts.common.IPOContent;
 
+import javax.annotation.Nonnull;
+
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = IPOMod.ID, value = {Dist.CLIENT}, bus = Bus.MOD)
 public class ClientEventHandler extends SimplePreparableReloadListener<Unit>{
 	
 	@Override
-	protected Unit prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler){
+	@Nonnull
+	protected Unit prepare(@Nonnull ResourceManager pResourceManager, @Nonnull ProfilerFiller pProfiler){
 		return Unit.INSTANCE;
 	}
 	
 	@Override
-	protected void apply(Unit pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler){
+	protected void apply(@Nonnull Unit pObject, @Nonnull ResourceManager pResourceManager, @Nonnull ProfilerFiller pProfiler){
 		PostBaseModel.CACHE.invalidateAll();
 	}
 	

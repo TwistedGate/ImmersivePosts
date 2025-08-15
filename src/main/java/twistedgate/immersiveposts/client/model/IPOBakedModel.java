@@ -13,11 +13,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class IPOBakedModel implements BakedModel{
-	@Nonnull
 	@Override
+	@Nonnull
 	public abstract List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType layer);
 	
 	@Override
+	@Nonnull
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand){
 		return getQuads(state, side, rand, ModelData.EMPTY, null);
 	}

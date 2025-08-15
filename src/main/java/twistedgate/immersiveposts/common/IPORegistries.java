@@ -16,7 +16,7 @@ public class IPORegistries{
 	static final DeferredRegister<Item> ITEM_REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, IPOMod.ID);
 	static final DeferredRegister<BlockEntityType<?>> TILE_REGISTER = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, IPOMod.ID);
 	
-	public static final void addRegistersToEventBus(IEventBus eventBus){
+	public static void addRegistersToEventBus(IEventBus eventBus){
 		CTAB_REGISTER.register(eventBus);
 		BLOCK_REGISTER.register(eventBus);
 		ITEM_REGISTER.register(eventBus);
