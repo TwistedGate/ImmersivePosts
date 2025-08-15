@@ -1,8 +1,9 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/immersiveposts",
 	"promos":{
-		"1.19.3-latest": "4.3.0-7", "1.19.3-recommended": "4.3.0-7",
-		"1.19.2-latest": "4.3.0-6", "1.19.2-recommended": "4.3.0-6",
+		"1.20.1-latest": "4.3.0-10", "1.20.1-recommended": "4.3.0-10",
+		"1.19.3-latest": "4.3.0-9", "1.19.3-recommended": "4.3.0-9",
+		"1.19.2-latest": "4.3.0-8", "1.19.2-recommended": "4.3.0-8",
 		"1.18.2-latest": "4.3.0-3", "1.18.2-recommended": "4.3.0-3",
 		"1.18.1-latest": "4.3.0-2", "1.18.1-recommended": "4.3.0-2",
 		"1.16.5-latest": "4.3.0-1", "1.16.5-recommended": "4.3.0-1",
@@ -10,6 +11,9 @@
 		"1.15.2-latest": "2.2.0", "1.15.2-recommended": "2.2.0",
 		"1.14.4-latest": "1.2.0", "1.14.4-recommended": "1.2.0",
 		"1.12.2-latest": "0.2.1", "1.12.2-recommended": "0.2.1"
+	},
+	"1.20.1":{
+		"4.3.0-10": "Compiled with\n\nForge version: 1.20.1-47.3.0\nIE version: 1.20.1-10.1.0-171\n\n[A] Ability to hang Lanterns from post-arms. (TwistedGate)\n[F] Double-Arm end retaining the flipped down state. (TwistedGate)"
 	},
 	"1.19.3":{
 		"4.3.0-7": "[F] ClientEventHandler being loaded on Server-Side, resulting in a NoClassDefFoundError crash caused by BlockColor being Loaded.",
