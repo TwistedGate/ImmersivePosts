@@ -389,7 +389,11 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 							Direction bfacing = state.getValue(FACING);
 							BlockPos offset = pos.relative(bfacing);
 							if(worldIn.isEmptyBlock(offset) || worldIn.getBlockState(offset).getBlock() == Blocks.WATER){
-								worldIn.setBlockAndUpdate(offset, state.setValue(TYPE, EnumPostType.ARM_DOUBLE).setValue(WATERLOGGED, worldIn.getBlockState(offset).getBlock() == Blocks.WATER));
+								BlockState dArmState = state.setValue(TYPE, EnumPostType.ARM_DOUBLE)
+										.setValue(FLIPSTATE, EnumFlipState.UP)
+										.setValue(WATERLOGGED, worldIn.getBlockState(offset).getBlock() == Blocks.WATER);
+								
+								worldIn.setBlockAndUpdate(offset, dArmState);
 								worldIn.setBlockAndUpdate(pos, state.setValue(TYPE, EnumPostType.EMPTY));
 							}
 							return InteractionResult.SUCCESS;
