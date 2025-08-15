@@ -39,7 +39,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -195,20 +194,5 @@ public class PostBaseModel extends IPOBakedModel{
 	}
 	
 	private record Key(BlockState state, Direction facing){
-		@Override
-		public boolean equals(Object obj){
-			if(this == obj)
-				return true;
-			
-			if(!(obj instanceof Key other))
-				return false;
-			
-			return Objects.equals(this.state, other.state) && this.facing == other.facing;
-		}
-		
-		@Override
-		public int hashCode(){
-			return Objects.hash(this.state, this.facing);
-		}
 	}
 }
