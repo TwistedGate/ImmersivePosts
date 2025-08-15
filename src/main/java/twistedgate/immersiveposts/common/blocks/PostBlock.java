@@ -612,7 +612,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 		if(otherState.is(IPOTags.IGNORED_BY_POSTARM))
 			return false;
 		
-		if(facingIn == Direction.DOWN && (otherBlock == Blocks.LANTERN || otherBlock == Blocks.SOUL_LANTERN))
+		if(facingIn == Direction.DOWN && otherBlock instanceof LanternBlock && otherState.getValue(LanternBlock.HANGING))
 			return true;
 		
 		VoxelShape shape = otherState.getShape(worldIn, nPos);
