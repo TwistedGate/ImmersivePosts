@@ -1,7 +1,5 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import javax.annotation.Nullable;
-
 import blusunrize.immersiveengineering.api.IPostBlock;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -39,6 +37,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
+
+import javax.annotation.Nullable;
 
 public class HorizontalTrussBlock extends GenericPostBlock implements IPostBlock, SimpleWaterloggedBlock{
 	public static final BooleanProperty CONNECTOR_POINT_TOP = BooleanProperty.create("connector_point_top");

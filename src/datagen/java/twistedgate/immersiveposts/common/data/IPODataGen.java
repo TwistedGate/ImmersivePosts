@@ -1,16 +1,19 @@
 package twistedgate.immersiveposts.common.data;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.data.loot.IPOBlockLoot;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author TwistedGate
@@ -21,21 +24,23 @@ public class IPODataGen{
 	
 	@SubscribeEvent
 	public static void generate(GatherDataEvent event){
-		DataGenerator generator = event.getGenerator();
-		ExistingFileHelper exhelper = event.getExistingFileHelper();
+		final ExistingFileHelper exhelper = event.getExistingFileHelper();
+		final DataGenerator generator = event.getGenerator();
+		final PackOutput output = generator.getPackOutput();
+		final CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
 		
 		if(event.includeServer()){
-			IPOBlockTags blocktags = new IPOBlockTags(generator, exhelper);
+			IPOBlockTags blocktags = new IPOBlockTags(output, lookup, exhelper);
 			generator.addProvider(true, blocktags);
-			generator.addProvider(true, new IPOItemTags(generator, blocktags, exhelper));
-			generator.addProvider(true, new IPOBlockLoot(generator));
-			generator.addProvider(true, new IPORecipes(generator));
+			generator.addProvider(true, new IPOItemTags(output, lookup, blocktags.contentsGetter(), exhelper));
+			generator.addProvider(true, new IPOBlockLoot(output));
+			generator.addProvider(true, new IPORecipes(output));
 			
 		}
 		
 		if(event.includeClient()){
-			generator.addProvider(true, new IPOBlockStates(generator, exhelper));
-			generator.addProvider(true, new IPOItemModels(generator, exhelper));
+			generator.addProvider(true, new IPOBlockStates(output, exhelper));
+			generator.addProvider(true, new IPOItemModels(output, exhelper));
 		}
 	}
 }

@@ -1,7 +1,5 @@
 package twistedgate.immersiveposts.api.posts;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -10,6 +8,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.HorizontalTruss;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Posts;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
+
+import javax.annotation.Nonnull;
 
 public interface IPostMaterial{
 	
@@ -70,13 +70,13 @@ public interface IPostMaterial{
 	/** Gets the material of the given source-block itemstack */
 	public static IPostMaterial getPostMaterial(@Nonnull ItemStack stack){
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.sameItem(mat.getItemStack())){
+			if(stack.is(mat.getItemStack().getItem())){
 				return mat;
 			}
 		}
 		
 		for(IPostMaterial mat:PostMaterialRegistry.MAP.keySet()){
-			if(stack.sameItem(mat.getItemStack())){
+			if(stack.is(mat.getItemStack().getItem())){
 				return mat;
 			}
 		}
@@ -89,13 +89,13 @@ public interface IPostMaterial{
 			return false;
 		
 		for(EnumPostMaterial mat:EnumPostMaterial.values()){
-			if(stack.sameItem(mat.getItemStack())){
+			if(stack.is(mat.getItemStack().getItem())){
 				return true;
 			}
 		}
 		
 		for(IPostMaterial mat:PostMaterialRegistry.MAP.keySet()){
-			if(stack.sameItem(mat.getItemStack())){
+			if(stack.is(mat.getItemStack().getItem())){
 				return true;
 			}
 		}

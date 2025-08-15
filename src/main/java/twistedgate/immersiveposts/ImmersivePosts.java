@@ -1,12 +1,6 @@
 package twistedgate.immersiveposts;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,6 +11,8 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import twistedgate.immersiveposts.client.ClientEventHandler;
 import twistedgate.immersiveposts.client.ClientProxy;
 import twistedgate.immersiveposts.common.CommonProxy;
@@ -24,6 +20,7 @@ import twistedgate.immersiveposts.common.ExternalModContent;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPORegistries;
+import twistedgate.immersiveposts.util.loot.IPOLootFunctions;
 
 /**
  * @author TwistedGate
@@ -31,13 +28,9 @@ import twistedgate.immersiveposts.common.IPORegistries;
 @Mod(IPOMod.ID)
 public class ImmersivePosts{
 	
-	public static final CreativeModeTab creativeTab = new CreativeModeTab(IPOMod.ID){
-		@Override
-		public ItemStack makeIcon(){
-			Block block = IPOContent.Blocks.POST_BASE.get();
-			return new ItemStack(block == null ? Items.BARRIER : block);
-		}
-	};
+	@Deprecated(forRemoval = true)
+	public static final CreativeModeTab creativeTab = null;
+	
 	public static final Logger log = LogManager.getLogger(IPOMod.ID);
 	
 	public static CommonProxy proxy = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
@@ -53,6 +46,7 @@ public class ImmersivePosts{
 		
 		ExternalModContent.forceClassLoad();
 		IPOContent.modConstruction();
+		IPOLootFunctions.modConstruction(bus);
 	}
 	
 	public void clientSetup(FMLClientSetupEvent event){

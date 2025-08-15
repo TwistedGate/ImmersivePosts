@@ -4,7 +4,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,8 +35,8 @@ public class APITest{
 		BLOCK_REGISTER.register(bus);
 		
 		// Stand-in for YOUR PostMaterial
-		final BasicPostMaterial glassPost = new BasicPostMaterial("glass", Properties.of(Material.GLASS), new ResourceLocation(MODID, "block/post/glasspost"), () -> Blocks.GLASS);
-		final BasicPostMaterial cobblePost = new BasicPostMaterial("cobblestone", Properties.of(Material.STONE), new ResourceLocation("block/cobblestone"), () -> Blocks.COBBLESTONE);
+		final BasicPostMaterial glassPost = new BasicPostMaterial("glass", Properties.copy(Blocks.GLASS), new ResourceLocation(MODID, "block/post/glasspost"), () -> Blocks.GLASS);
+		final BasicPostMaterial cobblePost = new BasicPostMaterial("cobblestone", Properties.copy(Blocks.STONE), new ResourceLocation("block/cobblestone"), () -> Blocks.COBBLESTONE);
 		
 		PostMaterialRegistry.register(BLOCK_REGISTER, glassPost);
 		PostMaterialRegistry.register(BLOCK_REGISTER, cobblePost);

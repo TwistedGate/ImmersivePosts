@@ -1,13 +1,13 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
+
+import javax.annotation.Nonnull;
 
 public class GenericPostBlock extends IPOBlockBase{
 	protected final IPostMaterial postMaterial;

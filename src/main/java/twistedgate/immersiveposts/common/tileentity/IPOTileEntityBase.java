@@ -1,9 +1,5 @@
 package twistedgate.immersiveposts.common.tileentity;
 
-import java.util.Objects;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -12,6 +8,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public abstract class IPOTileEntityBase extends BlockEntity{
 	public IPOTileEntityBase(BlockEntityType<? extends BlockEntity> pType, BlockPos pWorldPosition, BlockState pBlockState){

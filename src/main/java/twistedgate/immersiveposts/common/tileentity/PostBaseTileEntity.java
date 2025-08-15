@@ -1,9 +1,5 @@
 package twistedgate.immersiveposts.common.tileentity;
 
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +16,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraftforge.common.util.Lazy;
 import twistedgate.immersiveposts.common.IPOTileTypes;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
+
+import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class PostBaseTileEntity extends IPOTileEntityBase{
 	protected static final Lazy<BlockState> EMPTY = Lazy.of(Blocks.AIR::defaultBlockState);

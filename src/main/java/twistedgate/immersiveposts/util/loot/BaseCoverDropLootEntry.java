@@ -1,13 +1,7 @@
 package twistedgate.immersiveposts.util.loot;
 
-import java.util.function.Consumer;
-
-import javax.annotation.Nonnull;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,13 +11,13 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
+import javax.annotation.Nonnull;
+import java.util.function.Consumer;
+
 public class BaseCoverDropLootEntry extends LootPoolSingletonContainer{
-	public static final ResourceLocation ID = new ResourceLocation(IPOMod.ID, "base_cover_drop");
-	
 	protected BaseCoverDropLootEntry(int weightIn, int qualityIn, LootItemCondition[] conditionsIn, LootItemFunction[] functionsIn){
 		super(weightIn, qualityIn, conditionsIn, functionsIn);
 	}
@@ -45,7 +39,7 @@ public class BaseCoverDropLootEntry extends LootPoolSingletonContainer{
 	
 	@Override
 	public LootPoolEntryType getType(){
-		return IPOLootFunctions.baseCoverDrop;
+		return IPOLootFunctions.baseCoverDrop.get();
 	}
 	
 	public static LootPoolSingletonContainer.Builder<?> builder(){

@@ -1,8 +1,8 @@
 package twistedgate.immersiveposts.enums;
 
-import java.util.Locale;
-
 import net.minecraft.util.StringRepresentable;
+
+import java.util.Locale;
 
 /**
  * @author TwistedGate

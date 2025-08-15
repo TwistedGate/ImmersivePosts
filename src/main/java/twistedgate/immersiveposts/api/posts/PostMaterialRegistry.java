@@ -1,15 +1,14 @@
 package twistedgate.immersiveposts.api.posts;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.commons.lang3.tuple.Pair;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Simple registry for other mods to add custom posts

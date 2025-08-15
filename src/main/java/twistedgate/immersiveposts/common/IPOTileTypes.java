@@ -1,15 +1,14 @@
 package twistedgate.immersiveposts.common;
 
-import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType.BlockEntitySupplier;
 import net.minecraftforge.registries.RegistryObject;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
+
+import java.util.function.Supplier;
 
 public class IPOTileTypes{
 	public static final RegistryObject<BlockEntityType<PostBaseTileEntity>> POST_BASE;

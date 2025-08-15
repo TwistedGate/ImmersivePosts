@@ -2,7 +2,7 @@ package twistedgate.immersiveposts.common.data;
 
 import blusunrize.immersiveengineering.data.models.SpecialModelBuilder;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -33,8 +33,8 @@ import twistedgate.immersiveposts.enums.EnumPostType;
  */
 public class IPOBlockStates extends BlockStateProvider{
 	final ExistingFileHelper exFileHelper;
-	public IPOBlockStates(DataGenerator gen, ExistingFileHelper exFileHelper){
-		super(gen, IPOMod.ID, exFileHelper);
+	public IPOBlockStates(PackOutput output, ExistingFileHelper exFileHelper){
+		super(output, IPOMod.ID, exFileHelper);
 		this.exFileHelper = exFileHelper;
 	}
 	

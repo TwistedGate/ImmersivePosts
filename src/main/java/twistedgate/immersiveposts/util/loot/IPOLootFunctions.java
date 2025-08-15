@@ -1,31 +1,29 @@
 package twistedgate.immersiveposts.util.loot;
 
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import twistedgate.immersiveposts.IPOMod;
 
-@EventBusSubscriber(modid = IPOMod.ID, bus = EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = IPOMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class IPOLootFunctions{
-	public static LootPoolEntryType baseCoverDrop;
-	public static LootPoolEntryType postDrop;
+	private static final DeferredRegister<LootPoolEntryType> REGISTER = DeferredRegister.create(
+			BuiltInRegistries.LOOT_POOL_ENTRY_TYPE.key(), IPOMod.ID
+	);
 	
-	@SubscribeEvent
-	// Just need to do this during *some* registry event, registries are frozen outside those
-	public static void onRegister(RegisterEvent ev){
-		if(ev.getForgeRegistry() != null && ev.getForgeRegistry().equals(ForgeRegistries.BLOCKS)){
-			baseCoverDrop = registerEntry(BaseCoverDropLootEntry.ID, new BaseCoverDropLootEntry.Serializer());
-			postDrop = registerEntry(PostMaterialDropLootEntry.ID, new PostMaterialDropLootEntry.Serializer());
-		}
+	public static RegistryObject<LootPoolEntryType> baseCoverDrop = registerEntry("base_cover_drop", new BaseCoverDropLootEntry.Serializer());
+	public static RegistryObject<LootPoolEntryType> postDrop = registerEntry("post_material_drop", new PostMaterialDropLootEntry.Serializer());
+	
+	private static RegistryObject<LootPoolEntryType> registerEntry(String id, Serializer<? extends LootPoolEntryContainer> serializer){
+		return REGISTER.register(id, () -> new LootPoolEntryType(serializer));
 	}
 	
-	private static LootPoolEntryType registerEntry(ResourceLocation id, Serializer<? extends LootPoolEntryContainer> serializer){
-		return Registry.register(Registry.LOOT_POOL_ENTRY_TYPE, id, new LootPoolEntryType(serializer));
+	public static void modConstruction(IEventBus bus){
+		REGISTER.register(bus);
 	}
 }

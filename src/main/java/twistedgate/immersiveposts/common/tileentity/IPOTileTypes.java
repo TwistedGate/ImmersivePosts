@@ -1,9 +1,6 @@
 package twistedgate.immersiveposts.common.tileentity;
 
-import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,6 +11,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent;
+
+import java.util.function.Supplier;
 
 public class IPOTileTypes{
 	private final static DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, IPOMod.ID);

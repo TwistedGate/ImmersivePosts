@@ -1,11 +1,10 @@
 package twistedgate.immersiveposts.client;
 
-import com.electronwill.nightconfig.core.Config;
-
 import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.lib.manual.ManualEntry;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.Tree.InnerNode;
+import com.electronwill.nightconfig.core.Config;
 import net.minecraft.resources.ResourceLocation;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.CommonProxy;

@@ -1,23 +1,27 @@
 package twistedgate.immersiveposts.common.data;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
 import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Items;
 import twistedgate.immersiveposts.common.IPOTags;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author TwistedGate
  */
 public class IPOItemTags extends ItemTagsProvider{
-	public IPOItemTags(DataGenerator dataGen, BlockTagsProvider blockTags, ExistingFileHelper exFileHelper) {
-		super(dataGen, blockTags, IPOMod.ID, exFileHelper);
+	public IPOItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper exFileHelper){
+		super(output, lookupProvider, blockTags, IPOMod.ID, exFileHelper);
 	}
 	
 	@Override
-	protected void addTags(){
+	protected void addTags(HolderLookup.Provider provider){
 		tag(IPOTags.Rods.ALL)
 			.add(Items.ROD_GOLD.get())
 			.add(Items.ROD_COPPER.get())

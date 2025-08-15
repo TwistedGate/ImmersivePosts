@@ -1,20 +1,18 @@
 package twistedgate.immersiveposts.common;
 
-import java.lang.reflect.Field;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.electronwill.nightconfig.core.Config;
 import com.google.common.base.Preconditions;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import twistedgate.immersiveposts.IPOMod;
+
+import java.lang.reflect.Field;
 
 @EventBusSubscriber(modid = IPOMod.ID, bus = Bus.MOD)
 public class IPOConfig{

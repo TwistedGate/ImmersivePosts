@@ -1,9 +1,5 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import javax.annotation.Nullable;
-
-import com.mojang.math.Vector3f;
-
 import blusunrize.immersiveengineering.api.IPostBlock;
 import blusunrize.immersiveengineering.common.util.Utils;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectArrayMap;
@@ -47,6 +43,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Vector3f;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOConfig;
 import twistedgate.immersiveposts.common.IPOTags;
@@ -54,6 +51,8 @@ import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
+
+import javax.annotation.Nullable;
 
 /**
  * All-in-one package. Containing everything into one neat class is the best.
@@ -200,7 +199,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 		if(!worldIn.isClientSide){
 			ItemStack held = playerIn.getMainHandItem();
 			if(IPostMaterial.isValidItem(held)){
-				if(!held.sameItem(getPostMaterial().getItemStack())){
+				if(!ItemStack.isSameItem(held, getPostMaterial().getItemStack())){
 					playerIn.displayClientMessage(Component.translatable("immersiveposts.expectedlocal", getPostMaterial().getItemStack().getHoverName()), true);
 					return InteractionResult.SUCCESS;
 				}

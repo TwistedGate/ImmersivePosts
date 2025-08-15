@@ -1,7 +1,8 @@
 package twistedgate.immersiveposts.common;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -49,10 +50,10 @@ public class IPOTags{
 	}
 	
 	private static TagKey<Item> createItemWrapper(ResourceLocation name){
-        return TagKey.create(Registry.ITEM_REGISTRY, name);
+        return ItemTags.create(name);
 	}
 	
 	private static TagKey<Block> createBlockWrapper(ResourceLocation name){
-		return TagKey.create(Registry.BLOCK_REGISTRY, name);
+		return BlockTags.create(name);
 	}
 }

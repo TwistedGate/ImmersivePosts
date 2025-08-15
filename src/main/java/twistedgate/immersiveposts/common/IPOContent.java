@@ -1,22 +1,11 @@
 package twistedgate.immersiveposts.common;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.function.Supplier;
-
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.Util;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraftforge.registries.RegistryObject;
-import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.common.blocks.MetalFenceBlock;
@@ -24,6 +13,15 @@ import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 import twistedgate.immersiveposts.common.blocks.PostBlock;
 import twistedgate.immersiveposts.common.items.IPOItemBase;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
+
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * @author TwistedGate
@@ -55,7 +53,7 @@ public class IPOContent{
 		materialName = "fence_" + materialName;
 		
 		RegistryObject<FenceBlock> block = IPORegistries.BLOCK_REGISTER.register(materialName, MetalFenceBlock::new);
-		IPORegistries.ITEM_REGISTER.register(materialName, () -> new BlockItem(block.get(), new Item.Properties().tab(ImmersivePosts.creativeTab)));
+		IPORegistries.ITEM_REGISTER.register(materialName, () -> new BlockItem(block.get(), new Item.Properties()));
 		return block;
 	}
 	
@@ -190,7 +188,7 @@ public class IPOContent{
 		}
 	}
 	
-	public static final void modConstruction(){
+	public static void modConstruction(){
 		Blocks.forceClassLoad();
 		
 		IPOTileTypes.forceClassLoad();

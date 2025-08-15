@@ -1,9 +1,5 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,9 +28,6 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -43,22 +35,22 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twistedgate.immersiveposts.ImmersivePosts;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOTileTypes;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 import twistedgate.immersiveposts.enums.EnumFlipState;
+import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * @author TwistedGate
  */
 public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBlock, EntityBlock{
 	private static BlockBehaviour.Properties prop(){
-		Material BaseMaterial = new Material(MaterialColor.STONE, false, true, true, true, false, false, PushReaction.BLOCK);
-		
-		BlockBehaviour.Properties prop = BlockBehaviour.Properties.of(BaseMaterial)
-				.sound(SoundType.STONE)
+		BlockBehaviour.Properties prop = EnumPostMaterial.PostBlockProperties.stone()
 				.requiresCorrectToolForDrops()
 				.strength(5.0F, 3.0F)
 				.noOcclusion();
@@ -167,7 +159,7 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 					
 					if(b instanceof PostBlock){
 						ItemStack tmp = ((PostBlock) b).getPostMaterial().getItemStack();
-						if(!held.sameItem(tmp)){
+						if(!held.is(tmp.getItem())){
 							playerIn.displayClientMessage(Component.translatable("immersiveposts.expectedlocal", tmp.getHoverName()), true);
 							return InteractionResult.SUCCESS;
 						}
@@ -223,7 +215,7 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 	
 	public static class ItemPostBase extends BlockItem{
 		public ItemPostBase(Block block){
-			super(block, new Item.Properties().tab(ImmersivePosts.creativeTab));
+			super(block, new Item.Properties());
 		}
 		
 		@Override
