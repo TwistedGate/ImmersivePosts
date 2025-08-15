@@ -1,45 +1,44 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cobblestone": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:cobblestone"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_stone_bricks": {
-      "conditions": {
-        "items": [
-          {
-            "tag": "minecraft:stone_bricks"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "immersiveposts:postbase"
+        "recipe": "immersiveposts:fence_uranium"
       },
       "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_uranium_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/uranium"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_uranium_rod": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:rods/uranium"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
-      "has_cobblestone",
-      "has_stone_bricks",
+      "has_uranium_rod",
+      "has_uranium_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "immersiveposts:postbase"
+      "immersiveposts:fence_uranium"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

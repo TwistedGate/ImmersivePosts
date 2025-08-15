@@ -1,21 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_copper_ingot": {
+    "has_iron_ingot": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/copper"
+            "tag": "forge:ingots/iron"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_copper_rod": {
+    "has_iron_rod": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:rods/copper"
+            "tag": "forge:rods/iron"
           }
         ]
       },
@@ -23,21 +23,22 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "immersiveposts:fence_copper"
+        "recipe": "immersiveposts:fence_iron"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_copper_rod",
-      "has_copper_ingot",
+      "has_iron_rod",
+      "has_iron_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "immersiveposts:fence_copper"
+      "immersiveposts:fence_iron"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

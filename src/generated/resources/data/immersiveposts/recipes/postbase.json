@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "s": {
       "item": "minecraft:stone_bricks"
@@ -16,5 +17,6 @@
   "result": {
     "count": 6,
     "item": "immersiveposts:postbase"
-  }
+  },
+  "show_notification": true
 }

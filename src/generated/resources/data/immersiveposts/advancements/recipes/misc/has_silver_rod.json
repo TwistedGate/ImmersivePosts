@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_copper_ingot": {
+    "has_silver_ingot": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/copper"
+            "tag": "forge:ingots/silver"
           }
         ]
       },
@@ -13,20 +13,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "immersiveposts:has_copper_rod"
+        "recipe": "immersiveposts:has_silver_rod"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_copper_ingot",
+      "has_silver_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "immersiveposts:has_copper_rod"
+      "immersiveposts:has_silver_rod"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -28,5 +28,6 @@
     "recipes": [
       "immersiveposts:has_uranium_rod"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

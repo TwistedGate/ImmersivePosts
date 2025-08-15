@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "i": {
       "tag": "forge:ingots/electrum"
@@ -12,5 +13,6 @@
   "result": {
     "count": 4,
     "item": "immersiveposts:stick_electrum"
-  }
+  },
+  "show_notification": true
 }

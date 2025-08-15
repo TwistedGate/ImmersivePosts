@@ -11,33 +11,23 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_electrum_rod": {
-      "conditions": {
-        "items": [
-          {
-            "tag": "forge:rods/electrum"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "immersiveposts:fence_electrum"
+        "recipe": "immersiveposts:has_electrum_rod"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_electrum_rod",
       "has_electrum_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "immersiveposts:fence_electrum"
+      "immersiveposts:has_electrum_rod"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

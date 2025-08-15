@@ -1,21 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_silver_ingot": {
+    "has_gold_ingot": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/silver"
+            "tag": "forge:ingots/gold"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_silver_rod": {
+    "has_gold_rod": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:rods/silver"
+            "tag": "forge:rods/gold"
           }
         ]
       },
@@ -23,21 +23,22 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "immersiveposts:fence_silver"
+        "recipe": "immersiveposts:fence_gold"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_silver_rod",
-      "has_silver_ingot",
+      "has_gold_rod",
+      "has_gold_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "immersiveposts:fence_silver"
+      "immersiveposts:fence_gold"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

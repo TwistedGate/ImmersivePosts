@@ -1,21 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_constantan_ingot": {
+    "has_nickel_ingot": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/constantan"
+            "tag": "forge:ingots/nickel"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_constantan_rod": {
+    "has_nickel_rod": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:rods/constantan"
+            "tag": "forge:rods/nickel"
           }
         ]
       },
@@ -23,21 +23,22 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "immersiveposts:fence_constantan"
+        "recipe": "immersiveposts:fence_nickel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_constantan_rod",
-      "has_constantan_ingot",
+      "has_nickel_rod",
+      "has_nickel_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "immersiveposts:fence_constantan"
+      "immersiveposts:fence_nickel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

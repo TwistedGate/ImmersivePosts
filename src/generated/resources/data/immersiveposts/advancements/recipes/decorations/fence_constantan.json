@@ -1,21 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_lead_ingot": {
+    "has_constantan_ingot": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/lead"
+            "tag": "forge:ingots/constantan"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_lead_rod": {
+    "has_constantan_rod": {
       "conditions": {
         "items": [
           {
-            "tag": "forge:rods/lead"
+            "tag": "forge:rods/constantan"
           }
         ]
       },
@@ -23,21 +23,22 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "immersiveposts:fence_lead"
+        "recipe": "immersiveposts:fence_constantan"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_lead_rod",
-      "has_lead_ingot",
+      "has_constantan_rod",
+      "has_constantan_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "immersiveposts:fence_lead"
+      "immersiveposts:fence_constantan"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
