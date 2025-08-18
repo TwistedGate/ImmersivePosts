@@ -264,7 +264,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 					}
 				}
 			}else if(Utils.isHammer(held)){
-				if(playerIn.isCrouching()){
+				if(playerIn.isShiftKeyDown()){
 					switch(state.getValue(TYPE)){
 						case POST: case POST_TOP:{
 							Direction facing = hit.getDirection();
