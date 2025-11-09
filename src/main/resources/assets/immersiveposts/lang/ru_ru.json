@@ -1,0 +1,85 @@
+{
+    "_comment": "################## Блоки ##################",
+	
+    "block.immersiveposts.postbase": "Расширяемый постамент",
+    "block.immersiveposts.woodpost": "Деревяный столб",
+    "block.immersiveposts.ironpost": "Железный столб",
+    "block.immersiveposts.goldpost": "Золотой столб",
+    "block.immersiveposts.copperpost": "Медный столб",
+    "block.immersiveposts.leadpost": "Свинцовый столб",
+    "block.immersiveposts.silverpost": "Серебряный столб",
+    "block.immersiveposts.nickelpost": "Никелевый столб",
+    "block.immersiveposts.constantanpost": "Константановый столб",
+    "block.immersiveposts.electrumpost": "Электрумовый столб",
+    "block.immersiveposts.uraniumpost": "Урановый столб",
+    "block.immersiveposts.netherpost": "Незерский столб",
+    "block.immersiveposts.aluminiumpost": "Алюминиевый столб",
+    "block.immersiveposts.steelpost": "Стальной столб",
+    "block.immersiveposts.concretepost": "Бетонный столб",
+    "block.immersiveposts.leadedconcretepost": "Свинцовобетонный столб",
+    
+    "block.immersiveposts.woodpost_truss": "Деревяная ферма",
+    "block.immersiveposts.ironpost_truss": "Железная ферма",
+    "block.immersiveposts.goldpost_truss": "Золотая ферма",
+    "block.immersiveposts.copperpost_truss": "Медная ферма",
+    "block.immersiveposts.leadpost_truss": "Свинцовая ферма",
+    "block.immersiveposts.silverpost_truss": "Серебряная ферма",
+    "block.immersiveposts.nickelpost_truss": "Никелевая ферма",
+    "block.immersiveposts.constantanpost_truss": "Константановая ферма",
+    "block.immersiveposts.electrumpost_truss": "Электрумовая ферма",
+    "block.immersiveposts.uraniumpost_truss": "Урановая ферма",
+    "block.immersiveposts.netherpost_truss": "Незерская ферма",
+    "block.immersiveposts.aluminiumpost_truss": "Алюминиевая ферма",
+    "block.immersiveposts.steelpost_truss": "Стальная ферма",
+    "block.immersiveposts.concretepost_truss": "Бетонная ферма",
+    "block.immersiveposts.leadedconcretepost_truss": "Свинцовобетонная ферма",
+	
+    "block.immersiveposts.fence_iron": "Железный забор",
+    "block.immersiveposts.fence_gold": "Золотой забор",
+    "block.immersiveposts.fence_copper": "Медный забор",
+    "block.immersiveposts.fence_lead": "Свинцовый забор",
+    "block.immersiveposts.fence_silver": "Серебряный забор",
+    "block.immersiveposts.fence_nickel": "Никелевый забор",
+    "block.immersiveposts.fence_constantan": "Константановый забор",
+    "block.immersiveposts.fence_electrum": "Электрумовый забор",
+    "block.immersiveposts.fence_uranium": "Урановый забор",
+	
+    "_comment": "################## предметы ##################",
+	
+    "item.immersiveposts.stick_gold": "Золотая палка",
+    "item.immersiveposts.stick_copper": "Медная палка",
+    "item.immersiveposts.stick_lead": "Свинцовая палка",
+    "item.immersiveposts.stick_silver": "Серебряная палка",
+    "item.immersiveposts.stick_nickel": "Никелевая палка",
+    "item.immersiveposts.stick_constantan": "Константановая палка",
+    "item.immersiveposts.stick_electrum": "Электрумовая палка",
+    "item.immersiveposts.stick_uranium": "Урановая палка",
+	
+    "item.immersiveposts.metal_rods.stick_gold": "Золотой прут",
+    "item.immersiveposts.metal_rods.stick_copper": "Медный прут",
+    "item.immersiveposts.metal_rods.stick_lead": "Свинцовый прут",
+    "item.immersiveposts.metal_rods.stick_silver": "Серебряный прут",
+    "item.immersiveposts.metal_rods.stick_nickel": "Никелевый прут",
+    "item.immersiveposts.metal_rods.stick_constantan": "Константановый прут",
+    "item.immersiveposts.metal_rods.stick_electrum": "Электрумовый прут",
+    "item.immersiveposts.metal_rods.stick_uranium": "Урановый прут",
+	
+    "_comment": "################## Creative Tab ##################",
+	
+    "itemGroup.immersiveposts": "Immersive Posts",
+	
+    "_comment": "################## Postbase Tooltip(s) ##################",
+	
+    "tooltip.postbase": "§6Смотрите инструкцию по расширяемым постаментам.",
+	
+    "_comment": "################## хуйня непонятная ##################",
+
+    "immersiveposts.expectedlocal": "Ожидался: %s",
+    "immersiveposts.truss_notsametype": "ферма: Оба столба должны быть из одного материала.",
+    "immersiveposts.truss_minimumdistance": "ферма: Между столбами должно быть расстояние не менее 1 блока.",
+    "immersiveposts.truss_postnotfound": "ферма: Следующий столб вне зоны доступа или не существует.",
+	
+    "_comment": "################## IE-Manual ##################",
+	
+    "manual.immersiveposts.main": "Расширяемый постамент"
+}
