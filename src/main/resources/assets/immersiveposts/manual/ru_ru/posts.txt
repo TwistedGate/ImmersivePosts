@@ -1,0 +1,34 @@
+Принимаемые материалы столбов
+Хм, что бы выбрать...
+ 1 Содержание
+ 2 <link;immersiveposts:posts;§1Обработанное дерево§r;treated>
+ 3 <link;immersiveposts:posts;§1Алюминий§r;aluminium>
+ 4 <link;immersiveposts:posts;§1Сталь§r;steel>
+ 5 <link;immersiveposts:posts;§1Незерский кирпич§r;nether>
+ 6 <link;immersiveposts:posts;§1Железо§r;iron>
+ 7 <link;immersiveposts:posts;§1Золото§r;gold>
+ 8 <link;immersiveposts:posts;§1Медь§r;copper>
+ 9 <link;immersiveposts:posts;§1Свинец§r;lead>
+10 <link;immersiveposts:posts;§1Серебро§r;silver>
+11 <link;immersiveposts:posts;§1Никель§r;nickel>
+12 <link;immersiveposts:posts;§1Константан§r;constantan>
+13 <link;immersiveposts:posts;§1Электрум§r;electrum>
+14 <link;immersiveposts:posts;§1Уран§r;uranium>
+15 <link;immersiveposts:posts;§1Бетон§r;concrete>
+16 <link;immersiveposts:posts;§1Свинцобетон§r;leadedconcrete><np>
+<&treated>Обработанное дерево.<np>
+<&aluminium>Алюминий.<np>
+<&steel>Сталь.<np>
+<&nether>Незерский кирпич.<np>
+<&iron>Железо.<np>
+<&gold>Золото.<np>
+<&copper>Медь.<np>
+<&lead>Свинец.<np>
+<&silver>Серебро.<np>
+<&nickel>Никель.<np>
+<&constantan>Константан.<np>
+<&electrum>Электрум.<np>
+<&uranium>Уран.
+Излучает немного света, хотя кажется, что его не больше, чем от факела из редстоуна.<np>
+<&concrete>Бетон.<np>
+<&leadedconcrete>Свинцобетон.
