@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
  * @author TwistedGate
  */
 public class MetalFenceBlock extends FenceBlock{
-	static final BlockBehaviour.Properties DEFAULT_PROP = BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+	static final BlockBehaviour.Properties DEFAULT_PROP = BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
 			.strength(3.0F, 15.0F)
 			.sound(SoundType.METAL)
 			.requiresCorrectToolForDrops()

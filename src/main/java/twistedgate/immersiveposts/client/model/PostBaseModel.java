@@ -25,15 +25,15 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.ChunkRenderTypeSet;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
-import net.minecraftforge.client.model.geometry.IGeometryLoader;
-import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
+import net.neoforged.neoforge.client.ChunkRenderTypeSet;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
+import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
+import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 import org.jetbrains.annotations.NotNull;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseModel.Loader.PostBaseModelRaw;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
+import twistedgate.immersiveposts.util.ResourceUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -113,7 +113,7 @@ public class PostBaseModel extends IPOBakedModel{
 			postbaseSprite = Minecraft.getInstance()
 				.getModelManager()
 				.getAtlas(InventoryMenu.BLOCK_ATLAS)
-				.getSprite(new ResourceLocation(IPOMod.ID, "block/postbase"));
+				.getSprite(ResourceUtils.ipo("block/postbase"));
 		}
 		
 		return postbaseSprite;
@@ -134,16 +134,16 @@ public class PostBaseModel extends IPOBakedModel{
 	// ########################################################################################################
 	
 	public static class Loader implements IGeometryLoader<PostBaseModelRaw>{
-		public static final ResourceLocation LOCATION = new ResourceLocation(IPOMod.ID, "postbase");
+		public static final ResourceLocation LOCATION = ResourceUtils.ipo("postbase");
 		
 		@Override
-		public PostBaseModelRaw read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException{
+		public PostBaseModelRaw read(@Nonnull JsonObject jsonObject, @Nonnull JsonDeserializationContext deserializationContext) throws JsonParseException{
 			return new PostBaseModelRaw();
 		}
 		
 		public static class PostBaseModelRaw implements IUnbakedGeometry<PostBaseModelRaw>{
 			@Override
-			public BakedModel bake(IGeometryBakingContext iGeometryBakingContext, ModelBaker modelBaker, Function<Material, TextureAtlasSprite> function, ModelState modelState, ItemOverrides itemOverrides, ResourceLocation resourceLocation){
+			public BakedModel bake(@Nonnull IGeometryBakingContext iGeometryBakingContext, @Nonnull ModelBaker modelBaker, @Nonnull Function<Material, TextureAtlasSprite> function, @Nonnull ModelState modelState, @Nonnull ItemOverrides itemOverrides){
 				return new PostBaseModel();
 			}
 		}

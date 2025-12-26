@@ -19,11 +19,11 @@ import java.util.function.Supplier;
 public class BasicPostMaterial implements IPostMaterial{
 	
 	private boolean isFence;
-	private String name;
 	private Block sourceBlock;
-	private Supplier<Block> sourceBlockSupplier;
-	private Properties properties;
-	private ResourceLocation texture;
+	private final String name;
+	private final Supplier<Block> sourceBlockSupplier;
+	private final Properties properties;
+	private final ResourceLocation texture;
 	
 	/**
 	 * @param materialName

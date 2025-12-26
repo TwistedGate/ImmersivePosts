@@ -2,7 +2,7 @@ package twistedgate.immersiveposts.client.model;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelProperty;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
 public class IPOModelData{

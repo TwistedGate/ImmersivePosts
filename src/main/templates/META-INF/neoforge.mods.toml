@@ -1,14 +1,14 @@
 modLoader="javafml"
-loaderVersion="[25,)"
+loaderVersion="[2,)"
 issueTrackerURL="https://github.com/TwistedGate/ImmersivePosts/issues"
 license="TwistedGate's License of Common Sense (A modified copy of \"Blu's License of Common Sense\")"
 
 [[mods]]
 	displayName="Immersive Posts"
 	modId="immersiveposts"
-	version="${file.jarVersion}"
-	logoFile="logo.png"
-	displayURL="https://minecraft.curseforge.com/projects/immersiveposts"
+	version="${ipo_version}"
+	logoFile= "../logo.png"
+	displayURL="https://www.curseforge.com/minecraft/mc-mods/immersiveposts"
 	updateJSONURL="https://raw.githubusercontent.com/TwistedGate/ImmersivePosts/master/change.json"
 	credits='''§nInspired by ImmersiveIntegration's extendable posts.§r
 
@@ -22,21 +22,21 @@ Korean : FreddyYj'''
 
 [[dependencies.immersiveposts]]
 	modId="immersiveengineering"
-	mandatory=true
-	versionRange="[1.20.1-10.1.0-171,)"
-	ordering="BEFORE"
+	type="required"
+	versionRange="[${ie_version},)"
+	ordering="AFTER"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
-	modId="forge"
-	mandatory=true
-	versionRange="[47.3.0,)"
+	modId="neoforge"
+	type="required"
+	versionRange="[${neo_version},)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.immersiveposts]]
 	modId="minecraft"
-	mandatory=true
-	versionRange="[1.20.1]"
+	type="required"
+	versionRange="[${mc_version}]"
 	ordering="NONE"
 	side="BOTH"

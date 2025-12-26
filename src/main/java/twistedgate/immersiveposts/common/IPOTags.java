@@ -6,10 +6,11 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import twistedgate.immersiveposts.IPOMod;
+import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion;
+import twistedgate.immersiveposts.util.ResourceUtils;
 
 public class IPOTags{
-	public static final TagKey<Block> IGNORED_BY_POSTARM = createBlockWrapper(new ResourceLocation(IPOMod.ID, "ignored_by_postarm"));
+	public static final TagKey<Block> IGNORED_BY_POSTARM = createBlockWrapper(ResourceUtils.ipo("ignored_by_postarm"));
 	
 	public static class Ingots{
 		public static final TagKey<Item> IRON = ingotTag("iron");
@@ -23,7 +24,7 @@ public class IPOTags{
 		public static final TagKey<Item> URANIUM = ingotTag("uranium");
 		
 		private static TagKey<Item> ingotTag(String name){
-			return createItemWrapper(new ResourceLocation("forge", "ingots/" + name));
+			return createItemWrapper(ResourceUtils.forge("ingots/" + name));
 		}
 	}
 	
@@ -41,12 +42,12 @@ public class IPOTags{
 		public static final TagKey<Item> URANIUM = rodTag("uranium");
 		
 		private static TagKey<Item> rodTag(String name){
-			return createItemWrapper(new ResourceLocation("forge", "rods/" + name));
+			return createItemWrapper(ResourceUtils.forge("rods/" + name));
 		}
 	}
 	
 	public static class Fences{
-		public static final TagKey<Block> ALL = createBlockWrapper(new ResourceLocation("fences"));
+		public static final TagKey<Block> ALL = createBlockWrapper(ResourceUtils.mc("fences"));
 	}
 	
 	private static TagKey<Item> createItemWrapper(ResourceLocation name){

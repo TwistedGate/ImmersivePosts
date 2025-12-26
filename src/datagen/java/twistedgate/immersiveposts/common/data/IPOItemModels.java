@@ -3,17 +3,18 @@ package twistedgate.immersiveposts.common.data;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.FenceBlock;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import twistedgate.immersiveposts.IPOMod;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile.ExistingModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
+import twistedgate.immersiveposts.util.ResourceUtils;
 
 /**
  * @author TwistedGate
  */
-public class IPOItemModels extends ItemModelProvider {
+public class IPOItemModels extends ItemModelProvider{
 	public IPOItemModels(PackOutput output, ExistingFileHelper exHelper){
 		super(output, IPOMod.ID, exHelper);
 	}
@@ -45,18 +46,18 @@ public class IPOItemModels extends ItemModelProvider {
 			}
 	}
 	
-	private ResourceLocation ieLoc(String str){
-		return new ResourceLocation("immersiveengineering", str);
-	}
-	
 	private void fence(FenceBlock block, String name, ResourceLocation texture){
 		try{
 			String[] s = name.split("/");
 			getBuilder(IPOMod.ID + ":block/fences/inventory/" + s[1] + "_fence_inventory")
-				.parent(new ExistingModelFile(new ResourceLocation("block/fence_inventory"), this.existingFileHelper))
+				.parent(new ExistingModelFile(ResourceUtils.mc("block/fence_inventory"), this.existingFileHelper))
 				.texture("texture", texture);
 		}catch(Throwable e){
 			IPODataGen.log.warn("Oops.. {}", e.getMessage());
 		}
+	}
+	
+	private ResourceLocation ieLoc(String str){
+		return ResourceUtils.ie(str);
 	}
 }

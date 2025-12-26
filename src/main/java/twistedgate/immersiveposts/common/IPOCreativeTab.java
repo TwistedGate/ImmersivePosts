@@ -4,29 +4,30 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
-import twistedgate.immersiveposts.IPOMod;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import twistedgate.immersiveposts.api.IPOMod;
 
-@Mod.EventBusSubscriber(modid = IPOMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class CreativeTab{
-	public static final RegistryObject<CreativeModeTab> TAB = makeTab();
+public class IPOCreativeTab{
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = makeTab();
 	
-	private static RegistryObject<CreativeModeTab> makeTab(){
+	private static DeferredHolder<CreativeModeTab, CreativeModeTab> makeTab(){
 		return IPORegistries.CTAB_REGISTER.register(IPOMod.ID, () -> {
 			//@formatter:off
 			return new CreativeModeTab.Builder(CreativeModeTab.Row.TOP, 0)
 					.icon(() -> new ItemStack(IPOContent.Blocks.POST_BASE.get()))
 					.title(Component.translatable("itemGroup.immersiveposts"))
-					.displayItems(CreativeTab::fill)
+					.displayItems(IPOCreativeTab::fill)
 					.build();
 			//@formatter:on
 		});
 	}
 	
 	private static void fill(CreativeModeTab.ItemDisplayParameters parms, CreativeModeTab.Output out){
-		for(RegistryObject<Item> holder:IPORegistries.ITEM_REGISTER.getEntries()){
+		for(DeferredHolder<Item, ? extends Item> holder:IPORegistries.ITEM_REGISTER.getEntries()){
 			out.accept(holder.get());
 		}
+	}
+	
+	public static void forceClassLoad(){
 	}
 }

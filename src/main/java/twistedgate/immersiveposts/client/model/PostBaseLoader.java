@@ -10,25 +10,28 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
-import net.minecraftforge.client.model.geometry.IGeometryLoader;
-import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
-import twistedgate.immersiveposts.IPOMod;
+import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
+import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
+import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 import twistedgate.immersiveposts.client.model.PostBaseLoader.PostBaseModelRaw;
+import twistedgate.immersiveposts.util.ResourceUtils;
 
+import javax.annotation.Nonnull;
 import java.util.function.Function;
 
 public class PostBaseLoader implements IGeometryLoader<PostBaseModelRaw>{
-	public static final ResourceLocation LOCATION = new ResourceLocation(IPOMod.ID, "postbase");
+	public static final ResourceLocation LOCATION = ResourceUtils.ipo("postbase");
 	
+	@Nonnull
 	@Override
-	public PostBaseModelRaw read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException{
+	public PostBaseModelRaw read(@Nonnull JsonObject jsonObject, @Nonnull JsonDeserializationContext deserializationContext) throws JsonParseException{
 		return new PostBaseModelRaw();
 	}
 	
 	public static class PostBaseModelRaw implements IUnbakedGeometry<PostBaseModelRaw>{
+		@Nonnull
 		@Override
-		public BakedModel bake(IGeometryBakingContext iGeometryBakingContext, ModelBaker modelBaker, Function<Material, TextureAtlasSprite> function, ModelState modelState, ItemOverrides itemOverrides, ResourceLocation resourceLocation){
+		public BakedModel bake(@Nonnull IGeometryBakingContext iGeometryBakingContext, @Nonnull ModelBaker modelBaker, @Nonnull Function<Material, TextureAtlasSprite> function, @Nonnull ModelState modelState, @Nonnull ItemOverrides itemOverrides){
 			return new PostBaseModel();
 		}
 	}

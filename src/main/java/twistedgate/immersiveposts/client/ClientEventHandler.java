@@ -4,18 +4,19 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.Unit;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import twistedgate.immersiveposts.IPOMod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseModel;
 import twistedgate.immersiveposts.common.IPOContent;
 
 import javax.annotation.Nonnull;
+
+import static net.neoforged.fml.common.EventBusSubscriber.Bus;
 
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = IPOMod.ID, value = {Dist.CLIENT}, bus = Bus.MOD)
@@ -34,7 +35,7 @@ public class ClientEventHandler extends SimplePreparableReloadListener<Unit>{
 	
 	@SubscribeEvent
 	public static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event){
-		event.register(PostBaseModel.Loader.LOCATION.getPath(), new PostBaseModel.Loader());
+		event.register(PostBaseModel.Loader.LOCATION, new PostBaseModel.Loader());
 	}
 	
 	@SubscribeEvent

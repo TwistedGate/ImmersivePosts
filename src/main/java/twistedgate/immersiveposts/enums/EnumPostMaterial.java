@@ -9,10 +9,10 @@ import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.MapColor;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.ExternalModContent;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
+import twistedgate.immersiveposts.util.ResourceUtils;
 
 import java.util.function.Supplier;
 
@@ -22,9 +22,9 @@ import java.util.function.Supplier;
 public enum EnumPostMaterial implements IPostMaterial{
 	
 	// Default. (Ignore what IDEA says here: DO NOT REPLACE METHOD REFERENCES)
-	WOOD("wood", PostBlockProperties.WOOD, ExternalModContent.IE_TREATED_FENCE::get),
-	ALUMINIUM("aluminium", PostBlockProperties.METAL, ExternalModContent.IE_ALUMINIUM_FENCE::get),
-	STEEL("steel", PostBlockProperties.METAL, ExternalModContent.IE_STEEL_FENCE::get),
+	WOOD("wood", PostBlockProperties.WOOD, ExternalModContent.IE_TREATED_FENCE::value),
+	ALUMINIUM("aluminium", PostBlockProperties.METAL, ExternalModContent.IE_ALUMINIUM_FENCE::value),
+	STEEL("steel", PostBlockProperties.METAL, ExternalModContent.IE_STEEL_FENCE::value),
 	
 	// Custom
 	NETHERBRICK("nether", PostBlockProperties.STONE, Blocks.NETHER_BRICK_FENCE),
@@ -75,7 +75,7 @@ public enum EnumPostMaterial implements IPostMaterial{
 	@Override
 	public ResourceLocation getTexture(){
 		if(this.texture == null){
-			return new ResourceLocation(IPOMod.ID, "block/posts/post_" + this.getName());
+			return ResourceUtils.ipo("block/posts/post_" + this.getName());
 		}
 		return this.texture;
 	}
@@ -118,34 +118,37 @@ public enum EnumPostMaterial implements IPostMaterial{
 		
 		public static Properties wood(){
 			return Properties.of()
-					.mapColor(MapColor.WOOD)
-					.sound(SoundType.WOOD)
-					//.harvestTool(ToolType.AXE)
-					.strength(2.0F, 5.0F)
-					.noOcclusion()
-					.isViewBlocking((s, r, p) -> false);
+				.forceSolidOn()
+				.mapColor(MapColor.WOOD)
+				.sound(SoundType.WOOD)
+				//.harvestTool(ToolType.AXE)
+				.strength(2.0F, 5.0F)
+				.noOcclusion()
+				.isViewBlocking((s, r, p) -> false);
 		}
 		
 		public static Properties stone(){
 			return Properties.of()
-					.mapColor(MapColor.STONE)
-					.sound(SoundType.STONE)
-					.requiresCorrectToolForDrops()
-					//.harvestTool(ToolType.PICKAXE)
-					.strength(1.5F, 6.0F)
-					.noOcclusion()
-					.isViewBlocking((s, r, p) -> false);
+				.forceSolidOn()
+				.mapColor(MapColor.STONE)
+				.sound(SoundType.STONE)
+				.requiresCorrectToolForDrops()
+				//.harvestTool(ToolType.PICKAXE)
+				.strength(1.5F, 6.0F)
+				.noOcclusion()
+				.isViewBlocking((s, r, p) -> false);
 		}
 		
 		public static Properties metal(){
 			return Properties.of()
-					.mapColor(MapColor.METAL)
-					.sound(SoundType.METAL)
-					.requiresCorrectToolForDrops()
-					//.harvestTool(ToolType.PICKAXE)
-					.strength(3.0F, 15.0F)
-					.noOcclusion()
-					.isViewBlocking((s, r, p) -> false);
+				.forceSolidOn()
+				.mapColor(MapColor.METAL)
+				.sound(SoundType.METAL)
+				.requiresCorrectToolForDrops()
+				//.harvestTool(ToolType.PICKAXE)
+				.strength(3.0F, 15.0F)
+				.noOcclusion()
+				.isViewBlocking((s, r, p) -> false);
 		}
 	}
 }

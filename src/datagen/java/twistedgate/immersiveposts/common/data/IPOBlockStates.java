@@ -4,17 +4,19 @@ import blusunrize.immersiveengineering.data.models.SpecialModelBuilder;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
-import net.minecraftforge.client.model.generators.loaders.ObjModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
-import twistedgate.immersiveposts.IPOMod;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FenceBlock;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelFile.ExistingModelFile;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.loaders.ObjModelBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.client.model.PostBaseLoader;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPOContent.Blocks;
@@ -27,6 +29,7 @@ import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
+import twistedgate.immersiveposts.util.ResourceUtils;
 
 /**
  * @author TwistedGate
@@ -63,18 +66,18 @@ public class IPOBlockStates extends BlockStateProvider{
 		}
 		
 		// FENCES
-		fenceBlock(Fences.IRON.get(),		"fence/iron",		mcLoc("block/iron_block"));
-		fenceBlock(Fences.GOLD.get(),		"fence/gold",		mcLoc("block/gold_block"));
-		fenceBlock(Fences.COPPER.get(),		"fence/copper",		ieLoc("block/metal/storage_copper"));
-		fenceBlock(Fences.LEAD.get(),		"fence/lead",		ieLoc("block/metal/storage_lead"));
-		fenceBlock(Fences.SILVER.get(),		"fence/silver",		ieLoc("block/metal/storage_silver"));
-		fenceBlock(Fences.NICKEL.get(),		"fence/nickel",		ieLoc("block/metal/storage_nickel"));
-		fenceBlock(Fences.CONSTANTAN.get(),	"fence/constantan",	ieLoc("block/metal/storage_constantan"));
-		fenceBlock(Fences.ELECTRUM.get(),	"fence/electrum",	ieLoc("block/metal/storage_electrum"));
-		fenceBlock(Fences.URANIUM.get(),	"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
+		fenceBlock(Fences.IRON,			"fence/iron",		mcLoc("block/iron_block"));
+		fenceBlock(Fences.GOLD,			"fence/gold",		mcLoc("block/gold_block"));
+		fenceBlock(Fences.COPPER,		"fence/copper",		ieLoc("block/metal/storage_copper"));
+		fenceBlock(Fences.LEAD,			"fence/lead",		ieLoc("block/metal/storage_lead"));
+		fenceBlock(Fences.SILVER,		"fence/silver",		ieLoc("block/metal/storage_silver"));
+		fenceBlock(Fences.NICKEL,		"fence/nickel",		ieLoc("block/metal/storage_nickel"));
+		fenceBlock(Fences.CONSTANTAN,	"fence/constantan",	ieLoc("block/metal/storage_constantan"));
+		fenceBlock(Fences.ELECTRUM,		"fence/electrum",	ieLoc("block/metal/storage_electrum"));
+		fenceBlock(Fences.URANIUM,		"fence/uranium",	ieLoc("block/metal/storage_uranium_side"));
 	}
 	
-	private void postStateFor(RegistryObject<PostBlock> block){
+	private void postStateFor(DeferredHolder<Block, PostBlock> block){
 		BlockModelBuilder modelArm			= getPostModel(block, "arm");
 		BlockModelBuilder modelArmTwoWay	= getPostModel(block, "arm_twoway");
 		BlockModelBuilder modelArmDouble	= getPostModel(block, "arm_double");
@@ -83,7 +86,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		BlockModelBuilder modelPostArm		= getPostModel(block, "post_arm");
 		ExistingModelFile modelEmpty		= new ExistingModelFile(modLoc("block/empty"), this.exFileHelper);
 		
-		MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block.value());
 		
 		builder.part()
 			.modelFile(modelPost).addModel()
@@ -133,7 +136,7 @@ public class IPOBlockStates extends BlockStateProvider{
 			.condition(PostBlock.TYPE, EnumPostType.EMPTY);
 	}
 	
-	private void horizontalPostStateFor(RegistryObject<HorizontalTrussBlock> block){
+	private void horizontalPostStateFor(DeferredHolder<Block, HorizontalTrussBlock> block){
 		BlockModelBuilder modelHTrussSingle	= getPostModel(block, "truss_single");
 		BlockModelBuilder modelHTrussA		= getPostModel(block, "truss_multi_a");
 		BlockModelBuilder modelHTrussB		= getPostModel(block, "truss_multi_b");
@@ -144,7 +147,7 @@ public class IPOBlockStates extends BlockStateProvider{
 		BlockModelBuilder modelPointTop		= getPostModel(block, "truss_point_top");
 		BlockModelBuilder modelPointBottom	= getPostModel(block, "truss_point_bottom");
 		
-		MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block.value());
 		
 		for(Direction dir:Direction.Plane.HORIZONTAL){
 			int yRot = horizontalRotation(dir, false);
@@ -230,8 +233,8 @@ public class IPOBlockStates extends BlockStateProvider{
 		return value;
 	}
 
-	private <P extends GenericPostBlock> BlockModelBuilder getPostModel(RegistryObject<P> block, String name){
-		ResourceLocation texture = modLoc("block/posts/post_" + block.get().getPostMaterial().getName());
+	private <P extends GenericPostBlock> BlockModelBuilder getPostModel(DeferredHolder<Block, P> block, String name){
+		ResourceLocation texture = modLoc("block/posts/post_" + block.value().getPostMaterial().getName());
 		
 		BlockModelBuilder b = this.models().withExistingParent(postModelPath(block, name), mcLoc("block"))
 			.customLoader(ObjModelBuilder::begin).automaticCulling(false).flipV(true)
@@ -242,11 +245,15 @@ public class IPOBlockStates extends BlockStateProvider{
 		return b;
 	}
 	
-	private <P extends GenericPostBlock> String postModelPath(RegistryObject<P> block, String name){
+	public void fenceBlock(DeferredHolder<Block, FenceBlock> holder, String name, ResourceLocation texture) {
+		fenceBlock(holder.value(), name, texture);
+	}
+	
+	private <P extends GenericPostBlock> String postModelPath(DeferredHolder<Block, P> block, String name){
 		return block.getId().getPath() + "/" + name;
 	}
 	
 	private ResourceLocation ieLoc(String str){
-		return new ResourceLocation("immersiveengineering", str);
+		return ResourceUtils.ie(str);
 	}
 }

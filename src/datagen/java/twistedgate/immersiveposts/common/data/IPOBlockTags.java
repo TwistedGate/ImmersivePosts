@@ -8,15 +8,16 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
-import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks;
 import twistedgate.immersiveposts.common.IPOTags;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -25,6 +26,7 @@ public class IPOBlockTags extends BlockTagsProvider{
 		super(output, lookupProvider, IPOMod.ID, exFileHelper);
 	}
 	
+	@Nonnull
 	@Override
 	public String getName(){
 		return getClass().getSimpleName();
@@ -54,8 +56,8 @@ public class IPOBlockTags extends BlockTagsProvider{
 	private void miningLevels(){
 		setMiningLevel(Blocks.POST_BASE, Tiers.STONE);
 		
-		for(RegistryObject<FenceBlock> object:Blocks.Fences.ALL_FENCES){
-			setMiningLevel(object, Tiers.STONE);
+		for(DeferredHolder<Block, FenceBlock> holder:Blocks.Fences.ALL_FENCES){
+			setMiningLevel(holder, Tiers.STONE);
 		}
 		
 		setMiningLevel(EnumPostMaterial.WOOD, Tiers.WOOD);

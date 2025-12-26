@@ -2,6 +2,7 @@ package twistedgate.immersiveposts.common.tileentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -13,20 +14,18 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraftforge.common.util.Lazy;
 import twistedgate.immersiveposts.common.IPOTileTypes;
 import twistedgate.immersiveposts.common.blocks.PostBaseBlock;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class PostBaseTileEntity extends IPOTileEntityBase{
-	protected static final Lazy<BlockState> EMPTY = Lazy.of(Blocks.AIR::defaultBlockState);
 	
 	@Nonnull
 	protected ItemStack stack = ItemStack.EMPTY;
-	@Nonnull
-	protected Lazy<BlockState> coverstate = EMPTY;
+	protected final UpdatableBlockState cover = new UpdatableBlockState(this);
 	/** Horizontal Only */
 	protected Direction facing = Direction.NORTH;
 	
@@ -41,10 +40,7 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	
 	@Nonnull
 	public BlockState getCoverState(){
-		if(this.stack.isEmpty()){
-			return EMPTY.get();
-		}
-		return this.coverstate.get();
+		return this.cover.get(false);
 	}
 	
 	public Direction getFacing(){
@@ -85,17 +81,17 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 	}
 	
 	@Override
-	protected CompoundTag writeCustom(CompoundTag compound){
+	protected CompoundTag writeCustom(CompoundTag compound, @Nonnull HolderLookup.Provider provider){
 		compound.putString("facing", this.facing != null ? this.facing.getName() : Direction.NORTH.getName());
-		compound.put("stack", this.stack.serializeNBT());
+		compound.put("stack", this.stack.saveOptional(provider));
 		return compound;
 	}
 	
 	@Override
-	protected void readCustom(CompoundTag compound){
+	protected void readCustom(CompoundTag compound, @Nonnull HolderLookup.Provider provider){
 		this.facing = Direction.byName(compound.getString("facing"));
 		ItemStack last = this.stack;
-		this.stack = ItemStack.of(compound.getCompound("stack"));
+		this.stack = ItemStack.parseOptional(provider, compound.getCompound("stack"));
 		
 		boolean changed = !ItemStack.matches(this.stack, last);
 		
@@ -148,38 +144,52 @@ public class PostBaseTileEntity extends IPOTileEntityBase{
 		return false;
 	}
 	
-	/** Used to check wether the base can hide within a certain block */
+	/** Used to check whether the base can hide within a certain block */
 	private boolean isUsableCover(@Nonnull Block block, @Nonnull BlockGetter reader, @Nonnull BlockPos pos){
 		BlockState state = block.defaultBlockState();
 		return block != Blocks.AIR && state.isRedstoneConductor(reader, pos) && state.isSolidRender(reader, pos);
 	}
 	
 	protected void updateLazy(boolean changed){
-		if(!changed)
-			return;
+		this.cover.get(changed);
+	}
+	
+	public static class UpdatableBlockState{
+		static final Supplier<BlockState> AIR = Blocks.AIR::defaultBlockState;
 		
-		if(this.stack.isEmpty()){
-			this.coverstate = EMPTY;
-		}else{
-			this.coverstate = Lazy.of(() -> {
-				if(this.stack.getItem() instanceof BlockItem){
-					BlockState state = ((BlockItem) this.stack.getItem()).getBlock().defaultBlockState();
-					
-					Optional<DirectionProperty> prop = state.getProperties().stream()
+		private Supplier<BlockState> value;
+		
+		private final PostBaseTileEntity postBase;
+		public UpdatableBlockState(PostBaseTileEntity postBase){
+			this.postBase = postBase;
+		}
+		
+		public BlockState get(boolean changed){
+			if(changed || this.value == null){
+				final ItemStack stack = this.postBase.stack;
+				
+				if(!stack.isEmpty() && stack.getItem() instanceof BlockItem blockItem){
+					this.value = () -> {
+						BlockState state = blockItem.getBlock().defaultBlockState();
+						
+						Optional<DirectionProperty> prop = state.getProperties().stream()
 							.filter(p -> p instanceof DirectionProperty && p.getName().equals("facing"))
 							.map(p -> (DirectionProperty) p)
 							.filter(p -> p.getPossibleValues().stream().allMatch(Direction.Plane.HORIZONTAL))
 							.findAny();
-					
-					if(prop.isPresent()){
-						state = state.setValue(prop.get(), this.facing);
-					}
-					
-					return state;
+						
+						if(prop.isPresent()){
+							state = state.setValue(prop.get(), this.postBase.facing);
+						}
+						
+						return state;
+					};
+				}else{
+					this.value = AIR;
 				}
-				
-				return EMPTY.get();
-			});
+			}
+			
+			return this.value.get();
 		}
 	}
 }

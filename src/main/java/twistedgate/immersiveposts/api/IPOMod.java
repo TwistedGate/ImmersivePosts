@@ -1,7 +1,7 @@
-package twistedgate.immersiveposts;
+package twistedgate.immersiveposts.api;
 
 /**
- * Class holding informations about Immersive Posts
+ * Class holding information about Immersive Posts
  * @author TwistedGate
  */
 public class IPOMod{

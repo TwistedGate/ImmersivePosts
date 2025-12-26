@@ -1,10 +1,9 @@
 package twistedgate.immersiveposts.common.data;
 
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -13,36 +12,37 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
-import net.minecraftforge.common.Tags;
-import twistedgate.immersiveposts.IPOMod;
+import net.neoforged.neoforge.common.Tags;
+import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.IPOContent.Items;
 import twistedgate.immersiveposts.common.IPOTags;
+import twistedgate.immersiveposts.util.ResourceUtils;
 
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author TwistedGate
  */
 public class IPORecipes extends RecipeProvider{
-	private Consumer<FinishedRecipe> out;
-	public IPORecipes(PackOutput output){
-		super(output);
+	private RecipeOutput out;
+	public IPORecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> provider){
+		super(output, provider);
 	}
 	
 	@Override
-	protected void buildRecipes(Consumer<FinishedRecipe> out){
+	protected void buildRecipes(RecipeOutput out){
 		this.out = out;
 		
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IPOContent.Blocks.POST_BASE.get(), 6)
-			.define('w', Tags.Items.COBBLESTONE)
+			.define('w', Tags.Items.COBBLESTONES)
 			.define('s', Blocks.STONE_BRICKS)
 			.pattern("s s")
 			.pattern("sws")
 			.pattern("sws")
 			.unlockedBy("has_cobblestone", has(Blocks.COBBLESTONE))
-			.unlockedBy("has_stone_bricks", hasTag(ItemTags.STONE_BRICKS))
+			.unlockedBy("has_stone_bricks", has(ItemTags.STONE_BRICKS))
 			.save(out);
 		
 		fenceAndStickRecipe(Fences.IRON.get(), null, IPOTags.Rods.IRON, IPOTags.Ingots.IRON);
@@ -66,25 +66,20 @@ public class IPORecipes extends RecipeProvider{
 				.pattern("i")
 				.pattern("i")
 				.define('i', ingotTag)
-				.unlockedBy("has_" + ingotMat + "_ingot", hasTag(ingotTag))
-				.save(this.out, new ResourceLocation(IPOMod.ID, "has_" + stickMat + "_rod"));
+				.unlockedBy("has_" + ingotMat + "_ingot", has(ingotTag))
+				.save(this.out, ResourceUtils.ipo("has_" + stickMat + "_rod"));
 		}
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, fence, 3)
 			.pattern("isi")
 			.pattern("isi")
 			.define('i', ingotTag)
 			.define('s', stickTag)
-			.unlockedBy("has_" + stickMat + "_rod", hasTag(stickTag))
-			.unlockedBy("has_" + ingotMat + "_ingot", hasTag(ingotTag))
+			.unlockedBy("has_" + stickMat + "_rod", has(stickTag))
+			.unlockedBy("has_" + ingotMat + "_ingot", has(ingotTag))
 			.save(this.out);
 	}
 	
 	private String getMaterialName(ResourceLocation in){
 		return in.getPath().substring(in.getPath().indexOf('/') + 1);
-	}
-	
-	// Private in RecipeProvider
-	private static InventoryChangeTrigger.TriggerInstance hasTag(TagKey<Item> tag) {
-		return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
 	}
 }

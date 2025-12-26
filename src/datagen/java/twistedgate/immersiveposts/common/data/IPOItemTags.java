@@ -4,12 +4,13 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
-import twistedgate.immersiveposts.IPOMod;
+import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Items;
 import twistedgate.immersiveposts.common.IPOTags;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -21,7 +22,7 @@ public class IPOItemTags extends ItemTagsProvider{
 	}
 	
 	@Override
-	protected void addTags(HolderLookup.Provider provider){
+	protected void addTags(@Nonnull HolderLookup.Provider provider){
 		tag(IPOTags.Rods.ALL)
 			.add(Items.ROD_GOLD.get())
 			.add(Items.ROD_COPPER.get())

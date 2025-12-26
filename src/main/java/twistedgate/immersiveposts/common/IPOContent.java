@@ -5,7 +5,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.blocks.HorizontalTrussBlock;
 import twistedgate.immersiveposts.common.blocks.MetalFenceBlock;
@@ -37,32 +37,32 @@ public class IPOContent{
 		return false;
 	}
 	
-	protected static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> constructor){
+	protected static <T extends Block> DeferredHolder<Block, T> registerBlock(String name, Supplier<T> constructor){
 		return IPORegistries.BLOCK_REGISTER.register(name, constructor);
 	}
 	
-	protected static RegistryObject<PostBlock> registerPostBlock(EnumPostMaterial material){
+	protected static DeferredHolder<Block, PostBlock> registerPostBlock(EnumPostMaterial material){
 		return registerBlock(material.getBlockName(), () -> new PostBlock(material));
 	}
 	
-	protected static RegistryObject<HorizontalTrussBlock> registerTrussBlock(EnumPostMaterial material){
+	protected static DeferredHolder<Block, HorizontalTrussBlock> registerTrussBlock(EnumPostMaterial material){
 		return registerBlock(material.getBlockName() + "_truss", () -> new HorizontalTrussBlock(material));
 	}
 	
-	protected static RegistryObject<FenceBlock> registerMetalFence(String materialName){
+	protected static DeferredHolder<Block, FenceBlock> registerMetalFence(String materialName){
 		materialName = "fence_" + materialName;
 		
-		RegistryObject<FenceBlock> block = IPORegistries.BLOCK_REGISTER.register(materialName, MetalFenceBlock::new);
+		DeferredHolder<Block, FenceBlock> block = IPORegistries.BLOCK_REGISTER.register(materialName, MetalFenceBlock::new);
 		IPORegistries.ITEM_REGISTER.register(materialName, () -> new BlockItem(block.get(), new Item.Properties()));
 		return block;
 	}
 	
-	protected static <T extends Item> RegistryObject<T> registerItem(String name, Supplier<T> constructor){
+	protected static <T extends Item> DeferredHolder<Item, T> registerItem(String name, Supplier<T> constructor){
 		return IPORegistries.ITEM_REGISTER.register(name, constructor);
 	}
 	
 	public static class Blocks{
-		public static final RegistryObject<PostBaseBlock> POST_BASE;
+		public static final DeferredHolder<Block, PostBaseBlock> POST_BASE;
 		
 		static{
 			POST_BASE = registerBlock("postbase", PostBaseBlock::new);
@@ -80,20 +80,20 @@ public class IPOContent{
 		public static class Fences{
 			
 			/** Unmodifiable List of all Fence Blocks added by IPO */
-			public static final List<RegistryObject<FenceBlock>> ALL_FENCES;
+			public static final List<DeferredHolder<Block, FenceBlock>> ALL_FENCES;
 			
-			public final static RegistryObject<FenceBlock> IRON;
-			public final static RegistryObject<FenceBlock> GOLD;
-			public final static RegistryObject<FenceBlock> COPPER;
-			public final static RegistryObject<FenceBlock> LEAD;
-			public final static RegistryObject<FenceBlock> SILVER;
-			public final static RegistryObject<FenceBlock> NICKEL;
-			public final static RegistryObject<FenceBlock> CONSTANTAN;
-			public final static RegistryObject<FenceBlock> ELECTRUM;
-			public final static RegistryObject<FenceBlock> URANIUM;
+			public final static DeferredHolder<Block, FenceBlock> IRON;
+			public final static DeferredHolder<Block, FenceBlock> GOLD;
+			public final static DeferredHolder<Block, FenceBlock> COPPER;
+			public final static DeferredHolder<Block, FenceBlock> LEAD;
+			public final static DeferredHolder<Block, FenceBlock> SILVER;
+			public final static DeferredHolder<Block, FenceBlock> NICKEL;
+			public final static DeferredHolder<Block, FenceBlock> CONSTANTAN;
+			public final static DeferredHolder<Block, FenceBlock> ELECTRUM;
+			public final static DeferredHolder<Block, FenceBlock> URANIUM;
 			
 			static{
-				List<RegistryObject<FenceBlock>> list = new ArrayList<>();
+				List<DeferredHolder<Block, FenceBlock>> list = new ArrayList<>();
 				
 				list.add(IRON = registerMetalFence("iron"));
 				list.add(GOLD = registerMetalFence("gold"));
@@ -114,7 +114,7 @@ public class IPOContent{
 		
 		public static class Posts{
 			/** Contains all Post Blocks added by IPO */
-			static final EnumMap<EnumPostMaterial, RegistryObject<PostBlock>> ALL = Util.make(new EnumMap<>(EnumPostMaterial.class), map -> {
+			static final EnumMap<EnumPostMaterial, DeferredHolder<Block, PostBlock>> ALL = Util.make(new EnumMap<>(EnumPostMaterial.class), map -> {
 				for(EnumPostMaterial material:EnumPostMaterial.values()){
 					map.put(material, registerPostBlock(material));
 				}
@@ -128,7 +128,7 @@ public class IPOContent{
 			}
 			
 			@CheckForNull
-			public static RegistryObject<PostBlock> getRegObject(@Nonnull IPostMaterial material){
+			public static DeferredHolder<Block, PostBlock> getRegObject(@Nonnull IPostMaterial material){
 				if(!ALL.containsKey(material))
 					return null;
 				return ALL.get(material);
@@ -140,7 +140,7 @@ public class IPOContent{
 		
 		public static class HorizontalTruss{
 			/** Contains all Truss Blocks added by IPO */
-			static EnumMap<EnumPostMaterial, RegistryObject<HorizontalTrussBlock>> ALL = Util.make(new EnumMap<>(EnumPostMaterial.class), map -> {
+			static EnumMap<EnumPostMaterial, DeferredHolder<Block, HorizontalTrussBlock>> ALL = Util.make(new EnumMap<>(EnumPostMaterial.class), map -> {
 				for(EnumPostMaterial material:EnumPostMaterial.values()){
 					map.put(material, registerTrussBlock(material));
 				}
@@ -152,7 +152,7 @@ public class IPOContent{
 				return ALL.get(material).get();
 			}
 			
-			public static RegistryObject<HorizontalTrussBlock> getRegObject(@Nonnull IPostMaterial material){
+			public static DeferredHolder<Block, HorizontalTrussBlock> getRegObject(@Nonnull IPostMaterial material){
 				if(!ALL.containsKey(material))
 					return null;
 				return ALL.get(material);
@@ -164,14 +164,14 @@ public class IPOContent{
 	}
 	
 	public static class Items{
-		public final static RegistryObject<Item> ROD_GOLD;
-		public final static RegistryObject<Item> ROD_COPPER;
-		public final static RegistryObject<Item> ROD_LEAD;
-		public final static RegistryObject<Item> ROD_SILVER;
-		public final static RegistryObject<Item> ROD_NICKEL;
-		public final static RegistryObject<Item> ROD_CONSTANTAN;
-		public final static RegistryObject<Item> ROD_ELECTRUM;
-		public final static RegistryObject<Item> ROD_URANIUM;
+		public final static DeferredHolder<Item,Item> ROD_GOLD;
+		public final static DeferredHolder<Item,Item> ROD_COPPER;
+		public final static DeferredHolder<Item,Item> ROD_LEAD;
+		public final static DeferredHolder<Item,Item> ROD_SILVER;
+		public final static DeferredHolder<Item,Item> ROD_NICKEL;
+		public final static DeferredHolder<Item,Item> ROD_CONSTANTAN;
+		public final static DeferredHolder<Item,Item> ROD_ELECTRUM;
+		public final static DeferredHolder<Item,Item> ROD_URANIUM;
 		
 		static{
 			ROD_GOLD = registerItem("stick_gold", IPOItemBase::new);
@@ -190,7 +190,7 @@ public class IPOContent{
 	
 	public static void modConstruction(){
 		Blocks.forceClassLoad();
-		
 		IPOTileTypes.forceClassLoad();
+		IPOCreativeTab.forceClassLoad();
 	}
 }

@@ -1,6 +1,5 @@
 package twistedgate.immersiveposts.common.blocks;
 
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -15,6 +14,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
@@ -33,8 +33,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOTileTypes;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
@@ -42,6 +40,7 @@ import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -50,12 +49,10 @@ import java.util.List;
  */
 public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBlock, EntityBlock{
 	private static BlockBehaviour.Properties prop(){
-		BlockBehaviour.Properties prop = EnumPostMaterial.PostBlockProperties.stone()
+		return EnumPostMaterial.PostBlockProperties.stone()
 				.requiresCorrectToolForDrops()
 				.strength(5.0F, 3.0F)
 				.noOcclusion();
-		
-		return prop;
 	}
 	
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -76,12 +73,13 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos){
+	public boolean propagatesSkylightDown(BlockState state, @Nonnull BlockGetter reader, @Nonnull BlockPos pos){
 		return !state.getValue(HIDDEN) ? !state.getValue(WATERLOGGED) : super.propagatesSkylightDown(state, reader, pos);
 	}
 	
+	@Nonnull
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player){
+	public ItemStack getCloneItemStack(@Nonnull BlockState state, @Nonnull HitResult target, @Nonnull LevelReader world, @Nonnull BlockPos pos, Player player){
 		if(player.isShiftKeyDown() && state.getValue(HIDDEN)){
 			ItemStack stack = ((PostBaseTileEntity) world.getBlockEntity(pos)).getStack();
 			if(stack != ItemStack.EMPTY){
@@ -91,6 +89,7 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 		return super.getCloneItemStack(state, target, world, pos, player);
 	}
 	
+	@Nonnull
 	@Override
 	public FluidState getFluidState(BlockState state){
 		return (!state.getValue(HIDDEN) && state.getValue(WATERLOGGED)) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
@@ -98,7 +97,7 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 	
 	@Override
 	@Nullable
-	public BlockState getStateForPlacement(BlockPlaceContext context){
+	public BlockState getStateForPlacement(@Nonnull BlockPlaceContext context){
 		BlockState state = super.getStateForPlacement(context);
 		FluidState fs = context.getLevel().getFluidState(context.getClickedPos());
 		
@@ -106,8 +105,9 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 		return state;
 	}
 	
+	@Nonnull
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos){
+	public BlockState updateShape(BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor world, @Nonnull BlockPos pos, @Nonnull BlockPos facingPos){
 		if(!state.getValue(HIDDEN) && state.getValue(WATERLOGGED)){
 			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
@@ -116,27 +116,29 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 	
 	private static final VoxelShape BASE_SIZE = Shapes.box(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 	@Override
-	public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid){
-		return !state.getValue(HIDDEN) && SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid);
+	public boolean canPlaceLiquid(Player player, @Nonnull BlockGetter world, @Nonnull BlockPos pos, BlockState state, @Nonnull Fluid fluid){
+		return !state.getValue(HIDDEN) && SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
 	}
 	
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState){
+	public BlockEntity newBlockEntity(@Nonnull BlockPos pPos, @Nonnull BlockState pState){
 		return IPOTileTypes.POST_BASE.get().create(pPos, pState);
 	}
 	
+	@Nonnull
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context){
+	public VoxelShape getCollisionShape(@Nonnull BlockState state, @Nonnull BlockGetter worldIn, @Nonnull BlockPos pos, @Nonnull CollisionContext context){
 		return this.getShape(state, worldIn, pos, context);
 	}
 	
+	@Nonnull
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context){
+	public VoxelShape getShape(BlockState state, @Nonnull BlockGetter worldIn, @Nonnull BlockPos pos, @Nonnull CollisionContext context){
 		return state.getValue(HIDDEN) ? Shapes.block() : BASE_SIZE;
 	}
 	
 	@Override
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side){
+	public boolean skipRendering(@Nonnull BlockState state, @Nonnull BlockState adjacentBlockState, @Nonnull Direction side){
 		return false;
 	}
 	
@@ -219,9 +221,16 @@ public class PostBaseBlock extends IPOBlockBase implements SimpleWaterloggedBloc
 		}
 		
 		@Override
+		public void appendHoverText(@Nonnull ItemStack stack, @Nonnull TooltipContext context, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag tooltipFlag){
+			super.appendHoverText(stack, context, tooltip, tooltipFlag);
+			tooltip.add(Component.translatable("tooltip.postbase"));
+		}
+		
+		/*
 		@OnlyIn(Dist.CLIENT)
 		public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn){
 			tooltip.add(Component.literal(I18n.get("tooltip.postbase")));
 		}
+		*/
 	}
 }

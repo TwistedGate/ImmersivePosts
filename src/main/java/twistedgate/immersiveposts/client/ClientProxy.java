@@ -6,9 +6,9 @@ import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.Tree.InnerNode;
 import com.electronwill.nightconfig.core.Config;
 import net.minecraft.resources.ResourceLocation;
-import twistedgate.immersiveposts.IPOMod;
 import twistedgate.immersiveposts.common.CommonProxy;
 import twistedgate.immersiveposts.common.IPOConfig;
+import twistedgate.immersiveposts.util.ResourceUtils;
 
 /**
  * @author TwistedGate
@@ -47,6 +47,6 @@ public class ClientProxy extends CommonProxy{
 	}
 	
 	private ResourceLocation modLoc(String str){
-		return new ResourceLocation(IPOMod.ID, str);
+		return ResourceUtils.ipo(str);
 	}
 }

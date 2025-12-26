@@ -1,15 +1,14 @@
 package twistedgate.immersiveposts.common;
 
-import blusunrize.immersiveengineering.api.Lib;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import twistedgate.immersiveposts.util.ResourceUtils;
 
 public class ExternalModContent{
-	public static RegistryObject<Block> IE_TREATED_FENCE = RegistryObject.create(new ResourceLocation(Lib.MODID, "treated_fence"), ForgeRegistries.BLOCKS);
-	public static RegistryObject<Block> IE_ALUMINIUM_FENCE = RegistryObject.create(new ResourceLocation(Lib.MODID, "alu_fence"), ForgeRegistries.BLOCKS);
-	public static RegistryObject<Block> IE_STEEL_FENCE = RegistryObject.create(new ResourceLocation(Lib.MODID, "steel_fence"), ForgeRegistries.BLOCKS);
+	public static DeferredHolder<Block, Block> IE_TREATED_FENCE		= DeferredHolder.create(BuiltInRegistries.BLOCK.key(), ResourceUtils.ie("treated_fence"));
+	public static DeferredHolder<Block, Block> IE_ALUMINIUM_FENCE	= DeferredHolder.create(BuiltInRegistries.BLOCK.key(), ResourceUtils.ie("alu_fence"));
+	public static DeferredHolder<Block, Block> IE_STEEL_FENCE		= DeferredHolder.create(BuiltInRegistries.BLOCK.key(), ResourceUtils.ie("steel_fence"));
 	
 	public static void forceClassLoad(){
 	}

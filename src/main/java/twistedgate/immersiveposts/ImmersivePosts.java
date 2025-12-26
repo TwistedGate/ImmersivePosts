@@ -1,18 +1,17 @@
 package twistedgate.immersiveposts;
 
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.client.ClientEventHandler;
 import twistedgate.immersiveposts.client.ClientProxy;
 import twistedgate.immersiveposts.common.CommonProxy;
@@ -22,35 +21,31 @@ import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPORegistries;
 import twistedgate.immersiveposts.util.loot.IPOLootFunctions;
 
+import java.util.function.Supplier;
+
 /**
  * @author TwistedGate
  */
 @Mod(IPOMod.ID)
 public class ImmersivePosts{
-	
-	@Deprecated(forRemoval = true)
-	public static final CreativeModeTab creativeTab = null;
-	
 	public static final Logger log = LogManager.getLogger(IPOMod.ID);
 	
-	public static CommonProxy proxy = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+	public static CommonProxy proxy = proxy(() -> FMLLoader.getDist().isClient() ? new ClientProxy() : new CommonProxy());
+	private static CommonProxy proxy(Supplier<CommonProxy> proxy){
+		return proxy.get();
+	}
 	
-	public ImmersivePosts(){
-		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, IPOConfig.ALL);
+	public ImmersivePosts(ModContainer container, Dist dist, IEventBus eBus){
+		container.registerConfig(ModConfig.Type.SERVER, IPOConfig.ALL);
 		
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		bus.addListener(this::clientSetup);
-		bus.addListener(this::loadComplete);
+		NeoForge.EVENT_BUS.addListener(this::addReloadListeners);
+		eBus.addListener(this::loadComplete);
 		
-		IPORegistries.addRegistersToEventBus(bus);
+		IPORegistries.addRegistersToEventBus(eBus);
 		
 		ExternalModContent.forceClassLoad();
 		IPOContent.modConstruction();
-		IPOLootFunctions.modConstruction(bus);
-	}
-	
-	public void clientSetup(FMLClientSetupEvent event){
-		MinecraftForge.EVENT_BUS.addListener(this::addReloadListeners);
+		IPOLootFunctions.modConstruction(eBus);
 	}
 	
 	public void loadComplete(FMLLoadCompleteEvent event){

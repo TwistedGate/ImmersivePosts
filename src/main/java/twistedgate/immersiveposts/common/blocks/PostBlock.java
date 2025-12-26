@@ -17,7 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -44,8 +43,8 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Vector3f;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOConfig;
@@ -55,6 +54,7 @@ import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 import twistedgate.immersiveposts.enums.EnumPostType;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -108,36 +108,38 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 	}
 	
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos){
+	public int getLightBlock(@Nullable BlockState state, @Nullable BlockGetter worldIn, @Nullable BlockPos pos){
 		return 0;
 	}
 	
 	@Override
-	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos){
+	public float getShadeBrightness(@Nullable BlockState state, @Nullable BlockGetter worldIn, @Nullable BlockPos pos){
 		return 1.0F;
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos){
+	public boolean propagatesSkylightDown(@Nonnull BlockState state, @Nullable BlockGetter reader, @Nullable BlockPos pos){
 		return !state.getValue(WATERLOGGED);
 	}
 	
+	@Nonnull
 	@Override
 	public FluidState getFluidState(BlockState state){
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
 	}
 	
-	@Override
 	@Nullable
-	public BlockState getStateForPlacement(BlockPlaceContext context){
+	@Override
+	public BlockState getStateForPlacement(@Nonnull BlockPlaceContext context){
 		BlockState state = super.getStateForPlacement(context);
 		FluidState fs = context.getLevel().getFluidState(context.getClickedPos());
 		
 		return state.setValue(WATERLOGGED, fs.getType() == Fluids.WATER);
 	}
 	
+	@Nonnull
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos){
+	public BlockState updateShape(BlockState state, @Nullable Direction facing, @Nullable BlockState facingState, @Nonnull LevelAccessor world, @Nonnull BlockPos pos, @Nonnull BlockPos facingPos){
 		if(state.getValue(WATERLOGGED)){
 			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
@@ -158,18 +160,18 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 	}
 	
 	@Override
-	public boolean isLadder(BlockState state, LevelReader world, BlockPos pos, LivingEntity entity){
+	public boolean isLadder(@Nullable BlockState state, @Nullable LevelReader world, @Nullable BlockPos pos, @Nullable LivingEntity entity){
 		return true;
 	}
 	
 	@Override
-	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face){
+	public boolean isFlammable(@Nullable BlockState state, @Nullable BlockGetter world, @Nullable BlockPos pos, @Nullable Direction face){
 		return false;
 	}
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand){
+	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand){
 		if(getPostMaterial() == EnumPostMaterial.URANIUM){
 			if(stateIn.getValue(TYPE) != EnumPostType.ARM && rand.nextFloat() < 0.125F){
 				double x = pos.getX() + 0.375 + 0.25 * rand.nextDouble();
@@ -182,12 +184,12 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side){
+	public boolean skipRendering(@Nullable BlockState state, @Nullable BlockState adjacentBlockState, @Nullable Direction side){
 		return false;
 	}
 	
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player){
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos, Player player){
 		return getPostMaterial().getItemStack();
 	}
 	
@@ -196,7 +198,6 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 		return world.getBlockState(pos).getValue(TYPE).id() < 2;
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit){
 		if(!worldIn.isClientSide){
@@ -368,7 +369,7 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 												.setValue(WATERLOGGED, nState.getBlock()==Blocks.WATER);
 										
 										worldIn.setBlockAndUpdate(nPos, defaultState);
-										defaultState.neighborChanged(worldIn, nPos, this, null, false);
+										defaultState.handleNeighborChanged(worldIn, nPos, this, pos, false);
 									}else if(getBlockFrom(worldIn, nPos) == this){
 										switch(nState.getValue(TYPE)){
 											case ARM: case EMPTY:{
@@ -399,15 +400,15 @@ public class PostBlock extends GenericPostBlock implements IPostBlock, SimpleWat
 							return InteractionResult.SUCCESS;
 						}
 						case ARM_DOUBLE:{
-							Direction bfacing = state.getValue(FACING);
+							Direction bFacing = state.getValue(FACING);
 							replaceSelf(state, worldIn, pos);
-							worldIn.setBlockAndUpdate(pos.relative(bfacing.getOpposite()), state.setValue(TYPE, EnumPostType.ARM));
+							worldIn.setBlockAndUpdate(pos.relative(bFacing.getOpposite()), state.setValue(TYPE, EnumPostType.ARM));
 							return InteractionResult.SUCCESS;
 						}
 						case EMPTY:{
-							Direction bfacing = state.getValue(FACING);
+							Direction bFacing = state.getValue(FACING);
 							worldIn.setBlockAndUpdate(pos, state.setValue(TYPE, EnumPostType.ARM));
-							replaceSelf(state, worldIn, pos.relative(bfacing));
+							replaceSelf(state, worldIn, pos.relative(bFacing));
 							return InteractionResult.SUCCESS;
 						}
 					}

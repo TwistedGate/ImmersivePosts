@@ -5,19 +5,19 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType.BlockEntitySupplier;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twistedgate.immersiveposts.common.tileentity.PostBaseTileEntity;
 
 import java.util.function.Supplier;
 
 public class IPOTileTypes{
-	public static final RegistryObject<BlockEntityType<PostBaseTileEntity>> POST_BASE;
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PostBaseTileEntity>> POST_BASE;
 	
 	static{
 		POST_BASE = register("postbase", PostBaseTileEntity::new, IPOContent.Blocks.POST_BASE::get);
 	}
 	
-	private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntitySupplier<T> factory, Supplier<Block> valid){
+	private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntitySupplier<T> factory, Supplier<Block> valid){
 		return IPORegistries.TILE_REGISTER.register(name, () -> new BlockEntityType<T>(factory, ImmutableSet.of(valid.get()), null));
 	}
 	
