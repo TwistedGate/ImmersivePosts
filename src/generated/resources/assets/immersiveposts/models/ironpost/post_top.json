@@ -2,7 +2,7 @@
   "parent": "minecraft:block/block",
   "automatic_culling": false,
   "flip_v": true,
-  "loader": "forge:obj",
+  "loader": "neoforge:obj",
   "model": "immersiveposts:models/block/post/obj/post_top.obj",
   "render_type": "minecraft:cutout",
   "textures": {

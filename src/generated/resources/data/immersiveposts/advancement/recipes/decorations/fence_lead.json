@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lead_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#neoforge:ingots/lead"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_lead_rod": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#neoforge:rods/lead"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "immersiveposts:fence_lead"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lead_rod",
+      "has_lead_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "immersiveposts:fence_lead"
+    ]
+  }
+}

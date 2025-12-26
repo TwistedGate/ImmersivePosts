@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_nickel_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#neoforge:ingots/nickel"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nickel_rod": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#neoforge:rods/nickel"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "immersiveposts:fence_nickel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_nickel_rod",
+      "has_nickel_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "immersiveposts:fence_nickel"
+    ]
+  }
+}

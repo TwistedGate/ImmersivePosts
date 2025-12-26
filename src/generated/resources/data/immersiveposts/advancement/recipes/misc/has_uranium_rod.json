@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "immersiveposts:has_uranium_rod"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_uranium_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#neoforge:ingots/uranium"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_uranium_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "immersiveposts:has_uranium_rod"
+    ]
+  }
+}

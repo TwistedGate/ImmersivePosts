@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "i": {
+      "tag": "neoforge:ingots/constantan"
+    },
+    "s": {
+      "tag": "neoforge:rods/constantan"
+    }
+  },
+  "pattern": [
+    "isi",
+    "isi"
+  ],
+  "result": {
+    "count": 3,
+    "id": "immersiveposts:fence_constantan"
+  }
+}
