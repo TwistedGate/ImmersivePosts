@@ -1,7 +1,7 @@
 {
 	"nether":{
 		"type": "crafting",
-		"recipe": "minecraft:recipe/nether_brick_fence"
+		"recipe": "minecraft:nether_brick_fence"
 	},
 	"treated":{
 		"type": "crafting",
@@ -93,6 +93,6 @@
 	},
 	"leadedconcrete":{
 		"type": "crafting",
-		"recipe": "immersiveengineering:concrete_leaded_to_slab"
+		"recipe": "immersiveengineering:crafting/concrete_leaded_to_slab"
 	}
 }
