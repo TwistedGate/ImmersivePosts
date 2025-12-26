@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#neoforge:ingots/copper"
+            "items": "#c:ingots/copper"
           }
         ]
       },

@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "i": {
-      "tag": "neoforge:ingots/gold"
+      "tag": "c:ingots/gold"
     },
     "s": {
-      "tag": "neoforge:rods/gold"
+      "tag": "c:rods/gold"
     }
   },
   "pattern": [

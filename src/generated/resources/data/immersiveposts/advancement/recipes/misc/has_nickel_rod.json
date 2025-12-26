@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#neoforge:ingots/nickel"
+            "items": "#c:ingots/nickel"
           }
         ]
       },

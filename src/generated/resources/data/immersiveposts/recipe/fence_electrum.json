@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "i": {
-      "tag": "neoforge:ingots/electrum"
+      "tag": "c:ingots/electrum"
     },
     "s": {
-      "tag": "neoforge:rods/electrum"
+      "tag": "c:rods/electrum"
     }
   },
   "pattern": [

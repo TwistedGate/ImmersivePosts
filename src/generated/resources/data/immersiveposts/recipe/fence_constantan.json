@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "i": {
-      "tag": "neoforge:ingots/constantan"
+      "tag": "c:ingots/constantan"
     },
     "s": {
-      "tag": "neoforge:rods/constantan"
+      "tag": "c:rods/constantan"
     }
   },
   "pattern": [

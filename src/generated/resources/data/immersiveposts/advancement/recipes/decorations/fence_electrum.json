@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#neoforge:ingots/electrum"
+            "items": "#c:ingots/electrum"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#neoforge:rods/electrum"
+            "items": "#c:rods/electrum"
           }
         ]
       },

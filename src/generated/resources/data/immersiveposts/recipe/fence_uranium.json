@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "i": {
-      "tag": "neoforge:ingots/uranium"
+      "tag": "c:ingots/uranium"
     },
     "s": {
-      "tag": "neoforge:rods/uranium"
+      "tag": "c:rods/uranium"
     }
   },
   "pattern": [

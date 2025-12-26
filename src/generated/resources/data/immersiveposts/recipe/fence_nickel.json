@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "i": {
-      "tag": "neoforge:ingots/nickel"
+      "tag": "c:ingots/nickel"
     },
     "s": {
-      "tag": "neoforge:rods/nickel"
+      "tag": "c:rods/nickel"
     }
   },
   "pattern": [

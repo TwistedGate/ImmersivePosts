@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#neoforge:ingots/constantan"
+            "items": "#c:ingots/constantan"
           }
         ]
       },

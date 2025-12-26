@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#neoforge:ingots/nickel"
+            "items": "#c:ingots/nickel"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#neoforge:rods/nickel"
+            "items": "#c:rods/nickel"
           }
         ]
       },

@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "i": {
-      "tag": "neoforge:ingots/lead"
+      "tag": "c:ingots/lead"
     },
     "s": {
-      "tag": "neoforge:rods/lead"
+      "tag": "c:rods/lead"
     }
   },
   "pattern": [

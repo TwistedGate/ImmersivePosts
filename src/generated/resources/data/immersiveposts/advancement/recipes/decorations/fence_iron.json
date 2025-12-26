@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#neoforge:ingots/iron"
+            "items": "#c:ingots/iron"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#neoforge:rods/iron"
+            "items": "#c:rods/iron"
           }
         ]
       },
