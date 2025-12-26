@@ -1,0 +1,11 @@
+{
+	"autoload_priority": 2,
+	"immersiveposts:main": {
+		"category_weight": 100,
+		"entry_list": [
+			"immersiveposts:postbase",
+			"immersiveposts:usage",
+			"immersiveposts:posts"
+		]
+	}
+}
