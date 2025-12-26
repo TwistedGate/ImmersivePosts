@@ -24,7 +24,7 @@ public class IPOTags{
 		public static final TagKey<Item> URANIUM = ingotTag("uranium");
 		
 		private static TagKey<Item> ingotTag(String name){
-			return createItemWrapper(ResourceUtils.forge("ingots/" + name));
+			return createItemWrapper(ResourceUtils.c("ingots/" + name));
 		}
 	}
 	
@@ -42,7 +42,7 @@ public class IPOTags{
 		public static final TagKey<Item> URANIUM = rodTag("uranium");
 		
 		private static TagKey<Item> rodTag(String name){
-			return createItemWrapper(ResourceUtils.forge("rods/" + name));
+			return createItemWrapper(ResourceUtils.c("rods/" + name));
 		}
 	}
 	

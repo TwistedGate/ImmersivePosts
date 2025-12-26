@@ -13,13 +13,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceBlock;
 import net.neoforged.neoforge.common.Tags;
-import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.IPOContent.Items;
 import twistedgate.immersiveposts.common.IPOTags;
 import twistedgate.immersiveposts.util.ResourceUtils;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -32,7 +32,7 @@ public class IPORecipes extends RecipeProvider{
 	}
 	
 	@Override
-	protected void buildRecipes(RecipeOutput out){
+	protected void buildRecipes(@Nonnull RecipeOutput out){
 		this.out = out;
 		
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, IPOContent.Blocks.POST_BASE.get(), 6)
@@ -61,7 +61,7 @@ public class IPORecipes extends RecipeProvider{
 		String stickMat = getMaterialName(stickTag.location()); // Stick Material
 		String ingotMat = getMaterialName(ingotTag.location()); // Ingot Material
 		
-		if(fence != Fences.IRON.get()){
+		if(rod != null){
 			ShapedRecipeBuilder.shaped(RecipeCategory.MISC, rod, 4)
 				.pattern("i")
 				.pattern("i")

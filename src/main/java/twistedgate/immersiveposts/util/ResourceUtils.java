@@ -22,4 +22,8 @@ public class ResourceUtils{
 	public static ResourceLocation mc(String path){
 		return ResourceLocation.withDefaultNamespace(path);
 	}
+	
+	public static ResourceLocation c(String path){
+		return ResourceLocation.fromNamespaceAndPath("c", path);
+	}
 }

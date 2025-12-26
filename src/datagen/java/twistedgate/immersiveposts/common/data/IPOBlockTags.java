@@ -33,7 +33,7 @@ public class IPOBlockTags extends BlockTagsProvider{
 	}
 	
 	@Override
-	protected void addTags(HolderLookup.Provider provider){
+	protected void addTags(@Nonnull HolderLookup.Provider provider){
 		miningLevels();
 		
 		tag(IPOTags.IGNORED_BY_POSTARM)
