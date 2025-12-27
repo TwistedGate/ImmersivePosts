@@ -48,7 +48,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Vector3f;
 import twistedgate.immersiveposts.api.posts.IPostMaterial;
 import twistedgate.immersiveposts.common.IPOConfig;
-import twistedgate.immersiveposts.common.IPOTags;
+import twistedgate.immersiveposts.api.IPOTags;
 import twistedgate.immersiveposts.enums.EnumFlipState;
 import twistedgate.immersiveposts.enums.EnumHTrussType;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;

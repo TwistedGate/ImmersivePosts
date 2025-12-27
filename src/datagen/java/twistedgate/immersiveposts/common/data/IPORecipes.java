@@ -16,7 +16,7 @@ import net.neoforged.neoforge.common.Tags;
 import twistedgate.immersiveposts.common.IPOContent;
 import twistedgate.immersiveposts.common.IPOContent.Blocks.Fences;
 import twistedgate.immersiveposts.common.IPOContent.Items;
-import twistedgate.immersiveposts.common.IPOTags;
+import twistedgate.immersiveposts.api.IPOTags;
 import twistedgate.immersiveposts.util.ResourceUtils;
 
 import javax.annotation.Nonnull;

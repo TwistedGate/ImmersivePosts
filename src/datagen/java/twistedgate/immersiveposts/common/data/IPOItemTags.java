@@ -8,7 +8,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Items;
-import twistedgate.immersiveposts.common.IPOTags;
+import twistedgate.immersiveposts.api.IPOTags;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;

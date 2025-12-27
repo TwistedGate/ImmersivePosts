@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 import twistedgate.immersiveposts.api.IPOMod;
 import twistedgate.immersiveposts.common.IPOContent.Blocks;
-import twistedgate.immersiveposts.common.IPOTags;
+import twistedgate.immersiveposts.api.IPOTags;
 import twistedgate.immersiveposts.enums.EnumPostMaterial;
 
 import javax.annotation.Nonnull;
