@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/immersiveposts",
 	"promos":{
+		"1.21.1-latest": "4.3.1-12", "1.21.1-recommended": "4.3.1-12",
 		"1.20.1-latest": "4.3.0-11", "1.20.1-recommended": "4.3.0-11",
 		"1.19.3-latest": "4.3.0-9", "1.19.3-recommended": "4.3.0-9",
 		"1.19.2-latest": "4.3.0-8", "1.19.2-recommended": "4.3.0-8",
@@ -12,8 +13,11 @@
 		"1.14.4-latest": "1.2.0", "1.14.4-recommended": "1.2.0",
 		"1.12.2-latest": "0.2.1", "1.12.2-recommended": "0.2.1"
 	},
+	"1.21.1":{
+		"4.3.1-12": "Compiled with\nNeoForge version: 1.21.1-21.1.164\nIE version: 1.21.1-12.4.2-194\n\n1.21.2 Port. (TwistedGate)"
+	},
 	"1.20.1":{
-		"4.3.0-11": "[F] Fixed "java.lang.NoSuchFieldError: CREATIVE_MODE_TAB"\n[C] Reverted back to shift-holding for trusses",
+		"4.3.0-11": "[F] Fixed \"java.lang.NoSuchFieldError: CREATIVE_MODE_TAB\"\n[C] Reverted back to shift-holding for trusses",
 		"4.3.0-10": "Compiled with\n\nForge version: 1.20.1-47.3.0\nIE version: 1.20.1-10.1.0-171\n\n[A] Ability to hang Lanterns from post-arms. (TwistedGate)\n[F] Double-Arm end retaining the flipped down state. (TwistedGate)"
 	},
 	"1.19.3":{
