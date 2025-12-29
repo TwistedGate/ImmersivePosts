@@ -1,6 +1,6 @@
 package twistedgate.immersiveposts.common;
 
-import com.electronwill.nightconfig.core.Config;
+import com.electronwill.nightconfig.core.CommentedConfig;
 import com.google.common.base.Preconditions;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -15,6 +15,8 @@ import twistedgate.immersiveposts.api.IPOMod;
 
 import java.lang.reflect.Field;
 
+import static net.neoforged.fml.config.IConfigSpec.ILoadedConfig;
+
 @EventBusSubscriber(modid = IPOMod.ID, bus = Bus.MOD)
 public class IPOConfig{
 	public static final Logger log = LogManager.getLogger(IPOMod.ID + "/Config");
@@ -28,19 +30,19 @@ public class IPOConfig{
 		ALL = builder.build();
 	}
 	
-	private static Config rawConfig;
-	public static Config getRawConfig(){
+	private static ILoadedConfig rawConfig;
+	public static CommentedConfig getRawConfig(){
 		if(rawConfig == null){
 			try{
-				Field childConfig = ModConfigSpec.class.getDeclaredField("childConfig");
+				Field childConfig = ModConfigSpec.class.getDeclaredField("loadedConfig");
 				childConfig.setAccessible(true);
-				rawConfig = (Config) childConfig.get(ALL);
+				rawConfig = (ILoadedConfig) childConfig.get(ALL);
 				Preconditions.checkNotNull(rawConfig);
 			}catch(Exception x){
 				throw new RuntimeException(x);
 			}
 		}
-		return rawConfig;
+		return rawConfig.config();
 	}
 	
 	public static class Posts{
