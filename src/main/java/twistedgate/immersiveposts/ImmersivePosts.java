@@ -49,7 +49,7 @@ public class ImmersivePosts{
 	}
 	
 	public void loadComplete(FMLLoadCompleteEvent event){
-		proxy.completed();
+		proxy.completed(event);
 	}
 	
 	public void addReloadListeners(AddReloadListenerEvent event){
