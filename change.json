@@ -14,7 +14,7 @@
 		"1.12.2-latest": "0.2.1", "1.12.2-recommended": "0.2.1"
 	},
 	"1.21.1":{
-		"4.3.1-13": "[F] Fixed manual issue with ImmersivePetroleum installed. (TwistedGate)"
+		"4.3.1-13": "[F] Fixed manual issue with ImmersivePetroleum installed. (TwistedGate)",
 		"4.3.1-12": "Compiled with\nNeoForge version: 1.21.1-21.1.164\nIE version: 1.21.1-12.4.2-194\n\n1.21.2 Port. (TwistedGate)"
 	},
 	"1.20.1":{
