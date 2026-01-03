@@ -1,7 +1,7 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/immersiveposts",
 	"promos":{
-		"1.21.1-latest": "4.3.1-13", "1.21.1-recommended": "4.3.1-13",
+		"1.21.1-latest": "4.3.1-14", "1.21.1-recommended": "4.3.1-14",
 		"1.20.1-latest": "4.3.0-11", "1.20.1-recommended": "4.3.0-11",
 		"1.19.3-latest": "4.3.0-9", "1.19.3-recommended": "4.3.0-9",
 		"1.19.2-latest": "4.3.0-8", "1.19.2-recommended": "4.3.0-8",
@@ -14,11 +14,12 @@
 		"1.12.2-latest": "0.2.1", "1.12.2-recommended": "0.2.1"
 	},
 	"1.21.1":{
-		"4.3.1-13": "[F] Fixed manual issue with ImmersivePetroleum installed. (TwistedGate)",
+		"4.3.1-14": "[F] Crash on Servers involving ClientEventHandler. (TwistedGate)",
+		"4.3.1-13": "[F] Manual issue with ImmersivePetroleum installed. (TwistedGate)",
 		"4.3.1-12": "Compiled with\nNeoForge version: 1.21.1-21.1.164\nIE version: 1.21.1-12.4.2-194\n\n1.21.2 Port. (TwistedGate)"
 	},
 	"1.20.1":{
-		"4.3.0-11": "[F] Fixed \"java.lang.NoSuchFieldError: CREATIVE_MODE_TAB\"\n[C] Reverted back to shift-holding for trusses",
+		"4.3.0-11": "[F] \"java.lang.NoSuchFieldError: CREATIVE_MODE_TAB\"\n[C] Reverted back to shift-holding for trusses",
 		"4.3.0-10": "Compiled with\n\nForge version: 1.20.1-47.3.0\nIE version: 1.20.1-10.1.0-171\n\n[A] Ability to hang Lanterns from post-arms. (TwistedGate)\n[F] Double-Arm end retaining the flipped down state. (TwistedGate)"
 	},
 	"1.19.3":{
@@ -37,7 +38,7 @@
 	},
 	"1.16.5": {
 		"4.3.0-1": "Compiled with\nForge version: 1.16.5-36.2.0\nIE version: 1.16.5-5.0.3-138\n\n[A] Added API to add custom Posts. (TwistedGate)\n[A] Added Korean Translation. (FreddyYJ)\n[F] ImmersivePosts actualy wanting the correct Forge and IE versions. (TwistedGate)\n[F] Fixed ImmersivePosts reporting the wrong version. (TwistedGate)\n\nWith ImmersivePosts having an API now the version scheme changed aswell!\nImmersivePosts-MinecraftVersion-ApiVersion-Release",
-		"4.2.2": "[F] Fixed hotbar slot not being usable to get the cover off of the postbase again after the stack turned into an empty stack.\n[F] Fixed \"Missing Texture\" particles on hidden postbase. (Switched to using the postbase texture as default)\n[F] Fixed \"Unknown key \"x\" Tried deleting all configs and it didn't solve it.\"",
+		"4.2.2": "[F] Hotbar slot not being usable to get the cover off of the postbase again after the stack turned into an empty stack.\n[F] Fixed \"Missing Texture\" particles on hidden postbase. (Switched to using the postbase texture as default)\n[F] Fixed \"Unknown key \"x\" Tried deleting all configs and it didn't solve it.\"",
 		"4.2.1": "This is a very small update with hopes of fixing this manual thing.\n\n[F] Fixed manual not loading with ImmersivePetroleum installed.",
 		"4.2.0": "Forge version: 1.16.5-36.2.0\nIE version: 1.16.5-5.0.2-137\n\n[A] Added trusses to \"connect\" two posts together horizonaly.  (Check the How-To page in the Extendable Posts category)\n[C] Changed manual category name to \"Extendable Posts\" instead of mod name.\n[C] Textures got an overhaul.",
 		"4.1.1": "IE version: 1.16.5-5.0.2-137\n\n[A] Added FrannDzs to Credits. (Spanish Language)\n[F] NoSuchMethodError crash related to Utils.hashBlockstate",
