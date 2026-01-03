@@ -5,6 +5,10 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
+import net.neoforged.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.NeoForge;
@@ -38,8 +42,16 @@ public class ImmersivePosts{
 	public ImmersivePosts(ModContainer container, Dist dist, IEventBus eBus){
 		container.registerConfig(ModConfig.Type.SERVER, IPOConfig.ALL);
 		
+		if(dist == Dist.CLIENT)
+			eBus.register(new ClientEventHandler());
+		
+		eBus.addListener(this::construct);
+		eBus.addListener(this::commonSetup);
+		eBus.addListener(this::clientSetup);
+		eBus.addListener(this::serverSetup);
+		eBus.addListener(this::completed);
+		
 		NeoForge.EVENT_BUS.addListener(this::addReloadListeners);
-		eBus.addListener(this::loadComplete);
 		
 		IPORegistries.addRegistersToEventBus(eBus);
 		
@@ -48,11 +60,27 @@ public class ImmersivePosts{
 		IPOLootFunctions.modConstruction(eBus);
 	}
 	
-	public void loadComplete(FMLLoadCompleteEvent event){
+	public void construct(FMLConstructModEvent event){
+		proxy.construct(event);
+	}
+	
+	public void commonSetup(FMLCommonSetupEvent event){
+		proxy.commonSetup(event);
+	}
+	
+	public void clientSetup(FMLClientSetupEvent event){
+		proxy.clientSetup(event);
+	}
+	
+	public void serverSetup(FMLDedicatedServerSetupEvent event){
+		proxy.serverSetup(event);
+	}
+	
+	public void completed(FMLLoadCompleteEvent event){
 		proxy.completed(event);
 	}
 	
 	public void addReloadListeners(AddReloadListenerEvent event){
-		event.addListener(new ClientEventHandler());
+		proxy.addReloadListeners(event);
 	}
 }
