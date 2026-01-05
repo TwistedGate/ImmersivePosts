@@ -19,7 +19,11 @@ import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Unit;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
@@ -48,6 +52,19 @@ public class PostBaseModel extends IPOBakedModel{
 			.expireAfterAccess(2, TimeUnit.MINUTES)
 			.maximumSize(100)
 			.build();
+	
+	public static class ReloadListener extends SimplePreparableReloadListener<Unit>{
+		@Nonnull
+		@Override
+		protected Unit prepare(@Nonnull ResourceManager resourceManager, @Nonnull ProfilerFiller profilerFiller){
+			return Unit.INSTANCE;
+		}
+		
+		@Override
+		protected void apply(@Nonnull Unit unit, @Nonnull ResourceManager resourceManager, @Nonnull ProfilerFiller profilerFiller){
+			CACHE.invalidateAll();
+		}
+	}
 	
 	@Nonnull
 	@Override
