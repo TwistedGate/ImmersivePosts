@@ -1,8 +1,8 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/immersiveposts",
 	"promos":{
-		"1.21.1-latest": "4.3.1-14", "1.21.1-recommended": "4.3.1-14",
-		"1.20.1-latest": "4.3.0-11", "1.20.1-recommended": "4.3.0-11",
+		"1.21.1-latest": "4.3.1-16", "1.21.1-recommended": "4.3.1-16",
+		"1.20.1-latest": "4.3.0-15", "1.20.1-recommended": "4.3.0-15",
 		"1.19.3-latest": "4.3.0-9", "1.19.3-recommended": "4.3.0-9",
 		"1.19.2-latest": "4.3.0-8", "1.19.2-recommended": "4.3.0-8",
 		"1.18.2-latest": "4.3.0-3", "1.18.2-recommended": "4.3.0-3",
@@ -14,11 +14,13 @@
 		"1.12.2-latest": "0.2.1", "1.12.2-recommended": "0.2.1"
 	},
 	"1.21.1":{
+		"4.3.1-16": "[F] Crash when using Posts in Create Schematics. (TwistedGate)",
 		"4.3.1-14": "[F] Crash on Servers involving ClientEventHandler. (TwistedGate)",
 		"4.3.1-13": "[F] Manual issue with ImmersivePetroleum installed. (TwistedGate)",
 		"4.3.1-12": "Compiled with\nNeoForge version: 1.21.1-21.1.164\nIE version: 1.21.1-12.4.2-194\n\n1.21.2 Port. (TwistedGate)"
 	},
 	"1.20.1":{
+		"4.3.0-15": "[F] Crash when using Posts in Create Schematics. (TwistedGate)\n[C] Manual: Mostly fixed typos. (TwistedGate)\n[U] Russian translation. (MagistrDjo)",
 		"4.3.0-11": "[F] \"java.lang.NoSuchFieldError: CREATIVE_MODE_TAB\"\n[C] Reverted back to shift-holding for trusses",
 		"4.3.0-10": "Compiled with\n\nForge version: 1.20.1-47.3.0\nIE version: 1.20.1-10.1.0-171\n\n[A] Ability to hang Lanterns from post-arms. (TwistedGate)\n[F] Double-Arm end retaining the flipped down state. (TwistedGate)"
 	},
